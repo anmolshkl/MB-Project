@@ -1,3 +1,9 @@
+***************************PART-1 INITIAL SETUP***********************
+1.Start command prompt and activate virtualenv with `env\Scripts\activate`
+2.Install the requitements `pip install -r requirements.txt`
+  **NOTE** Remove MySQL-python==1.2.5 from the file and install it manually with easy_install MySQL-python==1.2.5 
+
+***************************PART-2 THE DIRECTORY HIERARCHY***********************
 This is my final directory structure:
 
 mentorbuddy
@@ -42,3 +48,17 @@ urlpatterns = patterns('',
 Depending on how you wrote them, you might also have to fix a few imports inside your app. Either just use from models import MentorModel or also prefix it using from apps.mentor.models import MentorModel.
 
 In short, if you make your apps directory a python module, you can use it as part of the import path. This should work regardless of the deployment method with no extra configuration.
+
+******************PART-3-INSTALLING MYSQL****************************
+
+1.Install XAMPP (we basically need phpmyadmin & MySQL)
+
+2.Create a database "mb_db" in phpmyadmin
+
+3.Select the database & click on Privileges tab.
+
+4.Add a new user "mentorbuddy" with password-"mentorbuddy" and check the "Grant all privileges on wildcard name (username\_%)." checkbox.
+
+5.Make sure you have installed MySQLdb driver with the following command 
+		`easy_install MySQL-python==1.2.5` 
+  pip wont work

@@ -57,11 +57,25 @@ WSGI_APPLICATION = 'mentorbuddy.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'localhost': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mb_db',
+        'USER': 'mentorbuddy',
+        'PASSWORD': 'mentorbuddy',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
+    # 'aws_rds': {
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'vnit_alumni',
+        # 'USER': 'master',
+        # 'PASSWORD': 'A!p_Mast3r',
+        # 'HOST': 'vnit-alumni.cgjesgyaqngr.ap-southeast-1.rds.amazonaws.com',
+        # 'PORT': '3306',
+    # },
 }
+# Django NEEDS a 'default'. Do change the following in production!
+DATABASES['default'] = DATABASES['localhost']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
