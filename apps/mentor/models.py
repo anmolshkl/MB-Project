@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserProfile(models.Model):
 
-    """Associates the user with a 'Profile'."""
+    """Associates the User with a 'Profile'."""
 
     # Stores username, password, first_name, last_name, email
     user = models.OneToOneField(User, related_name="profile", editable=False,

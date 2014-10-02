@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from apps.mentor.models import UserProfile, EducationDetails
+from apps.mentor.models import MentorProfile, EducationDetails
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
