@@ -1,18 +1,18 @@
 from django import forms
 from django.contrib.auth.models import User
-from apps.mentor.models import MentorProfile, EducationDetails
+from apps.mentor.models import UserProfile, EducationDetails
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password','first_name','last_name')
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('pictures', 'gender', 'date_of_birth','location','short_bio', )
+        fields = ('gender', 'date_of_birth','location','short_bio', )
 
 class EducationForm(forms.ModelForm):
 	class Meta:
