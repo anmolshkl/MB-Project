@@ -56,6 +56,18 @@ INSTALLED_APPS = (
     'apps.mentee',
     'apps.home',
     'south',
+    'social.apps.django_app.default',
+)
+#here we specify all the social logins we want
+AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.linkedin.LinkedinOAuth',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -122,3 +134,83 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
+
+#TWITTER
+SOCIAL_AUTH_TWITTER_KEY = 'R4LNGeDnrA6xUfuZHn6rcs9qY'
+SOCIAL_AUTH_TWITTER_SECRET = 'UBQL0dlSeODOXHMWltGqX0vxtk4rPZBVC599yWkZMHM7KTi3yD'
+
+
+#FACEBOOK
+SOCIAL_AUTH_FACEBOOK_KEY = '713549365387916'
+SOCIAL_AUTH_FACEBOOK_SECRET = '5fd7cd3b9958b979647df997b5b27c8e'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+#LINKEDIN
+#Fill the application key and secret in your settings:
+SOCIAL_AUTH_LINKEDIN_KEY = '75v6ppasybk7zd'
+SOCIAL_AUTH_LINKEDIN_SECRET = 'WJjgPEsGW7NSCVCD'
+
+#Application Scopes(ie what all we want from Linkedin):
+SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress','r_fullprofile']
+SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['id','first-name',
+                                            'last-name',
+                                            'summary',
+                                            'email-address',
+                                            'positions',
+                                            'headline',
+                                            'picture-url',
+                                            'site-standard-profile-request',
+                                            'public-profile-url',
+                                            'location',
+                                            'interests',
+                                            'publications',
+                                            'date-of-birth',
+                                            'primary-twitter-account' ,
+                                            'skills',
+                                            'languages',
+                                            'educations']
+
+SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'linkedin_id'),
+                                   ('emailAddress', 'email_address'),
+                                   ('headline', 'tagline'),
+                                   ('industry', 'industry'),
+                                   ('educations', 'educations'),
+                                   ('threeCurrentPositions', 'organisations'),
+                                   ('threePastPositions', 'past_organisations'),
+                                   ('dateOfBirth', 'date_of_birth'),
+                                   ('mainAddress', 'address'),
+                                   ('phoneNumbers', 'phone_numbers'),
+                                   ('pictureUrl', 'profile_picture_url'),
+                                   ('publicProfileUrl', 'public_profile_url'),
+                                   ('location', 'location'),
+                                   ('summary', 'about')]
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',  # <--- enable this one
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
+
+# Login urls
+LOGIN_URL          = '/home/login/'
+LOGOUT_URL         = '/home/logout/'
+LOGIN_REDIRECT_URL = '/home/'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+   'django.contrib.auth.context_processors.auth',
+   'django.core.context_processors.debug',
+   'django.core.context_processors.i18n',
+   'django.core.context_processors.media',
+   'django.core.context_processors.static',
+   'django.core.context_processors.tz',
+   'django.contrib.messages.context_processors.messages',
+   'social.apps.django_app.context_processors.backends',
+   'social.apps.django_app.context_processors.login_redirect',
+)

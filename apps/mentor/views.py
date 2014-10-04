@@ -10,6 +10,8 @@ from django.shortcuts import render_to_response
 def index(request):
 	return HttpResponse("Welcome mentor")
 
+
+
 def register(request):
     # Like before, get the request's context.
     context = RequestContext(request)
@@ -32,6 +34,7 @@ def register(request):
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
+            user.username = form.cleaned_data['email']
             user.set_password(user.password)
             user.save()
 

@@ -1,11 +1,23 @@
 {% extends 'home/base.html' %}
 {% block body_block %}
 <h1>Welcome to Mentor Buddy</h1>
-<form name="loginForm" id="loginForm" action="" method="post">
-    <input type="email" placeholder="enter your email"></input>
-    <input type="password" placeholder="enter your password"></input>
+{% if user.is_authenticated %}
+<a href="/home/logout/">Logout</a>
+<h3>Hello {{ user.username }}</h3>
+{% else %}
+<form action="/home/login/" method="POST">
+	{% csrf_token %}
+    <input type="text" name="username" id="username" placeholder="enter your username"></input>
+    <input type="password" name="password" id="password" placeholder="enter your password"></input>
     <input type="submit" value="login" />
 </form>
-Register as a Mentee
-<a href="/mentor/register">Register as a Mentor</a>
+<a href="{% url 'social:begin' 'linkedin' %}?next={{ request.path }}">Login with Linkedin</a><br />
+<a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a><br />
+
+<a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a><br />
+
+Register as a Mentee <br/>
+<a href="/mentor/register/">Register as a Mentor</a>
+{% endif %}
+
 {% endblock %}
