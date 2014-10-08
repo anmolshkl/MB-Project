@@ -46,6 +46,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+  # The Django sites framework is required
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,18 +58,34 @@ INSTALLED_APPS = (
     'apps.mentee',
     'apps.home',
     'south',
-    'social.apps.django_app.default',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.twitter',
 )
-#here we specify all the social logins we want
+
+
 AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId',
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.google.GoogleOAuth',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.facebook.FacebookOAuth2',
-    'social.backends.linkedin.LinkedinOAuth',
-    'django.contrib.auth.backends.ModelBackend',
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend"
+)
+ 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages",
+
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -78,6 +96,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+SITE_ID = 1
 
 ROOT_URLCONF = 'mentorbuddy.urls'
 
@@ -90,7 +110,7 @@ WSGI_APPLICATION = 'mentorbuddy.wsgi.application'
 DATABASES = {
     'localhost': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mb_db',
+        'NAME': 'mb_db2',
         'USER': 'mentorbuddy',
         'PASSWORD': 'mentorbuddy',
         'HOST': 'localhost',
@@ -135,103 +155,29 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
-# Required hack - http://psa.matiasaguirre.net/docs/configuration/django.html#django-admin
-SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
-
-#TWITTER
-SOCIAL_AUTH_TWITTER_KEY = 'R4LNGeDnrA6xUfuZHn6rcs9qY'
-SOCIAL_AUTH_TWITTER_SECRET = 'UBQL0dlSeODOXHMWltGqX0vxtk4rPZBVC599yWkZMHM7KTi3yD'
 
 
-#FACEBOOK
-SOCIAL_AUTH_FACEBOOK_KEY = '713549365387916'
-SOCIAL_AUTH_FACEBOOK_SECRET = '5fd7cd3b9958b979647df997b5b27c8e'
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-
-#LINKEDIN
-#Fill the application key and secret in your settings:
-SOCIAL_AUTH_LINKEDIN_KEY = '75v6ppasybk7zd'
-SOCIAL_AUTH_LINKEDIN_SECRET = 'WJjgPEsGW7NSCVCD'
-
-#Application Scopes(ie what all we want from Linkedin):
-SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_basicprofile', 'r_emailaddress','r_fullprofile']
-SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['id','first-name',
-                                            'last-name',
-                                            'summary',
-                                            'email-address',
-                                            'positions',
-                                            'headline',
-                                            'picture-url',
-                                            'site-standard-profile-request',
-                                            'public-profile-url',
-                                            'location',
-                                            'interests',
-                                            'publications',
-                                            'date-of-birth',
-                                            'primary-twitter-account' ,
-                                            'skills',
-                                            'languages',
-                                            'educations']
-
-SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'linkedin_id'),
-                                   ('emailAddress', 'email_address'),
-                                   ('headline', 'tagline'),
-                                   ('industry ', 'industry'),
-                                   ('educations', 'educations'),
-                                   ('threeCurrentPositions', 'organisations'),
-                                   ('threePastPositions', 'past_organisations'),
-                                   ('dateOfBirth', 'date_of_birth'),
-                                   ('mainAddress', 'address'),
-                                   ('phoneNumbe rs', 'phone_numbers'),
-                                   ('pictureUrl', 'profile_picture_url'),
-                                   ('publicProfileUrl', 'public_profile_url'),
-                                   ('location', 'location'),
-                                   ('summary', 'about')]
-
-SOCIAL_AUTH_FACEBOOK_FIELD_SELECTORS = ['id','first_name',
-                                            'last_name',
-                                            'about',
-                                            'email',
-                                            'gender','birthday',
-                                            'link',
-                                            'address',
-                                            'languages']
-SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [('id', 'facebook_id'),
-                                   ('email', 'email'),
-                                   ('gender', 'gender'),
-                                   ('first_name', 'first_name'),
-                                   ('last_name', 'last_name'),
-                                   ('education', 'education'),
-                                   ('birthday', 'birthday'),
-                                   ('address', 'address'),
-                                   ('about', 'about')]
-SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.social_auth.social_details',
-    'social.pipeline.social_auth.social_uid',
-    'social.pipeline.social_auth.auth_allowed',
-    'social.pipeline.social_auth.social_user',
-    'social.pipeline.user.get_username',
-    'social.pipeline.social_auth.associate_by_email',  # <--- enable this one
-    'social.pipeline.user.create_user',
-    'social.pipeline.social_auth.associate_user',
-    'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details',
-    'savedata.savedata'
-)
 
 # Login urls
 LOGIN_URL          = '/home/login/'
 LOGOUT_URL         = '/home/logout/'
 LOGIN_REDIRECT_URL = '/home/'
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-   'django.contrib.auth.context_processors.auth',
-   'django.core.context_processors.debug',
-   'django.core.context_processors.i18n',
-   'django.core.context_processors.media',
-   'django.core.context_processors.static',
-   'django.core.context_processors.tz',
-   'django.contrib.messages.context_processors.messages',
-   'social.apps.django_app.context_processors.backends',
-   'social.apps.django_app.context_processors.login_redirect',
-)
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'facebook':
+       {'SCOPE': ['email', 'publish_stream'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'METHOD': 'oauth2',
+        'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False}}
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'linkedin':
+      {'SCOPE': ['r_emailaddress'],
+       'PROFILE_FIELDS': ['id',
+                         'first-name',
+                         'last-name',
+                         'email-address',
+                         'picture-url',
+                         'public-profile-url']}}
