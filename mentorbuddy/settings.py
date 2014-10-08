@@ -135,6 +135,9 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media directory
 
+# Required hack - http://psa.matiasaguirre.net/docs/configuration/django.html#django-admin
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+
 #TWITTER
 SOCIAL_AUTH_TWITTER_KEY = 'R4LNGeDnrA6xUfuZHn6rcs9qY'
 SOCIAL_AUTH_TWITTER_SECRET = 'UBQL0dlSeODOXHMWltGqX0vxtk4rPZBVC599yWkZMHM7KTi3yD'
@@ -173,18 +176,35 @@ SOCIAL_AUTH_LINKEDIN_FIELD_SELECTORS = ['id','first-name',
 SOCIAL_AUTH_LINKEDIN_EXTRA_DATA = [('id', 'linkedin_id'),
                                    ('emailAddress', 'email_address'),
                                    ('headline', 'tagline'),
-                                   ('industry', 'industry'),
+                                   ('industry ', 'industry'),
                                    ('educations', 'educations'),
                                    ('threeCurrentPositions', 'organisations'),
                                    ('threePastPositions', 'past_organisations'),
                                    ('dateOfBirth', 'date_of_birth'),
                                    ('mainAddress', 'address'),
-                                   ('phoneNumbers', 'phone_numbers'),
+                                   ('phoneNumbe rs', 'phone_numbers'),
                                    ('pictureUrl', 'profile_picture_url'),
                                    ('publicProfileUrl', 'public_profile_url'),
                                    ('location', 'location'),
                                    ('summary', 'about')]
 
+SOCIAL_AUTH_FACEBOOK_FIELD_SELECTORS = ['id','first_name',
+                                            'last_name',
+                                            'about',
+                                            'email',
+                                            'gender','birthday',
+                                            'link',
+                                            'address',
+                                            'languages']
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [('id', 'facebook_id'),
+                                   ('email', 'email'),
+                                   ('gender', 'gender'),
+                                   ('first_name', 'first_name'),
+                                   ('last_name', 'last_name'),
+                                   ('education', 'education'),
+                                   ('birthday', 'birthday'),
+                                   ('address', 'address'),
+                                   ('about', 'about')]
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -195,7 +215,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details'
+    'social.pipeline.user.user_details',
+    'savedata.savedata'
 )
 
 # Login urls

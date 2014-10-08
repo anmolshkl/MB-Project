@@ -16,8 +16,10 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
     date_of_birth = models.DateField(blank=True, null=True)
     contact = models.CharField(max_length=128, blank=True)
+    address = models.CharField(max_length=128, blank=True)
+    country = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
-    short_bio = models.CharField(max_length=256, blank=True)
+    about = models.CharField(max_length=256, blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
     def full_name(self):
@@ -37,6 +39,7 @@ class UserProfile(models.Model):
         if created:
             profile = UserProfile.objects.create(user=instance)
             EducationDetails.objects.create(parent=profile)
+
 
     models.signals.post_save.connect(create_user_profile, sender=User)
 
