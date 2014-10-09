@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+# for django-allauth signals
+from django.dispatch import receiver
+from allauth.account.signals import user_logged_in, user_signed_up
 
 # Create your models here.
 class UserProfile(models.Model):
@@ -80,3 +83,18 @@ class SocialProfiles(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = "Social Profiles"
 
+
+# Create your models here.@receiver ([user_signed_up, user_logged_in], sender=User)
+@receiver([user_logged_in,user_signed_up])
+def save_data(sender, **kwargs):
+    user = kwargs.pop('user')
+    extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
+    if extra_data:
+        address = extra_data['location']['name']  #rename address as area
+        (address,country) = address.split(',')
+        #date_of_birth = extra_data['date-of-birth']  
+        userProfile = UserProfile(user=user)
+        userProfile.address = address
+        userProfile.country = country
+
+        userProfile.save()

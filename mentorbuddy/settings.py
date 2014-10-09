@@ -166,18 +166,29 @@ LOGIN_REDIRECT_URL = '/home/'
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
-       {'SCOPE': ['email', 'publish_stream'],
+       {'SCOPE': ['email', 'publish_stream','public_profile'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'METHOD': 'oauth2',
-        'LOCALE_FUNC': 'path.to.callable',
+        'LOCALE_FUNC': lambda request: 'zh_CN',
         'VERIFIED_EMAIL': False}}
 
 SOCIALACCOUNT_PROVIDERS = \
     {'linkedin':
-      {'SCOPE': ['r_emailaddress'],
+      {'SCOPE': ['r_emailaddress','r_fullprofile','r_basicprofile'],
        'PROFILE_FIELDS': ['id',
                          'first-name',
                          'last-name',
+                         'date-of-birth',
                          'email-address',
                          'picture-url',
+                         'headline',
+                         'location',
+                         'industry',
+                         'summary',
+                         'languages',
+                         'skills',
+                         'phone-numbers ',
+                         'positions',
+                         'educations',
+                         'publications',    
                          'public-profile-url']}}
