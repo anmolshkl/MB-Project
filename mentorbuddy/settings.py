@@ -192,3 +192,6 @@ SOCIALACCOUNT_PROVIDERS = \
                          'educations',
                          'publications',    
                          'public-profile-url']}}
+
+#custom adapter to override login behavior and associate different social profiles with same email,with same user
+SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'

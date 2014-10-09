@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('gender', 'date_of_birth','contact','address','country','location','about' )
+        fields = ('gender', 'date_of_birth','contact','location','country','about' )
 
 class EducationForm(forms.ModelForm):
 	class Meta:

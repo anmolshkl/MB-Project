@@ -3,18 +3,18 @@ django-allauth-social-login-automatically-linking-social-site-profiles-using-th/
 
 from django.contrib.auth.models import User
 
-from allauth.account.models import EmailAccount
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 
-class MyAdapter(DefaultSocialAccountAdapter):
+class SocialLoginAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
         # This isn't tested, but should work
         try:
-            user = User.objects.get(email=sociallogin.email)
+            user = User.objects.get(email=sociallogin.account.user.email)
             sociallogin.connect(request, user)
             # Create a response object
+            response = HttpResponse()
             raise ImmediateHttpResponse(response)
-        except User.DoesNotExist:
+        except Exception:
             pass

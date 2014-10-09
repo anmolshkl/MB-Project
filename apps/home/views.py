@@ -11,7 +11,7 @@ def index(request):
 	
 	context_dict = {}
 
-	return render_to_response('home/index.html',context_dict,context)
+	return render_to_response('home/login.html',context_dict,context)
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
@@ -51,7 +51,7 @@ def user_login(request):
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render_to_response('home/index.html', {}, context)
+        return render_to_response('home/login.html', {}, context)
 
 def user_logout(request):
         logout(request)

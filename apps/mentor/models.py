@@ -19,7 +19,6 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
     date_of_birth = models.DateField(blank=True, null=True)
     contact = models.CharField(max_length=128, blank=True)
-    address = models.CharField(max_length=128, blank=True)
     country = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
     about = models.CharField(max_length=256, blank=True)
@@ -88,13 +87,23 @@ class SocialProfiles(models.Model):
 @receiver([user_logged_in,user_signed_up])
 def save_data(sender, **kwargs):
     user = kwargs.pop('user')
+    #Populate database fields from provider extra_data for MENTOR
     extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
     if extra_data:
-        address = extra_data['location']['name']  #rename address as area
-        (address,country) = address.split(',')
+        location = extra_data['location']['name']  #rename address as area
+        first_name = extra_data['first-name']
+        last_name = extra_data['last-name']
+        user.first_name = first_name
+        user.last_name = last_name
+        (location,country) = location.split(',')
         #date_of_birth = extra_data['date-of-birth']  
         userProfile = UserProfile(user=user)
-        userProfile.address = address
+        userProfile.location = location
         userProfile.country = country
-
         userProfile.save()
+        user.save()
+
+        socialProfile = SocialProfiles.objects.get(parent=userProfile)
+        socialProfile.profile_url_linkedin = extra_data['public-profile-url']
+        socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
+        socialProfile.save()
