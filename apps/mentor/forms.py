@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from apps.mentor.models import UserProfile, EducationDetails
+from apps.mentor.models import MentorProfile, EducationDetails
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -9,9 +9,9 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username','email', 'password','first_name','last_name')
 
-class UserProfileForm(forms.ModelForm):
+class MentorProfileForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
+        model = MentorProfile
         fields = ('gender', 'date_of_birth','contact','location','country','about' )
 
 class EducationForm(forms.ModelForm):

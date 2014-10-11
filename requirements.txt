@@ -1,7 +1,4 @@
 Django==1.6.5
-MySQL-python==1.2.5
-Pillow==2.5.1
-South==1.0
 diff-match-patch==20121119
 django-ajax-search==1.5.1
 django-crispy-forms==1.4.0
@@ -19,11 +16,9 @@ mock==1.0.1
 oauthlib==0.6.3
 polib==1.0.4
 python-dateutil==2.2
-python-openid==2.2.5
-python-social-auth==0.1.26
 requests==2.3.0
-requests-oauthlib==0.4.1
 simplejson==3.6.0
 six==1.7.3
 tablib==0.10.0
 wsgiref==0.1.2
+django-allauth

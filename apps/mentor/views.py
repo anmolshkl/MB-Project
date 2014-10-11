@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from apps.mentor.forms import UserForm, UserProfileForm, EducationForm
+from apps.mentor.forms import UserForm, MentorProfileForm, EducationForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.mentor.models import UserProfile, EducationDetails,SocialProfiles
+from apps.mentor.models import MentorProfile, EducationDetails,SocialProfiles
 from django.contrib.auth.models import User
 # Create your views here.
 @login_required
@@ -22,9 +22,9 @@ def register(request):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
+        # Note that we make use of both UserForm and MentorProfileForm.
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
+        profile_form = MentorProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid:
@@ -37,7 +37,7 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            # Now sort out the UserProfile instance.
+            # Now sort out the MentorProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
@@ -47,10 +47,10 @@ def register(request):
             education.parent = profile
 
             # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
+            # If so, we need to get it from the input form and put it in the MentorProfile model.
             """if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']"""
-            # Now we save the UserProfile model instance.
+            # Now we save the MentorProfile model instance.
             profile.save()
             education.save()
             # Update our variable to tell the template registration was successful.
@@ -66,7 +66,7 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
+        profile_form = MentorProfileForm()
         education_form = EducationForm()
     # Render the template depending on the context.
     return render_to_response(
@@ -82,7 +82,8 @@ def self_profile_view(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile_object = user.profile
+    user_profile_object = user.mentor_profile 
+
     social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
     # TODO add personal details after the user model
     # is finalized

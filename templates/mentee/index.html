@@ -1,0 +1,8 @@
+{% if user.is_authenticated and user. %}
+<a href="/home/logout/">Logout</a>
+<h3>Hello {{ user.username }}</h3>
+<br>
+<a href="/mentee/self-profile/">View your profile</a>
+{% else %}
+<a href="/home/">Please login</a>
+{% endif %}

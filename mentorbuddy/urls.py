@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^$', include('apps.home.urls')),
     url(r'^home/', include('apps.home.urls')),
     url(r'^mentor/', include('apps.mentor.urls')),
+    url(r'^mentee/', include('apps.mentee.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
 )

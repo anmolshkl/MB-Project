@@ -13,9 +13,15 @@
 <a href="{% provider_login_url "twitter" %}">Twitter</a><br>
 <a href="{% provider_login_url "linkedin" method="oauth2" %}">LinkedIn</a><br>
 
-Register as a Mentee <br/>
-<a href="/mentor/register/">Register as a Mentor</a>
+<a href="/mentor/register/">Register as a Mentor</a><br>
+<a href="/mentee/register/">Register as a Mentee</a>
 {% else %}
-<a href="/mentor/">Enter the site></a>
+	{% if user.mentee_profile %}
+		<a href="/mentor/">Welcome mentor!Enter the site></a>
+	{% endif %}
+	
+	{% if user.mentor_profile %}
+		<a href="/mentee/">Welcome Mentee!Enter the site></a>
+	{% endif %}
 {% endif %}
 {% endblock %}
