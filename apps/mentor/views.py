@@ -5,6 +5,7 @@ from apps.mentor.forms import UserForm, MentorProfileForm, EducationForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from apps.mentor.models import MentorProfile, EducationDetails,SocialProfiles
+from apps.mentee.models import MenteeProfile
 from django.contrib.auth.models import User
 # Create your views here.
 @login_required
@@ -33,10 +34,11 @@ def register(request):
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
-            user.username = form.cleaned_data['email']
+            user.username = user_form.cleaned_data['email']
             user.set_password(user.password)
             user.save()
-
+            #now delete the default mentee profile thats created
+            MenteeProfile.objects.get(user=user).delete()
             # Now sort out the MentorProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
@@ -84,7 +86,10 @@ def self_profile_view(request):
     user = request.user
     user_profile_object = user.mentor_profile 
 
-    social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
+    try:
+        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
+    except SocialProfiles.DoesNotExist:
+        social_profiles_object = None
     # TODO add personal details after the user model
     # is finalized
     
@@ -128,12 +133,13 @@ def self_profile_view(request):
     if contact_number_field != None:
         context_dict['contact_numbers'] = contact_number_field
     
-    picture_url = social_profiles_object.profile_pic_url_linkedin
-    if picture_url != None:
-        context_dict['picture_url'] = picture_url 
+    if social_profiles_object:
+        picture_url = social_profiles_object.profile_pic_url_linkedin
+        if picture_url != None:
+            context_dict['picture_url'] = picture_url 
 
-    profile_url = social_profiles_object.profile_url_linkedin
-    if profile_url != None:
-        context_dict['profile_url'] = profile_url 
+        profile_url = social_profiles_object.profile_url_linkedin
+        if profile_url != None:
+            context_dict['profile_url'] = profile_url 
     
     return render_to_response("mentor/profile-view.html",context_dict,context)

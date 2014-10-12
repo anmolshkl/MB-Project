@@ -54,6 +54,7 @@ def user_login(request):
         return render_to_response('home/login.html', {}, context)
 
 def user_logout(request):
+        request.session.flush()
         logout(request)
         return HttpResponseRedirect('/home/')
 

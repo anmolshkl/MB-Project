@@ -7,7 +7,7 @@
 {% block body_block %}
     <div class="container">
         <div class="col-sm-8 transp well">
-            {% if user and not user.is_anonymous  and not user.profile.is_mentor%} 
+            {% if user and not user.is_anonymous%} 
             
             <div class="col-xs-12 well">
                 <h1>Note: User can have more than 20 fields,missing fields only means user has not provided data!</h1>

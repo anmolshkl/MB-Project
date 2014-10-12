@@ -36,6 +36,8 @@ def register(request):
             user.username = form.cleaned_data['email']
             user.set_password(user.password)
             user.save()
+            #now delete the default mentor profile thats created
+            MentorProfile.objects.get(parent=user).delete()
 
             # Now sort out the MenteeProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
@@ -65,7 +67,6 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = MenteeProfileForm()
-        education_form = EducationForm()
     # Render the template depending on the context.
     return render_to_response(
             'mentee/register.html',

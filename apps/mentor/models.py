@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 # for django-allauth signals
 from django.dispatch import receiver
 from allauth.account.signals import user_logged_in, user_signed_up
-
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+from apps.mentee.models import MenteeProfile
 # Create your models here.
 class MentorProfile(models.Model):
 
@@ -86,10 +88,19 @@ class SocialProfiles(models.Model):
 # Create your models here.@receiver ([user_signed_up, user_logged_in], sender=User)
 @receiver([user_logged_in,user_signed_up])
 def save_data(sender, **kwargs):
+    print "entered save_data"
     user = kwargs.pop('user')
     #Populate database fields from provider extra_data for MENTOR
+    
     extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
     if extra_data:
+        print "got extra data"
+        #if user is already a mentee,redirect him to an error page
+        try: 
+            if user.mentee_profile:
+                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentor/Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
+        except:
+            pass
         location = extra_data['location']['name']  #rename address as area
         first_name = extra_data['first-name']
         last_name = extra_data['last-name']
@@ -97,19 +108,37 @@ def save_data(sender, **kwargs):
         user.last_name = last_name
         (location,country) = location.split(',')
         #date_of_birth = extra_data['date-of-birth']  
-        userProfile = MentorProfile(user=user)
+        userProfile,created = MentorProfile.objects.get_or_create(user=user)
         userProfile.location = location
         userProfile.country = country
         userProfile.save()
         user.save()
-
-        socialProfile = SocialProfiles.objects.get(parent=userProfile)
+        print "saved user profile" 
+        #now delete the default mentee profile thats created
+        try:
+            MenteeProfile.objects.get(user=user).delete()
+        except MenteeProfile.DoesNotExist:
+            pass
+        
+        socialProfile,created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        #socialProfile = SocialProfiles(parent=userProfile)
         socialProfile.profile_url_linkedin = extra_data['public-profile-url']
         socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfile.save()
+    
+
     extra_data = None
-    extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
+
+
+    '''FACEBOOK'''
+    if user.socialaccount_set.filter(provider='facebook'):
+        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
     if extra_data:
+        try: 
+            if user.mentor_profile:
+                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentor/Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
+        except:
+            pass
         first_name = extra_data['first_name']
         last_name = extra_data['last_name']
         user.first_name = first_name
@@ -122,10 +151,10 @@ def save_data(sender, **kwargs):
         userProfile = MenteeProfile(user=user)
         userProfile.save()
         user.save()
-
-        socialProfile = SocialProfiles.objects.get(parent=userProfile)
+        #now delete the default mentor profile thats created
+        MentorProfile.objects.get(parent=user).delete()
+        socialProfile,created = SocialProfiles.objects.get_or_create(parent=userProfile)
         socialProfile.profile_url_facebook = extra_data['link']
         socialProfile.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"
-
-
         socialProfile.save()
+
