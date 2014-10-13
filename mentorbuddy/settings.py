@@ -111,8 +111,8 @@ DATABASES = {
     'localhost': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mb_db2',
-        'USER': 'mentorbuddy',
-        'PASSWORD': 'mentorbuddy',
+        'USER': 'root',
+        'PASSWORD': 'asaf-123',
         'HOST': 'localhost',
         'PORT': '3306',
     },
@@ -195,3 +195,5 @@ SOCIALACCOUNT_PROVIDERS = \
 
 #custom adapter to override login behavior and associate different social profiles with same email,with same user
 SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
+#allauth will print any confirmation email to the console
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
