@@ -84,7 +84,7 @@ def self_profile_view(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile_object = user.mentor_profile 
+    user_profile_object = MentorProfile.objects.get(user=user) 
 
     try:
         social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)

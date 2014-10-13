@@ -16,11 +16,11 @@
 <a href="/mentor/register/">Register as a Mentor</a><br>
 <a href="/mentee/register/">Register as a Mentee</a>
 {% else %}
-	{% if user.mentee_profile %}
+	{% if user.mentor_profile %}
 		<a href="/mentor/">Welcome mentor!Enter the site></a>
 	{% endif %}
 	
-	{% if user.mentor_profile %}
+	{% if user.mentee_profile %}
 		<a href="/mentee/">Welcome Mentee!Enter the site></a>
 	{% endif %}
 {% endif %}

@@ -6,6 +6,7 @@ from allauth.account.signals import user_logged_in, user_signed_up
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from apps.mentee.models import MenteeProfile
+from apps.mentee.models import SocialProfiles as menteeSP
 # Create your models here.
 class MentorProfile(models.Model):
 
@@ -91,13 +92,14 @@ def save_data(sender, **kwargs):
     print "entered save_data"
     user = kwargs.pop('user')
     #Populate database fields from provider extra_data for MENTOR
-    
-    extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
+    extra_data = None
+    try:
+        extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
+    except:
+        pass
     if extra_data:
-        print "got extra data"
-        #if user is already a mentee,redirect him to an error page
         try: 
-            if user.mentee_profile:
+            if user.mentor_profile:
                 render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentor/Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
         except:
             pass
@@ -107,8 +109,9 @@ def save_data(sender, **kwargs):
         user.first_name = first_name
         user.last_name = last_name
         (location,country) = location.split(',')
-        #date_of_birth = extra_data['date-of-birth']  
-        userProfile,created = MentorProfile.objects.get_or_create(user=user)
+        #date_of_birth = extra_data['date-of-birth'] 
+        rows = MentorProfile.objects.filter(user=user) 
+        userProfile = rows[0] if rows else MentorProfile(user=user)
         userProfile.location = location
         userProfile.country = country
         userProfile.save()
@@ -152,8 +155,8 @@ def save_data(sender, **kwargs):
         userProfile.save()
         user.save()
         #now delete the default mentor profile thats created
-        MentorProfile.objects.get(parent=user).delete()
-        socialProfile,created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        MentorProfile.objects.get(user=user).delete()
+        socialProfile,created = menteeSP.objects.get_or_create(parent=userProfile)
         socialProfile.profile_url_facebook = extra_data['link']
         socialProfile.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"
         socialProfile.save()
