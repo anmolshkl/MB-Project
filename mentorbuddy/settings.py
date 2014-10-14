@@ -111,8 +111,8 @@ DATABASES = {
     'localhost': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mb_db2',
-        'USER': 'root',
-        'PASSWORD': 'asaf-123',
+        'USER': 'mentorbuddy',
+        'PASSWORD': 'mentorbuddy',
         'HOST': 'localhost',
         'PORT': '3306',
     },

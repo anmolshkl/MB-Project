@@ -99,8 +99,9 @@ def save_data(sender, **kwargs):
         pass
     if extra_data:
         try: 
-            if user.mentor_profile:
-                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentor/Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
+            if user.mentee_profile:
+                print "mentee is signing in"
+                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
         except:
             pass
         location = extra_data['location']['name']  #rename address as area
@@ -155,7 +156,10 @@ def save_data(sender, **kwargs):
         userProfile.save()
         user.save()
         #now delete the default mentor profile thats created
-        MentorProfile.objects.get(user=user).delete()
+        try:
+            MentorProfile.objects.get(user=user).delete()
+        except MentorProfile.DoesNotExist:
+            pass
         socialProfile,created = menteeSP.objects.get_or_create(parent=userProfile)
         socialProfile.profile_url_facebook = extra_data['link']
         socialProfile.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"
