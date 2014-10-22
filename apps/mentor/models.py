@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from apps.mentee.models import MenteeProfile
 from apps.mentee.models import SocialProfiles as menteeSP
+from django.http import HttpResponseRedirect
 # Create your models here.
 class MentorProfile(models.Model):
 
@@ -101,7 +102,7 @@ def save_data(sender, **kwargs):
         try: 
             if user.mentee_profile:
                 print "mentee is signing in"
-                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
+                HttpResponseRedirect("home/error.html")
         except:
             pass
         location = extra_data['location']['name']  #rename address as area
@@ -140,7 +141,7 @@ def save_data(sender, **kwargs):
     if extra_data:
         try: 
             if user.mentor_profile:
-                render_to_response("home/error.html",{'error':'Sorry!but you have already registered as a Mentor/Mentee.<br>Please login to continue.'},RequestContext(kwargs.pop('request')))
+                HttpResponseRedirect("home/error.html")
         except:
             pass
         first_name = extra_data['first_name']

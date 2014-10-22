@@ -135,11 +135,11 @@ def self_profile_view(request):
     if contact_number_field != None:
         context_dict['contact_number'] = contact_number_field
     
-    picture_url = social_profiles_object.profile_pic_url_linkedin
+    picture_url = social_profiles_object.profile_pic_url_facebook
     if picture_url != None:
         context_dict['picture_url'] = picture_url 
 
-    profile_url = social_profiles_object.profile_url_linkedin
+    profile_url = social_profiles_object.profile_url_facebook
     if profile_url != None:
         context_dict['profile_url'] = profile_url 
     
