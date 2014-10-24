@@ -1,0 +1,38 @@
+GUIDELINES:
+1.WORKING WITH GIT
+*Always make small commits with proper commit messages
+*Always create a new branch whenever you want to try out a new feature.Then merge this new branch with old one once you're satisfied.
+*Try to keep the master branch clean,both locally and on the remote.MASTER branch should only consist of clean-working code
+few important comands:
+git add -A : to add all edited files to staging area
+
+git status : to see the status of your repo(commited/uncommitted changes)
+
+git log : to see the previous versions with commit msgs
+
+git branch <branch_name> : creates a new branch
+
+git checkout <branch_name> : switch to other branch
+
+git commit -m: commit all the staged files and open an editor to enter commit msg,press 'Esc' and type ":wq",hit enter to save and commit
+
+git checkout <revision_number> : to switch to a previous version(just to see what it looked like)
+
+git merge -r <branch> : merge the "branch" with the current branch
+
+2.Setting up DATABASE
+*Open phpmyadmin,click on mb_db2 database(create one if it doesn't exist)
+*Make sure you have a user named "mentorbuddy" host="localhost" with password "mentorbuddy" with all privileges granted(phpmyadmin->users) 
+*Delete any previous saved version of mb_db2(click mb_db2->operations tab->select 'drop the database')
+*Now open cmd prompt or git bash from project folder and enter "python manage.py syncdb --all"
+*Now go to phpmyadmin->mb_db2->IMPORT tab
+*Select the sql file in the project folder and click on "Go"
+*You're done setting up :)
+
+3.Setting up Social Apps
+*When you have imported the sql file included in the project folder,you have basically imported socialapps table consisting of various different Social Apps,their API keys & IDs needed to connect to them.
+*Go to localhost:8000/admin after starting localserver
+*go to "Sites"
+*Change the example.com to Mentorbuddy.in
+*Now go to Social Apps
+*Go to facebook and linkedin and add MentorBuddy.in to sites
