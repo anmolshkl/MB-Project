@@ -56,7 +56,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'apps.mentor',
     'apps.mentee',
-    'apps.home',
+    'apps.user',
     'south',
     'allauth',
     'allauth.account',
@@ -159,9 +159,9 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media di
 
 
 # Login urls
-LOGIN_URL          = '/home/login/'
-LOGOUT_URL         = '/home/logout/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_URL          = '/user/login/'
+LOGOUT_URL         = '/user/logout/'
+LOGIN_REDIRECT_URL = '/user/index/' #-adapter will provide the login_redirect_url,but adapter doesn't support
 
 
 SOCIALACCOUNT_PROVIDERS = \

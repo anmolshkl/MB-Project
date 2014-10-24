@@ -1,8 +1,8 @@
-{% if user.is_authenticated and user.mentee_profile %}
-<a href="/home/logout/">Logout</a>
+{% if user.is_authenticated and not user.is_mentor %}
+<a href="/user/logout/">Logout</a>
 <h3>Hello {{ user.username }}</h3>
 <br>
 <a href="/mentee/self-profile/">View your profile</a>
 {% else %}
-<a href="/home/">Please login</a>
+<a href="/user/">Please login</a>
 {% endif %}

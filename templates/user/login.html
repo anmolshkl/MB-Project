@@ -1,4 +1,4 @@
-{% extends 'home/base.html' %}
+{% extends 'user/base.html' %}
 {% load socialaccount %}
 {% block body_block %}
 <h1>Welcome to Mentor Buddy</h1>
@@ -16,11 +16,9 @@
 <a href="/mentor/register/">Register as a Mentor</a><br>
 <a href="/mentee/register/">Register as a Mentee</a>
 {% else %}
-	{% if user.mentor_profile %}
+	{% if user.user_profile.is_mentor == True %}
 		<a href="/mentor/">Welcome mentor!Enter the site></a>
-	{% endif %}
-	
-	{% if user.mentee_profile %}
+	{% else %}
 		<a href="/mentee/">Welcome Mentee!Enter the site></a>
 	{% endif %}
 {% endif %}

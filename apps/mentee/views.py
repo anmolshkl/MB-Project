@@ -1,11 +1,20 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponse
-from apps.mentee.forms import UserForm, MenteeProfileForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.mentee.models import MenteeProfile, SocialProfiles
+
+#import django User model
 from django.contrib.auth.models import User
+
+#import user profile models
+from apps.user.models import UserProfile, SocialProfiles
+
+#import specific forms
+from apps.user.forms import UserForm
+from apps.mentee.forms import UserProfileForm
+
 
 # Create your views here.
 @login_required
@@ -23,9 +32,9 @@ def register(request):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and MenteeProfileForm.
+        # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
-        profile_form = MenteeProfileForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid:
             # Save the user's form data to the database.
@@ -36,10 +45,8 @@ def register(request):
             user.username = form.cleaned_data['email']
             user.set_password(user.password)
             user.save()
-            #now delete the default mentor profile thats created
-            MentorProfile.objects.get(parent=user).delete()
 
-            # Now sort out the MenteeProfile instance.
+            # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
@@ -48,10 +55,10 @@ def register(request):
  
 
             # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the MenteeProfile model.
+            # If so, we need to get it from the input form and put it in the userProfile model.
             """if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']"""
-            # Now we save the MenteeProfile model instance.
+            # Now we save the UserProfile model instance.
             profile.save()
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -66,13 +73,12 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = MenteeProfileForm()
+        profile_form = UserProfileForm()
     # Render the template depending on the context.
     return render_to_response(
             'mentee/register.html',
             {'user_form': user_form, 'profile_form': profile_form,'registered': registered},
             context)
-
 
 @login_required
 def self_profile_view(request):
@@ -83,7 +89,7 @@ def self_profile_view(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile_object = user.mentee_profile
+    user_profile_object = user.user_profile
     social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
     # TODO add personal details after the user model
     # is finalized

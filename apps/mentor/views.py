@@ -1,16 +1,22 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from apps.mentor.forms import UserForm, MentorProfileForm, EducationForm
+from apps.user.forms import UserForm
+from apps.mentor.forms import UserProfileForm, EducationForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.mentor.models import MentorProfile, EducationDetails,SocialProfiles
-from apps.mentee.models import MenteeProfile
+from apps.user.models import UserProfile,SocialProfiles
 from django.contrib.auth.models import User
 # Create your views here.
+
 @login_required
 def index(request):
-	return render_to_response('mentor/index.html',{},RequestContext(request))
+    user = request.user
+    user_profile = UserProfile.objects.get(user=user)
+    if user_profile.is_new:
+        return render_to_response('user/select.html',{},RequestContext(request))
+
+    return render_to_response('mentor/index.html',{},RequestContext(request))
 
 def register(request):
     # Like before, get the request's context.
@@ -23,9 +29,9 @@ def register(request):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and MentorProfileForm.
+        # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
-        profile_form = MentorProfileForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid:
@@ -37,9 +43,12 @@ def register(request):
             user.username = user_form.cleaned_data['email']
             user.set_password(user.password)
             user.save()
+            '''
+            dont need it now
             #now delete the default mentee profile thats created
-            MenteeProfile.objects.get(user=user).delete()
-            # Now sort out the MentorProfile instance.
+            UserProfile.objects.get(user=user).delete()
+            '''
+            # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
@@ -49,10 +58,10 @@ def register(request):
             education.parent = profile
 
             # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the MentorProfile model.
+            # If so, we need to get it from the input form and put it in the UserProfile model.
             """if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']"""
-            # Now we save the MentorProfile model instance.
+            # Now we save the UserProfile model instance.
             profile.save()
             education.save()
             # Update our variable to tell the template registration was successful.
@@ -68,7 +77,7 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        profile_form = MentorProfileForm()
+        profile_form = UserProfileForm()
         education_form = EducationForm()
     # Render the template depending on the context.
     return render_to_response(
@@ -84,8 +93,9 @@ def self_profile_view(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile_object = MentorProfile.objects.get(user=user) 
-
+    user_profile_object = UserProfile.objects.get(user=user) 
+    if user_profile_object.is_new:
+        return render_to_response('user/select.html',{},context)
     try:
         social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
     except SocialProfiles.DoesNotExist:
@@ -134,11 +144,16 @@ def self_profile_view(request):
         context_dict['contact_numbers'] = contact_number_field
     
     if social_profiles_object:
-        picture_url = social_profiles_object.profile_pic_url_linkedin
+        if social_profiles_object.profile_pic_url_linkedin:
+            picture_url = social_profiles_object.profile_pic_url_linkedin
+            profile_url = social_profiles_object.profile_url_linkedin
+        elif social_profiles_object.profile_pic_url_facebook:
+            picture_url = social_profiles_object.profile_pic_url_facebook
+            profile_url = social_profiles_object.profile_url_facebook
+
         if picture_url != None:
             context_dict['picture_url'] = picture_url 
 
-        profile_url = social_profiles_object.profile_url_linkedin
         if profile_url != None:
             context_dict['profile_url'] = profile_url 
     

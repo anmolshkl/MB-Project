@@ -18,3 +18,14 @@ class SocialLoginAdapter(DefaultSocialAccountAdapter):
             raise ImmediateHttpResponse(response)
         except Exception:
             pass
+    '''
+    def get_login_redirect_url(self, request):
+        print "get_login_redirect_url"
+        user = User.objects.get(email=sociallogin.account.user.email)
+        user_profile = UserProfile.objects.get(user=user)
+        if user_profile.is_new:
+            login_url = "/user/newsuser/"
+        else:
+            loin_url = "/user/"
+        return login_url
+    '''

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mentor Buddy</title>
+</head>
+<body>
+	<h1>Welcome to Mentor Buddy</h1>
+	{% if not selected %}
+		<form action="/user/select/" method="POST">
+			{% csrf_token %}
+		    Please select your options:<br>
+		    <input type="radio" name="choice" value="mentor">Mentor<br>
+		    <input type="radio" name="choice" value="mentee">Mentee<br>
+		    <input type='submit' name="submit" value="SUBMIT">
+		</form>
+	{% endif %}
+</body>
+</html>
