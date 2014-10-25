@@ -10,10 +10,11 @@
     <title>Mentor Buddy</title>
 </head>
 <body>
-	<h1>Welcome to Mentor Buddy</h1>
+	<h1>Welcome to Mentor Buddy Registeration</h1>
 	{% if selected == 'mentor' %}
 	<form method="POST" action="/user/register/">
 		<input type="hidden" name="selected" value="mentor">
+		<input type="hidden" name="is_new" value="False">
 		{% csrf_token %}
 		{{ mentor_form.as_p }}
 		{{ education_form.as_p }}
@@ -21,9 +22,11 @@
 	</form>
 	{% endif %}
 	{% if selected == 'mentee' %}
-		<form method="POST" action="/user/register">
+		<form method="POST" action="/user/register/">
 			{% csrf_token %}
-			<input type="hidden" name="selected" value="mentor">
+			<input type="hidden" name="selected" value="mentee">
+			<input type="hidden" name="is_mentor" value="False">
+			<input type="hidden" name="is_new" value="False">
 			{{ mentee_form.as_p }}
 			<input type="submit" value="SUBMIT">
 		</form>

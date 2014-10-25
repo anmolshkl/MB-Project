@@ -7,6 +7,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from apps.user.models import UserProfile,SocialProfiles
 from django.contrib.auth.models import User
+from random import choice
+from string import letters
 # Create your views here.
 
 @login_required
@@ -30,7 +32,11 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
-        user_form = UserForm(data=request.POST)
+        data = request.POST.copy() # so we can manipulate data
+        # random username
+        data['username'] = data['email'] #useless,rather keep email as data['email'] username ''.join([choice(letters) for i in xrange(30)])
+        data['is_new'] = False
+        user_form = UserForm(data)
         profile_form = UserProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         # If the two forms are valid...
@@ -40,8 +46,6 @@ def register(request):
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
-            user.username = user_form.cleaned_data['email']
-            user.set_password(user.password)
             user.save()
             '''
             dont need it now
@@ -53,7 +57,8 @@ def register(request):
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
-
+            profile.is_new = False
+            profile.is_mentor = True
             education = education_form.save(commit=False)
             education.parent = profile
 
@@ -111,6 +116,7 @@ def self_profile_view(request):
     context_dict['country'] = None 
     context_dict['emails'] = None 
     context_dict['contact_numbers'] = None
+    context_dict['provider'] = None
     context_dict['picture_url'] = None
     context_dict['profile_url'] = None
 
@@ -145,11 +151,16 @@ def self_profile_view(request):
     
     if social_profiles_object:
         if social_profiles_object.profile_pic_url_linkedin:
+            provider = "LinkedIn"
             picture_url = social_profiles_object.profile_pic_url_linkedin
             profile_url = social_profiles_object.profile_url_linkedin
         elif social_profiles_object.profile_pic_url_facebook:
+            provider = "Facebook"
             picture_url = social_profiles_object.profile_pic_url_facebook
             profile_url = social_profiles_object.profile_url_facebook
+        
+        if provider:
+            context_dict['provider'] = provider
 
         if picture_url != None:
             context_dict['picture_url'] = picture_url 

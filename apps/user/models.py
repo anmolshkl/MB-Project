@@ -71,7 +71,7 @@ def save_data(sender, **kwargs):
     ''' 
     things to do:
                 1.create social profile for the user and populate it 
-                2.let the adapter do its work of returning different login urls
+                2.let the adapter do its work of returning different login urls->dont need this now
     '''
     user = kwargs.pop('user')
     userProfile,usrprof_created= UserProfile.objects.get_or_create(user=user)
@@ -96,7 +96,7 @@ def save_data(sender, **kwargs):
         pass
     if extra_data:
         socialProfiles.profile_url_facebook = extra_data['link']
-        socialProfiles.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"
+        socialProfiles.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"+"?type=large"
         socialProfiles.save()
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate,login, logout #,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from apps.user.models import UserProfile,SocialProfiles
@@ -9,6 +9,8 @@ from apps.mentor.forms import UserProfileForm as MentorProfileForm
 from apps.mentee.forms import UserProfileForm as MenteeProfileForm
 from apps.mentor.forms import EducationForm
 from django.contrib.auth.decorators import login_required
+#new
+#from apps.user.backends import EmailAuthBackend 
 
 # Create your views here.
 @login_required
@@ -17,7 +19,7 @@ def select(request):
     context_dict = {}
     template = "user/select.html"
     if not UserProfile.objects.get(user=request.user).is_new:
-        return HttpResponseRedirect('/mentor/')
+        return HttpResponseRedirect('/user/')
     if request.method == 'POST':
         #check whether a request is POST request after submitted choice has come
         if request.POST.get('choice'):
@@ -36,14 +38,14 @@ def register(request):
     context = RequestContext(request)
     user = request.user
     if not UserProfile.objects.get(user=user).is_new:
-        return HttpResponseRedirect('/mentor/')
+        return HttpResponseRedirect('/user/')
     if request.method == 'POST':
         mentor_form = MentorProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         mentee_form = MenteeProfileForm(data=request.POST)
         if request.POST['selected'] == 'mentor':
             #the post is for mentor registration, save the form or else display it
-            if mentor_form.is_valid and education_form.is_valid:
+            if mentor_form.is_valid() and education_form.is_valid():
                 mentor_profile = mentor_form.save(commit=False)
                 mentor_profile.user = user
                 mentor_profile.is_mentor = True
@@ -58,12 +60,15 @@ def register(request):
             # Print problems to the terminal.
             # They'll also be shown to the user.
             else:
-                print user_form.errors, profile_form.errors,education_form.errors
+                print mentor_form.errors, education_form.errors
 
         if request.POST['selected'] == 'mentee':
-            #the post is for mentor registration, save the form or else display it
-            if mentee_form.is_valid:
+            print "mentee data received"
+            #the post is for mentee registration, save the form or else display it
+            if mentee_form.is_valid():
+                print "mentee data correct"
                 mentee_profile = mentee_form.save(commit=False)
+                mentee_profile.user = user
                 mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
                 mentee_profile.save()
@@ -72,7 +77,7 @@ def register(request):
             # Print problems to the terminal.
             # They'll also be shown to the user.
             else:
-                print user_form.errors, profile_form.errors,education_form.errors
+                print mentee_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
@@ -106,19 +111,23 @@ def user_login(request):
     if request.method == 'POST':
         # Gather the username and password provided by the user.
         # This information is obtained from the login form.
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
 
         # Use Django's machinery to attempt to see if the username/password
         # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
-
+        '''
+        backend_obj = EmailAuthBackend()
+        user = backend_obj.authenticate(username=email, password=password)
+        '''
         # If we have a User object, the details are correct.
         # If None (Python's way of representing the absence of a value), no user
         # with matching credentials was found.
+        user = authenticate(username=email, password=password)
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
+                #we 
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the userpage.
                 login(request, user)
@@ -128,7 +137,7 @@ def user_login(request):
                 return HttpResponse("Your Mentor Buddy account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
+            print "Invalid login details: {0}, {1}".format(email, password)
             return HttpResponse("Invalid login details supplied.")
 
     # The request is not a HTTP POST, so display the login form.

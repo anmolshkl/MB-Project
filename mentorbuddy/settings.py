@@ -72,7 +72,9 @@ AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
     # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "allauth.account.auth_backends.AuthenticationBackend",
+    #"apps.user.backends.EmailAuthBackend",
+
 )
  
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -193,7 +195,15 @@ SOCIALACCOUNT_PROVIDERS = \
                          'publications',    
                          'public-profile-url']}}
 
-#custom adapter to override login behavior and associate different social profiles with same email,with same user
-SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
 #allauth will print any confirmation email to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION  = "none" #later change to mandatory
+ACCOUNT_LOGOUT_REDIRECT_URL = "/user/"
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
+ACCOUNT_UNIQUE_EMAIL = True
+#custom adapter to override login behavior and associate different social profiles with same email,with same user
+SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
+

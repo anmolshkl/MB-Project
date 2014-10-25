@@ -4,7 +4,7 @@
 
         {% if registered == True%}
         <strong>thank you for registering!</strong>
-        <a href="/home/">Return to the homepage.</a><br />
+        <a href="/user/">Return to the homepage.</a><br />
         {% else %}
         <strong>register here!</strong><br />
 
@@ -16,8 +16,25 @@
             <!-- Display each form. The as_p method wraps each element in a paragraph
                  (<p>) element. This ensures each element appears on a new line,
                  making everything look neater. -->
-            {{ user_form.as_p }}
+            <!-- Display UserForm by iterating over all fields because we dont want to display username
+                as there is no username based authentication -->
+            {{ user_form.non_field_errors }}
+              {% for field in user_form %}
+                {% if field.name != "username" %}
+                  <div class="field-wrapper">
+                    <div class="label-wrapper">
+                      {{ field.label_tag }}
+                      {% if field.field.required %}<span class="required">*</span>{% endif %}
+                    </div>
+                    <div class="value-wrapper">
+                      {{ field }}
+                      {{ field.errors }}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
             {{ profile_form.as_p }}
+            <input type=hidden name="is_new" value="False">
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>

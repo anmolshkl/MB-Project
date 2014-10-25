@@ -14,7 +14,8 @@ from apps.user.models import UserProfile, SocialProfiles
 #import specific forms
 from apps.user.forms import UserForm
 from apps.mentee.forms import UserProfileForm
-
+from random import choice
+from string import letters
 
 # Create your views here.
 @login_required
@@ -33,17 +34,20 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
-        user_form = UserForm(data=request.POST)
+
+        data = request.POST.copy() # so we can manipulate data
+        # random username
+        data['username'] = data['email'] #useless,rather keep email as data['email'] username ''.join([choice(letters) for i in xrange(30)])
+        user_form = UserForm(data)
         profile_form = UserProfileForm(data=request.POST)
         # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid:
+        if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
-            user.username = form.cleaned_data['email']
-            user.set_password(user.password)
+            #MISTAKE-was rehashing the hashed password,user.set_password(user.password)
             user.save()
 
             # Now sort out the UserProfile instance.
@@ -51,8 +55,7 @@ def register(request):
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
-
- 
+            profile.is_new = False
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the userProfile model.
@@ -67,7 +70,7 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, profile_form.errors,education_form.errors
+            print user_form.errors, profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
@@ -90,7 +93,11 @@ def self_profile_view(request):
     context_dict = {}
     user = request.user
     user_profile_object = user.user_profile
-    social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
+    social_profiles_object = None
+    try:
+        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
+    except:
+        pass
     # TODO add personal details after the user model
     # is finalized
     
@@ -141,12 +148,23 @@ def self_profile_view(request):
     if contact_number_field != None:
         context_dict['contact_number'] = contact_number_field
     
-    picture_url = social_profiles_object.profile_pic_url_facebook
-    if picture_url != None:
-        context_dict['picture_url'] = picture_url 
+    if social_profiles_object:
+        if social_profiles_object.profile_pic_url_linkedin:
+            provider = "LinkedIn"
+            picture_url = social_profiles_object.profile_pic_url_linkedin
+            profile_url = social_profiles_object.profile_url_linkedin
+        elif social_profiles_object.profile_pic_url_facebook:
+            provider = "LinkedIn"
+            picture_url = social_profiles_object.profile_pic_url_facebook
+            profile_url = social_profiles_object.profile_url_facebook
 
-    profile_url = social_profiles_object.profile_url_facebook
-    if profile_url != None:
-        context_dict['profile_url'] = profile_url 
+        if provider:
+            context_dict['provider'] = provider
+
+        if picture_url:
+            context_dict['picture_url'] = picture_url 
+
+        if profile_url:
+            context_dict['profile_url'] = profile_url 
     
     return render_to_response("mentee/profile-view.html",context_dict,context)
