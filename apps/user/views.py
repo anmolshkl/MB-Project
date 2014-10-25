@@ -16,6 +16,8 @@ def select(request):
     context = RequestContext(request)
     context_dict = {}
     template = "user/select.html"
+    if not UserProfile.objects.get(user=request.user).is_new:
+        return HttpResponseRedirect('/mentor/')
     if request.method == 'POST':
         #check whether a request is POST request after submitted choice has come
         if request.POST.get('choice'):
@@ -33,6 +35,8 @@ def select(request):
 def register(request):
     context = RequestContext(request)
     user = request.user
+    if not UserProfile.objects.get(user=user).is_new:
+        return HttpResponseRedirect('/mentor/')
     if request.method == 'POST':
         mentor_form = MentorProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
@@ -60,7 +64,7 @@ def register(request):
             #the post is for mentor registration, save the form or else display it
             if mentee_form.is_valid:
                 mentee_profile = mentee_form.save(commit=False)
-                mentee_profile.is_mentee = False
+                mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
                 mentee_profile.save()
                 return render_to_response("user/login.html",{},context)            
