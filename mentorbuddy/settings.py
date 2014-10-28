@@ -57,7 +57,6 @@ INSTALLED_APPS = (
     'apps.mentor',
     'apps.mentee',
     'apps.user',
-    'south',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -65,6 +64,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.github',
 )
 
 
@@ -147,6 +147,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+STATIC_ROOT = "/cstat/"
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -165,6 +166,10 @@ LOGIN_URL          = '/user/login/'
 LOGOUT_URL         = '/user/logout/'
 LOGIN_REDIRECT_URL = '/user/index/' #-adapter will provide the login_redirect_url,but adapter doesn't support
 
+SOCIALACCOUNT_PROVIDERS = \
+    { 'google':
+        { 'SCOPE': ['profile', 'email'],
+          'AUTH_PARAMS': { 'access_type': 'online' } }}
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
@@ -194,6 +199,14 @@ SOCIALACCOUNT_PROVIDERS = \
                          'educations',
                          'publications',    
                          'public-profile-url']}}
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'twitter':
+       {'SCOPE': ['email', 'publish_stream','public_profile'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'METHOD': 'oauth2',
+        'LOCALE_FUNC': lambda request: 'zh_CN',
+        'VERIFIED_EMAIL': False}}
 
 #allauth will print any confirmation email to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

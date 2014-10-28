@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from apps.user.forms import UserForm
-from apps.mentor.forms import UserProfileForm, EducationForm
+from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from apps.user.models import UserProfile,SocialProfiles
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
+from apps.mentor.forms import EducationDetailFormSet,EmploymentDetailFormSet
+from apps.mentor.models import EducationDetails,EmploymentDetails
 # Create your views here.
 
 @login_required
@@ -169,3 +171,32 @@ def self_profile_view(request):
             context_dict['profile_url'] = profile_url 
     
     return render_to_response("mentor/profile-view.html",context_dict,context)
+
+@login_required
+def edit_profile(request):
+    # The following form method use taken from slide 66 of
+    # http://www.slideshare.net/pydanny/advanced-django-forms-usage
+    user = request.user
+    user_profile = user.user_profile
+
+    if request.POST:
+        user_form = UserForm(request.POST, instance=user)
+        form = UserProfileForm(request.POST, instance=user_profile)
+        #education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
+        #employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
+        edu_form= EducationForm(request.POST, instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
+        emp_form = EmploymentForm(request.POST, instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
+        if form.is_valid():
+            user_profile = form.save()
+            user_profile.save()
+            if user_form.is_valid() and edu_form.is_valid() and emp_form().is_valid:
+                user = user_form.save()
+                user.save()
+                emp_form.save()
+            # return here if different behaviour desired
+    else:
+        user_form = UserForm(instance=user)
+        form = UserProfileForm(instance=user_profile)
+        edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
+        emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
+    return render(request, "mentor/edit_profile.html", locals())

@@ -1,0 +1,17 @@
+{% extends 'mentor/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body_block %}
+    <form method="post" action=/mentor/edit-profile/>
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ form.as_p }}
+        {{ edu_form.as_p }}
+        {{ emp_form.as_p }}
+        
+
+
+        <input type="submit" name="action" value="Submit" />
+    </form>
+{% endblock %}

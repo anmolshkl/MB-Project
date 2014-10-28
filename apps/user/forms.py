@@ -28,3 +28,4 @@ class UserForm(UserCreationForm):
             user.save()
             
         return user
+

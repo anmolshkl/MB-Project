@@ -1,25 +1,80 @@
-{% extends 'user/base.html' %}
+<!DOCTYPE HTML>
+{% load staticfiles %}
+{% load static %}
 {% load socialaccount %}
-{% block body_block %}
-<h1>Welcome to Mentor Buddy</h1>
-{% if not user.is_authenticated %}
-<form action="/user/login/" method="POST">
-	{% csrf_token %}
-    <input type="text" name="email" id="email" placeholder="enter your email"></input>
-    <input type="password" name="password" id="password" placeholder="enter your password"></input>
-    <input type="submit" value="login" />
-</form>
-<a href="{% provider_login_url "facebook" method="oauth2" %}">Facebook</a> <br>
-<a href="{% provider_login_url "twitter" %}">Twitter</a><br>
-<a href="{% provider_login_url "linkedin" method="oauth2" %}">LinkedIn</a><br>
+<html lang="en">
+    <head>
+        <title>{% block title %}Mentor Buddy{% endblock %}</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <!--[if lte IE 8]><script src="{% static 'aerial/css/ie/html5shiv.js' %}"></script><![endif]-->
+        <script src="{% static 'aerial/js/skel.min.js' %}"></script>
+        <script src="{% static 'aerial/js/init.js' %}"></script>
+        <noscript>
+            <link rel="stylesheet" href="{% static 'aerial/css/skel.css' %}" />
+            <link rel="stylesheet" href="{% static 'aerial/css/style.css' %}" />
+            <link rel="stylesheet" href="{% static 'aerial/css/style-wide.css' %}" />
+            <link rel="stylesheet" href="{% static 'aerial/css/style-noscript.css' %}" />
+        </noscript>
+        {% block stylesheets %}
+        {% endblock %}
+        <!--[if lte IE 9]><link rel="stylesheet" href="{% static 'aerial/css/ie/v9.css' %}" /><![endif]-->
+        <!--[if lte IE 8]><link rel="stylesheet" href="{% static 'aerial/css/ie/v8.css' %}" /><![endif]-->
+    </head>
+    <body class="loading">
+        <div id="wrapper">
+            <div id="bg"></div>
+            <div id="overlay"></div>
+            <div id="main">
 
-<a href="/mentor/register/">Register as a Mentor</a><br>
-<a href="/mentee/register/">Register as a Mentee</a>
-{% else %}
-	{% if user.user_profile.is_mentor == True %}
-		<a href="/mentor/">Welcome mentor!Enter the site></a>
-	{% else %}
-		<a href="/mentee/">Welcome Mentee!Enter the site></a>
-	{% endif %}
-{% endif %}
-{% endblock %}
+                
+                <!-- Header -->
+                <header id="header">
+                    <h1>Welcome to Mentor Buddy</h1>
+                    {% if not user.is_authenticated %}
+                    <form action="/user/login/" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="email" id="email" placeholder="enter your email"></input>
+                        <input type="password" name="password" id="password" placeholder="enter your password"></input>
+                        <input type="submit" value="login" />
+                    </form>
+                    <nav>
+                        <ul>
+                            <li><a href="{% provider_login_url "google" %}" class="icon fa-google">
+                                <span class="label">Google</span></a></li>
+                            
+                            <li><a href="{% provider_login_url "facebook" method="oauth2" %}" 
+                                class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                            
+                            <li><a href="{% provider_login_url "linkedin" method="oauth2" %}" 
+                                class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                            
+                            <li><a href="{% provider_login_url "github" %}" class="icon fa-github">
+                                <span class="label">Github</span></a></li>
+                            
+                            <li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+                            
+                            <a href="/mentor/register/">Register as a Mentor</a><br>
+                            
+                            <a href="/mentee/register/">Register as a Mentee</a>
+
+                        </ul>
+                    </nav>
+                    {% else %}
+                    {% if user.user_profile.is_mentor == True %}
+                        <a href="/mentor/">Welcome mentor!Enter the site></a>
+                    {% else %}
+                        <a href="/mentee/">Welcome Mentee!Enter the site></a>
+                    {% endif %}
+                    {% endif %}
+                </header>
+
+                <!-- Footer -->
+                    <footer id="footer">
+                        <span class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.</span>
+                    </footer>
+            </div>
+        </div>
+    </body>
+</html>

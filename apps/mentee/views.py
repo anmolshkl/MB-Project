@@ -17,6 +17,8 @@ from apps.mentee.forms import UserProfileForm
 from random import choice
 from string import letters
 
+from apps.mentor.forms import EducationDetailFormSet,EmploymentDetailFormSet
+
 # Create your views here.
 @login_required
 def index(request):
@@ -154,7 +156,7 @@ def self_profile_view(request):
             picture_url = social_profiles_object.profile_pic_url_linkedin
             profile_url = social_profiles_object.profile_url_linkedin
         elif social_profiles_object.profile_pic_url_facebook:
-            provider = "LinkedIn"
+            provider = "Facebook"
             picture_url = social_profiles_object.profile_pic_url_facebook
             profile_url = social_profiles_object.profile_url_facebook
 
@@ -168,3 +170,35 @@ def self_profile_view(request):
             context_dict['profile_url'] = profile_url 
     
     return render_to_response("mentee/profile-view.html",context_dict,context)
+
+
+@login_required
+def edit_profile(request):
+    # The following form method use taken from slide 66 of
+    # http://www.slideshare.net/pydanny/advanced-django-forms-usage
+    user = request.user
+    user_profile = user.user_profile
+
+    if request.POST:
+        user_form = UserForm(request.POST, instance=user)
+        form = UserProfileForm(request.POST, instance=user_profile)
+        education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
+        employment_detail_formset = EmploymentDetailFormSet(request.POST, instance=user_profile)
+
+        if form.is_valid():
+            user_profile = form.save()
+            user_profile.save()
+            if user_form.is_valid():
+                user = user_form.save()
+                user.save()
+            for formset in (education_detail_formset,employment_detail_formset):
+                if formset.is_valid():
+                    formset.save()
+            # return here if different behaviour desired
+    else:
+        user_form = UserForm(instance=user)
+        form = UserProfileForm(instance=user_profile)
+        education_detail_formset = EducationDetailFormSet(instance=user_profile)
+        employment_detail_formset = EmploymentDetailFormSet(instance=user_profile)
+
+    return render(request, "mentor/edit_profile.html", locals())
