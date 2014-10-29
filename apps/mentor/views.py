@@ -178,6 +178,12 @@ def self_profile_view(request):
     if about:
         context_dict['about'] = about
     
+    provider = None
+    
+    picture_url= None
+    
+    profile_url =None
+
     if social_profiles_object:
         if social_profiles_object.profile_pic_url_linkedin:
             provider = "LinkedIn"

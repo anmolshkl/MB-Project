@@ -150,6 +150,12 @@ def self_profile_view(request):
     if contact_number_field != None:
         context_dict['contact_number'] = contact_number_field
     
+    provider = None
+    
+    picture_url= None
+    
+    profile_url =None
+
     if social_profiles_object:
         if social_profiles_object.profile_pic_url_linkedin:
             provider = "LinkedIn"
