@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from apps.user.models import UserProfile, SocialProfiles
 
 #import specific forms
-from apps.user.forms import UserForm
+from apps.user.forms import UserForm,UserEditForm
 from apps.mentee.forms import UserProfileForm
 from random import choice
 from string import letters
@@ -180,25 +180,16 @@ def edit_profile(request):
     user_profile = user.user_profile
 
     if request.POST:
-        user_form = UserForm(request.POST, instance=user)
-        form = UserProfileForm(request.POST, instance=user_profile)
-        education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
-        employment_detail_formset = EmploymentDetailFormSet(request.POST, instance=user_profile)
-
-        if form.is_valid():
-            user_profile = form.save()
+        user_form = UserEditForm(request.POST, instance=user)
+        profile_form = UserProfileForm(request.POST, instance=user_profile)
+        if user_form.is_valid():
+            user_profile = user_form.save()
             user_profile.save()
-            if user_form.is_valid():
-                user = user_form.save()
-                user.save()
-            for formset in (education_detail_formset,employment_detail_formset):
-                if formset.is_valid():
-                    formset.save()
+            if profile_form.is_valid():
+                profile = profile_form.save()
+                profile.save()
             # return here if different behaviour desired
     else:
-        user_form = UserForm(instance=user)
+        user_form = UserEditForm(instance=user)
         form = UserProfileForm(instance=user_profile)
-        education_detail_formset = EducationDetailFormSet(instance=user_profile)
-        employment_detail_formset = EmploymentDetailFormSet(instance=user_profile)
-
-    return render(request, "mentor/edit_profile.html", locals())
+    return render(request, "mentee/edit_profile.html", locals())

@@ -33,9 +33,14 @@
                   </div>
                 {% endif %}
               {% endfor %}
-            
+            <hr>
             {{ profile_form.as_p }}
+            <hr>
+            <h2>Educational Details:</h2>
             {{ education_form.as_p }}
+            <hr>
+            <h2>Employment Details:</h2>
+            {{ employment_form.as_p }}
             <!-- Provide a button to click to submit the form. -->
             <input type="submit" name="submit" value="Register" />
         </form>

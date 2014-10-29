@@ -5,129 +5,95 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="container">
-        <div class="col-sm-8 transp well">
-            {% if user and not user.is_anonymous  %} 
+    {% if user and not user.is_anonymous  %} 
+        <h1>Note: User can have more than 20 fields,missing fields only means user has not provided data!</h>
+            <h3>Profile details</h3>
+            <p>Name: {{ full_name }}</p>
             
-            <div class="col-xs-12 well">
-                <h1>Note: User can have more than 20 fields,missing fields only means user has not provided data!</h1>
-            </div>
-
-            <div class="col-xs-6">
-                <div class="col-xs-12 fx-ht well">
-                    <h3>Profile details</h3>
-                    <p>Name: {{ full_name }}</p>
-                    
-                    {% if gender %} 
-                        <p>Gender: {{ gender }}</p>
-                    {% endif %}
-
-                    {% if date_of_birth %}
-                        <p>Birth Date: {{ date_of_birth }}
-                    {% endif %}
-
-                    {% if hometown %}
-                        <p>Home Town: {{ home_town }}</p>
-                    {% endif %}
-                </div>
-                <div class="col-xs-12  fx-ht well">
-                    {% if location %}
-                    <p>Location
-                        <ul>
-                        {{ location }}
-                        </ul>
-                    </p>
-                    {% endif %}
-                    {% if country %}
-                    <p>Country
-                        <ul>
-                        {{ country }}
-                        </ul>
-                    </p>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="col-xs-6">
-                <div class="col-xs-12 fx-ht well">
-                    {% if emails %}
-                        <p> Email:
-                            <ul>
-                            {%for e in emails %}
-                            <li> {{ e.email_type }}: {{ e.email_id }}</li>
-                            {% endfor %}
-                            </ul> 
-                        </p>
-                    {% endif %}
-
-                    {% if contact_numbers %}
-                    <p>Contact Number:
-                        <ul>
-                        {% for c in contact_numbers %}
-                        <li>{{ c.number_type }}: (+{{ c.country_code }}) {{ c.number }} </li>
-                        {% endfor %}
-                        </ul>
-                    </p>
-                    {% endif %}
-
-                    {% if profile_url %}
-                        <p>Profile Link:
-                            <ul>
-                                <li><a href="{{ profile_url }}">{{ provider }} profile</a></li>
-                            </ul>
-                        </p>
-                    {% endif %}
-
-                    {% if picture_url %}
-                        <p> Profile Pic:
-                            <ul>
-                                <li><img src="{{ picture_url }}"></img></li>
-                            </ul>
-                        </p>
-                    {% endif %}
-                </div>
-
-                <div class="col-xs-12 fx-ht well">
-                    {% if education_details %}
-                    <p>Education Details
-                    <ul>
-                        {% for e in education_details %}
-                        <li>{{ e.institution }} <br /> {{ e.branch }} <br />{{ e.year }}</li>
-                        {% endfor %}
-                    </ul>
-                    </p>
-                    {%endif%}
-
-                    {% if employment_details %}
-                    <p>Employment Details
-                    <ul>
-                        {% for e in employment_details %}
-                        <li>{{ e.organization }} <br/> 
-                        {{ e.location }} {{ e.position }} <br/>
-                        {{ e.from_date }} {{ e.to_date }}</li>
-                        {% endfor %}
-                    </ul>
-                    </p>
-                    {% endif %}
-
-                </div>
-            </div>
-        </div>
-            {% else %}
-                <p>Please login to access profile</p>
+            {% if gender %} 
+                <p>Gender: {{ gender }}</p>
             {% endif %}
-        <div class="col-sm-3 col-sm-offset-1 well">
-            <h3>Connections</h3>
-            {% if friend_list %}
-                <ul>
-                {% for friend in friend_list  %}
-                <a href=/user/{{ friend.username }}/>{{ friend.get_full_name }}</a>
-                {% endfor %}
-                </ul>
-            {% else %}
-               No connections 
+
+            {% if date_of_birth %}
+                <p>Birth Date: {{ date_of_birth }}
+            {% endif %}
+
+            {% if email %}
+                <p> Email:{{ email }} </p>
+            {% endif %}
+            
+            {% if hometown %}
+                <p>Home Town: {{ home_town }}</p>
+            {% endif %}
+     
+            {% if location %}
+            <p>Location:
+                {{ location }}
+            </p>
+            {% endif %}
+
+            {% if country %}
+            <p>Country
+                {{ country }}
+            </p>
+            {% endif %}
+    
+            {% if contact_number %}
+            <p>Contact Number: {{ contact_number }} </p>
+            {% endif %}
+
+            {% if about %}
+            <p>About: {{ about }} </p>
+            {% endif %}
+
+            {% if profile_url %}
+                <p>Profile Link:
+                    <ul>
+                        <li><a href="{{ profile_url }}">{{ provider }} profile</a></li>
+                    </ul>
+                </p>
+            {% endif %}
+
+            {% if picture_url %}
+                <p> Profile Pic:
+                    <ul>
+                        <li><img src="{{ picture_url }}"></img></li>
+                    </ul>
+                </p>
             {% endif %}
         </div>
+
+        {% if edu_list %}
+        <p>Education Details
+        <ul>
+            {% for item in edu_list %}
+            <li>institute: {{ item.inst }} <br />
+                location: {{ item.loc }} <br />
+                country: {{ item.coun }} <br />
+                degree: {{ item.degree }}<br>
+                branch: {{ item.branch }}<br>
+                duration: {{ item.from }}-{{ item.to }} <br />
+            </li>
+            {% endfor %}
+        </ul>
+        </p>
+        {%endif%}
+        {% if edu_list %}
+        <p>Employment Details
+        <ul>
+            {% for item in edu_list %}
+            <li>Organization: {{ item.org }} <br />
+                Location: {{ item.loc }} <br />
+                Position: {{ item.pos }} <br />
+                Period: {{ item.from }}-{{ item.to }}<br>
+            </li>
+            {% endfor %}
+        </ul>
+        </p>
+        {%endif%}
+    {% else %}
+        <p>Please login to access profile</p>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -54,7 +54,7 @@ def register(request):
                 education = education_form.save(commit=False)
                 education.parent = mentor_profile
                 education.save()
-                return render_to_response("user/login.html",{},context)
+                return HttpResponseRedirect("user/login.html")
             
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -72,7 +72,7 @@ def register(request):
                 mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
                 mentee_profile.save()
-                return render_to_response("user/login.html",{},context)            
+                return HttpResponseRedirect("user/login.html")            
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
             # They'll also be shown to the user.
@@ -94,7 +94,7 @@ def index(request):
     context_dict = {}
     template = "user/login.html" #default template to render
     user = request.user
-    user_profile = UserProfile.objects.get(user=user)
+    user_profile,created = UserProfile.objects.get_or_create(user=user)
     #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile.is_new:
         context_dict['selected'] = None

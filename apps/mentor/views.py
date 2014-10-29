@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from apps.user.forms import UserForm
+from django.http import HttpResponse,HttpResponseRedirect
+from apps.user.forms import UserForm,UserEditForm
 from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
@@ -11,6 +11,7 @@ from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailFormSet,EmploymentDetailFormSet
 from apps.mentor.models import EducationDetails,EmploymentDetails
+
 # Create your views here.
 
 @login_required
@@ -41,8 +42,9 @@ def register(request):
         user_form = UserForm(data)
         profile_form = UserProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
+        employment_form = EmploymentForm(data=request.POST)
         # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid:
+        if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid() and employment_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -63,6 +65,8 @@ def register(request):
             profile.is_mentor = True
             education = education_form.save(commit=False)
             education.parent = profile
+            employee = employment_form.save(commit=False)
+            employee.parent = profile
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
@@ -71,6 +75,7 @@ def register(request):
             # Now we save the UserProfile model instance.
             profile.save()
             education.save()
+            employee.save()
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -86,10 +91,11 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         education_form = EducationForm()
+        employment_form = EmploymentForm()
     # Render the template depending on the context.
     return render_to_response(
             'mentor/register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'education_form': education_form,'registered': registered},
+            {'user_form': user_form, 'profile_form': profile_form,'employment_form': employment_form, 'education_form': education_form,'registered': registered},
             context)
 @login_required
 def self_profile_view(request):
@@ -102,25 +108,42 @@ def self_profile_view(request):
     user = request.user
     user_profile_object = UserProfile.objects.get(user=user) 
     if user_profile_object.is_new:
-        return render_to_response('user/select.html',{},context)
+        return HttpResponseRedirect('user/select.html')
+    
+    #Social Profile
     try:
         social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
     except SocialProfiles.DoesNotExist:
         social_profiles_object = None
+    
+    #Education Profile 
+    try:
+        eduObjs = EducationDetails.objects.filter(parent=user_profile_object)
+    except EducationDetails.DoesNotExist:
+        eduObjs = None
+    
+    #Employment Profile
+    try:
+        empObjs = EmploymentDetails.objects.filter(parent=user_profile_object)
+    except EmploymentDetails.DoesNotExist:
+        empObjs = None
+    
     # TODO add personal details after the user model
     # is finalized
-    
     # initialize all to None
     context_dict['full_name'] = None
     context_dict['gender'] = None
     context_dict['date_of_birth'] = None 
     context_dict['location'] = None 
     context_dict['country'] = None 
-    context_dict['emails'] = None 
-    context_dict['contact_numbers'] = None
+    context_dict['email'] = None 
+    context_dict['contact_number'] = None
+    context_dict['about'] = None
     context_dict['provider'] = None
     context_dict['picture_url'] = None
     context_dict['profile_url'] = None
+    context_dict['edu_list'] = None
+    context_dict['emp_list'] = None
 
     gender_options={'male':"M",'female':'F'}
 
@@ -147,9 +170,13 @@ def self_profile_view(request):
     if email_field != None:
         context_dict['email'] = email_field
     
-    contact_number_field = user_profile_object.contact
-    if contact_number_field != None:
-        context_dict['contact_numbers'] = contact_number_field
+    contact = user_profile_object.contact
+    if contact != None:
+        context_dict['contact_number'] = contact
+    
+    about = user_profile_object.about
+    if about:
+        context_dict['about'] = about
     
     if social_profiles_object:
         if social_profiles_object.profile_pic_url_linkedin:
@@ -170,6 +197,22 @@ def self_profile_view(request):
         if profile_url != None:
             context_dict['profile_url'] = profile_url 
     
+    if eduObjs:
+        edu_list = []
+        for obj in eduObjs:
+            edu_list.append({'inst':obj.institution,'loc':obj.location,'degree':obj.degree,
+                            'branch':obj.branch,'from':obj.from_year,'to':obj.to_year,'coun':obj.country})
+
+        context_dict['edu_list'] = edu_list
+
+    if empObjs:
+        emp_list = []
+        for obj in empObjs:
+            emp_list.append({'org':obj.organization,'loc':obj.location,'pos':obj.position,
+                            'from':obj.from_date,'to':obj.to_date})
+
+        context_dict['emp_list'] = emp_list
+    print context_dict
     return render_to_response("mentor/profile-view.html",context_dict,context)
 
 @login_required
@@ -180,7 +223,7 @@ def edit_profile(request):
     user_profile = user.user_profile
 
     if request.POST:
-        user_form = UserForm(request.POST, instance=user)
+        user_form = UserEditForm(request.POST, instance=user)
         form = UserProfileForm(request.POST, instance=user_profile)
         #education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
         #employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
@@ -189,13 +232,13 @@ def edit_profile(request):
         if form.is_valid():
             user_profile = form.save()
             user_profile.save()
-            if user_form.is_valid() and edu_form.is_valid() and emp_form().is_valid:
+            if user_form.is_valid():
                 user = user_form.save()
                 user.save()
-                emp_form.save()
+                return HttpResponseRedirect("/user/")
             # return here if different behaviour desired
     else:
-        user_form = UserForm(instance=user)
+        user_form = UserEditForm(instance=user)
         form = UserProfileForm(instance=user_profile)
         edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
         emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])

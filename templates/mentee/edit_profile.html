@@ -1,0 +1,12 @@
+{% extends 'mentee/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block body_block %}
+    <form method="post" action=/mentee/edit-profile/>
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ form.as_p }}
+        <input type="submit" name="action" value="Submit" />
+    </form>
+{% endblock %}

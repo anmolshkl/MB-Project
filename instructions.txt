@@ -36,3 +36,8 @@ git merge -r <branch> : merge the "branch" with the current branch
 *Change the example.com to Mentorbuddy.in
 *Now go to Social Apps
 *Go to facebook and linkedin and add MentorBuddy.in to sites
+
+4.Using skelJS with different DIR Structure? FOLLOW THIS:
+#http://stackoverflow.com/questions/19145031/django-skeljs-static-files-issue-references-to-images-in-css
+
+Go to skel.mis.js and search for newStyleSheet and change t[Qt]="/static/aerial/" + e

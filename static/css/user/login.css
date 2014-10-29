@@ -1,0 +1,54 @@
+.clearfix {
+
+}
+ .nav {
+  position: relative;
+  top: 150%;
+ }
+.form {
+  
+  transform: translateZ(0);
+}
+.form .field {
+  position: relative;
+  margin-bottom: 5%;
+  height: 40px;
+
+}
+.form .field .placeholder-label {
+  position: absolute;
+  top: 14px;
+  left: 12px;
+  font-weight: 300;
+  color: #aaa;
+  cursor: text;
+  z-index: 200;
+  transition: all 0.25s;
+}
+.form .field .placeholder-label:after {
+  content: ":";
+  opacity: 0;
+  color: #333;
+  transition: all 0.25s;
+}
+.form .field .placeholder-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  color: black;
+  font-size: 16px;
+  transition: all 0.25s;
+}
+.form .field .placeholder-input:focus, .form .field .placeholder-input.not-empty {
+  margin-left: 100px;
+  width: 220px;
+  outline: none;
+}
+.form .field .placeholder-input:focus + .placeholder-label, .form .field .placeholder-input.not-empty + .placeholder-label {
+  color: #333;
+  cursor: default;
+}
+.form .field .placeholder-input:focus + .placeholder-label:after, .form .field .placeholder-input.not-empty + .placeholder-label:after {
+  opacity: 1;
+}

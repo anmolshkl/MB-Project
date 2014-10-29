@@ -20,7 +20,6 @@ class UserForm(UserCreationForm):
         
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
-        print "setting password to "+ self.cleaned_data["password1"]
         user.set_password(self.cleaned_data["password1"])
         user.email = self.cleaned_data["email"]
         user.is_active = True # change to false if using email activation
@@ -28,4 +27,9 @@ class UserForm(UserCreationForm):
             user.save()
             
         return user
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email','first_name','last_name') 
 
