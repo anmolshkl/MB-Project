@@ -20,8 +20,8 @@ class UserProfileForm(forms.ModelForm):
 		model = UserProfile
 		fields = ('gender', 'date_of_birth','contact','location','country','about' )
 
-EducationDetailFormSet  = inlineformset_factory(UserProfile, EducationDetails,
+EducationDetailsFormSet  = inlineformset_factory(UserProfile, EducationDetails,
                                                 form=EducationForm, extra=0, can_delete=False)
-EmploymentDetailFormSet = inlineformset_factory(UserProfile, EmploymentDetails,
+EmploymentDetailsFormSet = inlineformset_factory(UserProfile, EmploymentDetails,
                                                 form=EmploymentForm, extra=0, can_delete=False)
 

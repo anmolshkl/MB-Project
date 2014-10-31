@@ -182,29 +182,28 @@ SOCIALACCOUNT_PROVIDERS = \
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'METHOD': 'oauth2',
         'LOCALE_FUNC': lambda request: 'zh_CN',
-        'VERIFIED_EMAIL': False}}
-
-SOCIALACCOUNT_PROVIDERS = \
-    {'linkedin':
-      {'SCOPE': ['r_emailaddress','r_fullprofile','r_basicprofile'],
-       'PROFILE_FIELDS': ['id',
-                         'first-name',
-                         'last-name',
-                         'date-of-birth',
-                         'email-address',
-                         'picture-url',
-                         'headline',
-                         'location',
-                         'industry',
-                         'summary',
-                         'languages',
-                         'skills',
-                         'phone-numbers ',
-                         'positions',
-                         'educations',
-                         'publications',    
-                         'public-profile-url']}}
-
+        'VERIFIED_EMAIL': False},
+    
+    'linkedin':
+        {'SCOPE': ['r_emailaddress','r_fullprofile','r_basicprofile'],
+               'PROFILE_FIELDS': ['id',
+                                 'first-name',
+                                 'last-name',
+                                 'date-of-birth',
+                                 'email-address',
+                                 'picture-url',
+                                 'headline',
+                                 'location',
+                                 'industry',
+                                 'summary',
+                                 'languages',
+                                 'skills',
+                                 'phone-numbers ',
+                                 'positions',
+                                 'educations',
+                                 'publications',    
+                                 'public-profile-url']}}
+'''
 SOCIALACCOUNT_PROVIDERS = \
     {'twitter':
        {'SCOPE': ['email', 'publish_stream','public_profile'],
@@ -212,7 +211,7 @@ SOCIALACCOUNT_PROVIDERS = \
         'METHOD': 'oauth2',
         'LOCALE_FUNC': lambda request: 'zh_CN',
         'VERIFIED_EMAIL': False}}
-
+'''
 #allauth will print any confirmation email to the console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

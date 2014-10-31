@@ -51,13 +51,17 @@ class SocialProfiles(models.Model):
     parent = models.OneToOneField(UserProfile, related_name="social_profiles",
                                   editable=False)
     #we may need other social urls for later use
-    profile_url_facebook = models.URLField(max_length=256, blank=True)
-    profile_url_linkedin = models.URLField(max_length=256, blank=True)
-    profile_url_twitter  = models.URLField(max_length=256, blank=True)
-    profile_pic_url_facebook = models.URLField(max_length=256, blank=True)
-    profile_pic_url_linkedin = models.URLField(max_length=256, blank=True)
-    profile_pic_url_twitter  = models.URLField(max_length=256, blank=True)
+    profile_url_facebook = models.URLField(max_length=256, blank=True,default='')
+    profile_url_linkedin = models.URLField(max_length=256, blank=True,default='')
+    profile_url_twitter  = models.URLField(max_length=256, blank=True,default='')
+    profile_url_google = models.URLField(max_length=256, blank=True,default='')
+    profile_url_github = models.URLField(max_length=256, blank=True,default='')
 
+    profile_pic_url_facebook = models.URLField(max_length=256, blank=True,default='')
+    profile_pic_url_linkedin = models.URLField(max_length=256, blank=True,default='')
+    profile_pic_url_google = models.URLField(max_length=256, blank=True,default='')
+    profile_pic_url_github = models.URLField(max_length=256, blank=True,default='')
+    profile_pic_url_twitter  = models.URLField(max_length=256, blank=True,default='')
     def __unicode__(self):
         return u"Social Profiles - {0}".format(self.parent.full_name())
 
@@ -98,6 +102,31 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_url_facebook = extra_data['link']
         socialProfiles.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"+"?type=large"
         socialProfiles.save()
+
+    #try to check whether user has any data provided by Google
+    extra_data = None
+    try:
+        extra_data = user.socialaccount_set.filter(provider='google')[0].extra_data
+    except:
+        pass
+    if extra_data:
+        socialProfiles.profile_url_google = extra_data['link']
+        socialProfiles.profile_pic_url_google = ""
+        socialProfiles.save()
+
+    #try to check whether user has any data provided by Github
+    extra_data = None
+    try:
+        extra_data = user.socialaccount_set.filter(provider='github')[0].extra_data
+    except:
+        pass
+    if extra_data:
+        socialProfiles.profile_url_github = extra_data['html_url']
+        socialProfiles.profile_pic_url_github = extra_data['avatar_url']
+        socialProfiles.save()
+    
+
+
 
 
 

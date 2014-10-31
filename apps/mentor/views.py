@@ -9,7 +9,7 @@ from apps.user.models import UserProfile,SocialProfiles
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
-from apps.mentor.forms import EducationDetailFormSet,EmploymentDetailFormSet
+from apps.mentor.forms import EducationDetailsFormSet,EmploymentDetailsFormSet
 from apps.mentor.models import EducationDetails,EmploymentDetails
 
 # Create your views here.
@@ -230,22 +230,84 @@ def edit_profile(request):
 
     if request.POST:
         user_form = UserEditForm(request.POST, instance=user)
-        form = UserProfileForm(request.POST, instance=user_profile)
+        profile_form = UserProfileForm(request.POST, instance=user_profile)
         #education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
         #employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
-        edu_form= EducationForm(request.POST, instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
-        emp_form = EmploymentForm(request.POST, instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
-        if form.is_valid():
-            user_profile = form.save()
-            user_profile.save()
-            if user_form.is_valid():
-                user = user_form.save()
-                user.save()
-                return HttpResponseRedirect("/user/")
+        edu_formset= EducationDetailsFormSet(request.POST, instance=user_profile)
+        emp_formset= EmploymentDetailsFormSet(request.POST, instance=user_profile)
+        if form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
+            user_form.save()
+            profile_form.save()
+            emp_formset.save()
+            edu_formset.save()
+            return HttpResponseRedirect("/user/")
             # return here if different behaviour desired
     else:
         user_form = UserEditForm(instance=user)
         form = UserProfileForm(instance=user_profile)
-        edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
-        emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
+        edu_formset = EducationDetailsFormSet(instance=user_profile)
+        emp_formset = EmploymentDetailsFormSet(instance=user_profile)
+        '''
+        # build a list of all different educational forms from individual education entry
+        eduFormList = []
+        for edu in EducationDetails.objects.filter(parent=user_profile):
+            eduFormList.append(EducationForm(instance=edu))
+        
+        # build a list of all different Employment forms from individual Employment entry
+        empFormList = []
+        for emp in EmploymentDetails.objects.filter(parent=user_profile):
+            empFormList.append(EmploymentForm(instance=emp))
+        '''
+        #edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
+        #emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
     return render(request, "mentor/edit_profile.html", locals())
+
+@login_required
+def get_data(request):
+    user = request.user
+    user = User.objects.get(id=user.id)
+    extra_data = None
+    try:
+        extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
+    except:
+        pass
+    if extra_data:
+        location = extra_data['location']['name']  #rename address as area
+        first_name = extra_data['first-name']
+        last_name = extra_data['last-name']
+        user.first_name = first_name
+        user.last_name = last_name
+        (location,country) = location.split(',')
+        #date_of_birth = extra_data['date-of-birth'] 
+        userProfile = UserProfile.objects.get(user=user)
+        userProfile.location = location
+        userProfile.country = country
+        userProfile.save()
+        user.save()
+        print "saved user profile" 
+
+        #Save Education Data if received
+        if 'educations' in extra_data:
+            educations = extra_data['educations']['education']
+
+        if educations:
+            for individual_edu in educations:
+                print individual_edu['school-name']
+                if not EducationDetails.objects.filter(parent=user,institution=individual_edu['school-name']):
+                    edu_profile = EducationDetails.objects.create(parent=userProfile)
+                    edu_profile.institution = individual_edu['school-name']
+                    edu_profile.location = ""
+                    if 'field-of-study' in individual_edu:
+                        edu_profile.branch = individual_edu['field-of-study']
+                    if 'degree' in individual_edu:
+                        edu_profile.degree = individual_edu['degree']
+                    edu_profile.from_year = individual_edu['start-date']['year']
+                    edu_profile.to_year = individual_edu['end-date']['year']
+                    edu_profile.country = ""
+                    edu_profile.save()
+        socialProfile,created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        #socialProfile = SocialProfiles(parent=userProfile)
+        socialProfile.profile_url_linkedin = extra_data['public-profile-url']
+        socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
+        socialProfile.save()
+    return HttpResponseRedirect("/mentor/edit-profile/")

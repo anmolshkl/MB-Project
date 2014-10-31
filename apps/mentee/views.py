@@ -17,7 +17,6 @@ from apps.mentee.forms import UserProfileForm
 from random import choice
 from string import letters
 
-from apps.mentor.forms import EducationDetailFormSet,EmploymentDetailFormSet
 
 # Create your views here.
 @login_required
