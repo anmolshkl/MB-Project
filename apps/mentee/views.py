@@ -16,6 +16,7 @@ from apps.user.forms import UserForm,UserEditForm
 from apps.mentee.forms import UserProfileForm
 from random import choice
 from string import letters
+from allauth.socialaccount.models import SocialAccount,SocialApp
 
 
 # Create your views here.
@@ -203,3 +204,37 @@ def edit_profile(request):
 @login_required
 def get_data(request,provider):
     return 
+
+@login_required
+def manage_social_profiles(request,action=None,provider=None):
+    user = request.user
+    #to get an actual live object from SimpleLazyObject
+    user = User.objects.get(id=user.id)
+    user_profile = UserProfile.objects.get(user=user)
+    social_objects = SocialAccount.objects.filter(user=user)
+    # dictionary stores all profile(profile-links/avatar-links) linked to different social apps
+    if action == 'remove':
+        try:
+            if SocialAccount.objects.get(user=user,provider=provider):
+                SocialAccount.objects.get(user=user,provider=provider).delete()
+                sp = SocialProfiles.objects.get(parent=user_profile)
+                if provider == 'facebook':
+                    sp.profile_pic_url_facebook = ""
+                    sp.profile_url_facebook = ""
+                if provider == 'linkedin':
+                    sp.profile_pic_url_linkedin = ""
+                    sp.profile_url_linkedin = ""
+                if provider == 'google':
+                    sp.profile_pic_url_google = ""
+                    sp.profile_url_google = ""
+                if provider == 'github':
+                    sp.profile_pic_url_github = ''
+                    sp.profile_url_github = ''
+                sp.save()
+        except SocialAccount.DoesNotExist:
+            pass
+    sp_dict = {}
+    for obj in social_objects:
+        sp_dict[obj.provider] = {'profile_url':obj.get_profile_url(),'avatar_url':obj.get_avatar_url()}
+    
+    return render(request,'mentee/manage-social-profiles.html',locals())

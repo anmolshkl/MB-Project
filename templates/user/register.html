@@ -15,6 +15,13 @@
 	<form method="POST" action="/user/register/">
 		<input type="hidden" name="selected" value="mentor">
 		<input type="hidden" name="is_new" value="False">
+		<label for="password1">Password</label>
+		<input type="password" name="password1" id="password1"><br>
+		<label for="password2">Confirm Password</label>
+		<input type="password" name="password2" id="password2">
+		{% if error %}
+			{{ error }}
+		{% endif %}
 		{% csrf_token %}
 		
 		{{ mentor_form.as_p }}
@@ -28,6 +35,13 @@
 			<input type="hidden" name="selected" value="mentee">
 			<input type="hidden" name="is_mentor" value="False">
 			<input type="hidden" name="is_new" value="False">
+			<label for="password1">Password</label>
+			<input type="password" name="password1" id="password1"><br>
+			<label for="password2">Confirm Password</label>
+			<input type="password" name="password2" id="password2">
+			{% if error %}
+				{{ error }}
+			{% endif %}
 			{{ mentee_form.as_p }}
 			<input type="submit" value="SUBMIT">
 		</form>

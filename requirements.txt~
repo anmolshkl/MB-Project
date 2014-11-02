@@ -22,4 +22,3 @@ six==1.7.3
 tablib==0.10.0
 wsgiref==0.1.2
 django-allauth
-pysolr

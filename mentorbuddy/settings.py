@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
+    #'haystack',
 )
 
 
@@ -115,7 +116,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mb_db2',
         'USER': 'mentorbuddy',
-        'PASSWORD': 'mentorbuddy',
+        'PASSWORD': 'asaf-123',
         'HOST': 'localhost',
         'PORT': '3306',
     },
@@ -226,3 +227,13 @@ SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
 
 #Crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
+}

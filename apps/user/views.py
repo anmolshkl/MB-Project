@@ -96,14 +96,24 @@ def select(request):
 @login_required
 def register(request):
     context = RequestContext(request)
+    context_dict = {}
+    template  = 'user/select.html'
     user = request.user
+    msg = None
     if not UserProfile.objects.get(user=user).is_new:
         return HttpResponseRedirect('/user/')
     if request.method == 'POST':
         mentor_form = MentorProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         mentee_form = MenteeProfileForm(data=request.POST)
-        if request.POST['selected'] == 'mentor':
+        print request.POST['password1']==''
+        if request.POST['password1'] != request.POST['password2'] or request.POST['password1'] == '':
+            msg = "The confirmation password doesn't matches."
+            template = 'user/register.html'
+            context_dict['selected'] = request.POST['selected']
+            context_dict['error'] = msg
+
+        if request.POST['selected'] == 'mentor' and msg != None:
             #the post is for mentor registration, save the form or else display it
             if mentor_form.is_valid() and education_form.is_valid():
                 mentor_profile = mentor_form.save(commit=False)
@@ -122,17 +132,15 @@ def register(request):
             else:
                 print mentor_form.errors, education_form.errors
 
-        if request.POST['selected'] == 'mentee':
-            print "mentee data received"
+        if request.POST['selected'] == 'mentee' and msg != None:
             #the post is for mentee registration, save the form or else display it
             if mentee_form.is_valid():
-                print "mentee data correct"
                 mentee_profile = mentee_form.save(commit=False)
                 mentee_profile.user = user
                 mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
                 mentee_profile.save()
-                return HttpResponseRedirect("user/login.html")            
+                return HttpResponseRedirect("/user/")            
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
             # They'll also be shown to the user.
@@ -146,7 +154,11 @@ def register(request):
         mentee_form = MenteeProfileForm()
         education_form = EducationForm()
     # Render the template depending on the context.
-    return render_to_response('user/select.html',{'selected':request.POST['selected'],'mentor_form': mentor_form, 'mentee_form': mentee_form, 'education_form': education_form},context)
+    context_dict['selected'] = request.POST['selected']
+    context_dict['mentor_form'] =  mentor_form
+    context_dict['mentee_form'] =  mentee_form
+    context_dict['education_form'] =  education_form
+    return render_to_response(template,context_dict,context)
 
 
 

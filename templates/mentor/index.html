@@ -1,10 +1,8 @@
-{% if user.is_authenticated %}
-<a href="/user/logout/">Logout</a>
-<h3>Hello {{ user.username }}</h3>
-<br>
-<a href="/mentor/self-profile/">View your profile</a>
-<a href="/mentor/edit-profile/">Edit your Profile</a>
-<a href="/mentor/manage-social-profiles/">Manage your social accounts</a>
-{% else %}
-<a href="/user/">Please login</a>
-{% endif %}
+{% extends 'mentor/base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+This is index page!
+
+{% endblock %}

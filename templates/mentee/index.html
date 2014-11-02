@@ -1,10 +1,8 @@
-{% if user.is_authenticated and not user.is_mentor %}
-<a href="/user/logout/">Logout</a>
-<h3>Hello {{ user.username }}</h3>
-<br>
-<a href="/mentee/self-profile/">View your profile</a><br>
-<a href="/mentee/edit-profile/">Edit your Profile</a><br>
-<a href="/mentee/manage-social-accounts/">Manage your social accounts</a>
-{% else %}
-<a href="/user/">Please login</a>
-{% endif %}
+{% extends 'mentee/base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+This is index page!
+
+{% endblock %}
