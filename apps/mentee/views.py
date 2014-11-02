@@ -198,3 +198,8 @@ def edit_profile(request):
         user_form = UserEditForm(instance=user)
         form = UserProfileForm(instance=user_profile)
     return render(request, "mentee/edit_profile.html", locals())
+
+
+@login_required
+def get_data(request,provider):
+    return 

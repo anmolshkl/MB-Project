@@ -42,17 +42,17 @@
                 <header id="header">
                     <h1>Welcome to Mentor Buddy</h1>
                     {% if not user.is_authenticated %}
-                    <div class="col-xs-4 col-xs-offset-4">
+                    <div class="form-div col-xs-4 col-xs-offset-4">
                         <form class="form" role="form" action="/user/login/" method="POST">
                            {% csrf_token %}
                            <div class="field">
-                                 <input type="email" class="placeholder-input" name="email" id="email">
+                                 <input type="email" class="placeholder-input" value="" name="email" id="email">
                                  <label class='placeholder-label' for='email'>Email</label>
 
                            </div>
 
                            <div class="field">
-                                 <input type="password" class="placeholder-input" name="password" id="password">
+                                 <input type="password" class="placeholder-input" value="" name="password" id="password">
                                 <label class='placeholder-label' for='password'>Password</label>
                            </div>
                            <button type="submit" class="btn btn-lg btn-default">Sign in</button>
@@ -62,7 +62,7 @@
                     </div>
                     <nav class="nav">
                         <ul>
-                            <li><a href="{% provider_login_url "google" %}" class="icon fa-google">
+                            <li><a href="{% provider_login_url  "google" %}" class="icon fa-google">
                                 <span class="label">Google</span></a></li>
                             
                             <li><a href="{% provider_login_url "facebook" method="oauth2" %}" 

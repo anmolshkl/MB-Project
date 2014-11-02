@@ -4,5 +4,5 @@ $(document).ready(function(){
 	});
 });
 $(document).ready(function() {
-	$('input').val('');
+	$('input').attr("value","");
 });

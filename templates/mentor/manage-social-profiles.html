@@ -1,0 +1,35 @@
+{% extends 'mentor/base.html' %}
+{% load socialaccount %}
+
+{% block title %}Manage Social Profile{% endblock %}
+
+{% block body_block %}
+    {% for key,values in sp_dict.items %}
+     {{ key | capfirst }}: <br>
+     <a href="{{ values.profile_url }}">Profile URL</a><br>
+     Avatar: <img src="{{ values.avatar_url }}"></img><br>
+     <a href="/mentor/manage-social-profiles/remove/{{ key }}/">Remove</a>
+     <hr>
+    {% endfor %}
+    {% if not 'facebook' in sp_dict %}
+    Facebook: <a href='{% provider_login_url "facebook" method="oauth2" next="/mentor/manage-social-profiles/" %}'>
+    Link an account!</a>
+    {% endif %}
+
+    {% if not 'linkedin' in sp_dict %}
+    Linkedin: <a href='{% provider_login_url "linkedin" method="oauth2" next="/mentor/manage-social-profiles/" %}'>
+    Link an account!</a>
+    {% endif %}
+    
+    {% if not 'github' in sp_dict %}
+    Github: <a href='{% provider_login_url "github" next="/mentor/manage-social-profiles/" %}'>
+    Link an account!</a>
+    {% endif %}
+
+    {% if not 'google' in sp_dict %}
+    Google: <a href='{% provider_login_url "google" next="/mentor/manage-social-profiles/" %}'>
+    Link an account!</a>
+    {% endif %}
+    
+
+{% endblock %}

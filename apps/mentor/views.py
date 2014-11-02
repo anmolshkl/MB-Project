@@ -11,7 +11,7 @@ from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailsFormSet,EmploymentDetailsFormSet
 from apps.mentor.models import EducationDetails,EmploymentDetails
-
+from allauth.socialaccount.models import SocialAccount,SocialApp
 # Create your views here.
 
 @login_required
@@ -292,7 +292,6 @@ def get_data(request):
 
         if educations:
             for individual_edu in educations:
-                print individual_edu['school-name']
                 if not EducationDetails.objects.filter(parent=user,institution=individual_edu['school-name']):
                     edu_profile = EducationDetails.objects.create(parent=userProfile)
                     edu_profile.institution = individual_edu['school-name']
@@ -311,3 +310,37 @@ def get_data(request):
         socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfile.save()
     return HttpResponseRedirect("/mentor/edit-profile/")
+
+@login_required
+def manage_social_profiles(request,action=None,provider=None):
+    user = request.user
+    #to get an actual live object from SimpleLazyObject
+    user = User.objects.get(id=user.id)
+    user_profile = UserProfile.objects.get(user=user)
+    social_objects = SocialAccount.objects.filter(user=user)
+    # dictionary stores all profile(profile-links/avatar-links) linked to different social apps
+    if action == 'remove':
+        try:
+            if SocialAccount.objects.get(user=user,provider=provider):
+                SocialAccount.objects.get(user=user,provider=provider).delete()
+                sp = SocialProfiles.objects.get(parent=user_profile)
+                if provider == 'facebook':
+                    sp.profile_pic_url_facebook = ""
+                    sp.profile_url_facebook = ""
+                if provider == 'linkedin':
+                    sp.profile_pic_url_linkedin = ""
+                    sp.profile_url_linkedin = ""
+                if provider == 'google':
+                    sp.profile_pic_url_google = ""
+                    sp.profile_url_google = ""
+                if provider == 'github':
+                    sp.profile_pic_url_github = ''
+                    sp.profile_url_github = ''
+                sp.save()
+        except SocialAccount.DoesNotExist:
+            pass
+    sp_dict = {}
+    for obj in social_objects:
+        sp_dict[obj.provider] = {'profile_url':obj.get_profile_url(),'avatar_url':obj.get_avatar_url()}
+    
+    return render(request,'mentor/manage-social-profiles.html',locals())
