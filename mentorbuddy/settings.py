@@ -66,7 +66,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
-    #'haystack',
+    'haystack',
 )
 
 
