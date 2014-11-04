@@ -333,6 +333,9 @@
   }
 }
 
+/* loader finished */
+
+/* Sign in buttons */
 
 .nav {
     position:absolute;
@@ -342,6 +345,9 @@
     margin-left:auto;
     margin-right:auto;  
 }
+
+/* Sign in form */
+
 .form {
   margin-top: 5%;
   margin: 0 auto;
@@ -385,4 +391,149 @@
 }
 .form .field .placeholder-input:focus + .placeholder-label:after, .form .field .placeholder-input.not-empty + .placeholder-label:after {
   opacity: 1;
+}
+
+/***** SIGN IN FORM OVER*******/
+
+/* HEADER CSS 
+
+.grid {
+  text-align: center;
+}
+.grid li {
+  display: inline;
+}
+.grid li span {
+    display: inline-block;
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 1;
+    position: relative;
+    color: hsla(0, 0%, 0%, 0.6);
+    transform-style: preserve-3d;
+    perspective: 550px;
+    z-index: 1;
+}
+
+.grid li span:before,
+.grid li span:after {
+    position: absolute;
+    content: attr(data-letter);
+    line-height: inherit;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    transition: all 0.3s;
+}
+ 
+.grid li span:before {
+    text-shadow: none;
+    color: hsla(0, 0%, 0%, 0.12);
+}
+
+.ot-letter-left span:before,
+.ot-letter-left span:after {
+    transform-origin: 0 50%;
+}
+
+.ot-letter-left span:before {
+    transform: scale(1.08, 1) skew(0deg, 1deg);
+}
+ 
+.ot-letter-left span:after {
+    text-shadow: 
+        -1px 0px 0px hsla(360, 100%, 100%, 0.1), 
+        3px 0px 1px hsla(0, 0%, 0%, 0.4);
+    transform: rotateY(-15deg);
+}
+
+.ot-letter-left:hover span:before {
+    transform: scale(0.85,1) skew(0deg,20deg);
+}
+ 
+.ot-letter-left:hover span:after {
+    transform: rotateY(-40deg);
+}
+
+.ot-letter-left { 
+}
+ 
+.ot-letter-left span { 
+    text-shadow: 
+        1px 4px 6px #e74d3c, 
+        0 0 0 hsla(0, 0%, 0%, 0.3), 
+        1px 4px 6px #e74d3c; 
+}
+ 
+.ot-letter-left span:after { 
+    color: #e74d3c; 
+}
+ 
+.ot-letter-left:hover span:after { 
+    color: #ea6253; 
+}
+*/
+
+/* SUBMIT button effect */
+
+/* tympanus.net/codrops/CreativeLinkEffects/ */
+
+/* Effect 7: second border slides up */
+.cl-effect-7 {
+  font-family:Raleway, sans-serif;
+}
+.cl-effect-7 button {
+  padding: 12px 10px 10px;
+  color: #566473;
+  text-shadow: none;
+  font-weight: 700;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+}
+.cl-effect-7 button:hover,
+.cl-effect-7 button:focus {
+  background-color: transparent;
+
+}
+.cl-effect-7 button::before,
+.cl-effect-7 button::after {
+  position: absolute;
+  top: 100%;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: #566473;
+  content: '';
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  transition: transform 0.3s;
+  -webkit-transform: scale(0.85);
+  -moz-transform: scale(0.85);
+  transform: scale(0.85);
+}
+
+.cl-effect-7 button::after {
+  opacity: 0;
+  -webkit-transition: top 0.3s, opacity 0.3s, -webkit-transform 0.3s;
+  -moz-transition: top 0.3s, opacity 0.3s, -moz-transform 0.3s;
+  transition: top 0.3s, opacity 0.3s, transform 0.3s;
+}
+
+.cl-effect-7 button:hover::before,
+.cl-effect-7 button:hover::after,
+.cl-effect-7 button:focus::before,
+.cl-effect-7 button:focus::after {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
+}
+
+.cl-effect-7 button:hover::after,
+.cl-effect-7 button:focus::after {
+  top: 75%;
+  opacity: 1;
+
 }

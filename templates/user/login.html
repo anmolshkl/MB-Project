@@ -31,6 +31,8 @@
             <link rel="stylesheet" href="{% static 'aerial/css/style-noscript.css' %}" />
         </noscript>
         <link rel="stylesheet" href="{% static 'css/user/login.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/user/normalize.css' %}" />
+        <script src="{% static 'js/user/modernizr.custom.js' %}"></script>
         
     </head>
         <div class="loader">
@@ -52,7 +54,18 @@
             <div id="main">
                 <!-- Header -->
                 <header id="header">
-                    <h1>Welcome to Mentor Buddy</h1>
+                    <!--
+                    <div class="title ">
+                        <ul class="grid">
+                            <li class="ot-letter-left"><span data-letter="M">M</span></li>
+                            <li class="ot-letter-top"><span data-letter="E">E</span></li>
+                            <li class="ot-letter-right"><span data-letter="N">N</span></li>
+                            <li class="ot-letter-bottom"><span data-letter="T">T</span></li>
+                            <li class="ot-letter-left"><span data-letter="O">O</span></li>
+                            <li class="ot-letter-left"><span data-letter="R">R</span></li>
+                        </ul>
+                    </div>
+                -->
                     {% if not user.is_authenticated %}
                     <div class="form-div col-xs-4 col-xs-offset-4">
                         <form class="form" role="form" action="/user/login/" method="POST">
@@ -67,8 +80,9 @@
                                  <input type="password" class="placeholder-input" value="" name="password" id="password">
                                 <label class='placeholder-label' for='password'>Password</label>
                            </div>
-                           <button type="submit" class="btn btn-lg btn-default">Sign in</button>
-
+                           <div class="cl-effect-7">
+                                <button type="submit" class="btn btn-primary">SIGN IN</button>
+                            </div>
 
                         </form>
                     </div>
@@ -86,13 +100,13 @@
                             <li><a href="{% provider_login_url "github" %}" class="icon fa-github">
                                 <span class="label">Github</span></a></li>
 
-                            <br>                            
-                            <a href="/mentor/register/">Register as a Mentor</a><br>
-                            
-                            <a href="/mentee/register/">Register as a Mentee</a>
-
+                            <br>
                         </ul>
                     </nav>
+                    <div class="">                           
+                        <a href="/mentor/register/">Register as a Mentor</a><br>
+                        <a href="/mentee/register/">Register as a Mentee</a>
+                    </div>
                     {% else %}
                     {% if user.user_profile.is_mentor == True %}
                         <a href="/mentor/">Welcome mentor!Enter the site></a>
