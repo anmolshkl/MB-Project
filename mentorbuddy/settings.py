@@ -66,7 +66,6 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
-    'haystack',
 )
 
 
@@ -116,7 +115,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mb_db2',
         'USER': 'mentorbuddy',
-        'PASSWORD': 'asaf-123',
+        'PASSWORD': 'mentorbuddy',
         'HOST': 'localhost',
         'PORT': '3306',
     },
