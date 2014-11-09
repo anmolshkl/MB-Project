@@ -1,4 +1,9 @@
 ***************************PART-1 INITIAL SETUP***********************
+<>Install python(2.7)
+<>Install pip("easy_intall pip")
+<>Install Virtualenv
+Please google around to get to know more about Python,pip,virtualenv and DJANGO!:) 
+NOTE:
 1.Start command prompt and activate virtualenv with `env\Scripts\activate`
 2.Install the requitements `pip install -r requirements.txt`
   **NOTE** Remove MySQL-python==1.2.5 from the file and install it manually with easy_install MySQL-python==1.2.5 
@@ -7,7 +12,7 @@
 This is my final directory structure:
 
 mentorbuddy
-├── mysite
+├── mentorbuddy
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
@@ -20,8 +25,25 @@ mentorbuddy
 │       ├── models.py
 │       ├── tests.py
 │       └── views.py
+│   └── mentee
+│        ├── __init__.py
+│        ├── admin.py.py
+│        ├── models.py
+│        ├── tests.py
+│        ├── views.py
+│   └── user
+│        ├── __init__.py
+│        ├── admin.py.py
+│        ├── models.py
+│        ├── tests.py
+│        ├── views.py
+├──static
+├──templates
+│
 └── manage.py
-
+--------------
+SKIP THIS STEP:
+---------------
 No matter if you have just created your project or if you want to move your apps, create the apps subdirectory that should contain your apps. The trick is to add an __init__.py to that folder.
 
   mkdir apps
@@ -51,9 +73,9 @@ In short, if you make your apps directory a python module, you can use it as par
 
 ******************PART-3-INSTALLING MYSQL****************************
 
-1.Install XAMPP (we basically need phpmyadmin & MySQL)
+1.Install XAMPP (we basically need phpmyadmin for convenience)
 
-2.Create a database "mb_db" in phpmyadmin
+2.Create a database "mb_db2" in phpmyadmin
 
 3.Select the database & click on Privileges tab.
 
@@ -61,4 +83,6 @@ In short, if you make your apps directory a python module, you can use it as par
 
 5.Make sure you have installed MySQLdb driver with the following command 
 		`easy_install MySQL-python==1.2.5` 
-  pip wont work
+  !pip wont work
+
+Linux users may have to find a work around :P
