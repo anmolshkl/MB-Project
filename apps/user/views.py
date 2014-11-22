@@ -106,14 +106,13 @@ def register(request):
         mentor_form = MentorProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
         mentee_form = MenteeProfileForm(data=request.POST)
-        print request.POST['password1']==''
         if request.POST['password1'] != request.POST['password2'] or request.POST['password1'] == '':
             msg = "The confirmation password doesn't matches."
             template = 'user/register.html'
             context_dict['selected'] = request.POST['selected']
             context_dict['error'] = msg
 
-        if request.POST['selected'] == 'mentor' and msg != None:
+        if request.POST['selected'] == 'mentor' and msg == None:
             #the post is for mentor registration, save the form or else display it
             if mentor_form.is_valid() and education_form.is_valid():
                 mentor_profile = mentor_form.save(commit=False)
@@ -132,7 +131,7 @@ def register(request):
             else:
                 print mentor_form.errors, education_form.errors
 
-        if request.POST['selected'] == 'mentee' and msg != None:
+        if request.POST['selected'] == 'mentee' and msg == None:
             #the post is for mentee registration, save the form or else display it
             if mentee_form.is_valid():
                 mentee_profile = mentee_form.save(commit=False)
