@@ -235,7 +235,7 @@ def edit_profile(request):
         #employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
         edu_formset= EducationDetailsFormSet(request.POST, instance=user_profile)
         emp_formset= EmploymentDetailsFormSet(request.POST, instance=user_profile)
-        if form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
+        if user_form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
             user_form.save()
             profile_form.save()
             emp_formset.save()

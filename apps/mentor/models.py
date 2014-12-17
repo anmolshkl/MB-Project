@@ -6,6 +6,10 @@ from django.dispatch import receiver
 from allauth.account.signals import user_logged_in, user_signed_up
 
 from apps.user.models import UserProfile
+
+#for haystack
+from haystack import indexes
+
 # Create your models here.
 class EducationDetails(models.Model):
     """Stores educational details of the user"""
@@ -42,3 +46,15 @@ class EmploymentDetails(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "Employment Details"
+
+class MentorIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    college = indexes.CharField(model_attr='college')
+    country = indexes.CharField(model_attr='country')
+    
+    def get_model(self):
+        return UserProfile
+
+    def index_queryset(self, using=None):
+        """Used when the entire index for model is updated."""
+        return self.get_model().objects.filter(is_mentor=True)

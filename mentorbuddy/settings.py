@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
+    'haystack',
 )
 
 
@@ -148,7 +149,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_ROOT = ""
+STATIC_ROOT = os.path.join(BASE_DIR, '../staticfiles/')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -169,7 +170,7 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media') # Absolute path to the media di
 # Login urls
 LOGIN_URL          = '/user/login/'
 LOGOUT_URL         = '/user/logout/'
-LOGIN_REDIRECT_URL = '/user/index/' #-adapter will provide the login_redirect_url,but adapter doesn't support
+LOGIN_REDIRECT_URL = '/user/' #-adapter will provide the login_redirect_url,but adapter doesn't support
 
 SOCIALACCOUNT_PROVIDERS = \
     { 'google':

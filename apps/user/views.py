@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.template import RequestContext
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth import authenticate,login, logout #,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
@@ -13,13 +13,16 @@ from django.contrib.auth.decorators import login_required
 #from apps.user.backends import EmailAuthBackend 
 
 # Create your views here.
-@login_required #this is added to avoid SimpleLazyObject request.user error
 def index(request):
     context_dict = {}
     template = "user/login.html" #default template to render
-    user = request.user
-    if user:
+    user = None
+    user_profile = None
+
+    user = request.user.id
+    if user != None:
         user_profile,created = UserProfile.objects.get_or_create(user=user)
+    
     #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
@@ -164,6 +167,6 @@ def register(request):
 def user_logout(request):
         request.session.flush()
         logout(request)
-        return HttpResponseRedirect('/user/')
+        return redirect('http://127.0.0.1:8000')
 
 

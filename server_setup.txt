@@ -1,0 +1,16 @@
+<>First you need to install nginx and set it up to serve any request for static content & forward all dynamic content requests to Gunicorn
+
+<>Configure nginx:
+		https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-django-with-postgres-nginx-and-gunicorn
+
+<>Configure gunicorn:
+		Follow up with this(for gunicorn + supervisor setup only):
+				http://iambusychangingtheworld.blogspot.in/2013/05/django-gunicorn-nginx-supervisor.html
+		Place the gunicorn.conf in /etc/supervisor/confd/
+
+Run supervisord
+		$ sudo supervisord
+Check if gunicorn is running
+		$ sudo supervisorctl
+
+127.0.0.1:8000 is the location for site now 

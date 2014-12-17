@@ -1,0 +1,4 @@
+{{ object.full_name }}
+{{ object.college }}
+{{ object.country }}
+{{ object.about }}
