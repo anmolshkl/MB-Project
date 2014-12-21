@@ -11,8 +11,10 @@ from apps.mentor.forms import EducationForm
 from django.contrib.auth.decorators import login_required
 #new
 #from apps.user.backends import EmailAuthBackend 
+from django.conf import settings
 
 # Create your views here.
+import os
 def index(request):
     context_dict = {}
     template = "user/login.html" #default template to render
@@ -88,11 +90,15 @@ def select(request):
         if request.POST.get('choice'):
             print "entered"
             #store the choice in session for further use
+            user = request.user
+            user_profile = user.user_profile
             context['selected'] = request.POST['choice']
             template = "user/register.html"
-            context_dict['mentor_form'] = MentorProfileForm()
-            context_dict['mentee_form'] = MenteeProfileForm()
-            context_dict['education_form'] = EducationForm()
+            context_dict['mentor_form'] = MentorProfileForm(instance=user_profile)
+            context_dict['mentee_form'] = MenteeProfileForm(instance=user_profile)
+            context_dict['education_form'] = EducationForm(instance=user_profile)
+            
+            #return HttpResponseRedirect('/user/register/?selected=%s'%(request.POST['choice']))
     return render_to_response(template,context_dict,context)
 
 #register after loggin in through Social App & hence @login_required
@@ -100,15 +106,17 @@ def select(request):
 def register(request):
     context = RequestContext(request)
     context_dict = {}
-    template  = 'user/select.html'
+    template  = 'user/register.html'
     user = request.user
+    user_profile = user.user_profile
+    print 'entered register'
     msg = None
     if not UserProfile.objects.get(user=user).is_new:
         return HttpResponseRedirect('/user/')
     if request.method == 'POST':
-        mentor_form = MentorProfileForm(data=request.POST)
-        education_form = EducationForm(data=request.POST)
-        mentee_form = MenteeProfileForm(data=request.POST)
+        mentor_form = MentorProfileForm(request.POST,request.FILES,instance=user_profile)
+        education_form = EducationForm(data=request.POST,instance=user_profile)
+        mentee_form = MenteeProfileForm(request.FILES,request.POST,instance=user_profile)
         if request.POST['password1'] != request.POST['password2'] or request.POST['password1'] == '':
             msg = "The confirmation password doesn't matches."
             template = 'user/register.html'
@@ -117,11 +125,16 @@ def register(request):
 
         if request.POST['selected'] == 'mentor' and msg == None:
             #the post is for mentor registration, save the form or else display it
+            print 'mentor data received'
             if mentor_form.is_valid() and education_form.is_valid():
+                #print 'mentor data valid'
+                #print request.POST
+                #print request.FILES
                 mentor_profile = mentor_form.save(commit=False)
                 mentor_profile.user = user
                 mentor_profile.is_mentor = True
                 mentor_profile.is_new = False
+                #mentor_profile.picture = request.FILES['picture']
                 mentor_profile.save()
                 education = education_form.save(commit=False)
                 education.parent = mentor_profile
@@ -152,9 +165,9 @@ def register(request):
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
-        mentor_form = MentorProfileForm()
-        mentee_form = MenteeProfileForm()
-        education_form = EducationForm()
+        mentor_form = MentorProfileForm(instance=user_profile)
+        mentee_form = MenteeProfileForm(instance=user_profile)
+        education_form = EducationForm(instance=user_profile)
     # Render the template depending on the context.
     context_dict['selected'] = request.POST['selected']
     context_dict['mentor_form'] =  mentor_form
@@ -167,6 +180,25 @@ def register(request):
 def user_logout(request):
         request.session.flush()
         logout(request)
-        return redirect('http://127.0.0.1:8000')
+        return redirect('http://localhost:8000')
 
-
+@login_required
+def save_image(request):
+    context = RequestContext(request)
+    context_dict = {}
+    user = request.user
+    user_profile = user.user_profile
+    if request.method == 'POST':
+        if request.FILES['uncroppedPic']:
+            print "received"
+            uploaded_file = request.FILES['uncroppedPic']
+            print 'assigned'
+            path = os.path.join(settings.MEDIA_ROOT,'temp',uploaded_file.name)
+            try:
+                with open(path,'wb+') as f:
+                    print 'opened'
+                    for chunk in uploaded_file.chunks():
+                        f.write(chunk)
+            except Exception as e:
+                print str(e)
+            return HttpResponse(path)

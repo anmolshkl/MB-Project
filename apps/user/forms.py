@@ -38,3 +38,4 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ('email','first_name','last_name') 
 
+

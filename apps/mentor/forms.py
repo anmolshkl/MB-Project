@@ -16,9 +16,10 @@ class EducationForm(forms.ModelForm):
 		fields = ('institution', 'location', 'degree', 'branch', 'from_year', 'to_year', 'country')
 
 class UserProfileForm(forms.ModelForm):
+	
 	class Meta:
 		model = UserProfile
-		fields = ('gender', 'date_of_birth','contact','location','country','about' )
+		fields = ('gender', 'date_of_birth','contact','location','country','about','picture')
 
 EducationDetailsFormSet  = inlineformset_factory(UserProfile, EducationDetails,
                                                 form=EducationForm, extra=0, can_delete=False)

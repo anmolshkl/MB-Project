@@ -66,7 +66,10 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
-    'haystack',
+    #'haystack',
+    'debug_toolbar',
+    'easy_thumbnails',
+    'image_cropping',
 )
 
 
@@ -174,12 +177,12 @@ LOGIN_REDIRECT_URL = '/user/' #-adapter will provide the login_redirect_url,but 
 
 SOCIALACCOUNT_PROVIDERS = \
     { 'google':
-        { 'SCOPE': ['profile', 'email'],
+        { 'SCOPE': ['profile', 'email',],
           'AUTH_PARAMS': { 'access_type': 'online' } }}
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
-       {'SCOPE': ['email', 'publish_stream','public_profile'],
+       {'SCOPE': ['email', 'publish_stream','public_profile','user_birthday','user_education_history','user_location'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'METHOD': 'oauth2',
         'LOCALE_FUNC': lambda request: 'zh_CN',
@@ -237,3 +240,8 @@ HAYSTACK_CONNECTIONS = {
         # 'URL': 'http://127.0.0.1:8983/solr/mysite',
     },
 }
+
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
