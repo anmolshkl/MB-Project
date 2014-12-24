@@ -70,20 +70,21 @@ html {
   z-index: 20;
   margin-left: -325px;
   width: 650px;
+  height: 80%;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 @media \0screen\,screen\9 {
   .modal--show .modal-inner {
     background: transparent;
+
   }
 }
 .modal--show .modal-inner > img,
 .modal--show .modal-inner > video,
 .modal--show .modal-inner > iframe {
   width: 100%;
-  height: auto;
-  min-height: 300px;
+  
 }
 .modal--show .modal-inner > img {
   width: auto;
@@ -91,8 +92,7 @@ html {
 }
 .modal--show .modal-content {
   position: relative;
-  max-height: 400px;
-  max-height: 80vh;
+  max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -186,7 +186,7 @@ html {
     overflow: auto;
   }
   .modal--show .modal-content {
-    max-height: none;
+    height: 100%;
     -ms-word-break: break-all;
     word-break: break-word;
     -webkit-hyphens: auto;
@@ -207,18 +207,7 @@ html {
     margin-left: 0;
   }
 }
-@media screen and (max-height: 46em) and (min-width: 30em) {
-  .modal--show .modal-content {
-    max-height: 340px;
-    max-height: 50vh;
-  }
-}
-@media screen and (max-height: 36em) and (min-width: 30em) {
-  .modal--show .modal-content {
-    max-height: 265px;
-    max-height: 40vh;
-  }
-}
+
 .is-stacked.modal--show {
   -webkit-transform: translate(0, 0) scale(1, 1);
   -moz-transform: translate(0, 0) scale(1, 1);

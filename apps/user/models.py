@@ -42,13 +42,13 @@ class UserProfile(models.Model):
     
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M',blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    state = models.CharField(max_length=128, blank=True)
-    college = models.CharField(max_length=128, blank=True)
     contact = models.CharField(max_length=128, blank=True)
-    country = models.CharField(max_length=128, blank=True)
+    college = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
-    about = models.CharField(max_length=256, blank=True)
-    picture = models.ImageField(upload_to=path_and_rename,blank=True, null=True)
+    state = models.CharField(max_length=128, blank=True)
+    country = models.CharField(max_length=128, blank=True)
+    about = models.TextField(blank=True)
+    picture = models.CharField(max_length=128,blank=True, null=True) #Contains URL
     # size is "width x height"
     #min_free_cropping = ImageRatioField('picture', '300x300', free_crop=True)
     is_mentor = models.BooleanField(default=False)

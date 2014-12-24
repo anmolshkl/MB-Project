@@ -24,32 +24,35 @@
               <header id="modal-label"><!-- Header --></header>
               <div class="modal-content">
                 
-                <form id="uploadForm" method="POST" action="/user/save-image/" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <label for="uncroppedPic">Upload a picture</label>
-                  <input type="file" name="uncroppedPic" id="uncroppedPic" />
-                  <input type="submit" value="UPLOAD" />
-                </form>
+                <div class="block">
+                  <form id="uploadForm" method="POST" action="/user/save-image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="uncroppedPic">Upload a picture</label>
+                    <input type="file" name="uncroppedPic" id="uncroppedPic" />
+                    <input type="submit" value="UPLOAD" />
+                  </form>
+                </div>
                 
-                <div class="container">
+                <div class="container block">
                   <p>
                     <img id="target" src="" style="float: left; margin-right: 10px;" />
                   </p>
                 </div>
 
-                <form id='cropForm' method="POST" action="/user/crop-image/" enctype="multipart/form-data">
-                  {% csrf_token %}
-                  <input type="hidden" id="x1" name="x1" value="" />
-                  <input type="hidden" id="x2" name="x2" value="" />
-                  <input type="hidden" id="y1" name="y1" value="" />
-                  <input type="hidden" id="y2" name="y2" value="" />
-                  <input type="hidden" id="w" name="w" value="" />
-                  <input type="hidden" id="h" name="h" value="" /> 
-                  <input type="submit" value="Make this my profile pic!">
-                  <!-- http://www.hongkiat.com/blog/loading-effect-in-buttons-ladda/ -->
-                </form>
+                <div class='block'>
+                  <form id='cropForm' method="POST" action="/user/crop-image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" id="x1" name="x1" value="" />
+                    <input type="hidden" id="x2" name="x2" value="" />
+                    <input type="hidden" id="y1" name="y1" value="" />
+                    <input type="hidden" id="y2" name="y2" value="" />
+                    <input type="hidden" id="w" name="w" value="" />
+                    <input type="hidden" id="h" name="h" value="" /> 
+                    <input type="submit" class="cropSubButton" value="Make this my profile pic!">
+                    <!-- http://www.hongkiat.com/blog/loading-effect-in-buttons-ladda/ -->
+                  </form>
+                </div>
               </div>
-              <footer><!-- Footer --></footer>
           </div>
 
           <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
@@ -202,7 +205,6 @@
               
               <fieldset>
                   <h2 class="fs-title">Personal Details</h2>
-                  <h3 class="fs-subtitle">Well,tell us more about yourself! :)</h3>
                   <div class="left">
                       <div class="">
                       <label for="{{ mentee_form.gender.id_for_label }}">Gender:</label>
@@ -251,6 +253,8 @@
         $(document).ready(function() {
           $('#cropForm').hide();
         });
+
+
         function preview(img, selection) {
             var scaleX = 100 / (selection.width || 1);
             var scaleY = 100 / (selection.height || 1);
@@ -268,7 +272,13 @@
             $('#x2').val(selection.x2);
             $('#y2').val(selection.y2);
             $('#w').val(selection.width);
-            $('#h').val(selection.height); 
+            $('#h').val(selection.height);
+
+            var tarImg  =document.getElementById('target');
+            if(tarImg.naturalHeight > 400 || tarImg.naturalWidth >400) {
+              $('#preview2').remove();
+            }
+
             if(selection.width == 0) {
               $("#cropForm").hide();
             }
@@ -276,6 +286,8 @@
              $("#cropForm").show(); 
             }
         }
+
+
          //Program a custom submit function for the form
           $("#uploadForm").submit(function(event){
            
@@ -315,6 +327,7 @@
                 })
                 .insertAfter($('#target'));
 
+
                 ias = $('#target').imgAreaSelect({ 
                   aspectRatio: '1:1',
                   handles: true,
@@ -332,6 +345,10 @@
             });
         });
 
+
+        $('.modal-close').click(function() {
+          ias.cancelSelection();
+        });
         //Program a custom submit function for the form
           $("#cropForm").submit(function(event){
            

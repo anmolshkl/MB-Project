@@ -20,6 +20,9 @@ class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('gender', 'date_of_birth','contact','location','country','about','picture')
+		widgets = {
+          'about': forms.Textarea(attrs={'rows':3}),
+        }
 
 EducationDetailsFormSet  = inlineformset_factory(UserProfile, EducationDetails,
                                                 form=EducationForm, extra=0, can_delete=False)

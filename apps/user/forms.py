@@ -37,5 +37,8 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email','first_name','last_name') 
+        widgets = {
+          'about': forms.Textarea(attrs={'rows':3}),
+        }
 
 

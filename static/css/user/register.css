@@ -216,8 +216,19 @@ label {
 #target {
 	display: none;
 	visibility: hidden;
+	max-width: 400px;
+	max-height: 400px;
 }
 #preview {
 	display: none;
 	visibility: hidden;
+}
+
+.block {
+	display: block;
+	clear: both;
+	margin: 20px;
+}
+.cropSubButton {
+	margin-top: 50px; 
 }
