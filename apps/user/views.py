@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 #from apps.user.backends import EmailAuthBackend 
 from django.conf import settings
 
+from PIL import Image
+
 # Create your views here.
 import os
 def index(request):
@@ -202,3 +204,40 @@ def save_image(request):
             except Exception as e:
                 print str(e)
             return HttpResponse(path)
+
+def crop_image(request):
+    context = RequestContext(request)
+    context_dict = {}
+    user = request.user
+    user_profile = user.user_profile
+    if request.method == 'POST':
+        if request.POST['url']:
+            x1=request.POST['x1']
+            x2=request.POST['x2']
+            y1=request.POST['y1']
+            y2=request.POST['y2']
+            w=request.POST['w']
+            h=request.POST['h']
+            try:
+                path = request.POST['url']
+                im = Image.open(path)
+                box = (x1, y1, x2, y2) #(left, upper, right, lower)
+                box = (int(x) for x in box)
+                cropped = im.crop(box)
+
+                newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+                if not os.path.exists(newPath):
+                    os.makedirs(newPath)
+
+                cropped.save(os.path.join(newPath,user.username+"CRPD"),"jpeg")
+                im.save(os.path.join(newPath,user.username),"jpeg")
+            except Exception as e:
+                print str(e)
+            return HttpResponse("Success")
+        else:
+            return HttpResponse("Uh Oh! something went wrong :/")
+
+
+
+
+

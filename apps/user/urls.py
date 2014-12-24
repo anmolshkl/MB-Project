@@ -7,4 +7,5 @@ urlpatterns = patterns('',
 		url(r'^register/$', views.register, name='register'),
 		url(r'^select/$', views.select, name='select'),
 		url(r'^save-image/$', views.save_image, name='save-image'),
+		url(r'^crop-image/$', views.crop_image, name='crop-image'),
 		)

@@ -4,7 +4,11 @@ h1 {
 /*custom font*/
 .left {
 	text-align: left;
-
+}
+.float {
+	float: left;
+	width: 48%;
+	margin: 1%;
 }
 /* latin */
 @font-face {
@@ -20,23 +24,23 @@ h1 {
 	padding: 0;
 }
 html {
-	height: 170%;
-	/*Image only BG fallback*/
-	background: url('/static/img/gs.png');
 	/*background = gradient + image pattern combo*/
-	background: linear-gradient(rgba(196, 102, 0, 0.2), rgba(155, 89, 182, 0.2)),  url('/static/img/img.svg');
+	background: url('/static/img/img.svg');
 	background-size: cover;
 	width: auto;
+
+
 }
 body {
-	padding: 55px;
+	padding: 40px;
 	text-align: center;
 	font-family: montserrat, arial, verdana;
+
 }
 /*form styles*/
 #msform {
-	width: 800px;
-	margin: 50px auto;
+	width: 600px;
+	margin: 0px auto;
 	text-align: center;
 	position: relative;
 }
@@ -106,6 +110,10 @@ label {
 	/*CSS counters to number the steps*/
 	counter-reset: step;
 }
+.pb {
+	margin-left: 24%;
+}
+
 #progressbar li {
 	list-style-type: none;
 	color: white;

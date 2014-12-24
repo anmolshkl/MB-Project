@@ -7,53 +7,54 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Registeration</title> 
-      <link rel="stylesheet" type="text/css" href="{% static 'css/user/register.css' %}" />
       <link rel="stylesheet" type="text/css" href="{% static 'css/modal/modal.css' %}" />
       
-      <link rel="stylesheet" href="{% static 'css/jcrop/jquery.Jcrop.css' %}" type="text/css" />
-      
-      <script src="{% static 'js/jcrop/jquery.min.js' %}"></script>
-      <script src="{% static 'js/jcrop/jquery.Jcrop.js' %}"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/jcrop/imgareaselect-default.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'css/user/register.css' %}" />
 
+      <script type="text/javascript" src="{% static 'js/jcrop/jquery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'js/jcrop/jquery.imgareaselect.pack.js' %}"></script>
     </head>
     <body>
-
+      
       <section class="modal--show" id="modal-text" tabindex="-1"
         role="dialog" aria-labelledby="modal-label" aria-hidden="true">
 
           <div class="modal-inner">
               <header id="modal-label"><!-- Header --></header>
               <div class="modal-content">
+                
                 <form id="uploadForm" method="POST" action="/user/save-image/" enctype="multipart/form-data">
                   {% csrf_token %}
                   <label for="uncroppedPic">Upload a picture</label>
                   <input type="file" name="uncroppedPic" id="uncroppedPic" />
                   <input type="submit" value="UPLOAD" />
                 </form>
-                <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                <td>
-                <img src="" id="target" />
-                </td>
-                <td>
-                <div style="width:100px;height:100px;overflow:hidden;margin-left:5px;">
-                  <img src="" id="preview" />
+                
+                <div class="container">
+                  <p>
+                    <img id="target" src="" style="float: left; margin-right: 10px;" />
+                  </p>
                 </div>
 
-                </td>
-                </tr>
-                </table>
-      
+                <form id='cropForm' method="POST" action="/user/crop-image/" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" id="x1" name="x1" value="" />
+                  <input type="hidden" id="x2" name="x2" value="" />
+                  <input type="hidden" id="y1" name="y1" value="" />
+                  <input type="hidden" id="y2" name="y2" value="" />
+                  <input type="hidden" id="w" name="w" value="" />
+                  <input type="hidden" id="h" name="h" value="" /> 
+                  <input type="submit" value="Make this my profile pic!">
+                  <!-- http://www.hongkiat.com/blog/loading-effect-in-buttons-ladda/ -->
+                </form>
               </div>
-               
               <footer><!-- Footer --></footer>
           </div>
 
           <a href="#!" class="modal-close" title="Close this modal" data-close="Close"
               data-dismiss="modal">?</a>
-      </section>
-      
-      <h1>Welcome to Mentor Buddy Registeration</h1>
+      </section>      
             {% if selected == 'mentor' %}
             <!-- multistep form -->
             <form id="msform" method="POST" action="/user/register/" enctype="multipart/form-data">
@@ -95,15 +96,23 @@
                   <div class="left">
 
                     <label for="{{ form.gender.id_for_label }}">Gender:</label>
-                    {{ mentor_form.gender }}
+                    {{ mentor_form.gender }}<br>
+                    <div class="float">
                     <label for="{{ form.date_of_birth.id_for_label }}">Date of Birth:</label>
                     {{ mentor_form.date_of_birth }}
+                    </div>
+                    <div class="float">
                     <label for="{{ form.contact.id_for_label }}">Contact Number:</label>
                     {{ mentor_form.contact }}
+                    </div>
+                    <div class="float">
                     <label for="{{ form.location.id_for_label }}">City:</label>
                     {{ mentor_form.location }}
+                    </div>
+                    <div class="float">
                     <label for="{{ form.country.id_for_label }}">Country:</label>
                     {{ mentor_form.country }}
+                    </div>
                     <label for="{{ form.about.id_for_label }}">About:</label>
                     {{ mentor_form.about }}
                     <label for="modal-link">Profile Picture:</label>
@@ -118,7 +127,32 @@
                   <h2 class="fs-title">Education Details</h2>
                   <h3 class="fs-subtitle">So,where have you been? :)</h3>
                   <div class="left">
-                      {{ education_form.as_p }}
+                      <label for="{{ education_form.institution.id_for_label }}">Institution:</label>
+                       {{ education_form.institution }}
+                      <div class="float">
+                      <label for="{{ education_form.location.id_for_label }}">Location:</label>
+                      {{ education_form.location }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ education_form.degree.id_for_label }}">Degree:</label>
+                      {{ education_form.degree }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ education_form.branch.id_for_label }}">Branch:</label>
+                      {{ education_form.branch }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ education_form.country.id_for_label }}"> Country:</label>
+                      {{ education_form.country }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ education_form.from_year.id_for_label }}">From year:</label>
+                      {{ education_form.from_year }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ education_form.to_year.id_for_label }}">To year:</label>
+                      {{ education_form.to_year }}
+                      </div>
                   </div>
                   <input type="button" name="previous" class="previous action-button" value="Previous" />
                   <input type="submit" name="submit" class="submit action-button" value="Submit" />
@@ -138,7 +172,7 @@
 
               {% csrf_token %}
 
-              <ul id="progressbar">
+              <ul class="pb" id="progressbar">
               <li class="active">Password</li>
               <li>Personal Details</li>
               </ul>
@@ -170,12 +204,38 @@
                   <h2 class="fs-title">Personal Details</h2>
                   <h3 class="fs-subtitle">Well,tell us more about yourself! :)</h3>
                   <div class="left">
-                    {{ mentee_form.as_p }}
+                      <div class="">
+                      <label for="{{ mentee_form.gender.id_for_label }}">Gender:</label>
+                       {{ mentee_form.gender }}<br>
+                     </div>
+                      <div class="">
+                      <label for="{{ mentee_form.contact.id_for_label }}">Contact:</label>
+                      {{ mentee_form.contact }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ mentee_form.college.id_for_label }}">College:</label>
+                      {{ mentee_form.college }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ mentee_form.location.id_for_label }}">City:</label>
+                      {{ mentee_form.location }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ mentee_form.state.id_for_label }}"> State:</label>
+                      {{ mentee_form.state }}
+                      </div>
+                      <div class="float">
+                      <label for="{{ mentee_form.country.id_for_label }}">Country:</label>
+                      {{ mentee_form.country }}
+                      </div>
+                      <div class="">
+                      <label for="{{ mentee_form.about.id_for_label }}">About:</label>
+                      {{ mentee_form.about }}
+                    </div>
                   </div>
                   <input type="button" name="previous" class="previous action-button" value="Previous" />
                   <input type="submit" name="submit" class="submit action-button" value="Submit" />
               </fieldset>
-
             </form>
             {% endif %}
 
@@ -187,6 +247,35 @@
         <script src="{% static 'js/modal/modal.js' %}" type="text/javascript"></script>
       
         <script>
+        var ias; // Stores Instance of ImageAreaSelect
+        $(document).ready(function() {
+          $('#cropForm').hide();
+        });
+        function preview(img, selection) {
+            var scaleX = 100 / (selection.width || 1);
+            var scaleY = 100 / (selection.height || 1);
+            
+            var image = document.getElementById('target');
+
+            $('#target + div > img').css({
+                width: Math.round(scaleX * image.naturalWidth) + 'px',
+                height: Math.round(scaleY * image.naturalHeight) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+            });
+            $('#x1').val(selection.x1);
+            $('#y1').val(selection.y1);
+            $('#x2').val(selection.x2);
+            $('#y2').val(selection.y2);
+            $('#w').val(selection.width);
+            $('#h').val(selection.height); 
+            if(selection.width == 0) {
+              $("#cropForm").hide();
+            }
+            else {
+             $("#cropForm").show(); 
+            }
+        }
          //Program a custom submit function for the form
           $("#uploadForm").submit(function(event){
            
@@ -195,7 +284,8 @@
            
             //grab all form data  
             var formData = new FormData($(this)[0]);
-           
+
+
             $.ajax({
               url: '/user/save-image/',
               type: 'POST',
@@ -205,45 +295,68 @@
               contentType: false,
               processData: false,
               success: function (returndata) {
-                $("#uploadForm").remove();
                 $('#target').attr("src",returndata);
                 $('#target').css("display","block");
                 $('#target').css("visibility","visible");
                
-                
-                
-                $('#preview').attr("src",returndata);
-                $('#preview').css("display","block");
-                $('#preview').css("visibility","visible");
 
-                $('#target').Jcrop({
-                  onChange: showPreview,
-                  onSelect: showPreview,
-                  onRelease: hidePreview,
-                  aspectRatio: 1
+                var oldPreview = $('#preview');
+
+                 if(oldPreview != undefined) {
+                  $("#preview").remove();
+                 }
+
+               $('<div><img id="preview2" src='+returndata+' style="position: relative;" /></div>').css({
+                    float: 'left',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    width: '100px',
+                    height: '100px'
+                })
+                .insertAfter($('#target'));
+
+                ias = $('#target').imgAreaSelect({ 
+                  aspectRatio: '1:1',
+                  handles: true,
+                  fadeSpeed: 200, 
+                  onSelectChange: preview,
+                  maxHeight: 400, 
+                  maxWidth: 400, 
+                  minHeight: 150, 
+                  minWidth: 150,
+                  instance: true,
                 });
-                  var $preview = $('#preview');
-                  // Our simple event handler, called from onChange and onSelect
-                  // event handlers, as per the Jcrop invocation above
-                  function showPreview(coords)
-                  {
-                    if (parseInt(coords.w) > 0)
-                    {
-                      alert("Called");
-                      var rx = 100 / coords.w;
-                      var ry = 100 / coords.h;
 
-                      $preview.css({
-                        width: Math.round(rx * 500) + 'px',
-                        height: Math.round(ry * 370) + 'px',
-                        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-                        marginTop: '-' + Math.round(ry * coords.y) + 'px'
-                      }).show();
-                    }
-                  }
-                  function hidePreview()
-                  {
-                    $preview.stop().fadeOut('fast');
+                $('#cropForm').show();
+              }
+            });
+        });
+
+        //Program a custom submit function for the form
+          $("#cropForm").submit(function(event){
+           
+            //disable the default form submission
+            event.preventDefault();
+           
+            //grab all form data  
+            var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "url").val($('#target').attr('src'));
+            $('#cropForm').append($(input));
+            var formData = new FormData($(this)[0]);
+            
+            $.ajax({
+              url: '/user/crop-image/',
+              type: 'POST',
+              data: formData,
+              async: false,
+              cache: false,
+              contentType: false,
+              processData: false,
+              success: function (returndata) {
+                  if(returndata == 'Success') {
+                     ias.cancelSelection();
+                     $('.modal-close')[0].click();
                   }
               }
             });
