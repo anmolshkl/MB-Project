@@ -1,24 +1,96 @@
 <!DOCTYPE html>
 {% load static %}
 {% load socialaccount %}
-<html lang="en">
+<html lang="en" class="demo-2">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Mentor Buddy</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/select/normalize.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/select/component.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'css/user/select/demo.css' %}" />
+
+	<script src="{% static 'js/user/select/snap.svg-min.js' %}"></script>
 </head>
 <body>
 	<h1>Welcome to Mentor Buddy</h1>
 	{% if not selected %}
-		<form action="/user/select/" method="POST">
+		<form action="/user/select/" method="POST" id="selectionForm">
 			{% csrf_token %}
 		    Please select your options:<br>
-		    <input type="radio" name="choice" value="mentor">Mentor<br>
-		    <input type="radio" name="choice" value="mentee">Mentee<br>
-		    <input type='submit' name="submit" value="SUBMIT">
+		    <input type="radio" id="menteeChoice" name="choice" value="mentor">Mentor<br>
+		    <input type="radio" id="mentorChoice" name="choice" value="mentee">Mentee<br>
+		    <input type='submit' name="formSubmit" value="SUBMIT">
 		</form>
 	{% endif %}
+	<section id="grid" class="grid clearfix">
+		<a href="#" id="menteeBlock" data-path-hover="m 0,0 0,47.7775 c 24.580441,3.12569 55.897012,-8.199417 90,-8.199417 34.10299,0 65.41956,11.325107 90,8.199417 L 180,0 z">
+			<figure>
+				<img src="{% static 'img/2.png' %}" />
+				<svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="m 0,0 0,171.14385 c 24.580441,15.47138 55.897012,24.75772 90,24.75772 34.10299,0 65.41956,-9.28634 90,-24.75772 L 180,0 0,0 z"/></svg>
+				<figcaption>
+					<h2>Mentee</h2>
+					<p>Soko radicchio bunya nuts gram dulse.</p>
+					<button>Select</button>
+				</figcaption>
+			</figure>
+		</a>
+		<a href="#" id="mentorBlock" data-path-hover="m 0,0 0,47.7775 c 24.580441,3.12569 55.897012,-8.199417 90,-8.199417 34.10299,0 65.41956,11.325107 90,8.199417 L 180,0 z">
+			<figure>
+				<img src="{% static 'img/3.png' %}" />
+				<svg viewBox="0 0 180 320" preserveAspectRatio="none"><path d="m 0,0 0,171.14385 c 24.580441,15.47138 55.897012,24.75772 90,24.75772 34.10299,0 65.41956,-9.28634 90,-24.75772 L 180,0 0,0 z"/></svg>
+				<figcaption>
+					<h2>Mentor</h2>
+					<p>A grape silver beet watercress potato.</p>
+					<button>Select</button>
+				</figcaption>
+			</figure>
+		</a>
+	</section>
+	<script>
+			(function() {
+	
+				function init() {
+					var speed = 330,
+						easing = mina.backout;
+
+					[].slice.call ( document.querySelectorAll( '#grid > a' ) ).forEach( function( el ) {
+						var s = Snap( el.querySelector( 'svg' ) ), path = s.select( 'path' ),
+							pathConfig = {
+								from : path.attr( 'd' ),
+								to : el.getAttribute( 'data-path-hover' )
+							};
+
+						el.addEventListener( 'mouseenter', function() {
+							path.animate( { 'path' : pathConfig.to }, speed, easing );
+						} );
+
+						el.addEventListener( 'mouseleave', function() {
+							path.animate( { 'path' : pathConfig.from }, speed, easing );
+						} );
+					} );
+				}
+
+				init();
+
+			})();
+			(function() {
+				var mentee = document.getElementById('menteeBlock');
+				mentee.addEventListener( 'click', function() {
+					document.getElementById('menteeChoice').checked = true;
+					document.getElementById("selectionForm").submit();
+				});
+			})();
+
+			(function() {
+				var mentor = document.getElementById('mentorBlock');
+				mentor.addEventListener( 'click', function() {
+					document.getElementById('mentorChoice').checked = true;
+					document.getElementById("selectionForm").submit();
+				});
+			})();
+		</script>
 </body>
 </html>
