@@ -114,7 +114,9 @@ def register(request):
     print 'entered register'
     msg = None
     if not UserProfile.objects.get(user=user).is_new:
-        return HttpResponseRedirect('/user/')
+        return HttpResponseRedirect("/user/thank-you/")
+
+        #return HttpResponseRedirect('/user/')
     if request.method == 'POST':
         mentor_form = MentorProfileForm(request.POST,request.FILES,instance=user_profile)
         education_form = EducationForm(data=request.POST,instance=user_profile)
@@ -141,7 +143,9 @@ def register(request):
                 education = education_form.save(commit=False)
                 education.parent = mentor_profile
                 education.save()
-                return HttpResponseRedirect("/user/")
+                return HttpResponseRedirect("/user/thank-you/")
+            
+                #return HttpResponseRedirect("/user/")
             
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -157,7 +161,9 @@ def register(request):
                 mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
                 mentee_profile.save()
-                return HttpResponseRedirect("/user/")            
+                return HttpResponseRedirect("/user/thank-you/")
+
+                #return HttpResponseRedirect("/user/")            
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
             # They'll also be shown to the user.
@@ -236,8 +242,6 @@ def crop_image(request):
             return HttpResponse("Success")
         else:
             return HttpResponse("Uh Oh! something went wrong :/")
-
-
-
-
-
+@login_required
+def thank_you(request):
+    return render_to_response('user/thankYou.html')

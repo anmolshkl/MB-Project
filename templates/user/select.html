@@ -15,7 +15,7 @@
 	<script src="{% static 'js/user/select/snap.svg-min.js' %}"></script>
 </head>
 <body>
-	<h1>Welcome to Mentor Buddy</h1>
+	<h1 style="text-align: center;">So, what would you like to be?</h1>
 	{% if not selected %}
 		<form action="/user/select/" method="POST" id="selectionForm">
 			{% csrf_token %}
@@ -26,6 +26,7 @@
 		</form>
 	{% endif %}
 	<section id="grid" class="grid clearfix">
+		<div class="wrapper">
 		<a href="#" id="menteeBlock" data-path-hover="m 0,0 0,47.7775 c 24.580441,3.12569 55.897012,-8.199417 90,-8.199417 34.10299,0 65.41956,11.325107 90,8.199417 L 180,0 z">
 			<figure>
 				<img src="{% static 'img/2.png' %}" />
@@ -48,6 +49,7 @@
 				</figcaption>
 			</figure>
 		</a>
+	</div>
 	</section>
 	<script>
 			(function() {
@@ -56,7 +58,7 @@
 					var speed = 330,
 						easing = mina.backout;
 
-					[].slice.call ( document.querySelectorAll( '#grid > a' ) ).forEach( function( el ) {
+					[].slice.call ( document.querySelectorAll( '.wrapper > a' ) ).forEach( function( el ) {
 						var s = Snap( el.querySelector( 'svg' ) ), path = s.select( 'path' ),
 							pathConfig = {
 								from : path.attr( 'd' ),

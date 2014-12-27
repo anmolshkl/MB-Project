@@ -114,32 +114,9 @@
 	opacity: 0;
 }
 
-/* Individual styles */
-.demo-1 body {
-	background: #3498db;
-}
 
-.demo-1 .grid figure button,
-.demo-3 .grid figure button {
-	top: 50%;
-	left: 50%;
-	border: 3px solid #fff;
-	background: transparent;
-	color: #fff;
-	opacity: 0;
-	-webkit-transform: translateY(-50%) translateX(-50%) scale(0.25);
-	transform: translateY(-50%) translateX(-50%) scale(0.25);
-}
-
-.demo-1 .grid a:hover figure button,
-.demo-3 .grid a:hover figure button {
-	opacity: 1;
-	-webkit-transform: translateY(-50%) translateX(-50%) scale(1);
-	transform: translateY(-50%) translateX(-50%) scale(1);
-}
 
 .demo-2 body {
-	background: #e74c3c;
 }
 
 .demo-2 .grid figcaption h2 {
@@ -180,28 +157,8 @@
 }
 
 .demo-2 .grid a:hover figcaption p,
-.demo-3 .grid a:hover figcaption p {
-	-webkit-transition-delay: 0s;
-	transition-delay: 0s;
-	-webkit-transition-duration: 0.1s;
-	transition-duration: 0.1s;
-}
 
-.demo-3 body {
-	background: #52be7f;
-}
 
-.demo-3 .grid figcaption h2 {
-	color: #52be7f;
-}
-
-.demo-3 .grid a:hover figcaption h2 {
-	-webkit-transform: translateY(5px);
-	transform: translateY(5px);
-}
-
-/* Media Queries */
-/* Let's redefine the width of each anchor and the margins */
 
 @media screen and (max-width: 58em) {
 	.grid a {
