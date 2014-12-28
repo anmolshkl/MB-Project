@@ -9,8 +9,6 @@ import datetime
 from django.utils.deconstruct import deconstructible
 import os
 
-#for image cropping tool
-from image_cropping import ImageCropField, ImageRatioField
 
 #http://stackoverflow.com/questions/25767787/django-cannot-create-migrations-for-imagefield-with-dynamic-upload-to-value
 @deconstructible
