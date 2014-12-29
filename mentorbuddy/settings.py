@@ -68,8 +68,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     #'haystack',
     #'debug_toolbar',
-    #'easy_thumbnails',
-    #'image_cropping',
 )
 
 
@@ -232,16 +230,4 @@ SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr'
-        # ...or for multicore...
-        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
-    },
-}
 
-from easy_thumbnails.conf import Settings as thumbnail_settings
-THUMBNAIL_PROCESSORS = (
-    'image_cropping.thumbnail_processors.crop_corners',
-) + thumbnail_settings.THUMBNAIL_PROCESSORS
