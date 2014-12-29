@@ -9,7 +9,7 @@
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <!-- Bootstrap -->
-        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,102 +30,100 @@
             <link rel="stylesheet" href="{% static 'aerial/css/style.css' %}" />
             <link rel="stylesheet" href="{% static 'aerial/css/style-noscript.css' %}" />
         </noscript>
+
         <link rel="stylesheet" href="{% static 'css/user/login.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'css/user/normalize.css' %}" />
-        <script src="{% static 'js/user/modernizr.custom.js' %}"></script>
         
     </head>
     <body>
-        <div class="loader">
-          <div class="dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-        </div>
+        <div class="modal fade" id="modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+              </div>
+              <div class="modal-body">                      
+                    <a href="/mentor/register/">Register as a Mentor</a><br>
+                    <a href="/mentee/register/">Register as a Mentee</a>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <div id="wrapper">
             <div id="bg"></div>
             <div id="overlay"></div>
             <div id="main">
                 <!-- Header -->
                 <header id="header">
-                    <!--
-                    <div class="title ">
-                        <ul class="grid">
-                            <li class="ot-letter-left"><span data-letter="M">M</span></li>
-                            <li class="ot-letter-top"><span data-letter="E">E</span></li>
-                            <li class="ot-letter-right"><span data-letter="N">N</span></li>
-                            <li class="ot-letter-bottom"><span data-letter="T">T</span></li>
-                            <li class="ot-letter-left"><span data-letter="O">O</span></li>
-                            <li class="ot-letter-left"><span data-letter="R">R</span></li>
-                        </ul>
-                    </div>
-                -->
-                    {% if not user.is_authenticated %}
-                    <div class="form-div col-xs-4 col-xs-offset-4">
-                        <form class="form" role="form" action="/user/login/" method="POST">
-                           {% csrf_token %}
-                           <div class="field">
-                                 <input type="email" class="placeholder-input" value="" name="email" id="email">
-                                 <label class='placeholder-label' for='email'>Email</label>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <h1>Mentor Buddy</h1>
+                            <h2>Reducing Distances</h2>
+                            <p>Mentor Buddy is a place which connects . 
+                                With over 100+ verified experts from top universities 
+                                we bring you the complete blemd of professionals.</p>
+                                <button type="button" class="btn btn-success scroler btn-lg">EXPLORE</button>
+                        </div>
+                        <div class="col-sm-7">
+                            {% if not user.is_authenticated %}
+                                <form class="form" role="form" action="/user/login/" method="POST">
+                                   {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                    </div>
+                                    <div class="cl-effect-7">
+                                        <button type="submit" class="btn btn-primary">SIGN IN</button>
+                                    </div>
 
-                           </div>
+                                </form>
+                            <nav class="nav">
+                                <ul>
+                                    <li><a href="{% provider_login_url  "google" %}" class="icon fa-google">
+                                        <span class="label">Google</span></a></li>
+                                    
+                                    <li><a href="{% provider_login_url "facebook" method="oauth2" %}" 
+                                        class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                                    
+                                    <li><a href="{% provider_login_url "linkedin" method="oauth2" %}" 
+                                        class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
 
-                           <div class="field">
-                                 <input type="password" class="placeholder-input" value="" name="password" id="password">
-                                <label class='placeholder-label' for='password'>Password</label>
-                           </div>
-                           <div class="cl-effect-7">
-                                <button type="submit" class="btn btn-primary">SIGN IN</button>
+                                    <br>
+                                </ul>
+                            </nav>
+                            <div class="signUp">
+                                <h2>New here? Sign up now!</h2>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal">
+                                  Sign Up
+                                </button>
                             </div>
-
-                        </form>
+                            {% else %}
+                            {% if user.user_profile.is_mentor == True %}
+                                <a href="/mentor/">Welcome mentor!Enter the site></a>
+                            {% else %}
+                                <a href="/mentee/">Welcome Mentee!Enter the site></a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                    <nav class="nav">
-                        <ul>
-                            <li><a href="{% provider_login_url  "google" %}" class="icon fa-google">
-                                <span class="label">Google</span></a></li>
-                            
-                            <li><a href="{% provider_login_url "facebook" method="oauth2" %}" 
-                                class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                            
-                            <li><a href="{% provider_login_url "linkedin" method="oauth2" %}" 
-                                class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                            
-                            <li><a href="{% provider_login_url "github" %}" class="icon fa-github">
-                                <span class="label">Github</span></a></li>
-
-                            <br>
-                        </ul>
-                    </nav>
-                    <nav><ul><li><a class="icon fa-arrow-circle-right" id="scroler"><span class="label"></span></a></li></ul></nav>
-                    <div class="">                           
-                        <a href="/mentor/register/">Register as a Mentor</a><br>
-                        <a href="/mentee/register/">Register as a Mentee</a>
-                    </div>
-                    {% else %}
-                    {% if user.user_profile.is_mentor == True %}
-                        <a href="/mentor/">Welcome mentor!Enter the site></a>
-                    {% else %}
-                        <a href="/mentee/">Welcome Mentee!Enter the site></a>
-                    {% endif %}
-                    {% endif %}
+                </div>
                 </header>
                 <!-- Footer -->
-                    <footer id="footer">
-                        <span class="copyright">&copy; Untitled. Design: <a href="">MentorBuddy</a>.</span>
-                    </footer>
+                   
             </div>
         </div>
+        <div class="page2">
+            <button type="button" class="btn btn-success scrolerBack btn-lg">BACK</button>
+        </div>
         <div>
-            <img src="bg2.jpg" style="width:1366px;height:910px; padding-bottom:124px; z-index: 9">
-            <p style="z-index: 999; color:red">An apple</p>
             <div id="main2" style="background-color:blue;">
                 <div class="menu-outer">
                     <div class="menu-icon">
@@ -156,15 +154,8 @@
                 </div>
         </div>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>      
-        <script type="text/javascript" src="www.cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js
-
-Copy"></script>
-        
-        </script>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static 'bootstrap/js/jquery.easing.1.3.js' %}"></script>
+        <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
         <script src="{% static 'js/user/login.js' %}"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     </body>
 </html>

@@ -7,8 +7,6 @@ from allauth.account.signals import user_logged_in, user_signed_up
 
 from apps.user.models import UserProfile
 
-#for haystack
-from haystack import indexes
 
 # Create your models here.
 class EducationDetails(models.Model):

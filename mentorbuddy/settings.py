@@ -67,9 +67,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.github',
     'crispy_forms',
     #'haystack',
-    'debug_toolbar',
-    'easy_thumbnails',
-    'image_cropping',
+    #'debug_toolbar',
+    #'easy_thumbnails',
+    #'image_cropping',
 )
 
 
