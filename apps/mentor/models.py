@@ -44,15 +44,3 @@ class EmploymentDetails(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "Employment Details"
-
-class MentorIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
-    college = indexes.CharField(model_attr='college')
-    country = indexes.CharField(model_attr='country')
-    
-    def get_model(self):
-        return UserProfile
-
-    def index_queryset(self, using=None):
-        """Used when the entire index for model is updated."""
-        return self.get_model().objects.filter(is_mentor=True)

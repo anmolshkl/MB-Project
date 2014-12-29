@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     url(r'^mentor/', include('apps.mentor.urls')),
     url(r'^mentee/', include('apps.mentee.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^search/', include('haystack.urls')),
 
 )
 
