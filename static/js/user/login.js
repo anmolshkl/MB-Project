@@ -4,16 +4,8 @@ $(document).ready(function() {
 });
 
 $(".scroler").click(function() {
-    $("#wrapper").animate(
-        {"top": "-=100%"},
-        1500);
-    $("#main").animate(
-        {"top": "-=100%"},
-        1500);
-    $("#bg").animate(
-        {"top": "-=100%"},
-        1500);
-    $("#overlay").animate(
-        {"top": "-=100%"},
-        1500);
+    $("#wrapper").fadeOut(500);
+    $("#main").fadeOut(500);
+    $("#bg").fadeOut(500);
+    $("#overlay").fadeOut(500);
 });
