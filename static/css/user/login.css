@@ -39,6 +39,26 @@
   text-align: center;
 }
 
+.page2 {
+  background: url('/static/img/img1.jpg');
+  background-size: cover;
+  position: absolute;
+  height: 100%;
+  width: 100%
+
+}
+.scrolerBack {
+    margin: 0px auto;
+    height: 70px;
+    width: 70px;
+    border-radius: 100%;
+    border: 1px solid white;
+    color: transparent;
+}
+.signUpArrow {
+  color: white;
+  text-decoration: none;
+}
 /* tympanus.net/codrops/CreativeLinkEffects/ */
 
 /* Effect 7: second border slides up */
@@ -280,3 +300,8 @@
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
   }
+.socialIcon {
+  display: inline;
+  width: 10%;
+  height: 10%;
+}

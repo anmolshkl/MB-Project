@@ -245,3 +245,6 @@ def crop_image(request):
 @login_required
 def thank_you(request):
     return render_to_response('user/thankYou.html')
+
+def explore(request):
+    return render_to_response('user/explore.html')
