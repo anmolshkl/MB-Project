@@ -305,3 +305,6 @@
   width: 10%;
   height: 10%;
 }
+.socialIcon:hover {
+  opacity: 0.7;
+}

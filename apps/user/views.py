@@ -237,6 +237,7 @@ def crop_image(request):
 
                 cropped.save(os.path.join(newPath,user.username+"CRPD"),"jpeg")
                 im.save(os.path.join(newPath,user.username),"jpeg")
+                print "image saved"
             except Exception as e:
                 print str(e)
             return HttpResponse("Success")

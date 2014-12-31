@@ -20,8 +20,8 @@
 		<form action="/user/select/" method="POST" id="selectionForm">
 			{% csrf_token %}
 		    Please select your options:<br>
-		    <input type="radio" id="menteeChoice" name="choice" value="mentor">Mentor<br>
-		    <input type="radio" id="mentorChoice" name="choice" value="mentee">Mentee<br>
+		    <input type="radio" id="menteeChoice" name="choice" value="mentee">Mentor<br>
+		    <input type="radio" id="mentorChoice" name="choice" value="mentor">Mentee<br>
 		    <input type='submit' name="formSubmit" value="SUBMIT">
 		</form>
 	{% endif %}

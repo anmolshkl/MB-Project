@@ -209,7 +209,9 @@
                       <div class="">
                       <label for="{{ mentee_form.gender.id_for_label }}">Gender:</label>
                        {{ mentee_form.gender }}<br>
-                     </div>
+                      </div>
+                      <label for="modal-link">Profile Picture:</label>
+                      <a name="modal-link" href="#modal-text">Upload</a>
                       <div class="">
                       <label for="{{ mentee_form.contact.id_for_label }}">Contact:</label>
                       {{ mentee_form.contact }}
@@ -405,6 +407,7 @@
                     inputs[i].style.borderColor = 'red';
                     inputs[i].style.boxShadow =  "0 0 10px red";
                     if(flag === false) {
+                      alert(inputs[i].name);
                       msg += "Please check all the input fields!\n";
                       flag = true;
                     }
