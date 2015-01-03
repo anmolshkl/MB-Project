@@ -4,84 +4,372 @@
 <html>
     <head>
         <title>Register as a Mentor</title>
-        
+        <link rel="stylesheet" type="text/css" href="{% static 'css/jcrop/imgareaselect-default.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/register.css' %}" />
+
     </head>
     <body>
-        <h1>Register as a Mentor</h1>
-            {% if registered == True%}
-            <strong>thank you for registering!</strong>
-            <a href="/user/">Return to the homepage.</a><br />
-            {% else %}
-            <!-- multistep form -->
-            <form id="msform" method="post" action="/mentor/register/"
-                    enctype="multipart/form-data">
-                  
-                  {% csrf_token %}
-                  
-                  <!-- progressbar -->
-                  <ul id="progressbar">
-                  <li class="active">Personal Details</li>
-                  <li>Educational Details</li>
-                  <li>Employment Details</li>
-                  </ul>
-                  <!-- fieldsets -->
+  
 
-
-                  <fieldset class="f1">
-                  <h2 class="fs-title">Create your account</h2>
-                  <h3 class="fs-subtitle">This is step 1</h3>
-                   <!-- Display each form. The as_p method wraps each element in a paragraph
-                       (<p>) element. This ensures each element appears on a new line,
-                       making everything look neater. -->
-                  <!-- Display UserForm by iterating over all fields because we dont want to display username
-                      as there is no username based authentication -->
-                  <div class="left">
-                  {{ user_form.non_field_errors }}
-                    {% for field in user_form %}
-                      {% if field.name != "username" %}
-                            {{ field.label_tag }}
-                            {% if field.field.required %}<span class="required">*</span>{% endif %}
-                            {{ field }}
-                            {{ field.errors }}
-                            <br>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                  <input type="button" name="next" class="n1 next action-button" value="Next" />
-                  </fieldset>
-
-
-
-                  <fieldset>
-                  <h2 class="fs-title">Educational Profile</h2>
-                  <h3 class="fs-subtitle">So,where have you been? :)</h3>
-                  <div class="left">
-                    {{ education_form.as_p }}
-                  </div>
-                  <input type="button" name="previous" class="previous action-button" value="Previous" />
-                  <input type="button" name="next" class="next action-button" value="Next" />
-                  </fieldset>
-
-
-
-                  <fieldset>
-                  <h2 class="fs-title">Employment Details</h2>
-                  <h3 class="fs-subtitle">Where do you slog?</h3>
-                  <div class="left">
-                    {{ employment_form.as_p }}
-                  </div>
-                  <input type="button" name="previous" class="previous action-button" value="Previous" />
-                  <input type="submit" name="submit" class="next action-button" value="Submit" />
-                  </fieldset>
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Set a Profile Picture</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <form id="uploadForm" method="POST" action="/user/save-image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                     <div class="form-group">
+                      <label for="uncroppedPic">Upload a picture</label>
+                      <input type="file" id="uncroppedPic" name="uncroppedPic">
+                      <p class="help-block">Please selct an image of dimensions less than 600x600px.</p>
+                      <input type="submit" class="btn btn-default" value="UPLOAD" />
+                    </div>
                   </form>
-            {% endif %}
+
+                </div>
+              </div>
+                
+                <div class="row">
+                  <p>
+                    <img id="target" src="" style="float: left; margin-right: 10px;" />
+                  </p>
+                </div>
+
+                <div class='row'>
+                  <form id='cropForm' method="POST" action="/user/crop-image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" id="x1" name="x1" value="" />
+                    <input type="hidden" id="x2" name="x2" value="" />
+                    <input type="hidden" id="y1" name="y1" value="" />
+                    <input type="hidden" id="y2" name="y2" value="" />
+                    <input type="hidden" id="w" name="w" value="" />
+                    <input type="hidden" id="h" name="h" value="" /> 
+                    <input type="submit" class="cropSubButton" value="Make this my profile pic!">
+                    <!-- http://www.hongkiat.com/blog/loading-effect-in-buttons-ladda/ -->
+                  </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        {% if registered == True%}
+        <strong>thank you for registering!</strong>
+        <a href="/user/">Return to the homepage.</a><br />
+        {% else %}
+
+        <!-- multistep form -->
+        <form id="msform" method="post" action="/mentor/register/"
+                enctype="multipart/form-data">
+              
+              {% csrf_token %}
+              
+              <!-- progressbar -->
+              <ul id="progressbar">
+              <li class="active">Personal Details</li>
+              <li>Educational Details</li>
+              <li>Employment Details</li>
+              </ul>
+              <!-- fieldsets -->
+
+
+              <fieldset class="f1">
+              <h2 class="fs-title">Personal Details</h2>
+              <h3 class="fs-subtitle">The necessary stuff</h3>
+               <!-- Display each form. The as_p method wraps each element in a paragraph
+                   (<p>) element. This ensures each element appears on a new line,
+                   making everything look neater. -->
+              <!-- Display UserForm by iterating over all fields because we dont want to display username
+                  as there is no username based authentication -->
+              <div class="left">
+              {{ user_form.non_field_errors }}
+                <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                {{ user_form.email }}<br>
+                <div class="float">
+                <label for="{{ user_form.first_name.id_for_label }}">First Name:</label>
+                {{ user_form.first_name }}
+                </div>
+                <div class="float">
+                <label for="{{ user_form.last_name.id_for_label }}">Last Name:</label>
+                {{ user_form.last_name }}
+                </div>
+                <div class="float">
+                <label for="{{ user_form.password1.id_for_label }}">Password:</label>
+                {{ user_form.password1 }}
+                </div>
+                <div class="float">
+                <label for="{{ user_form.password2.id_for_label }}">Confirm Password:</label>
+                {{ user_form.password2 }}
+                </div>
+                <label for="uploadButton">Profile Image:</label>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload</a>
+              </div>
+              <input type="button" name="next" class="n1 next action-button" value="Next" />
+              </fieldset>
+
+
+
+              <fieldset>
+              <h2 class="fs-title">Educational Profile</h2>
+              <h3 class="fs-subtitle">So,where have you been? :)</h3>
+              <div class="left">
+                  <label for="{{ education_form.institution.id_for_label }}">Institution:</label>
+                   {{ education_form.institution }}
+                  <div class="float">
+                  <label for="{{ education_form.branch.id_for_label }}">Branch:</label>
+                  {{ education_form.branch }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ education_form.degree.id_for_label }}">Degree:</label>
+                  {{ education_form.degree }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ education_form.location.id_for_label }}">City:</label>
+                  {{ education_form.location }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ education_form.country.id_for_label }}"> Country:</label>
+                  {{ education_form.country }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ education_form.from_year.id_for_label }}">From year:</label>
+                  {{ education_form.from_year }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ education_form.to_year.id_for_label }}">To year:</label>
+                  {{ education_form.to_year }}
+                  </div>
+              </div>
+              <input type="button" name="previous" class="previous action-button" value="Previous" />
+              <input type="button" name="next" class="next action-button" value="Next" />
+              </fieldset>
+
+
+
+              <fieldset>
+              <h2 class="fs-title">Employment Details</h2>
+              <h3 class="fs-subtitle">Where do you slog?</h3>
+              <div class="left">
+                  <label for="{{ employment_form.organization.id_for_label }}">Organization:</label>
+                   {{ employment_form.organization }}
+                  
+                  <div class="float">
+                  <label for="{{ employment_form.position.id_for_label }}">Position:</label>
+                  {{ employment_form.position }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ employment_form.location.id_for_label }}">Location:</label>
+                  {{ employment_form.location }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ employment_form.from_year.id_for_label }}">From Date:</label>
+                  {{ employment_form.from_date }}
+                  </div>
+                  <div class="float">
+                  <label for="{{ employment_form.to_year.id_for_label }}">To Date:</label>
+                  {{ employment_form.to_date }}
+                  </div>
+              </div>
+              <input type="button" name="previous" class="previous action-button" value="Previous" />
+              <input type="submit" name="submit" class="next action-button" value="Submit" />
+              </fieldset>
+              </form>
+        {% endif %}
 
         <!-- jQuery --> 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="{% static 'jquery/jquery-2.1.3.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/jcrop/jquery.imgareaselect.pack.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        
         <!-- jQuery easing plugin --> 
         <script src="{% static 'js/mentor/jquery.easing.min.js' %}" type="text/javascript"></script> 
         <script src="{% static 'js/mentor/register.js' %}" type="text/javascript"></script>
+        <script>
+        var ias; // Stores Instance of ImageAreaSelect
+        $(document).ready(function() {
+          $('#cropForm').hide();
+        });
+
+
+        function preview(img, selection) {
+            var scaleX = 100 / (selection.width || 1);
+            var scaleY = 100 / (selection.height || 1);
+            
+            var image = document.getElementById('target');
+
+            $('#target + div > img').css({
+                width: Math.round(scaleX * image.naturalWidth) + 'px',
+                height: Math.round(scaleY * image.naturalHeight) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+            });
+            $('#x1').val(selection.x1);
+            $('#y1').val(selection.y1);
+            $('#x2').val(selection.x2);
+            $('#y2').val(selection.y2);
+            $('#w').val(selection.width);
+            $('#h').val(selection.height);
+
+            var tarImg  =document.getElementById('target');
+            if(tarImg.naturalHeight > 400 || tarImg.naturalWidth >400) {
+              $('#preview2').remove();
+            }
+
+            if(selection.width == 0) {
+              $("#cropForm").hide();
+            }
+            else {
+             $("#cropForm").show(); 
+            }
+        }
+
+
+         //Program a custom submit function for the form
+          $("#uploadForm").submit(function(event){
+           
+            //disable the default form submission
+            event.preventDefault();
+           
+            //grab all form data  
+            var formData = new FormData($(this)[0]);
+
+            
+              $.ajax({
+                url: '/user/save-image/',
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                  alert("submitted successfully");
+                  $('#target').attr("src",returndata);
+                  $('#target').css("display","block");
+                  $('#target').css("visibility","visible");
+                 
+
+                  var oldPreview = $('#preview');
+
+                   if(oldPreview != undefined) {
+                    $("#preview").remove();
+                   }
+
+                 $('<div><img id="preview2" src='+returndata+' style="position: relative;" /></div>').css({
+                      float: 'left',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      width: '100px',
+                      height: '100px'
+                  })
+                  .insertAfter($('#target'));
+
+
+                  ias = $('#target').imgAreaSelect({ 
+                    aspectRatio: '1:1',
+                    handles: true,
+                    fadeSpeed: 200, 
+                    onSelectChange: preview,
+                    maxHeight: 400, 
+                    maxWidth: 400, 
+                    minHeight: 150, 
+                    minWidth: 150,
+                    instance: true,
+                  });
+
+                  $('#cropForm').show();
+                }
+              });
+        });
+
+
+        $('.modal-close').click(function() {
+          ias.cancelSelection();
+        });
+        //Program a custom submit function for the form
+          $("#cropForm").submit(function(event){
+           
+            //disable the default form submission
+            event.preventDefault();
+           
+            //grab all form data  
+            var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "url").val($('#target').attr('src'));
+            $('#cropForm').append($(input));
+            var formData = new FormData($(this)[0]);
+            
+            $.ajax({
+              url: '/user/crop-image/',
+              type: 'POST',
+              data: formData,
+              async: false,
+              cache: false,
+              contentType: false,
+              processData: false,
+              success: function (returndata) {
+                  if(returndata == 'Success') {
+                     ias.cancelSelection();
+                     $('.modal-close')[0].click();
+                  }
+              }
+            });
+        });
+          $("#msform").submit(function(event){
+            //disable the default form submission
+            event.preventDefault();
+            if(validate() == true) {
+              document.getElementById("msform").submit();
+            }
+          });
+          function validate() {
+            var ret=true;
+            var msg="";
+            var pass = document.getElementById("password1");
+            var confPass = document.getElementById("password2");
+            if(pass.value != confPass.value ) {
+                msg = msg + "Please check the password!.\n"
+                $("#password1").css({"border-color":"red","box-shadow":"0 0 10px red"});
+                $("#password2").css({"border-color":"red","box-shadow":"0 0 10px red"});
+                ret = false;
+            }
+
+            var inputs = document.getElementsByTagName("input");
+            var flag = false;
+            for(var i = 0; i < inputs.length; i++) {
+                if(inputs[i].value == '' ) {
+                    ret = false;
+                    inputs[i].style.borderColor = 'red';
+                    inputs[i].style.boxShadow =  "0 0 10px red";
+                    if(flag === false) {
+                      alert(inputs[i].name);
+                      msg += "Please check all the input fields!\n";
+                      flag = true;
+                    }
+                }
+            }
+            if(ret == false) {
+              alert(msg);
+            }
+            return ret;
+          }
+          $(document).ready(function() {
+            $(":input").keypress(function(){
+              $(this).css({"border-color":"black","box-shadow":" none"});
+            })
+          });
+        </script>
    </body>
 
 </html>

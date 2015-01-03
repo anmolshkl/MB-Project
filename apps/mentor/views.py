@@ -74,8 +74,10 @@ def register(request):
                 profile.picture = request.FILES['picture']"""
             # Now we save the UserProfile model instance.
             profile.save()
-            education.save()
-            employee.save()
+            if education.institution != '':
+                education.save()
+            if employee.organization != '':
+                employee.save()
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -84,7 +86,8 @@ def register(request):
         # They'll also be shown to the user.
         else:
             print user_form.errors, profile_form.errors,education_form.errors
-
+            return HttpResponse("Invalid user Input.")
+            
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
