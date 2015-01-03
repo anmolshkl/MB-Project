@@ -94,15 +94,15 @@
                         <div class="col-sm-7">
                             {% if not user.is_authenticated %}
                                 <form class="form" id="loginForm" role="form" action="/user/login/" method="POST">
-                                   {% csrf_token %}
+                                    {% csrf_token %}
                                     <div class="form-group">
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="">
                                     </div>
                                     <div class="cl-effect-7">
-                                        <button type="submit" class="btn btn-primary">SIGN IN</button>
+                                        <button type="submit" class="">SIGN IN</button>
                                     </div>
                                 </form>
                             <nav class="nav">
@@ -175,5 +175,11 @@
         <script type="text/javascript" src="{% static 'bootstrap/js/jquery.easing.1.3.js' %}"></script>
         <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
         <script src="{% static 'js/user/login.js' %}"></script>
+        {% if error %}
+        <script type="text/javascript">
+            $("#errModal .modal-body").html("Please check the Email/Password!");
+            $('#errModal').modal('show');
+        </script>
+        {% endif %}
     </body>
 </html>

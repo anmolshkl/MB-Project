@@ -73,6 +73,7 @@
   text-decoration: none;
   background-color: transparent;
   border: none;
+  outline: none;
 }
 .cl-effect-7 button:hover,
 .cl-effect-7 button:focus {

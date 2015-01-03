@@ -33,10 +33,11 @@ def index(request):
         template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
         #attach required forms to display in the template
 
-    return render_to_response(template,context_dict,RequestContext(request))
+    return render_to_response(template,context_dict,context_instance = RequestContext(request))
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
+    print "insedie user_login view"
     context = RequestContext(request)
 
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -45,16 +46,6 @@ def user_login(request):
         # This information is obtained from the login form.
         email = request.POST['email']
         password = request.POST['password']
-
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        '''
-        backend_obj = EmailAuthBackend()
-        user = backend_obj.authenticate(username=email, password=password)
-        '''
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
         user = authenticate(username=email, password=password)
         if user:
             # Is the account active? It could have been disabled.
@@ -63,21 +54,26 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the userpage.
                 login(request, user)
-                return HttpResponseRedirect('/user/')
+                return HttpResponseRedirect("/user/thank-you/")
+                #return HttpResponseRedirect('/user/')
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your Mentor Buddy account is disabled.")
+                return HttpResponseRedirect("/user/thank-you/")
+                #return HttpResponse("Your Mentor Buddy account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
             print "Invalid login details: {0}, {1}".format(email, password)
-            return HttpResponse("Invalid login details supplied.")
+            #return HttpResponse("Invalid login details supplied.")
+            return render_to_response('user/login.html', {'error':"Invalid Email/Password"},context_instance = context)
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GETself.
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render_to_response('user/login.html', {}, context)
+        return render_to_response('user/login.html', {},context_instance = context)
+    return render_to_response('user/login.html', {},context_instance = context)
+
 
 
 @login_required
@@ -120,7 +116,7 @@ def register(request):
     if request.method == 'POST':
         mentor_form = MentorProfileForm(request.POST,request.FILES,instance=user_profile)
         education_form = EducationForm(data=request.POST,instance=user_profile)
-        mentee_form = MenteeProfileForm(request.FILES,request.POST,instance=user_profile)
+        mentee_form = MenteeProfileForm(request.POST,request.FILES,instance=user_profile)
         if request.POST['password1'] != request.POST['password2'] or request.POST['password1'] == '':
             msg = "The confirmation password doesn't matches."
             template = 'user/register.html'
@@ -156,6 +152,9 @@ def register(request):
         if request.POST['selected'] == 'mentee' and msg == None:
             #the post is for mentee registration, save the form or else display it
             if mentee_form.is_valid():
+                print 'mentee data valid'
+                print request.POST
+                print request.FILES
                 mentee_profile = mentee_form.save(commit=False)
                 mentee_profile.user = user
                 mentee_profile.is_mentor = False
@@ -235,8 +234,8 @@ def crop_image(request):
                 if not os.path.exists(newPath):
                     os.makedirs(newPath)
 
-                cropped.save(os.path.join(newPath,user.username+"CRPD"),"jpeg")
-                im.save(os.path.join(newPath,user.username),"jpeg")
+                cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+                im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
                 print "image saved"
             except Exception as e:
                 print str(e)
