@@ -189,7 +189,6 @@ def user_logout(request):
         logout(request)
         return redirect('http://localhost:8000')
 
-@login_required
 def save_image(request):
     context = RequestContext(request)
     context_dict = {}
