@@ -192,8 +192,6 @@ def user_logout(request):
 def save_image(request):
     context = RequestContext(request)
     context_dict = {}
-    user = request.user
-    user_profile = user.user_profile
     if request.method == 'POST':
         if request.FILES['uncroppedPic']:
             print "received"
@@ -213,9 +211,11 @@ def crop_image(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile = user.user_profile
+    if not user.is_anonymous():
+        user_profile = user.user_profile
     if request.method == 'POST':
         if request.POST['url']:
+            print "url received"
             x1=request.POST['x1']
             x2=request.POST['x2']
             y1=request.POST['y1']
@@ -228,19 +228,34 @@ def crop_image(request):
                 box = (x1, y1, x2, y2) #(left, upper, right, lower)
                 box = (int(x) for x in box)
                 cropped = im.crop(box)
+                print "image opened"
+                if not user.is_anonymous(): 
+                    print "registered user" 
+                    newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+                    if not os.path.exists(newPath):
+                        os.makedirs(newPath)
+                    size = (300, 300)
+                    cropped.thumbnail(size)
+                    cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+                    im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+                    print "user image saved"
+                else:
+                    newPath = os.path.join(settings.MEDIA_ROOT,"temp",im)
+                    if not os.path.exists(newPath):
+                        os.makedirs(newPath)
 
-                newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
-                if not os.path.exists(newPath):
-                    os.makedirs(newPath)
+                    cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+                    im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+                    print "user image saved"
 
-                cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
-                im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
-                print "image saved"
             except Exception as e:
                 print str(e)
             return HttpResponse("Success")
         else:
             return HttpResponse("Uh Oh! something went wrong :/")
+
+
+
 @login_required
 def thank_you(request):
     return render_to_response('user/thankYou.html')

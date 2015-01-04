@@ -37,28 +37,14 @@
               </div>
                 
                 <div class="row">
-                  <p>
-                    <img id="target" src="" style="float: left; margin-right: 10px;" />
+                  <p class="target_p">
+                    <img id="target" src="" class="img-responsive" />
                   </p>
-                </div>
-
-                <div class='row'>
-                  <form id='cropForm' method="POST" action="/user/crop-image/" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" id="x1" name="x1" value="" />
-                    <input type="hidden" id="x2" name="x2" value="" />
-                    <input type="hidden" id="y1" name="y1" value="" />
-                    <input type="hidden" id="y2" name="y2" value="" />
-                    <input type="hidden" id="w" name="w" value="" />
-                    <input type="hidden" id="h" name="h" value="" /> 
-                    <input type="submit" class="cropSubButton" value="Make this my profile pic!">
-                    <!-- http://www.hongkiat.com/blog/loading-effect-in-buttons-ladda/ -->
-                  </form>
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default modal-close" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <input type="button" class="btn btn-success cropSubmit" value="Make this my profile pic!">
+              <button type="button" class="btn btn-primary modal-close" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -106,22 +92,61 @@
                 </div>
                 <div class="float">
                 <label for="{{ user_form.password1.id_for_label }}">Password:</label>
-                {{ user_form.password1 }}
+                <input type="password" name="password1" id="password1"><br>
                 </div>
                 <div class="float">
                 <label for="{{ user_form.password2.id_for_label }}">Confirm Password:</label>
-                {{ user_form.password2 }}
+                <input type="password" name="password2" id="password2"><br>
+
                 </div>
-                <label for="uploadButton">Profile Image:</label>
-                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload</a>
+                
               </div>
               <input type="button" name="next" class="n1 next action-button" value="Next" />
               </fieldset>
 
+              <fieldset>
+                  <h2 class="fs-title">Personal Details</h2>
+                  <h3 class="fs-subtitle">Well,tell us more about yourself! :)</h3>
+                  <div class="left">
+                    <label for="{{ profile_form.gender.id_for_label }}">Gender:</label>
+                    {{ profile_form.gender }}
+                    <br><br>
+                    <div class="float">
+                    <label for="{{ profile_form.date_of_birth.id_for_label }}">Date of Birth:</label>
+                    {{ profile_form.date_of_birth }}
+                    </div>
+                    <div class="float">
+                    <label for="{{ profile_form.contact.id_for_label }}">Contact Number:</label>
+                    {{ profile_form.contact }}
+                    </div>
+                    <div class="float">
+                    <label for="{{ profile_form.location.id_for_label }}">City:</label>
+                    {{ profile_form.location }}
+                    </div>
+                    <div class="float">
+                    <label for="{{ profile_form.country.id_for_label }}">Country:</label>
+                    {{ profile_form.country }}
+                    </div>
+                    <label for="{{ form.about.id_for_label }}">About:</label>
+                    {{ profile_form.about }}
+                    <label for="uploadButton">Profile Image:</label>
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">Upload</a>
+                    <div style="clear: both"> </div>
+                    
+                    <input type="hidden" id="x1" name="x1" value="" />
+                    <input type="hidden" id="x2" name="x2" value="" />
+                    <input type="hidden" id="y1" name="y1" value="" />
+                    <input type="hidden" id="y2" name="y2" value="" />
+                    <input type="hidden" id="w" name="w" value="" />
+                    <input type="hidden" id="h" name="h" value="" /> 
+                  </div>
+                  <input type="button" name="previous" class="previous action-button" value="Previous" />
+                  <input type="button" name="next" class="next action-button" value="Next" />
+              </fieldset>
 
 
               <fieldset>
-              <h2 class="fs-title">Educational Profile</h2>
+              <h2 class="fs-title">Educational Details</h2>
               <h3 class="fs-subtitle">So,where have you been? :)</h3>
               <div class="left">
                   <label for="{{ education_form.institution.id_for_label }}">Institution:</label>
@@ -152,11 +177,11 @@
                   </div>
               </div>
               <input type="button" name="previous" class="previous action-button" value="Previous" />
-              <input type="button" name="next" class="next action-button" value="Next" />
+              <input type="submit" name="submitForm" class="action-button" value="Submit" />
               </fieldset>
 
 
-
+              <!--
               <fieldset>
               <h2 class="fs-title">Employment Details</h2>
               <h3 class="fs-subtitle">Where do you slog?</h3>
@@ -182,9 +207,10 @@
                   </div>
               </div>
               <input type="button" name="previous" class="previous action-button" value="Previous" />
-              <input type="submit" name="submit" class="next action-button" value="Submit" />
+              
               </fieldset>
-              </form>
+            -->
+          </form>
         {% endif %}
 
         <!-- jQuery --> 
@@ -198,7 +224,7 @@
         <script>
         var ias; // Stores Instance of ImageAreaSelect
         $(document).ready(function() {
-          $('#cropForm').hide();
+          $('.cropSubmit').hide();
         });
 
 
@@ -209,8 +235,8 @@
             var image = document.getElementById('target');
 
             $('#target + div > img').css({
-                width: Math.round(scaleX * image.naturalWidth) + 'px',
-                height: Math.round(scaleY * image.naturalHeight) + 'px',
+                width: Math.round(scaleX * 300) + 'px',
+                height: Math.round(scaleY * 300) + 'px',
                 marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
                 marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
             });
@@ -227,10 +253,10 @@
             }
 
             if(selection.width == 0) {
-              $("#cropForm").hide();
+              $(".cropSubmit").hide();
             }
             else {
-             $("#cropForm").show(); 
+             $(".cropSubmit").show(); 
             }
         }
 
@@ -254,26 +280,10 @@
                 contentType: false,
                 processData: false,
                 success: function (returndata) {
-                  alert("submitted successfully");
                   $('#target').attr("src",returndata);
                   $('#target').css("display","block");
                   $('#target').css("visibility","visible");
                  
-
-                  var oldPreview = $('#preview');
-
-                   if(oldPreview != undefined) {
-                    $("#preview").remove();
-                   }
-
-                 $('<div><img id="preview2" src='+returndata+' style="position: relative;" /></div>').css({
-                      float: 'left',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      width: '100px',
-                      height: '100px'
-                  })
-                  .insertAfter($('#target'));
 
 
                   ias = $('#target').imgAreaSelect({ 
@@ -281,14 +291,15 @@
                     handles: true,
                     fadeSpeed: 200, 
                     onSelectChange: preview,
+                    imageWidth: 300,
+                    imageHeight: 300,
                     maxHeight: 400, 
                     maxWidth: 400, 
-                    minHeight: 150, 
-                    minWidth: 150,
                     instance: true,
+                    parent: $('.target_p')
                   });
 
-                  $('#cropForm').show();
+                  $('.cropSubmit').show();
                 }
               });
         });
@@ -297,9 +308,9 @@
         $('.modal-close').click(function() {
           ias.cancelSelection();
         });
+
         //Program a custom submit function for the form
-          $("#cropForm").submit(function(event){
-           
+          $(".cropSubmit").click(function(event){
             //disable the default form submission
             event.preventDefault();
            
@@ -307,25 +318,10 @@
             var input = $("<input>")
                .attr("type", "hidden")
                .attr("name", "url").val($('#target').attr('src'));
-            $('#cropForm').append($(input));
-            var formData = new FormData($(this)[0]);
-            
-            $.ajax({
-              url: '/user/crop-image/',
-              type: 'POST',
-              data: formData,
-              async: false,
-              cache: false,
-              contentType: false,
-              processData: false,
-              success: function (returndata) {
-                  if(returndata == 'Success') {
-                     ias.cancelSelection();
-                     $('.modal-close')[0].click();
-                  }
-              }
-            });
+            $('#msform').append($(input));
+            $(".modal-close")[0].click();
         });
+
           $("#msform").submit(function(event){
             //disable the default form submission
             event.preventDefault();
@@ -364,11 +360,6 @@
             }
             return ret;
           }
-          $(document).ready(function() {
-            $(":input").keypress(function(){
-              $(this).css({"border-color":"black","box-shadow":" none"});
-            })
-          });
         </script>
    </body>
 

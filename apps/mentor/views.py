@@ -13,6 +13,36 @@ from apps.mentor.forms import EducationDetailsFormSet,EmploymentDetailsFormSet
 from apps.mentor.models import EducationDetails,EmploymentDetails
 from allauth.socialaccount.models import SocialAccount,SocialApp
 # Create your views here.
+from django.conf import settings
+
+from PIL import Image
+import os
+def cropAndSave(user, POST):
+    x1=POST['x1']
+    x2=POST['x2']
+    y1=POST['y1']
+    y2=POST['y2']
+    w=POST['w']
+    h=POST['h']
+    print "entered cropAndSave"
+    try:
+        print POST
+        path = POST['url']
+        im = Image.open(path)
+        box = (x1, y1, x2, y2) #(left, upper, right, lower)
+        box = (int(x) for x in box)
+        cropped = im.crop(box)
+        print "image opened"
+
+        newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+        if not os.path.exists(newPath):
+            os.makedirs(newPath)
+        cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+        im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+        print "user image saved"
+    except Exception as e:
+        print str(e)
+
 
 @login_required
 def index(request):
@@ -42,10 +72,10 @@ def register(request):
         user_form = UserForm(data)
         profile_form = UserProfileForm(data=request.POST)
         education_form = EducationForm(data=request.POST)
-        employment_form = EmploymentForm(data=request.POST)
         # If the two forms are valid...
-        if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid() and employment_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid():
             # Save the user's form data to the database.
+            print "mentor details valid"
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
@@ -61,12 +91,13 @@ def register(request):
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
+            cropAndSave(user, request.POST)
             profile.is_new = False
             profile.is_mentor = True
             education = education_form.save(commit=False)
             education.parent = profile
-            employee = employment_form.save(commit=False)
-            employee.parent = profile
+            #employee = employment_form.save(commit=False)
+            #employee.parent = profile
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
@@ -76,8 +107,8 @@ def register(request):
             profile.save()
             if education.institution != '':
                 education.save()
-            if employee.organization != '':
-                employee.save()
+            #if employee.organization != '':
+                #employee.save()
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -94,12 +125,15 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         education_form = EducationForm()
-        employment_form = EmploymentForm()
+        #employment_form = EmploymentForm()
     # Render the template depending on the context.
     return render_to_response(
             'mentor/register.html',
-            {'user_form': user_form, 'profile_form': profile_form,'employment_form': employment_form, 'education_form': education_form,'registered': registered},
+            {'user_form': user_form, 'profile_form': profile_form, 'education_form': education_form,'registered': registered},
             context)
+
+
+
 @login_required
 def self_profile_view(request):
     """
