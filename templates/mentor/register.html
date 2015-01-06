@@ -235,8 +235,8 @@
             var image = document.getElementById('target');
 
             $('#target + div > img').css({
-                width: Math.round(scaleX * 300) + 'px',
-                height: Math.round(scaleY * 300) + 'px',
+                width: Math.round(scaleX * image.naturalHeight) + 'px',
+                height: Math.round(scaleY * image.naturalHeight) + 'px',
                 marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
                 marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
             });
@@ -285,21 +285,31 @@
                   $('#target').css("visibility","visible");
                  
 
+                  var image = document.getElementById('target');
 
-                  ias = $('#target').imgAreaSelect({ 
-                    aspectRatio: '1:1',
-                    handles: true,
-                    fadeSpeed: 200, 
-                    onSelectChange: preview,
-                    imageWidth: 300,
-                    imageHeight: 300,
-                    maxHeight: 400, 
-                    maxWidth: 400, 
-                    instance: true,
-                    parent: $('.target_p')
-                  });
-
-                  $('.cropSubmit').show();
+                 
+                  var pic_real_width, pic_real_height;
+                  $("<img/>") // Make in memory copy of image to avoid css issues
+                      .attr("src", $(image).attr("src"))
+                      .load(function() {
+                          pic_real_width = this.width;   // Note: $(this).width() will not
+                          pic_real_height = this.height; // work for in memory images.
+                          alert(pic_real_height);
+                          alert(pic_real_width);
+                          
+                          ias = $('#target').imgAreaSelect({ 
+                          aspectRatio: '1:1',
+                          handles: true,
+                          fadeSpeed: 200, 
+                          onSelectChange: preview,
+                          imageWidth: pic_real_width,
+                          imageHeight: pic_real_height,
+                          maxHeight: 400, 
+                          maxWidth: 400, 
+                          instance: true,
+                        });
+                        $('.cropSubmit').show();
+                      });
                 }
               });
         });

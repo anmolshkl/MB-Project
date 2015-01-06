@@ -24,6 +24,7 @@ def cropAndSave(user, POST):
     y2=POST['y2']
     w=POST['w']
     h=POST['h']
+    print x1+','+x2+','+y1+','+y2
     print "entered cropAndSave"
     try:
         print POST
