@@ -24,35 +24,38 @@ def cropAndSave(user, POST):
     y2=POST['y2']
     w=POST['w']
     h=POST['h']
-    print x1+','+x2+','+y1+','+y2
-    print "entered cropAndSave"
     try:
-        print POST
         path = POST['url']
         im = Image.open(path)
         box = (x1, y1, x2, y2) #(left, upper, right, lower)
         box = (int(x) for x in box)
         cropped = im.crop(box)
-        print "image opened"
-
         newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
         if not os.path.exists(newPath):
             os.makedirs(newPath)
         cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
         im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
-        print "user image saved"
     except Exception as e:
         print str(e)
 
 
-@login_required
 def index(request):
-    user = request.user
-    user_profile = UserProfile.objects.get(user=user)
-    if user_profile.is_new:
-        return render_to_response('user/select.html',{},RequestContext(request))
+    context_dict = {}
+    template = "user/login.html" #default template to render
+    user = None
+    user_profile = None
 
-    return render_to_response('mentor/index.html',{},RequestContext(request))
+    user = request.user.id
+    if user != None:
+        user_profile,created = UserProfile.objects.get_or_create(user=user)
+    
+    #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+    if user_profile and user_profile.is_new:
+        context_dict['selected'] = None
+        template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
+        #attach required forms to display in the template
+
+    return render_to_response(template,context_dict,context_instance = RequestContext(request))
 
 def register(request):
     # Like before, get the request's context.
@@ -76,14 +79,13 @@ def register(request):
         # If the two forms are valid...
         if user_form.is_valid() and profile_form.is_valid() and education_form.is_valid():
             # Save the user's form data to the database.
-            print "mentor details valid"
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
             user.save()
             '''
-            dont need it now
+            we dont need it now
             #now delete the default mentee profile thats created
             UserProfile.objects.get(user=user).delete()
             '''
@@ -93,6 +95,10 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             cropAndSave(user, request.POST)
+            if "url" in request.POST:
+                profile.picture = request.POST['url']
+            else:
+                HttpResponse("Image URL missing :(")
             profile.is_new = False
             profile.is_mentor = True
             education = education_form.save(commit=False)
@@ -100,11 +106,6 @@ def register(request):
             #employee = employment_form.save(commit=False)
             #employee.parent = profile
 
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
-            """if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']"""
-            # Now we save the UserProfile model instance.
             profile.save()
             if education.institution != '':
                 education.save()
@@ -112,7 +113,7 @@ def register(request):
                 #employee.save()
             # Update our variable to tell the template registration was successful.
             registered = True
-
+            return HttpResponseRedirect("/user/thank-you/")
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.
         # They'll also be shown to the user.

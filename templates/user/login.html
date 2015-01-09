@@ -42,10 +42,10 @@
                 <h2 class="modal-title">Pick a choice!</h2>
               </div>
               <div class="modal-body">
-                    <a  class="btn btn-success btn-lg" href="/mentor/register/">Sign Up as a Mentor</a>
+                    <a  class="btn btn-success btn-lg" href="/mentor/register/">Sign Up as a Mentor</a> or 
                     <a class="btn btn-success btn-lg" href="/mentee/register/">Sign Up as a Mentee</a>
                     <br>
-                    <h3>Or sign-up using:</h3><br>   
+                    <h3>or sign-up using:</h3><br>   
                   <a href="{% provider_login_url "facebook" method="oauth2" %}"><img src="{% static 'img/Facebook.png' %}" class="img-responsive socialIcon"/></a>
 
                   <a  href="{% provider_login_url  "google" %}"><img src="{% static 'img/Google+.png' %}" class="img-responsive socialIcon" /></a>
@@ -64,7 +64,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Oops!</h2>
+                <h2 class="modal-title">Uh Oh!</h2>
               </div>
               <div class="modal-body">
               </div>
@@ -128,10 +128,14 @@
                             </div>
                             {% else %}
                             {% if user.user_profile.is_mentor == True %}
+                                Thank you for registering with us!
+                                <a class="btn btn-primary btn-lg" href="/user/logout/">Logout</a> 
+                                <!--
                                 <a href="/mentor/">Welcome mentor!Enter the site></a>
                             {% else %}
                                 <a href="/mentee/">Welcome Mentee!Enter the site></a>
                             {% endif %}
+                                -->
                             {% endif %}
                         </div>
                     </div>

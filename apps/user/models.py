@@ -24,7 +24,7 @@ class PathAndRename(object):
         # return the whole path to the file
         return os.path.join(self.path, filename)
 
-path_and_rename = PathAndRename("profile_images/")
+path_and_rename = PathAndRename("resume/")
 
 class UserProfile(models.Model):
 
@@ -46,11 +46,11 @@ class UserProfile(models.Model):
     state = models.CharField(max_length=128, blank=True)
     country = models.CharField(max_length=128, blank=True)
     about = models.TextField(blank=True)
+    resume = models.FileField(upload_to=path_and_rename, null=True, blank=True)
     picture = models.CharField(max_length=128,blank=True, null=True) #Contains URL
-    # size is "width x height"
-    #min_free_cropping = ImageRatioField('picture', '300x300', free_crop=True)
     is_mentor = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
+    is_approved = models.BooleanField(default=False)
     def full_name(self):
         return self.user.get_full_name() 
 

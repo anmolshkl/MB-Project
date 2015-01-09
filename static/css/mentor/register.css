@@ -78,7 +78,6 @@ label {
 	border-radius: 3px;
 	margin-bottom: 15px;
 	width: 100%;
-
 	height: 40px;
 	box-sizing: border-box;
 	font-family: montserrat;
@@ -170,8 +169,8 @@ label {
 	display: none;
 	visibility: hidden;
 	margin: 0 auto;
-	width: 300px;
-	height: 300px;
+	max-width: 300px;
+	max-height: 800px;
 }
 #preview {
 	display: none;
@@ -180,4 +179,39 @@ label {
 #uncroppedPic {
 	border-color: blue;
 	box-shadow: blue 0px 0px 10px;
+}
+.error {
+	color: red;
+	font-weight: 400;
+}
+.fileUpload {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+.fileUpload input.resumeUpload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.fileUpload span {
+	cursor: pointer;
+}
+
+#resume {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 400;
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+.full-width {
+	width: 100%;
 }

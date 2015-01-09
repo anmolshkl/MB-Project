@@ -10,9 +10,8 @@ class UserForm(UserCreationForm):
         model = User
         fields = ('username', 'email','first_name','last_name')
         widgets = {
-            'email': forms.TextInput(attrs={'placeholder': 'Name'}),
-            'first_name': forms.TextInput(
-                attrs={'placeholder': 'Enter description here'}),
+            'email': forms.TextInput(attrs={'placeholder': ''}),
+            'first_name': forms.TextInput(attrs={'placeholder': ''}),
         }     
 
     def clean_email(self):
@@ -27,6 +26,7 @@ class UserForm(UserCreationForm):
         user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.email = self.cleaned_data["email"]
+        user.username = user.email
         user.is_active = True # change to false if using email activation
         if commit:
             user.save()

@@ -215,11 +215,18 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False}}
 '''
 #allauth will print any confirmation email to the console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'anmol.shkl@gmail.com'
+EMAIL_HOST_PASSWORD = 'asaf-123'
+DEFAULT_FROM_EMAIL = 'admin@mb.in'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION  = "none" #later change to mandatory
+ACCOUNT_EMAIL_VERIFICATION  = "mandatory" #later change to mandatory
 ACCOUNT_LOGOUT_REDIRECT_URL = "/user/"
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
 ACCOUNT_UNIQUE_EMAIL = True

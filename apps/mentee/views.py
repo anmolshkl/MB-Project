@@ -18,11 +18,48 @@ from random import choice
 from string import letters
 from allauth.socialaccount.models import SocialAccount,SocialApp
 
+from PIL import Image
+import os
+def cropAndSave(user, POST):
+    x1=POST['x1']
+    x2=POST['x2']
+    y1=POST['y1']
+    y2=POST['y2']
+    w=POST['w']
+    h=POST['h']
+    try:
+        path = POST['url']
+        im = Image.open(path)
+        box = (x1, y1, x2, y2) #(left, upper, right, lower)
+        box = (int(x) for x in box)
+        cropped = im.crop(box)
+
+        newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+        if not os.path.exists(newPath):
+            os.makedirs(newPath)
+        cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+        im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+    except Exception as e:
+        print str(e)
 
 # Create your views here.
-@login_required
 def index(request):
-	return render_to_response('mentee/index.html',{},RequestContext(request))
+    context_dict = {}
+    template = "user/login.html" #default template to render
+    user = None
+    user_profile = None
+
+    user = request.user.id
+    if user != None:
+        user_profile,created = UserProfile.objects.get_or_create(user=user)
+    
+    #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+    if user_profile and user_profile.is_new:
+        context_dict['selected'] = None
+        template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
+        #attach required forms to display in the template
+
+    return render_to_response(template,context_dict,context_instance = RequestContext(request))
 
 def register(request):
     # Like before, get the request's context.
@@ -57,16 +94,17 @@ def register(request):
             # This delays saving the model until we're ready to avoid integrity problems.
             profile = profile_form.save(commit=False)
             profile.user = user
+            cropAndSave(user, request.POST)
+            if "url" in request.POST:
+                profile.picture = request.POST['url']
+            else:
+                HttpResponse("Image URL missing :(")
             profile.is_new = False
-
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the userProfile model.
-            """if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']"""
-            # Now we save the UserProfile model instance.
+            profile.is_mentor = False
             profile.save()
             # Update our variable to tell the template registration was successful.
             registered = True
+            return HttpResponseRedirect("/user/thank-you/")
 
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.

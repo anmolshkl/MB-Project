@@ -15,8 +15,32 @@ from django.conf import settings
 
 from PIL import Image
 
+from allauth.socialaccount.models import SocialAccount
+import magic
 # Create your views here.
 import os
+def cropAndSave(user, POST):
+    x1=POST['x1']
+    x2=POST['x2']
+    y1=POST['y1']
+    y2=POST['y2']
+    w=POST['w']
+    h=POST['h']
+    try:
+        path = POST['url']
+        im = Image.open(path)
+        box = (x1, y1, x2, y2) #(left, upper, right, lower)
+        box = (int(x) for x in box)
+        cropped = im.crop(box)
+        newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+        if not os.path.exists(newPath):
+            os.makedirs(newPath)
+        cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
+        im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+    except Exception as e:
+        print str(e)
+
+
 def index(request):
     context_dict = {}
     template = "user/login.html" #default template to render
@@ -86,7 +110,6 @@ def select(request):
     if request.method == 'POST':
         #check whether a request is POST request after submitted choice has come
         if request.POST.get('choice'):
-            print "entered"
             #store the choice in session for further use
             user = request.user
             user_profile = user.user_profile
@@ -107,8 +130,8 @@ def register(request):
     template  = 'user/register.html'
     user = request.user
     user_profile = user.user_profile
-    print 'entered register'
     msg = None
+    resume = None
     if not UserProfile.objects.get(user=user).is_new:
         return HttpResponseRedirect("/user/thank-you/")
 
@@ -122,19 +145,29 @@ def register(request):
             template = 'user/register.html'
             context_dict['selected'] = request.POST['selected']
             context_dict['error'] = msg
+        '''
+        set the user provided password first so that in case of a mishap user can login again later on 
+        and complete his/her registeration
+        '''
+        if msg == None:
+            user.set_password(request.POST["password1"])
+            user.save()
 
         if request.POST['selected'] == 'mentor' and msg == None:
             #the post is for mentor registration, save the form or else display it
-            print 'mentor data received'
             if mentor_form.is_valid() and education_form.is_valid():
-                #print 'mentor data valid'
-                #print request.POST
-                #print request.FILES
                 mentor_profile = mentor_form.save(commit=False)
                 mentor_profile.user = user
                 mentor_profile.is_mentor = True
                 mentor_profile.is_new = False
-                #mentor_profile.picture = request.FILES['picture']
+                print request.POST
+                if "url" in request.POST:
+                    print "url received"
+                    cropAndSave(user, request.POST)
+                    mentor_profile.picture = request.POST['url']
+                else:
+                    print "url not received"
+                    mentor_profile.picture = (SocialAccount.objects.get(user=user)).get_avatar_url()
                 mentor_profile.save()
                 education = education_form.save(commit=False)
                 education.parent = mentor_profile
@@ -152,13 +185,16 @@ def register(request):
         if request.POST['selected'] == 'mentee' and msg == None:
             #the post is for mentee registration, save the form or else display it
             if mentee_form.is_valid():
-                print 'mentee data valid'
-                print request.POST
-                print request.FILES
+               
                 mentee_profile = mentee_form.save(commit=False)
                 mentee_profile.user = user
                 mentee_profile.is_mentor = False
                 mentee_profile.is_new = False
+                if "url" in request.POST:
+                    cropAndSave(user, request.POST)
+                    mentee_profile.picture = request.POST['url']
+                else:
+                    mentee_profile.picture = (SocialAccount.objects.get(user=user)).get_avatar_url()
                 mentee_profile.save()
                 return HttpResponseRedirect("/user/thank-you/")
 
@@ -194,13 +230,18 @@ def save_image(request):
     context_dict = {}
     if request.method == 'POST':
         if request.FILES['uncroppedPic']:
-            print "received"
             uploaded_file = request.FILES['uncroppedPic']
-            print 'assigned'
+            try:
+                #try opening the image,if it fails then its guranteed that its not an Image
+                im = Image.open(uploaded_file) 
+                if im.format not in ('BMP', 'PNG', 'JPEG'):
+                    return HttpResponse("failed")
+            except:
+                return HttpResponse("failed")
+
             path = os.path.join(settings.MEDIA_ROOT,'temp',uploaded_file.name)
             try:
                 with open(path,'wb+') as f:
-                    print 'opened'
                     for chunk in uploaded_file.chunks():
                         f.write(chunk)
             except Exception as e:
@@ -228,9 +269,7 @@ def crop_image(request):
                 box = (x1, y1, x2, y2) #(left, upper, right, lower)
                 box = (int(x) for x in box)
                 cropped = im.crop(box)
-                print "image opened"
                 if not user.is_anonymous(): 
-                    print "registered user" 
                     newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
                     if not os.path.exists(newPath):
                         os.makedirs(newPath)
@@ -238,7 +277,6 @@ def crop_image(request):
                     cropped.thumbnail(size)
                     cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
                     im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
-                    print "user image saved"
                 else:
                     newPath = os.path.join(settings.MEDIA_ROOT,"temp",im)
                     if not os.path.exists(newPath):
@@ -246,7 +284,6 @@ def crop_image(request):
 
                     cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
                     im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
-                    print "user image saved"
 
             except Exception as e:
                 print str(e)
@@ -255,9 +292,10 @@ def crop_image(request):
             return HttpResponse("Uh Oh! something went wrong :/")
 
 
-
-@login_required
 def thank_you(request):
+    #logout user and say thank you :p
+    request.session.flush()
+    logout(request)
     return render_to_response('user/thankYou.html')
 
 def explore(request):
