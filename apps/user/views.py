@@ -16,7 +16,7 @@ from django.conf import settings
 from PIL import Image
 
 from allauth.socialaccount.models import SocialAccount
-import magic
+#import magic
 # Create your views here.
 import os
 def cropAndSave(user, POST):
