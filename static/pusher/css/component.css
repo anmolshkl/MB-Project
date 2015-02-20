@@ -11,6 +11,7 @@
 
 html, body, .pusher-container, .pusher-header {
 	height: 100%;
+	font-family: 'Raleway', sans-serif;
 }
 
 /* pusher-header */
@@ -44,24 +45,23 @@ html, body, .pusher-container, .pusher-header {
 .title {
 	z-index: 1000;
 	margin: 10 auto;
-	width: 100%;
+	width: 80%;
 	text-align: center;
 	position: absolute;
 	top: 50%;
 	left: 50%;
+	margin: 0 auto;
 	-webkit-transform: translateX(-50%) translateY(-50%);
 	transform: translateX(-50%) translateY(-50%);
 }
 
 .title h1 {
-	color: #fff;
 	font-weight: 400;
 	font-size: 2.25em;
 	margin: 0 auto;
 }
 
 .title p {
-	color: #fff;
 	padding: 0 0 0.6em;
 	font-weight: 300;
 	font-size: 0.85em;
@@ -72,11 +72,17 @@ html, body, .pusher-container, .pusher-header {
 .signUp {
 	width: 10%;
 	min-width: 150px;
+	margin-top: 20px;
 }
 .trigger {
 	position: relative;
 	top: 100px;
 }
+
+.trigger2 {
+	position: relative;
+}
+
 .row div {
 	padding: 50px;
 	font-size: 20px;
@@ -84,7 +90,7 @@ html, body, .pusher-container, .pusher-header {
 }
 .row div h1 {
 	font-size: 25px;
-	font-weight: 600;
+	font-weight: 500;
 }
 @media screen and (max-height: 500px) {
     .trigger {
@@ -101,11 +107,11 @@ html, body, .pusher-container, .pusher-header {
     	top: 100px !important;
     }
 }
-pusher-container:not(.notrans) button.trigger {
+pusher-container:not(.notrans) {
 	-webkit-transition: opacity 0.3s 0.5s;
 	transition: opacity 0.3s 0.5s;
 }
-pusher-container.modify:not(.notrans) button.trigger {
+pusher-container.modify:not(.notrans) {
 	opacity: 0;
 	pointer-events: none;
 	-webkit-transition-delay: 0s;

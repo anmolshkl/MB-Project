@@ -24,6 +24,18 @@
         
         <!-- Pusher -->
         <link rel="stylesheet" type="text/css" href="{% static 'pusher/css/component.css' %}" />
+
+        <!-- animate.css -->
+        <link rel="stylesheet" type="text/css" href="{% static 'animation/animate.css' %}" />
+<!-- Pusher -->
+        <link rel="stylesheet" type="text/css" href="{% static 'pusher/css/component.css' %}" />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/user/loginNEW.css' %}" />
+
+        <!-- Google Font:Raleway -->
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,500' rel='stylesheet' type='text/css'>        
+        
         <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -40,11 +52,34 @@
         .img1 {
             width: 100%;
             height: 100%;
+            max-height: 400px;
+            max-width: 400px;
+        }
+        .img2 {
+            max-width: 350px;
+            max-height: 350px;
         }
         </style>
     </head>
 
     <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="M" src="...">
+          </a>
+        </div>
+         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          </div>
+      </div>
+    </nav>
     <div id="ip-container" class="ip-container">
         <!-- initial header -->
         <header class="ip-header">
@@ -66,16 +101,23 @@
             <header class="pusher-header">
                 <div class="bg-img"><img src="{% static 'img/bg11.jpg' %}" alt="Background Image"/></div>
                 <div class="title" style="color:black;">
-                    <h1>Mentor Buddy</h1>
-                    <h2>Enabling Global Education</h2>
-                    <p>Mentor Buddy is a place which connects . <br>
+                    <h1 class="wow fadeInDown" data-wow-delay="3.5s">Mentor Buddy</h1>
+                    <h2 class="wow bounceInUp" data-wow-delay="4s">Enabling Global Education</h2>
+                    <p class="wow fadeIn" data-wow-delay="4s">Mentor Buddy is a place which connects . <br>
                         With over 100+ verified experts from top universities 
                         we bring you the complete blemd of professionals.
                         <br>
-                         <a href="#" type="button" class="btn signUp btn-primary btn-lg">Sign Up</a><br>
-                    </p>
+                         <a href="#" data-wow-delay="4.5s" type="button" class="btn wow fadeIn signUp btn-primary btn-lg">Sign Up</a><br>
+                        <!-- old explore button 
+                         <button href="#" class="explore wow fadeIn trigger2">EXPLORE</button>
+                        -->
+                    
+                     <a href="#" data-wow-delay="4.5s" type="button" class="wow pulse trigger hidden"></a>
+                        <button class="button button-1 button-1e explore trigger2">Button</button>
+                    </p> 
+                    
 
-                        <a href="#" type="button" class="btn trigger btn-success btn-lg">EXPLORE</a>
+                       
                 </div>
             </header>
             
@@ -83,34 +125,38 @@
                 Welcome to MentorBuddy!
             </div>
             <div class="container-fluid">
-                <div class="row" style="text-align:center;">
+                <div class="row dark" style="text-align:center;">
                     <div class="col-md-6">
-                        <h1>Find the Right Mentors</h1><br>
+                        <h1 class="wow bounce" data-wow-offset="100">Find the Right Mentors</h1><br>
                         It's difficult to find someone who can show you the right path. That someone is a buddy who has been there, done that. Who else can it be ?<br>
                         Search your MentorBuddy with us!
                     </div>
-                    <div class="col-md-6">
-                        <img src="{% static 'img/bg4low.jpg' %}" class="img1"/>
+                    <div class="col-md-6 textCenter">
+                        <img src="{% static 'img/bg4low.jpg' %}" data-wow-delay="1s" class="img1 wow bounceInUp img-responsive"/>
                     </div>
                 </div>
 
-                <div class="row" style="text-align:center;">
-                    <div class="col-md-6">
-                        <img src="{% static 'img/dog.jpg' %}" class="img1" />
+                <div class="row">
+                    <div class="col-md-6 textCenter">
+                        <img src="{% static 'img/dog.jpg' %}" class="img2 wow bounceInUp img-responsive" />
                     </div>
                     <div class="col-md-6">
-                        <h1>Communicate Right Here!</h1><br>
+                        <h1 class="wow bounceInRight"  data-wow-delay="1s" data-wow-offset="30">Communicate Right Here!</h1><br>
+                        <p class="wow fadeInUp" data-wow-delay="1.5s" data-wow-offset="30">
                         Once you find your buddy, there's no need to rush to your mailbox or Skype. We provide you a seemless integration with Video/Voice Call, and Chat! (Right Here)
+                        </p>
                     </div>
                 </div>
 
-                <div class="row" style="text-align:center;">
+                <div class="row dark" style="text-align:center;">
                     <div class="col-md-6">
-                        <h1>Goodbye Messy Forums. Welcome GQ!</h1><br>
+                        <h1  class="wow bounceInRight" data-wow-delay="1s" data-wow-offset="30">Goodbye Messy Forums. Welcome GQ!</h1><br>
+                        <p class="wow fadeInUp" data-wow-delay="1.5s" data-wow-offset="30">
                         Forums are a thing of the past. They are messy and cluttered. GQ helps list all those General Queries that first hit your head!
+                        </p>
                     </div>
-                    <div class="col-md-6">
-                        Image
+                    <div class="col-md-6 textCenter">
+                        <img src="{% static 'img/ways.png' %}" class="img2 wow bounceInUp " data-wow-offset="30" />
                     </div>
                 </div>
 
@@ -128,8 +174,53 @@
     <script type="text/javascript" src="{% static 'bootstrap/js/jquery.easing.1.3.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
 
+    <script>
+            var buttons7Click = Array.prototype.slice.call( document.querySelectorAll( '#btn-click button' ) ),
+                buttons9Click = Array.prototype.slice.call( document.querySelectorAll( 'button.btn-8g' ) ),
+                totalButtons7Click = buttons7Click.length,
+                totalButtons9Click = buttons9Click.length;
+
+            buttons7Click.forEach( function( el, i ) { el.addEventListener( 'click', activate, false ); } );
+            buttons9Click.forEach( function( el, i ) { el.addEventListener( 'click', activate, false ); } );
+
+            function activate() {
+                var self = this, activatedClass = 'btn-activated';
+
+                if( classie.has( this, 'btn-7h' ) ) {
+                    // if it is the first of the two btn-7h then activatedClass = 'btn-error';
+                    // if it is the second then activatedClass = 'btn-success'
+                    activatedClass = buttons7Click.indexOf( this ) === totalButtons7Click-2 ? 'btn-error' : 'btn-success';
+                }
+                else if( classie.has( this, 'btn-8g' ) ) {
+                    // if it is the first of the two btn-8g then activatedClass = 'btn-success3d';
+                    // if it is the second then activatedClass = 'btn-error3d'
+                    activatedClass = buttons9Click.indexOf( this ) === totalButtons9Click-2 ? 'btn-success3d' : 'btn-error3d';
+                }
+
+                if( !classie.has( this, activatedClass ) ) {
+                    classie.add( this, activatedClass );
+                    setTimeout( function() { classie.remove( self, activatedClass ) }, 1000 );
+                }
+            }
+
+            document.querySelector( '.btn-7i' ).addEventListener( 'click', function() {
+                classie.add( document.querySelector( '#trash-effect' ), 'trash-effect-active' );
+            }, false );
+        </script>
+    <!-- WOW revealer script  -->
+    <script type="text/javascript" src="{% static 'animation/wow.min.js' %}"></script>
+    <script type="text/javascript">
+          new WOW().init();
+    </script>
+       
     <!-- Pusher -->
     <script>
+    $(document).ready(function() {
+        $(".trigger2").click(function() {
+            $('.trigger')[0].click();
+        });
+    });
+    
             (function() {
 
                 // detect if IE : from http://stackoverflow.com/a/16657946      

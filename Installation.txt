@@ -5,6 +5,9 @@
 Please google around to get to know more about Python,pip,virtualenv and DJANGO!:) 
 NOTE:
 1.Start command prompt and activate virtualenv with `env\Scripts\activate`
+BEFORE YOU INSTALL ANYTHING ELSE install python-mysql:
+	(a) sudo apt-get install libmysqlclient-dev
+	(b) sudo pip install mysql-python
 2.Install the requitements `pip install -r requirements.txt`
   **NOTE** Remove MySQL-python==1.2.5 from the file and install it manually with easy_install MySQL-python==1.2.5 
 
