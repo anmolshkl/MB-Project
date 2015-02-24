@@ -67,7 +67,7 @@ nav {
 }
 /* Sign Up form */
 .signUpForm {
-	width: 70%;
+	width: 90%;
 	margin: 0 auto;
 	padding: 1em 2em 1em 2em;
 	background: #fafafa;
@@ -78,6 +78,9 @@ nav {
 .group { 
 	position: relative; 
 	margin-bottom: 45px; 
+	width: 50%;
+	float: left;
+	padding-right: 5%;
 }
 
 .signUpForm input {

@@ -36,6 +36,8 @@
         <!-- Google Font:Raleway -->
         <link href='http://fonts.googleapis.com/css?family=Raleway:400,500' rel='stylesheet' type='text/css'>        
         
+        <!-- font awesome icons -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -59,6 +61,22 @@
             max-width: 350px;
             max-height: 350px;
         }
+        #signUpError {
+            font-size: 14px;
+            color: red;
+        }
+        .modal-body {
+            text-align: center;
+        }
+        #myModalLabel {
+            text-align: center;
+        }
+        .socialButtonLabel {
+            font-size: 20px;
+        }
+        .fa {
+            margin: 5px;
+        }
         </style>
     </head>
 
@@ -75,6 +93,8 @@
           <div class="modal-body">
             <form class="signUpForm" method="POST" action="/user/register/">
                 {% csrf_token %}
+              <div id="signUpError">
+              </div>
               <div class="group">
                 <input type="text" name="fn" id="fn"><span class="highlight"></span><span class="bar"></span>
                 <label>First Name</label>
@@ -105,10 +125,10 @@
               <button type="submit" class="button buttonBlue">Sign up!
                 <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
               </button>
-              or sign up with:
-              <span><a href="{% provider_login_url "linkedin" method="oauth2" %}" 
-                                        class="icon fa-linkedin">LinkedIn</a></span>
+              
             </form>
+            or<br>
+              <a href="{% provider_login_url "linkedin" method="oauth2" %}" class="btn btn-primary"><i class="fa fa-linkedin fa-2x"></i><span class="socialButtonLabel">sign up with linkedin</span></a>
           </div>
          
         </div>
@@ -227,8 +247,40 @@
             </div>
         </div><!-- /container -->
 
-    
-    <script type="text/javascript" src="{% static 'jquery/jquery-2.1.3.min.js' %}"></script>         
+
+    <!-- Jquery -->
+    <script type="text/javascript" src="{% static 'jquery/jquery-2.1.3.min.js' %}"></script>   
+
+    <!-- Ajax sign-up form -->
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.signUpForm').submit(function(e) {
+            e.preventDefault();
+            var postData = $(this).serializeArray();
+            var msg='';
+            $.ajax({
+                url: '/user/register/',
+                type: 'POST',
+                data: postData,
+                dataType: 'json',
+                success: function(data) {
+                    if(data["error"] == true) {
+                        $("#signUpError").html(data['message']);
+                    }
+                    else { 
+                        msg = "You're just one step away!<br>We have sent you a verification email. Check for the same! ";
+                        $('.signUpForm').fadeOut();
+                        $('#signUpModal .modal-body').html(msg)
+                    }
+                },
+                error: function(data) {
+                    alert("Oops! ajax error");
+                }
+            });
+        });
+    })
+    </script>
+      
     <!-- Sign Up Form -->
     <script type="text/javascript">
         $(window, document, undefined).ready(function() {

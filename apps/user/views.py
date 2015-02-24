@@ -48,9 +48,9 @@ def index(request):
     user = None
     user_profile = None
 
-    user = request.user.id
-    if user != None:
-        user_profile,created = UserProfile.objects.get_or_create(user=user)
+    
+    if request.user.is_authenticated():
+        user_profile,created = UserProfile.objects.get_or_create(user=request.user.id)
     
     #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
@@ -119,12 +119,9 @@ def select(request):
             context_dict['mentor_form'] = MentorProfileForm(instance=user_profile)
             context_dict['mentee_form'] = MenteeProfileForm(instance=user_profile)
             context_dict['education_form'] = EducationForm(instance=user_profile)
-            
-            #return HttpResponseRedirect('/user/register/?selected=%s'%(request.POST['choice']))
+        
     return render_to_response(template,context_dict,context)
 def register(request):
-    context = RequestContext(request)
-    context_dict = {}
     post = request.POST #for convenience
     msg=None
     #check if we got all the input fields
@@ -137,23 +134,27 @@ def register(request):
         country = request.POST['country']
         if fn and ln and email and college and city and country:
             if User.objects.filter(email=email).exists():
-                return JsonResponse({'error':true,'message':'User with this email already exists!'})
+                return JsonResponse({'error':True,'message':'User with this email already exists!'})
             else:
-                user = User(username=email,first_name=fn,last_name=ln,email=email)
+                user = User(username=email,first_name=fn,last_name=ln,email=email)                
                 user.save()
-                profile = UserProfile()
-        
+
+                profile = UserProfile(city=city,country=country,college=college)
+                profile.user = user
+                profile.save()
+
+                return JsonResponse({'error':False})        
         else:
-            return JsonResponse({'error':true,'message':'empty input field/s'})
+            return JsonResponse({'error':True,'message':'empty input field/s'})
     
 
     else:
-        return JsonResponse({'error':true,'message':'not all fields were received'})
+        return JsonResponse({'error':True,'message':'not all fields were received'})
 
 
         
-        
-        
+    
+'''        
 def register(request):
     context = RequestContext(request)
     context_dict = {}
@@ -175,10 +176,9 @@ def register(request):
             template = 'user/register.html'
             context_dict['selected'] = request.POST['selected']
             context_dict['error'] = msg
-        '''
-        set the user provided password first so that in case of a mishap user can login again later on 
-        and complete his/her registeration
-        '''
+        
+        #set the user provided password first so that in case of a mishap user can login again later on 
+        #and complete his/her registeration
         if msg == None:
             user.set_password(request.POST["password1"])
             user.save()
@@ -247,7 +247,7 @@ def register(request):
     context_dict['mentee_form'] =  mentee_form
     context_dict['education_form'] =  education_form
     return render_to_response(template,context_dict,context)
-
+'''
 
 
 def user_logout(request):
