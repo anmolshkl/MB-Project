@@ -7,17 +7,50 @@
 }
 .explore {
 	color: rgba(0, 0, 0, 0.8);
-	background-color: rgba(142, 213, 87, 0.3);
+	background-color: rgba(0, 0, 0, 0.1);
 	width: 200px;
 	height: 50px;
-	border-radius: 5px;
-	border: none;
+	border: 1px solid black;
 	top: 70px;
 	visibility: visible !important;
+	transition: all 0.3s ease 0s;
 }
 .explore:hover {
 	color: rgba(255, 255, 255, 1);
-	background-color: rgba(142, 213, 87, 0.6);
+	background-color: rgba(0, 0, 0, 0.6);
+	border: 1px solid white;
+	
+}
+.login {
+	position: absolute;
+	right: 0;	
+	z-index: 2000;
+	/*background-color: #FF4081;*/
+	background-color: rgba(255,64,129,1.0);
+	border-color: #CCC;
+	border: 0px none;
+	color: #FFF;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26);
+	border-radius: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+	outline: 0px none !important;
+	font-weight: normal;
+	text-align: center;
+	margin-top: 30px;
+	margin-right: 70px;
+	float: right; 
+	font-size: 15px;
+	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	padding-bottom: 8px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 8px;
+}
+.login:hover {
+	background-color: rgba(255,64,129,0.7);
+	color: #000;
 }
 .dark {
 	background-color: rgba(128,128,128,0.1)
@@ -26,6 +59,164 @@ nav {
 	font-weight: 400;
 	font-size: 20px;
 }
+.modal {
+	z-index: 50000 !important;
+}
+.modal-content {
+	border-radius: 0px !important;
+}
+/* Sign Up form */
+.signUpForm {
+	width: 70%;
+	margin: 0 auto;
+	padding: 1em 2em 1em 2em;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+.group { 
+	position: relative; 
+	margin-bottom: 45px; 
+}
+
+.signUpForm input {
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	-webkit-appearance: none;
+	display: block;
+	background: #fafafa;
+	color: #636363;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #757575;
+}
+
+.signUpForm input:focus { outline: none; }
 
 
+/* Label */
 
+.signUpForm label {
+	color: #999; 
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: all 0.2s ease;
+}
+
+
+/* active */
+
+.signUpForm input:focus ~ label,.signUpForm input.used ~ label {
+	top: -20px;
+  transform: scale(.75); left: -2px;
+	/* font-size: 14px; */
+	color: #4a89dc;
+}
+
+
+/* Underline */
+
+.bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.bar:before, .bar:after {
+	content: '';
+	height: 2px; 
+	width: 0;
+	bottom: 1px; 
+	position: absolute;
+	background: #4a89dc; 
+	transition: all 0.2s ease;
+}
+
+.bar:before { left: 50%; }
+
+.bar:after { right: 50%; }
+
+
+/* active */
+
+.signUpForm input:focus ~ .bar:before,.signUpForm input:focus ~ .bar:after { width: 50%; }
+
+
+/* Highlight */
+
+.highlight {
+	position: absolute;
+	height: 60%; 
+	width: 100px; 
+	top: 25%; 
+	left: 0;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+
+/* active */
+
+.signUpForm input:focus ~ .highlight {
+	animation: inputHighlighter 0.3s ease;
+}
+
+
+/* Animations */
+
+@keyframes inputHighlighter {
+	from { background: #4a89dc; }
+	to 	{ width: 0; background: transparent; }
+}
+
+
+/* Button */
+
+.signUpForm .button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  border: 0;
+  border-bottom: 2px solid #3160B6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.signUpForm .button:focus { outline: 0; }
+
+
+/* Button modifiers */
+
+.buttonBlue {
+  background: #4a89dc;
+  text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
+}
+
+.buttonBlue:hover { background: #357bd8; }
+
+
+/* Ripples container */
+
+.ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}

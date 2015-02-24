@@ -9,6 +9,7 @@ from apps.mentor.forms import UserProfileForm as MentorProfileForm
 from apps.mentee.forms import UserProfileForm as MenteeProfileForm
 from apps.mentor.forms import EducationForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 #new
 #from apps.user.backends import EmailAuthBackend 
 from django.conf import settings
@@ -121,9 +122,38 @@ def select(request):
             
             #return HttpResponseRedirect('/user/register/?selected=%s'%(request.POST['choice']))
     return render_to_response(template,context_dict,context)
+def register(request):
+    context = RequestContext(request)
+    context_dict = {}
+    post = request.POST #for convenience
+    msg=None
+    #check if we got all the input fields
+    if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'college' in post and 'city' in post and 'country' in post:
+        fn = request.POST['fn']
+        ln = request.POST['ln']
+        email = request.POST['email']
+        college = request.POST['college']
+        city = request.POST['city']
+        country = request.POST['country']
+        if fn and ln and email and college and city and country:
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({'error':true,'message':'User with this email already exists!'})
+            else:
+                user = User(username=email,first_name=fn,last_name=ln,email=email)
+                user.save()
+                profile = UserProfile()
+        
+        else:
+            return JsonResponse({'error':true,'message':'empty input field/s'})
+    
 
-#register after loggin in through Social App & hence @login_required
-@login_required
+    else:
+        return JsonResponse({'error':true,'message':'not all fields were received'})
+
+
+        
+        
+        
 def register(request):
     context = RequestContext(request)
     context_dict = {}

@@ -42,7 +42,7 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True)
     contact = models.CharField(max_length=128, blank=True)
     college = models.CharField(max_length=128, blank=True)
-    location = models.CharField(max_length=128, blank=True)
+    city = models.CharField(max_length=128, blank=True)
     state = models.CharField(max_length=128, blank=True)
     country = models.CharField(max_length=128, blank=True)
     about = models.TextField(blank=True)

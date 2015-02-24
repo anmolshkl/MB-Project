@@ -14,8 +14,8 @@ class EmploymentInline(admin.TabularInline):
 	extra = 3
 	
 class UserProfileAdmin(admin.ModelAdmin):
-	search_fields = ['location']
-	list_filter = ['location']
+	search_fields = ['city']
+	list_filter = ['city']
 	inlines = [EducationInline,SocialInline,EmploymentInline]
 
 admin.site.register(UserProfile,UserProfileAdmin)

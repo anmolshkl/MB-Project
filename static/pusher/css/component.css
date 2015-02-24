@@ -73,6 +73,32 @@ html, body, .pusher-container, .pusher-header {
 	width: 10%;
 	min-width: 150px;
 	margin-top: 20px;
+	background-color: rgba(255,64,129,1.0) !important;
+	border-color: #CCC !important;
+	border: 0px none;
+	color: #FFF;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+	border-radius: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+	outline: 0px none !important;
+	font-weight: normal;
+	text-align: center;
+	font-size: 15px;
+	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	padding-bottom: 8px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 8px;
+	transition: all 1s ease;
+	background: linear-gradient(to right, #FF4081 50%, #3F51B5 50%);
+	background-size: 200% 100%;
+	background-position:left bottom;
+}
+.signUp:hover {
+	background-position: right bottom;
+
 }
 .trigger {
 	position: relative;
