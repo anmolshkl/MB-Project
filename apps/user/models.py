@@ -51,6 +51,7 @@ class UserProfile(models.Model):
     is_mentor = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
     def full_name(self):
         return self.user.get_full_name() 
 
@@ -167,9 +168,11 @@ def save_data_reg(sender, **kwargs):
     except:
         pass
     if extra_data:
-        (userProfile.location,userProfile.country) = extra_data['location']['name'].split(',')  
+        (userProfile.city,userProfile.country) = extra_data['location']['name'].split(',')
+        userProfile.email_verified = True  
         userProfile.save()
 
+    '''
     #try to check whether user has any data provided by Facebook
     extra_data = None
     try:
@@ -208,3 +211,5 @@ def save_data_reg(sender, **kwargs):
     if extra_data:
         userProfile.location = extra_data['location']
         userProfile.save()
+
+    '''

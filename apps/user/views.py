@@ -58,11 +58,19 @@ def index(request):
         template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
         #attach required forms to display in the template
 
+
+    if user_profile and not user_profile.is_new:
+        if user_profile.is_mentor == True:
+            return HttpResponseRedirect("/mentor/")
+        else:
+            return HttpResponseRedirect("/mentee/")
+
     return render_to_response(template,context_dict,context_instance = RequestContext(request))
+
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
-    print "insedie user_login view"
+    print "inside user_login view"
     context = RequestContext(request)
 
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -75,7 +83,6 @@ def user_login(request):
         if user:
             # Is the account active? It could have been disabled.
             if user.is_active:
-                #we 
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the userpage.
                 login(request, user)
@@ -103,24 +110,67 @@ def user_login(request):
 
 @login_required
 def select(request):
-    context = RequestContext(request)
-    context_dict = {}
+    error=False
+    msg=None
     template = "user/select.html"
+    user = request.user
+    user_profile = user.user_profile
+                
     if not UserProfile.objects.get(user=request.user).is_new:
         return HttpResponseRedirect('/user/')
+    
     if request.method == 'POST':
         #check whether a request is POST request after submitted choice has come
-        if request.POST.get('choice'):
-            #store the choice in session for further use
-            user = request.user
-            user_profile = user.user_profile
-            context['selected'] = request.POST['choice']
-            template = "user/register.html"
-            context_dict['mentor_form'] = MentorProfileForm(instance=user_profile)
-            context_dict['mentee_form'] = MenteeProfileForm(instance=user_profile)
-            context_dict['education_form'] = EducationForm(instance=user_profile)
-        
-    return render_to_response(template,context_dict,context)
+        if 'choice' in request.POST:
+            if request.POST['choice'] == "mentor":
+                user_profile.is_mentor = True
+                user_profile.save()
+            elif request.POST['choice'] == "mentee":
+                user_profile.is_mentor = False 
+                user_profile.save()  
+            else:
+                error = True
+                msg = "Not a valid choice!"
+        else:
+            error = True
+            msg = "Select an option!"
+
+    return JsonResponse({"error":error,"message":msg})
+
+@login_required
+def set_password(request):
+    error=False
+    msg=None
+    template = "user/select.html"
+    user = request.user
+    user_profile = user.user_profile    
+    if not UserProfile.objects.get(user=request.user).is_new:
+        return HttpResponseRedirect('/user/')
+    
+    if request.method == 'POST':
+        #check whether a request is POST request after submitted choice has come
+        if 'password' in request.POST and 'confirmPassword' in request.POST:
+            if request.POST['password'] == request.POST['confirmPassword'] and request.POST['password'] != '':
+                if len(request.POST['password']) >= 6:
+                    user.set_password(request.POST['password'])
+                    user.save()
+
+                    #check if it's a new user
+                    if user_profile.is_new:
+                        user_profile.is_new = False
+                        user_profile.save()
+                else:
+                    error = True
+                    msg = "Password should be atleast 6 characters long."
+            else:
+                error = True
+                msg = "Password empty or doesnt matches confirmation password."
+        else:
+            error = True
+            msg = "Didn't receive password!"
+
+    return JsonResponse({"error":error,"message":msg})
+
 def register(request):
     post = request.POST #for convenience
     msg=None

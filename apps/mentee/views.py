@@ -59,6 +59,9 @@ def index(request):
         template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
         #attach required forms to display in the template
 
+    if not user_profile.is_new:
+        template = "mentee/index.html"
+
     return render_to_response(template,context_dict,context_instance = RequestContext(request))
 
 def register(request):

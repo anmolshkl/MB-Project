@@ -1,3 +1,46 @@
+.bigger {
+	font-size: 20px !important;
+}
+#loginLinkedIn {
+	width: 100%;
+	border-radius: 0px;
+	background-color: rgba(0,123,182,1.0);
+	border-color: #CCC;
+	border: 0px none;
+	color: #FFF;
+	border-radius: 2px;
+	transition: all 1s ease;
+}
+#loginLinkedIn:hover {
+	background-color: rgba(0,123,182,0.7);
+
+}
+#loginButton {
+	width: 100%;
+	border-radius: 0px;
+	background-color: rgba(0,128,128,1.0);
+	border-color: #CCC;
+	border: 0px none;
+	color: #FFF;
+	border-radius: 2px;
+	transition: all 1s ease;
+
+}
+#loginButton:hover {
+	background-color: rgba(0,128,128,0.7);
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26);
+
+}
+.popover-title {
+	text-align: center;
+}
+
+.popover-content input {
+	margin-bottom: 10px;
+}
+.popover {
+	z-index: 5999;
+}
 .textCenter {
 	text-align: center !important;
 }
@@ -34,7 +77,7 @@
 	border-radius: 2px;
 	text-transform: uppercase;
 	text-decoration: none;
-	transition: box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+	transition: all 0.5s ease;
 	outline: 0px none !important;
 	font-weight: normal;
 	text-align: center;

@@ -19,7 +19,7 @@
 
         <!-- loader -->
         <link rel="stylesheet" type="text/css" href="{% static 'loader/css/normalize.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'loader/css/effect1.css' %}" />
+        <link rel="stylesheet" type="t  ext/css" href="{% static 'loader/css/effect1.css' %}" />
         <script src="{% static 'loader/js/modernizr.custom.js' %}"></script>
         
         <!-- Pusher -->
@@ -112,12 +112,12 @@
                 <label>College/University</label>
               </div>
               <div class="group">
-                <input type="" name="city" id="city"><span class="highlight"></span><span class="bar"></span>
+                <input type="text" name="city" id="city"><span class="highlight"></span><span class="bar"></span>
                 <label>City</label>
               </div>
               
               <div class="group">
-                <input type="" name="country" id="country"><span class="highlight"></span><span class="bar"></span>
+                <input type="text" name="country" id="country"><span class="highlight"></span><span class="bar"></span>
                 <label>Country</label>
               </div>
               
@@ -179,7 +179,17 @@
 
                 <div class="bg-img">
                     <img src="{% static 'img/bg11.jpg' %}" alt="Background Image"/>
-                    <button class="login">Login</button>
+                    <button class="login danger" data-placement='bottom' title="Hola Buddy!" >Login</button>
+                    <div id="login-content">
+                            <form action="/user/login/" method="POST">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" id="login-email" name="login-email" placeholder="email" />
+                                <input type="password" class="form-control" id="login-password" name="login-password" placeholder="password" />
+                                <input type="submit" class="btn" id="loginButton" value="SIGN IN"/> 
+                                <a class="btn" id="loginLinkedIn" href="{% provider_login_url "linkedin" method="oauth2" %}" ><i class="fa fa-linkedin bigger"></i>SIGN IN WITH LinkedIn</a>
+                            </form>
+
+                    </div>
                 </div>
                 <div class="title" style="color:black;">
                     <h1 class="wow fadeInDown" data-wow-delay="3.5s">Mentor Buddy</h1>
@@ -237,6 +247,7 @@
                         <p class="wow fadeInUp" data-wow-delay="1.5s">
                         Forums are a thing of the past. They are messy and cluttered. GQ helps list all those General Queries that first hit your head!
                         </p>
+
                     </div>
                     <div class="col-md-6 textCenter">
                         <img src="{% static 'img/ways.png' %}" class="img2 wow bounceInUp "/>
@@ -486,4 +497,16 @@
             })();
         </script>
     </body>
+
+     <script>
+     $(document).ready(function(){
+      $('.danger').popover({ 
+        html : true,
+        content: function() {
+          return $('#login-content').html();
+        }
+      });
+    })
+   </script>
+</html>
 
