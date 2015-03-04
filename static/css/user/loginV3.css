@@ -1,114 +1,43 @@
-.bigger {
-	font-size: 20px !important;
+.modal-content {
+	border-radius: 0px !important;
 }
-#loginLinkedIn {
-	width: 100%;
-	border-radius: 0px;
-	background-color: rgba(0,123,182,1.0);
-	border-color: #CCC;
-	border: 0px none;
-	color: #FFF;
-	border-radius: 2px;
-	transition: all 1s ease;
-}
-#loginLinkedIn:hover {
-	background-color: rgba(0,123,182,0.7);
-
-}
-#loginButton {
-	width: 100%;
-	border-radius: 0px;
-	background-color: rgba(0,128,128,1.0);
-	border-color: #CCC;
-	border: 0px none;
-	color: #FFF;
-	border-radius: 2px;
-	transition: all 1s ease;
-
-}
-#loginButton:hover {
-	background-color: rgba(0,128,128,0.7);
-	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26);
-
-}
-.popover-title {
+.modal-title, .modal-body{
 	text-align: center;
 }
 
-.popover-content input {
-	margin-bottom: 10px;
-}
-.popover {
-	z-index: 5999;
-}
-.textCenter {
-	text-align: center !important;
-}
-.hidden {
-	display: none;
-	visibility: hidden;
-}
-.explore {
-	color: rgba(0, 0, 0, 0.8);
-	background-color: rgba(0, 0, 0, 0.1);
-	width: 200px;
-	height: 50px;
-	border: 1px solid black;
-	top: 70px;
-	visibility: visible !important;
-	transition: all 0.3s ease 0s;
-}
-.explore:hover {
-	color: rgba(255, 255, 255, 1);
-	background-color: rgba(0, 0, 0, 0.6);
-	border: 1px solid white;
-	
-}
-.login {
-	position: absolute;
-	right: 0;	
-	z-index: 2000;
-	/*background-color: #FF4081;*/
-	background-color: rgba(255,64,129,1.0);
-	border-color: #CCC;
+#signUpButton {
+	position: relative !important;
+	margin-right: 0 auto !important;
+	min-width: 150px;
+	background-color: rgba(255,64,129,1.0) !important;
+	border-color: #CCC !important;
 	border: 0px none;
 	color: #FFF;
-	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26);
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
 	border-radius: 2px;
 	text-transform: uppercase;
 	text-decoration: none;
-	transition: all 0.5s ease;
 	outline: 0px none !important;
 	font-weight: normal;
 	text-align: center;
-	margin-top: 30px;
-	margin-right: 70px;
-	float: right; 
 	font-size: 15px;
 	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif !important;
 	padding-bottom: 8px;
 	padding-left: 30px;
 	padding-right: 30px;
 	padding-top: 8px;
+	transition: all 1s ease !important;
+	background: linear-gradient(to right, #FF4081 50%, #3F51B5 50%) !important;
+	background-size: 200% 100% !important;
+	background-position:left bottom !important;
 }
-.login:hover {
-	background-color: rgba(255,64,129,0.7);
-	color: #000;
-}
-.dark {
-	background-color: rgba(128,128,128,0.1)
-}
-nav {
-	font-weight: 400;
-	font-size: 20px;
-}
-.modal {
-	z-index: 50000 !important;
-}
-.modal-content {
-	border-radius: 0px !important;
-}
+#signUpButton:hover {
+	background-position: right bottom !important;
 
+}
+.textCenter {
+	text-align: center !important;
+}
 /* Sign Up form */
 .signUpForm {
 	width: 90%;
@@ -242,6 +171,26 @@ nav {
   border-bottom: 2px solid #3160B6;
   cursor: pointer;
   transition: all 0.15s ease;
+}
+.signUpForm .signup-linkedin {
+	position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  border: 0px !important;
+  border-bottom: 2px solid #3160B6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+    background: #4a89dc;
+  text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
 }
 .signUpForm .button:focus { outline: 0; }
 

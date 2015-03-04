@@ -119,6 +119,9 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfiles.save()
 
+
+    '''
+
     #try to check whether user has any data provided by Facebook
     extra_data = None
     try:
@@ -151,65 +154,5 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_url_github = extra_data['html_url']
         socialProfiles.profile_pic_url_github = extra_data['avatar_url']
         socialProfiles.save()
-    
-
-
-@receiver([user_signed_up])
-def save_data_reg(sender, **kwargs):
-    #saves data to be filled in for registration
-
-    user = kwargs.pop('user')
-    userProfile,usrprof_created= UserProfile.objects.get_or_create(user=user)
-    
-    #try to check whether user has any data provided by LinkedIn
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        (userProfile.city,userProfile.country) = extra_data['location']['name'].split(',')
-        userProfile.email_verified = True  
-        userProfile.save()
-
     '''
-    #try to check whether user has any data provided by Facebook
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        if extra_data['gender'] == 'male':
-            userProfile.gender = 'M'
-        else:
-            userProfile.gender = 'F'
-        (userProfile.location, userProfile.state, userProfile.country) = extra_data['location']['name'].split(',')
-        userProfile.date_of_birth = datetime.datetime.strptime(extra_data['birthday'], '%m/%d/%Y').strftime('%Y-%m-%d')
-        userProfile.save()
 
-    #try to check whether user has any data provided by Google
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='google')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        if extra_data['gender'] == 'male':
-            userProfile.gender = 'M'
-        else:
-            userProfile.gender = 'F'
-        userProfile.save()
-
-
-    #try to check whether user has any data provided by Github
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='github')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        userProfile.location = extra_data['location']
-        userProfile.save()
-
-    '''

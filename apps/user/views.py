@@ -44,7 +44,7 @@ def cropAndSave(user, POST):
 
 def index(request):
     context_dict = {}
-    template = "user/login.html" #default template to render
+    template = "user/loginV3.html" #default template to render
     user = None
     user_profile = None
 
