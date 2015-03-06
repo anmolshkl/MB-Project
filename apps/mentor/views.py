@@ -54,6 +54,8 @@ def index(request):
         context_dict['selected'] = None
         template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
     if not user_profile.is_new:
+        if 'pic_url' in request.session:
+            context_dict['pic_url'] = request.session['pic_url']
         template = "mentor/index.html"
 
     return render_to_response(template,context_dict,context_instance = RequestContext(request))
@@ -386,3 +388,7 @@ def manage_social_profiles(request,action=None,provider=None):
         sp_dict[obj.provider] = {'profile_url':obj.get_profile_url(),'avatar_url':obj.get_avatar_url()}
     
     return render(request,'mentor/manage-social-profiles.html',locals())
+
+@login_required
+def getCalendar(request):
+    return render_to_response()

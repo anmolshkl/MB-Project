@@ -86,6 +86,9 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the userpage.
                 login(request, user)
+                user_profile = UserProfile.objects.get(user=user)
+                social_profile = SocialProfiles.objects.get(parent=user_profile)
+                request.session['pic_url'] = social_profile.profile_pic_url_linkedin
                 return HttpResponseRedirect("/user/")
                 #return HttpResponseRedirect('/user/')
             else:

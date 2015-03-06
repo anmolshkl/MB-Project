@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load socialaccount %}
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -49,7 +50,7 @@
          <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu"  class="" > <div class="iconset top-menu-toggle-white"></div> </a> </li>       
         </ul>
       <!-- BEGIN LOGO -->   
-      <a href="index.html"><img src="{% static 'template/webarch/assets/img/logo.png' %}" class="logo" alt=""  data-src="{% static 'template/webarch/assets/img/logo.png' %}" data-src-retina="{% static 'template/webarch/assets/img/logo2x.png' %}" width="106" height="21"/></a>
+      <a href="/user/"><img src="{% static 'template/webarch/assets/img/logo.png' %}" class="logo" alt=""  data-src="{% static 'template/webarch/assets/img/logo.png' %}" data-src-retina="{% static 'template/webarch/assets/img/logo2x.png' %}" width="106" height="21"/></a>
       <!-- END LOGO --> 
       <ul class="nav pull-right notifcation-center">    
         <li class="dropdown" id="header_task_bar"> <a href="index.html" class="dropdown-toggle active" data-toggle=""> <div class="iconset top-home"></div> </a> </li>
@@ -141,7 +142,7 @@
                         </div>              
                 </div>
                 <div class="profile-pic"> 
-                    <img src="{% static 'template/webarch/assets/img/profiles/avatar_small.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/avatar_small.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/avatar_small2x.jpg' %}" width="35" height="35" /> 
+                    <img src="{{ pic_url }}"  alt="" data-src="{{ pic_url }}" data-src-retina="{{ pic_url }}" width="35" height="35" /> 
                 </div>                  
             </div>
          <ul class="nav quick-section ">
@@ -154,10 +155,8 @@
                   </li>
                   <li><a href="calender.html">My Calendar</a>
                   </li>
-                  <li><a href="email.html"> My Inbox&nbsp;&nbsp;<span class="badge badge-important animated bounceIn">2</span></a>
-                  </li>
                   <li class="divider"></li>                
-                  <li><a href="login.html"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
+                  <li><a href="/user/logout/"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
                </ul>
             </li> 
             <li class="quicklinks"> <span class="h-seperate"></span></li> 
@@ -191,7 +190,7 @@
   <!-- BEGIN MINI-PROFILE -->
    <div class="user-info-wrapper">  
     <div class="profile-wrapper">
-        <img src="{% static 'template/webarch/assets/img/profiles/avatar.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/avatar.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/avatar2x.jpg' %}" width="69" height="69" />
+        <img src="{{ pic_url }}"  alt="profile-image" data-src="{{ pic_url }}" data-src-retina="{% static 'template/webarch/assets/img/profiles/avatar2x.jpg' %}" width="69" height="69" />
     </div>
     <div class="user-info">
       <div class="greeting">Welcome</div>
@@ -204,11 +203,13 @@
    <!-- BEGIN SIDEBAR MENU -->  
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>    
-      <li class="start active "> <a href="index.html"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-important pull-right">5</span></a> </li>
-      <li class=""> <a href="email.html"> <i class="fa fa-envelope"></i> <span class="title">Requests</span>  <span class=" badge badge-disable pull-right ">03</span></a> </li>      
+      <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-important pull-right">5</span></a> </li>
+      <li class=""> <a href="javascript:;"> <i class="fa fa-user"></i> <span class="title">Profile</a></li>
+      <li class=""> <a href="#"> <i class="fa fa-envelope"></i> <span class="title">Requests</span>  <span class=" badge badge-disable pull-right ">03</span></a> </li>
+      <li class=""> <a href="/mentor/calendar/"> <i class="fa fa-calendar"></i> <span class="title">Calendar</span></a> </li>      
       <li class=""> <a href="../frontend/index.html"> <i class="fa fa-flag"></i>  <span class="title">Social Accounts</span></a></li>      
-      <li class=""> <a href="javascript:;"> <i class="fa fa-edit"></i> <span class="title">Profile</a></li>
-        
+      
+      <li class=""> <a href="javascript:;"> <i class="fa fa-phone"></i> <span class="title">Go Live!</a></li>  
     </ul>
     <div class="side-bar-widgets">
     <p class="menu-title">FOLDER <span class="pull-right"><a href="#" class="create-folder"> <i class="fa fa-plus"></i></a></span></p>
@@ -485,7 +486,7 @@
                           <br>
                             <div class="notification-messages info">
                                 <div class="user-profile">
-                                    <img src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
+                                    <img src="{{ pic_url }}"  alt="" data-src="{{ pic_url }}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
                                 </div>
                                 <div class="message-wrapper">
                                     <div class="heading">
