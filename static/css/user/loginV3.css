@@ -1,3 +1,47 @@
+html, body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+p {
+	font-size: 20px;
+	font-family: 'Open Sans';
+	font-weight: 300;
+	color: #505458;
+}
+.loginForm .group {
+	width: 100%;
+}
+.row {
+	background-color: white;
+}
+.dark {
+	background-color: rgba(111, 123, 138,0.1);
+}
+.img-1 {
+	width: 70%;
+	height: 70%;
+}
+.img-2 {
+	max-width: 300px;
+	max-height: 300px; 
+}
+.img-3 {
+	max-width: 300px;
+	max-height: 300px;
+}
+.img-4 {
+	max-width: 400px;
+	max-height: 400px;
+}
+.center {
+	margin: 0 auto;
+}
+.textCenter {
+	text-align: center;
+}
+.pad-s {
+	padding: 30px;
+}
 .tp-caption {
 	text-align: center;
 }
@@ -36,22 +80,53 @@
 }
 #signUpButton:hover {
 	background-position: right bottom !important;
-
 }
+
+#loginButton {
+	position: relative !important;
+	margin-right: 0 auto !important;
+	min-width: 150px;
+	background-color: rgba(255,64,129,1.0) !important;
+	border-color: #CCC !important;
+	border: 0px none;
+	color: #FFF;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+	border-radius: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	outline: 0px none !important;
+	font-weight: normal;
+	text-align: center;
+	font-size: 15px;
+	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	padding-bottom: 8px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 8px;
+	transition: all 1s ease !important;
+	background: linear-gradient(to right, #0aa699 50%, #3F51B5 50%) !important;
+	background-size: 200% 100% !important;
+	background-position:left bottom !important;
+}
+#loginButton:hover {
+	background-position: right bottom !important;
+}
+
 .textCenter {
 	text-align: center !important;
 }
+
 /* Sign Up form */
 .signUpForm {
 	width: 90%;
 	margin: 0 auto;
-	padding: 1em 2em 1em 2em;
+	padding: 2em 2em 1em 2em;
 	background: #fafafa;
 	border: 1px solid #ebebeb;
 	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
 }
 
-.group { 
+.signUpForm .group { 
 	position: relative; 
 	margin-bottom: 45px; 
 	width: 50%;
@@ -178,6 +253,183 @@
 .signUpForm .signup-linkedin {
 	position: relative;
   display: inline-block;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle !important;
+  color: #fff;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  border: 0px !important;
+  border-bottom: 2px solid #3160B6 !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+    background: #4a89dc;
+  text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
+}
+.signUpForm .button:focus { outline: 0; }
+
+.signup-linkedin i {
+	position: relative;
+	float: left;
+	vertical-align: middle !important;
+	width: 50px;
+	padding: 5px;
+}
+.socialButtonLabel {
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+
+}
+
+/* Button modifiers */
+
+.buttonBlue {
+  background: #4a89dc;
+  text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
+}
+
+.buttonBlue:hover { background: #357bd8; }
+
+
+/* Ripples container */
+
+.ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+
+
+/* Login form */
+#loginModal .modal-body{
+	background: none;
+}
+.loginForm {
+	width: 70%;
+	margin: 0 auto;
+	padding: 2em 2em 1em 2em;
+	background: #fafafa;
+	border: 1px solid #ebebeb;
+	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+.loginForm .group { 
+	position: relative; 
+	margin-bottom: 45px; 
+	width: 100%;
+	float: left;
+	padding-right: 5%;
+}
+
+.loginForm input {
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	-webkit-appearance: none;
+	display: block;
+	background: #fafafa;
+	color: #636363;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #757575;
+}
+
+.loginForm input:focus { outline: none; }
+
+
+/* Label */
+
+.loginForm label {
+	color: #999; 
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: all 0.2s ease;
+}
+
+
+/* active */
+
+.loginForm input:focus ~ label,.loginForm input.used ~ label {
+	top: -20px;
+  transform: scale(.75); left: -2px;
+	/* font-size: 14px; */
+	color: #4a89dc;
+}
+
+
+/* Underline */
+
+.bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.bar:before, .bar:after {
+	content: '';
+	height: 2px; 
+	width: 0;
+	bottom: 1px; 
+	position: absolute;
+	background: #4a89dc; 
+	transition: all 0.2s ease;
+}
+
+.bar:before { left: 50%; }
+
+.bar:after { right: 50%; }
+
+
+/* active */
+
+.loginForm input:focus ~ .bar:before,.loginForm input:focus ~ .bar:after { width: 50%; }
+
+
+/* Highlight */
+
+.highlight {
+	position: absolute;
+	height: 60%; 
+	width: 100px; 
+	top: 25%; 
+	left: 0;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+
+/* active */
+
+.loginForm input:focus ~ .highlight {
+	animation: inputHighlighter 0.3s ease;
+}
+
+
+/* Animations */
+
+@keyframes inputHighlighter {
+	from { background: #4a89dc; }
+	to 	{ width: 0; background: transparent; }
+}
+
+
+/* Button */
+
+.loginForm .button {
+  position: relative;
+  display: inline-block;
   padding: 12px 24px;
   margin: .3em 0 1em 0;
   width: 100%;
@@ -188,15 +440,44 @@
   -webkit-font-smoothing: antialiased;
   text-align: center;
   letter-spacing: 1px;
-  border: 0px !important;
+  border: 0;
   border-bottom: 2px solid #3160B6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.loginForm .login-linkedin {
+	position: relative;
+  display: inline-block;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle !important;
+  color: #fff;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  border: 0px !important;
+  border-bottom: 2px solid #3160B6 !important;
   cursor: pointer;
   transition: all 0.15s ease;
     background: #4a89dc;
   text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
 }
-.signUpForm .button:focus { outline: 0; }
+.loginForm .button:focus { outline: 0; }
 
+.login-linkedin i {
+	position: relative;
+	float: left;
+	vertical-align: middle !important;
+	width: 50px;
+	padding: 5px;
+}
+.socialButtonLabel {
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+
+}
 
 /* Button modifiers */
 

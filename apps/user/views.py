@@ -77,8 +77,8 @@ def user_login(request):
     if request.method == 'POST':
         # Gather the username and password provided by the user.
         # This information is obtained from the login form.
-        email = request.POST['email']
-        password = request.POST['password']
+        email = request.POST['loginEmail']
+        password = request.POST['loginPassword']
         user = authenticate(username=email, password=password)
         if user:
             # Is the account active? It could have been disabled.
@@ -86,11 +86,11 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the userpage.
                 login(request, user)
-                return HttpResponseRedirect("/user/thank-you/")
+                return HttpResponseRedirect("/user/")
                 #return HttpResponseRedirect('/user/')
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponseRedirect("/user/thank-you/")
+                return HttpResponseRedirect("/user/")
                 #return HttpResponse("Your Mentor Buddy account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
