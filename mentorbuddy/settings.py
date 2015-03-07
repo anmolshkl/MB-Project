@@ -239,3 +239,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 
+#SITE URL 
+SITE_URL = "http://localhost:8000/"

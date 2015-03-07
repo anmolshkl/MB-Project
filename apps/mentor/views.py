@@ -41,19 +41,21 @@ def cropAndSave(user, POST):
 
 def index(request):
     context_dict = {}
-    template = "user/login.html" #default template to render
+    template = "user/loginV3.html" #default template to render
     user = None
     user_profile = None
 
     user = request.user.id
     if user != None:
         user_profile,created = UserProfile.objects.get_or_create(user=user)
+    else:
+        return HttpResponseRedirect(settings.SITE_URL)
     
     #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
         template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
-    if not user_profile.is_new:
+    if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
         template = "mentor/index.html"
