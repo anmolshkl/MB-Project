@@ -1,98 +1,209 @@
 {% extends 'mentor/base.html' %}
 {% load static %}
 {% block stylesheets %}
-<link rel="stylesheet" href="" />
+<link rel="stylesheet" type="text/css" href="{% static 'css/mentor/profile.css' %}" />
 {% endblock %}
 
-{% block body_block %}
-    {% if user and not user.is_anonymous  %} 
-        <h1>Note: User can have more than 20 fields,missing fields only means user has not provided data!</h>
-            <h3>Profile details</h3>
-            <p>Name: {{ full_name }}</p>
-            
-            {% if gender %} 
-                <p>Gender: {{ gender }}</p>
-            {% endif %}
+{% block container_title %}
+    Profile Page
+{% endblock %}
 
-            {% if date_of_birth %}
-                <p>Birth Date: {{ date_of_birth }}
-            {% endif %}
-
-            {% if email %}
-                <p> Email:{{ email }} </p>
-            {% endif %}
-            
-            {% if hometown %}
-                <p>Home Town: {{ home_town }}</p>
-            {% endif %}
-     
-            {% if location %}
-            <p>Location:
-                {{ location }}
-            </p>
-            {% endif %}
-
-            {% if country %}
-            <p>Country
-                {{ country }}
-            </p>
-            {% endif %}
+{% block container_block %}
     
-            {% if contact_number %}
-            <p>Contact Number: {{ contact_number }} </p>
-            {% endif %}
-
-            {% if about %}
-            <p>About: {{ about }} </p>
-            {% endif %}
-
-            {% if profile_url %}
-                <p>Profile Link:
-                    <ul>
-                        <li><a href="{{ profile_url }}">{{ provider }} profile</a></li>
-                    </ul>
-                </p>
-            {% endif %}
-
-            {% if picture_url %}
-                <p> Profile Pic:
-                    <ul>
-                        <li><img src="{{ picture_url }}"></img></li>
-                    </ul>
-                </p>
-            {% endif %}
-
-        {% if edu_list %}
-        <p>Education Details
-        <ul>
-            {% for item in edu_list %}
-            <li>institute: {{ item.inst }} <br />
-                location: {{ item.loc }} <br />
-                country: {{ item.coun }} <br />
-                degree: {{ item.degree }}<br>
-                branch: {{ item.branch }}<br>
-                duration: {{ item.from }}-{{ item.to }} <br />
-            </li>
-            {% endfor %}
-        </ul>
-        </p>
-        {%endif%}
-        {% if edu_list %}
-        <p>Employment Details
-        <ul>
-            {% for item in edu_list %}
-            <li>Organization: {{ item.org }} <br />
-                Location: {{ item.loc }} <br />
-                Position: {{ item.pos }} <br />
-                Period: {{ item.from }}-{{ item.to }}<br>
-            </li>
-            {% endfor %}
-        </ul>
-        </p>
-        {%endif%}
-    {% else %}
-        <p>Please login to access profile</p>
-    {% endif %}
+<div class="page-content condensed"> 
+    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+    <div id="portlet-config" class="modal hide">
+      <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button"></button>
+        <h3>Widget Settings</h3>
+      </div>
+      <div class="modal-body"> Widget settings form goes here </div>
     </div>
-</div>
+    <div class="clearfix"></div>
+    <div class="content">  
+        <div class="row">
+            <div class="col-md-6 no-margin">
+                <div class=" tiles white col-md-12 no-padding">
+                    <div class="tiles green cover-pic-wrapper">                     
+                        <div class="overlayer bottom-right">
+                            <div class="overlayer-wrapper">
+                                    <div class="padding-10 hidden-xs">                                  
+                                        <button type="button" class="btn btn-primary btn-small"><i class="fa fa-check"></i>&nbsp;&nbsp;Following</button> <button type="button" class="btn btn-primary btn-small">Add</button>
+                                    </div>
+                            </div>
+                        </div>
+                    <!-- <img src="{%static 'template/webarch/assets/img/cover_pic.png' %}" alt="Cover Pic"> -->
+                    <img src="{%static 'img/bg7.jpg' %}" alt="">
+                    </div>
+                    <div class="white well">
+            
+                        <div class="row tiles white">
+                            <div class="col-md-3 col-sm-3 " >
+                                <div class="user-profile-pic">  
+                                    <img width="69" height="69" data-src-retina="{{ pic_url }}" data-src="{{ pic_url }}" src="{{ pic_url }}" alt="">
+                                </div>
+                                 <div class="user-mini-description">
+                                    <h3 class="text-success semi-bold">
+                                        48
+                                    </h3>
+                                    <h5>Mentee</h5>
+                                    <h3 class="text-success semi-bold">
+                                        4 
+                                    </h3>
+                                    <h5>Blogs</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-5 user-description-box  col-sm-5">
+                                <h4 class="semi-bold no-margin">{{ full_name }}</h4>
+                                <h6 class="no-margin">{{ college }}</h6>
+                                <br>
+                                <p><i class="fa fa-briefcase"></i>UI & Graphic Design</p>
+
+                            </div>
+                        </div>
+
+                        <div class="row tiles white">
+                            <div class="col-xs-3 ptiles">
+                                {% if city %}
+                                    <p>City:
+                                        {{ city }}
+                                    </p>
+                                {% endif %}
+
+                                {% if country %}
+                                    <p>Country:
+                                        {{ country }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                        <br>
+                        {% if edu_list %}
+                        <div class="row tiles white">    
+                            <h3>Education Details</h3>
+                                
+                                {% for item in edu_list %}
+                                    <div class="col-sm-12 ptiles textCenter">
+                                        <h3>{{ item.inst }}</h3>
+                                        <hr>
+                                        <div class="col-xs-12 ptiles2">
+                                            {{ item.loc }},{{ item.coun }}
+                                        </div>
+                                        <div class="col-xs-12 ptiles2">
+                                             {{ item.degree }} in {{ item.branch }}
+                                        </div>
+                                        <div class="col-xs-12 ptiles2">
+                                             {{ item.from }}-{{ item.to }}
+                                        </div>
+                                    </div>                                
+                                {% endfor %}
+
+                        </div>
+                        {%endif%}
+                                          
+                    
+                </div>
+
+                </div>  
+            </div>
+            
+            
+            <div class="col-md-6">
+                <div class="row">
+                <div class="tiles white col-md-12  no-padding">         
+                    <div class="tiles-body">
+                        <h5 ><span class="semi-bold">Your Blogs and shared posts</span>&nbsp;&nbsp; <a href="#" class="text-info normal-text">view more</a></h5>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="">
+                                    </div>
+                                    <div class="">
+                                        <div class="">
+                                            Blog 2
+                                        </div>
+                                        <div class="">
+                                            Australian Adventures!
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="">
+                                        <div class="">
+                                            Blog 1
+                                        </div>
+                                        <div class="normal">
+                                            Education the Beer nation!
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-12 no-padding">
+                    <div class="tiles white">
+                        <textarea rows="3"  class="form-control user-status-box post-input"  placeholder="Whats on your mind?"></textarea>
+                    </div>
+
+                    <div class="tiles grey padding-10">
+                    <div class="pull-left">
+                        <button class="btn btn-default btn-sm btn-small" type="button"><i class="fa fa-camera"></i></button>
+                        <button class="btn btn-default btn-sm btn-small" type="button"><i class="fa fa-map-marker"></i></button>
+                    </div>
+
+                    <div class="pull-right">
+                        <button class="btn btn-primary btn-sm btn-small" type="button">POST</button>
+                    </div>                  
+                    <div class="clearfix"></div>
+                    </div>                                      
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-12 white tiles">
+                        <div class="col-xs-12 textCenter  ">
+                                {% if about %}
+                                    <h4>About</h4><hr>
+                                    {{ about }}
+                                {% endif %}
+                            </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-xs-12 white tiles">
+                        {% if edu_list %}
+                            <h3>Employment Details</h3>
+                            {% for item in emp_list %}
+                                Organization: {{ item.org }} <br />
+                                Location: {{ item.loc }} <br />
+                                Position: {{ item.pos }} <br />
+                                Period: {{ item.from }} - {{ item.to }}<br>
+                            {% endfor %}
+                        </ul>
+                        </p>
+                        {%endif%}
+                    </div>
+                </div>
+                <br>
+                <br>
+                
+            </div>
+        </div>
+        
+    
+    
+    </div>
+  </div>
+<!-- END CONTAINER -->
 {% endblock %}

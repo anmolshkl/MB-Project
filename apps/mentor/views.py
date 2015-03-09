@@ -180,8 +180,9 @@ def self_profile_view(request):
     context_dict['full_name'] = None
     context_dict['gender'] = None
     context_dict['date_of_birth'] = None 
-    context_dict['location'] = None 
+    context_dict['city'] = None 
     context_dict['country'] = None 
+    context_dict['college'] = None 
     context_dict['email'] = None 
     context_dict['contact_number'] = None
     context_dict['about'] = None
@@ -204,9 +205,9 @@ def self_profile_view(request):
     if date_of_birth != '':
         context_dict['date_of_birth'] = date_of_birth
 
-    location = user_profile_object.location
-    if location != '':
-        context_dict['location'] = location 
+    city = user_profile_object.city
+    if city != '':
+        context_dict['city'] = city 
     
     country = user_profile_object.country
     if country != '':
@@ -223,7 +224,11 @@ def self_profile_view(request):
     about = user_profile_object.about
     if about:
         context_dict['about'] = about
-    
+
+    college = user_profile_object.college
+    if college:
+        context_dict['college'] = college
+        
     provider = None
     
     picture_url= None
@@ -231,10 +236,16 @@ def self_profile_view(request):
     profile_url =None
 
     if social_profiles_object:
+
         if social_profiles_object.profile_pic_url_linkedin:
             provider = "LinkedIn"
             picture_url = social_profiles_object.profile_pic_url_linkedin
             profile_url = social_profiles_object.profile_url_linkedin
+            
+            #If there is no pic uploaded, render LinkedIn pic
+            if(not user_profile_object.picture):
+                context_dict['pic_url'] = picture_url
+
         elif social_profiles_object.profile_pic_url_facebook:
             provider = "Facebook"
             picture_url = social_profiles_object.profile_pic_url_facebook
@@ -264,7 +275,6 @@ def self_profile_view(request):
                             'from':obj.from_date,'to':obj.to_date})
 
         context_dict['emp_list'] = emp_list
-    print context_dict
     return render_to_response("mentor/profile-view.html",context_dict,context)
 
 @login_required
@@ -394,3 +404,7 @@ def manage_social_profiles(request,action=None,provider=None):
 @login_required
 def getCalendar(request):
     return render_to_response()
+
+@login_required
+def live(request):
+    return render_to_response('mentor/live.html',{},RequestContext(request))
