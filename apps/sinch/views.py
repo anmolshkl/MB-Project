@@ -37,29 +37,20 @@ def index(request):
 # Generate Sinch authentication ticket. Implementation of:
 # http://www.sinch.com/docs/rest-apis/api-documentation/#Authorization
 def getAuthTicket(user):
-	print user
-	print "in getAuthTicket"
 	userTicket = { 'identity': {'type': 'username', 'endpoint': user['username']},'expiresIn': 3600,'applicationKey': SINCH_APPLICATION_KEY,'created': datetime.utcnow().isoformat() }
-	print "in getAuthTicket 1"
 	userTicketJson = json.dumps(userTicket).replace(" ", "")
-	print "in getAuthTicket 2"
 	userTicketBase64 = base64.b64encode(userTicketJson)
-	print "in getAuthTicket 3"
 	digest = hmac.new(base64.b64decode(SINCH_APPLICATION_SECRET), msg=userTicketJson, digestmod=hashlib.sha256).digest()
-	print "in getAuthTicket 4"
 	signature = base64.b64encode(digest)
-	print "in getAuthTicket 5"
 	signedUserTicket = userTicketBase64 + ':' + signature
-	print signedUserTicket
 	return {'userTicket': signedUserTicket}
 
 @login_required
-def loginHandler(request):
-	user = {'username':request.POST['username'],'password':request.POST['password']}
-	print user['username']
-	print user['password']
+def ticketHandler(request):
+	user = {}
+	user['username'] = 'user'+str(request.user.id)
+	print request.user.id
 	userTicket = getAuthTicket(user)
-	print userTicket
 	return JsonResponse(userTicket)
 
 

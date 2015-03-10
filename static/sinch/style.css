@@ -14,10 +14,11 @@ h3 {
 	text-transform: uppercase;
 	font-size: 26px;
 }
-
-img.logo {
-	margin-top: 20px;
-	margin-bottom: 30px;
+.textCenter {
+	text-align: center;
+}
+.center {
+	margin: 0 auto;
 }
 
 div.clearfix {
@@ -25,52 +26,16 @@ div.clearfix {
 }
 
 div.frame {
-	padding: 0px 15px 0px 30px;
-	margin: 0px 0px;
-	float: left;
-	width: 578px;
 	display: none;
 }
 
 div.frame.small {
-	width: 320px;
-	font-size: 14px;
 	border-style: solid;
 	border-width: 0px 1px 0px 0px;
 	border-color: #B0B0B0;
-	padding: 0px;
 }
 
-div.frame.big {
-	width: 660px;
-	font-size: 14px;
-}
 
-div.inner {
-	padding: 0px 30px 0px 15px;
-}
-
-div.inner.loginBox {
-	height: 130px;
-}
-
-div.takeaways {
-	margin-top: 60px;
-}
-
-div.takeaways ul {
-	padding-left: 14px;
-}
-
-div.takeaways ul li {
-	font-size: 12px;
-	margin-top: 12px;
-	font-family: 'Roboto', sans-serif;
-}
-
-div.mainArea {
-	height: 300px;
-}
 
 div.frame div#chat {
 	display: none;
@@ -278,7 +243,7 @@ div.top1 {
     background-color:#FFFFFF;
     overflow: hidden;
     transform:translate3d(0, 0px, 0);
-    background-image:url('Stocksy_txp6806d733sOI000_Medium_85229.jpg');
+    background-image:url('/static/img/bg3.jpg');
     background-size:cover;
     background-repeat:no-repeat;
     background-position:center;
@@ -293,6 +258,7 @@ div.top1 h1 {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
 	font-size: 40px;
+	color: black;
 }
 
 

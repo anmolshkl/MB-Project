@@ -36,77 +36,20 @@ sinchClient = new SinchClient({
 var sessionName = 'sinchSessionWEB-' + sinchClient.applicationKey;
 
 
-/*** Check for valid session. NOTE: Deactivated by default to allow multiple browser-tabs with different users. ***/
+$.ajax({
+		url: 'http://localhost:8000/live/login/',
+		type: 'get',
+		dataType: 'json',
+		success: function(ticket) {
+			sinchClient.start(ticket, function() {
+				//On success, show the UI
+				showUI();
 
-var sessionObj = JSON.parse(localStorage[sessionName] || '{}');
-if(false && sessionObj.userId) { 
-	sinchClient.start(sessionObj)
-		.then(function() {
-			global_username = sessionObj.userId;
-			//On success, show the UI
-			showUI();
-			//Store session & manage in some way (optional)
-			localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-		})
-		.fail(function() {
-			//No valid session, take suitable action, such as prompting for username/password, then start sinchClient again with login object
-			showLoginUI();
-		});
-}
-else {
-	showLoginUI();
-}
-
-
-/*** Create user and start sinch for that user and save session in localStorage ***/
-
-$('button#createUser').on('click', function(event) {
-	event.preventDefault();
-	$('button#loginUser').attr('disabled', true);
-	$('button#createUser').attr('disabled', true);
-	clearError();
-
-	var signUpObj = {};
-	signUpObj.username = $('input#username').val();
-	signUpObj.password = $('input#password').val();
-
-	//Use Sinch SDK to create a new user
-	sinchClient.newUser(signUpObj, function(ticket) {
-		//On success, start the client
-		sinchClient.start(ticket, function() {
-			global_username = signUpObj.username;
-			//On success, show the UI
-			showUI();
-
-			//Store session & manage in some way (optional)
-			localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-		}).fail(handleError);
-	}).fail(handleError);
-});
-
-
-/*** Login user and save session in localStorage ***/
-
-$('button#loginUser').on('click', function(event) {
-	event.preventDefault();
-	$('button#loginUser').attr('disabled', true);
-	$('button#createUser').attr('disabled', true);
-	clearError();
-
-	var signInObj = {};
-	signInObj.username = $('input#username').val();
-	signInObj.password = $('input#password').val();
-
-	//Use Sinch SDK to authenticate a user
-	sinchClient.start(signInObj, function() {
-		global_username = signInObj.username;
-		//On success, show the UI
-		showUI();
-
-		//Store session & manage in some way (optional)
-		localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-	}).fail(handleError);
-});
+				//Store session & manage in some way (optional)
+				localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+			}).fail(handleError);
+		}
+	});
 
 /*** Define listener for managing calls ***/
 
@@ -201,7 +144,7 @@ $('button#call').click(function(event) {
 		$('div#callLog').append('<div id="title">Calling ' + $('input#callUserName').val()+'</div>');
 
 		console.log('Placing call to: ' + $('input#callUserName').val());
-		call = callClient.callUser($('input#callUserName').val());
+		call = callClient.callUser($('#calleeId').val());
 
 		call.addEventListener(callListeners);
 	}

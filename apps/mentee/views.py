@@ -60,7 +60,8 @@ def index(request):
         #attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
-        context_dict['pic_url'] = request.session['pic_url']
+        if 'pic_url' in request.session:
+            context_dict['pic_url'] = request.session['pic_url']
         template = "mentee/index.html"
 
     return render_to_response(template,context_dict,context_instance = RequestContext(request))

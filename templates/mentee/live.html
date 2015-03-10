@@ -1,0 +1,58 @@
+{% extends 'mentee/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
+{% endblock %}
+
+{% block container_title %}
+<h3>Web Call</h3>
+{% endblock %}
+
+{% block container_block %}
+	<div>
+		<div class="top1">
+		</div>	
+		<div id="chromeFileWarning" class="frame big">
+			<b style="color: red;">Warning!</b> Protocol "file" used to load page in Chrome.<br>
+			Chrome disables access to microphone when loading from disk, which prevents proper functionality.
+			<br><br>
+			You can allow working local files, if you start Chrome with the flag <i>'--allow-file-access-from-files'</i>:
+			
+			<b>OS X: </b><i>'$ open -a Google\ Chrome --args --allow-file-access-from-files'</i>
+			<br>
+			<b>Windows: </b><i>'"C:\>Program Files\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files'</i>
+			<br>
+			<b>GNU/Linux: </b><i>'$ chrome --allow-file-access-from-files'</i>
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-6 well" id="call">
+				<form id="newCall row">
+					<div class="col-xs-4 textCenter">
+						<img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center"/>
+						<h4>Mentor 1</h4>
+						<input type="hidden" id="calleeId" value="user36" />
+					</div>
+					<div class="col-xs-8">
+						<button id="call">Call</button>
+						<button id="hangup">Hangup</button>
+					</div>
+						
+					<audio id="incoming" autoplay></audio>
+					<audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
+					<audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
+				</form>
+			</div>	
+			<div id="callLog" class="col-xs-3">
+			</div>
+			<div class="error cl-xs-3">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'sinch/WEBsample.js' %}"></script>
+{% endblock %}

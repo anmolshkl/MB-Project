@@ -3,5 +3,5 @@ from apps.sinch import views
 urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
         url(r'^ping/$', views.pingHandler, name='ping handler'),
-        url(r'^login/$', views.loginHandler, name='login handler'),
+        url(r'^login/$', views.ticketHandler, name='login handler'),
 		)
