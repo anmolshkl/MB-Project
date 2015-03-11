@@ -1,17 +1,74 @@
+.page-content {
+	background: url(/static/img/bg11.jpg) no-repeat center center fixed; 
+	  -webkit-background-size: cover;
+	  -moz-background-size: cover;
+	  -o-background-size: cover;
+	  background-size: cover;
+}
+}
 .no-margin {
 	margin: 0px !important; 
 }
-.margin-left-50 {
-	margin-left: 50px !important;
+@media screen and ( min-width: 992px ) {
+	.margin-left-3 {
+		margin-left: 30px !important;
+	}
 }
-.ptiles {
-	border: none;
-	margin: 5px;
-	padding: 10px;
-	background-color: rgba(0, 137, 123, 0.7);
-	color: #fff;
-	transition: 1s;
+.pd-s {
+	padding: 5px;
+	box-sizing: border-box;
+}
+.pd-l {
+	padding: 15px;
+}
+.mg-top-s {
+	margin-top: 10px;
+}
+.mg-top-m {
+	margin-top: 15px;
+}
+.bg-purple {
+	background-color: #4A148C !important;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+
+}
+.txt-white {
+	color: #fff !important;
+}
+.center {
+	margin: 0 auto;
+}
+.flatButton {
+	display: block;
+	margin: 5px auto !important;
+	position: relative !important;
+	max-width: 300px;
+	width: 50%;
+	min-width: 150px;
+	background-color: rgba(255,64,129,1.0) !important;
+	border-color: #CCC !important;
+	border: 0px none;
+	color: #FFF;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+	border-radius: 2px;
+	text-transform: uppercase;
+	text-decoration: none;
+	outline: 0px none !important;
+	font-weight: normal;
+	text-align: center;
 	font-size: 15px;
+	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	padding-bottom: 8px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 8px;
+	transition: all 1s ease !important;
+	background: linear-gradient(to right, #FF4081 50%, #3F51B5 50%) !important;
+	background-size: 200% 100% !important;
+	background-position:left bottom !important;
+}
+.modal {
+	z-index: 104000 !important;
 }
 div .ptiles:hover {
 	background-color: rgba(255, 87, 34, 0.7);
@@ -23,8 +80,7 @@ div .ptiles:hover {
 	border: none;
 	padding: 10px;
 	margin-bottom: 5px;
-	background-color: rgba(0, 137, 123, 1);
-	color: #fff;
+	color: black;
 	transition: 1s;
 	font-size: 15px;
 }
