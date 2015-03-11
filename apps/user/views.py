@@ -383,3 +383,13 @@ def thank_you(request):
 
 def explore(request):
     return render_to_response('user/explore.html')
+
+@login_required
+def get_details(request):
+    user = request.user
+    userProfile = user.user_profile
+    details = {}
+    details["fn"] = user.first_name
+    details["ln"] = user.last_name
+    details['pic_url'] = userProfile.picture
+    return JsonResponse(details)

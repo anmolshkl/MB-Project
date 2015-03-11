@@ -27,6 +27,11 @@ def index(request):
 	user = request.user
 	template = None
 
+	if 'pic_url' in request.session:
+		context_dict['pic_url'] = request.session['pic_url']
+	else:
+		context_dict['pic_url'] = request.session['pic_url'] = UserProfile.objects.get(user=user)
+
 	if user.user_profile.is_mentor:
 		template = "mentor/live.html"
 	else:

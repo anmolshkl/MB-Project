@@ -3,6 +3,7 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
+<link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
 {% endblock %}
 
 {% block container_title %}
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block container_block %}
-	<div>
+	<div class="container-fluid">
 		<div class="top1">
 		</div>	
 		<div id="chromeFileWarning" class="frame big">
@@ -27,27 +28,39 @@
 		</div>
 
 
-		<div class="row">
-			<div class="col-md-6 well" id="call">
-				<form id="newCall row">
-					<div class="col-xs-4 textCenter">
-						<img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center"/>
-						<h4>Mentor 1</h4>
-						<input type="hidden" id="calleeId" value="user36" />
-					</div>
-					<div class="col-xs-8">
-						<button id="call">Call</button>
-						<button id="hangup">Hangup</button>
-					</div>
-						
-					<audio id="incoming" autoplay></audio>
-					<audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
-					<audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
-				</form>
+		<div class="row-fluid">
+			<div class="col-md-12 well" id="call">
+					
+					<div class="row">
+						<div class="col-sm-4 textCenter">
+							<img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center"/>
+							<h4>Mentor 1</h4>
+							
+						</div>
+						<div class="col-sm-4 pad-s">
+							<div class="clock center"></div>
+						</div>
+						<div class="col-sm-4">
+						<div class="pull-right">
+							<form id="newCalls">
+								<input type="hidden" id="calleeId" value="user36" />
+								<button id="call">Call</button>
+								<button id="hangup">Hangup</button>
+							</form>
+							</div>
+						</div>
+							
+						<audio id="incoming" autoplay></audio>
+						<audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
+						<audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
+					</div>	
 			</div>	
-			<div id="callLog" class="col-xs-3">
+			<div id="callLog" class="col-xs-6 textCenter well">
+				<h3>Your Call Log</h3>
+				
 			</div>
-			<div class="error cl-xs-3">
+			<div class="error col-xs-6 well">
+			asf
 			</div>
 		</div>
 	</div>
@@ -55,4 +68,14 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'sinch/WEBsample.js' %}"></script>
+<script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+<script type="text/javascript">
+	clock = new FlipClock($('.clock'), {
+		autoStart: false,
+		clockFace: 'MinuteCounter'
+
+});
+
+
+</script>
 {% endblock %}

@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 		url(r'^crop-image/$', views.crop_image, name='crop-image'),
 		url(r'^thank-you/$', views.thank_you, name='thank-you'),
 		url(r'^explore/$', views.explore, name='explore'),
+		url(r'^getDetails/$', views.get_details, name='get-details'),
 		)

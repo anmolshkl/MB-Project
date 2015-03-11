@@ -32,50 +32,60 @@
 <link href="{% static 'template/webarch/assets/css/custom-icon-set.css' %}" rel="stylesheet" type="text/css"/>
 <!-- END CSS TEMPLATE -->
 
+<link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
+
+<!-- CUSTOM CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/mentor/base.css' %}">
+
+
 {% block stylesheets %}
 
 {% endblock stylesheets %}
 </head>
 <!-- END HEAD -->
 
+
+
+
+
 <!-- BEGIN BODY -->
 <body class="">
  <!-- MODAL FOR INCOMING CALL -->
-  <div class="modal fade" id="callModal">
+  <div class="modal fade" id="callModal" role="dialog" data-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
-          
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">You have an incoming call!</h4>
+            
+            <h4 class="modal-title">You have an incoming call...</h4>
           </div>
 
           <div class="modal-body">
-              <div class="callFrame">
-                <h3>Web Call</h3>
-                <div id="call">
-                  <form id="newCall">
-                    <button id="hangup">Hangup</button>
-                    <button id="answer">Answer</button>
-                    
+              <div class="row-fluid">
+                <div class="col-xs-12 textCenter">
+                  <img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center callerPic"/>
+                  <span class="callerName"><h5></h5></span>
+                </div>
+
+                <div id="call col-xs-12 textCenter well">
+                  <form id="newCall"> 
                     <audio id="incoming" autoplay></audio>
                     <audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
                     <audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
                   </form>
                 </div>
                 
-                <div class="clearfix"></div>
-                
-                <div id="callLog">
+                <div id="callLog" class="col-xs-12 textCenter well">
+                  <div class="clock center"></div>
                 </div>
                 
-                <div class="error">
+                <div class="error col-xs-12 textCenter well">
                 </div>
 
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="hangup">Hangup</button>
+            <button id="answer">Answer</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -292,7 +302,7 @@
     <div class="clearfix"></div>
     <div class="content">  
         <div class="page-title">    
-            <h3>{% block container_title %}Home{% endblock %}</h3>     
+            {% block container_title %}Home{% endblock %}
         </div>      
         
         <div id="container">
@@ -573,10 +583,21 @@
 
 <!-- SINCH.MIN.JS -->
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
+<script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+
+<script type="text/javascript">
+  clock = new FlipClock($('.clock'), {
+    autoStart: false,
+    clockFace: 'MinuteCounter'
+
+});
+</script>
 
 <script type="text/javascript">
 
 var global_username = '';
+
+$('#callModal').modal('show');
 
 
 /** Always clear errors **/
@@ -596,6 +617,10 @@ var clearError = function() {
     },
   });
 
+
+/*** Name of session, can be anything. ***/
+
+var sessionName = 'sinchSessionWEB-' + sinchClient.applicationKey;
 
   $.ajax({
     url: 'http://localhost:8000/live/login/',
@@ -624,6 +649,8 @@ var callListeners = {
     $('audio#ringback').trigger("pause");
     $('audio#ringtone').trigger("pause");
 
+    clock.start();
+
     //Report call stats
     var callDetails = call.getDetails();
     $('div#callLog').append('<div id="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
@@ -635,6 +662,8 @@ var callListeners = {
 
     $('button').removeClass('incall');
     $('button').removeClass('callwaiting');
+
+    clock.stop();
 
     //Report call stats
     var callDetails = call.getDetails();
@@ -658,20 +687,34 @@ var call;
 
 callClient.addEventListener({
   onIncomingCall: function(incomingCall) {
-  $('#callModal').modal('show');
-  //Play some groovy tunes 
-  $('audio#ringtone').prop("currentTime", 0);
-  $('audio#ringtone').trigger("play");
+    $('#callModal').modal('show');
+    //Play some groovy tunes 
+    $('audio#ringtone').prop("currentTime", 0);
+    $('audio#ringtone').trigger("play");
 
-  //Print statistics
-  $('div#callLog').append('<div id="title">Incoming call from ' + incomingCall.fromId + '</div>');
-  $('div#callLog').append('<div id="stats">Ringing...</div>');
-  $('button').addClass('incall');
+    //Print statistics
+    $('div#callLog').append('<div id="title">Incoming call from ' + incomingCall.fromId + '</div>');
+    var userId = incomingCall.fromId;
+    userId = userId.substr(4,userId.length-1);
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      data: {
+             csrfmiddlewaretoken: '{{ csrf_token }}' // just the token value
+        },
+      url: '/user/getDetails/',
+      success: function(data) {
+          $('.callerPic').attr('src',data['pic_url']);
+          $('.callerName').text(data['fn']+" "+data['ln']);
+      }
+    });
+    $('div#callLog').append('<div id="stats">Ringing...</div>');
+    $('#callModal button').addClass('incall');
 
-  //Manage the call object
+    //Manage the call object
     call = incomingCall;
     call.addEventListener(callListeners);
-  $('button').addClass('callwaiting');
+    $('#callModal button').addClass('callwaiting');
   }
 });
 
@@ -691,24 +734,6 @@ $('button#answer').click(function(event) {
   }
 });
 
-/*** Make a new data call ***/
-
-$('button#call').click(function(event) {
-  event.preventDefault();
-
-  if(!$(this).hasClass("incall") && !$(this).hasClass("callwaiting")) {
-    clearError();
-
-    $('button').addClass('incall');
-
-    $('div#callLog').append('<div id="title">Calling ' + $('input#callUserName').val()+'</div>');
-
-    console.log('Placing call to: ' + $('input#callUserName').val());
-    call = callClient.callUser($('input#callUserName').val());
-
-    call.addEventListener(callListeners);
-  }
-});
 
 /*** Hang up a call ***/
 

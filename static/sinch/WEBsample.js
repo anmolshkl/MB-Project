@@ -66,6 +66,9 @@ var callListeners = {
 		$('audio#ringback').trigger("pause");
 		$('audio#ringtone').trigger("pause");
 
+		clock.start(function() {
+		// this (optional) callback will fire each time the clock flips
+		});
 		//Report call stats
 		var callDetails = call.getDetails();
 		$('div#callLog').append('<div id="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
@@ -78,6 +81,8 @@ var callListeners = {
 		$('button').removeClass('incall');
 		$('button').removeClass('callwaiting');
 
+		clock.stop();
+		
 		//Report call stats
 		var callDetails = call.getDetails();
 		$('div#callLog').append('<div id="stats">Ended: '+callDetails.endedTime+'</div>');
