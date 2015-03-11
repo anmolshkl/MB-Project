@@ -9,6 +9,7 @@ import datetime
 from django.utils.deconstruct import deconstructible
 import os
 
+from haystack.forms import SearchForm
 
 #http://stackoverflow.com/questions/25767787/django-cannot-create-migrations-for-imagefield-with-dynamic-upload-to-value
 @deconstructible
@@ -120,39 +121,20 @@ def save_data(sender, **kwargs):
         socialProfiles.save()
 
 
-    '''
+class MentorSearchForm(SearchForm):
 
-    #try to check whether user has any data provided by Facebook
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        socialProfiles.profile_url_facebook = extra_data['link']
-        socialProfiles.profile_pic_url_facebook = "http://graph.facebook.com/"+extra_data['id']+"/picture"+"?type=large"
-        socialProfiles.save()
+    def no_query_found(self):
+        return self.searchqueryset.all()
 
-    #try to check whether user has any data provided by Google
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='google')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        socialProfiles.profile_url_google = extra_data['link']
-        socialProfiles.profile_pic_url_google = extra_data['picture']
-        socialProfiles.save()
+    def search(self):
+        # First, store the SearchQuerySet received from other processing. (the main work is run internally by Haystack here).
+        sqs = super(MentorSearchForm, self).search()
 
-    #try to check whether user has any data provided by Github
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='github')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        socialProfiles.profile_url_github = extra_data['html_url']
-        socialProfiles.profile_pic_url_github = extra_data['avatar_url']
-        socialProfiles.save()
-    '''
+        # if something goes wrong
+        if not self.is_valid():
+            return self.no_query_found()
 
+        # you can then adjust the search results and ask for instance to order the results by title
+        #sqs = sqs.order_by(city)
+
+        return sqs

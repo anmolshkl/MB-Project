@@ -66,7 +66,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.twitter',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
-    #'haystack',
+    'haystack',
+    'whoosh',
     #'debug_toolbar',
 )
 
@@ -107,6 +108,17 @@ SITE_ID = 1
 ROOT_URLCONF = 'mentorbuddy.urls'
 
 WSGI_APPLICATION = 'mentorbuddy.wsgi.application'
+
+#sameer
+
+# Haystack configuration
+
+HAYSTACK_CONNECTIONS = {
+  'default': {
+    'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+    'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+  },
+}
 
 
 # Database
@@ -216,14 +228,11 @@ SOCIALACCOUNT_PROVIDERS = \
 '''
 
 
-#allauth will print any confirmation email to the console
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'anmol.shkl@gmail.com'
-EMAIL_HOST_PASSWORD = 'asaf-123'
-DEFAULT_FROM_EMAIL = 'admin@mb.in'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
+EMAIL_HOST_PASSWORD = '8zryfcgve33k'
+EMAIL_PORT = 587
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True

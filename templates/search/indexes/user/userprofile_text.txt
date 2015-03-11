@@ -1,0 +1,6 @@
+{{ object.college }}
+{{ object.city }}
+{{ object.get_first_name }}
+{{ object.get_last_name }}
+{{ object.state }}
+

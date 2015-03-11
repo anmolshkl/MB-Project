@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth import authenticate,login, logout #,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from apps.user.models import UserProfile,SocialProfiles
+from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm
 from apps.mentor.forms import UserProfileForm as MentorProfileForm
 from apps.mentee.forms import UserProfileForm as MenteeProfileForm
 from apps.mentor.forms import EducationForm
@@ -19,6 +19,12 @@ from PIL import Image
 from allauth.socialaccount.models import SocialAccount
 #import magic
 # Create your views here.
+from django.core.mail import send_mail
+
+def sendMail(request):
+    send_mail('Its Working', 'Put your Email message here.', 'anmol@mentorbuddy.in', ['Anmol.shkl@gmail.com'], fail_silently=False)
+    return HttpResponseRedirect('http://www.gmail.com')
+
 import os
 def cropAndSave(user, POST):
     x1=POST['x1']
@@ -60,6 +66,8 @@ def index(request):
 
 
     if user_profile and not user_profile.is_new:
+        if not 'pic_url' in request.session:
+            request.session['pic_url'] = UserProfile.objects.get(user=request.user).picture
         if user_profile.is_mentor == True:
             return HttpResponseRedirect("/mentor/")
         else:
@@ -99,15 +107,15 @@ def user_login(request):
             # Bad login details were provided. So we can't log the user in.
             print "Invalid login details: {0}, {1}".format(email, password)
             #return HttpResponse("Invalid login details supplied.")
-            return render_to_response('user/login.html', {'error':"Invalid Email/Password"},context_instance = context)
+            return render_to_response('user/loginV3', {'error':"Invalid Email/Password"},context_instance = context)
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GETself.
     else:
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
-        return render_to_response('user/login.html', {},context_instance = context)
-    return render_to_response('user/login.html', {},context_instance = context)
+        return render_to_response('user/loginV3.html', {},context_instance = context)
+    return render_to_response('user/loginV3.html', {},context_instance = context)
 
 
 
@@ -207,100 +215,6 @@ def register(request):
 
         
     
-'''        
-def register(request):
-    context = RequestContext(request)
-    context_dict = {}
-    template  = 'user/register.html'
-    user = request.user
-    user_profile = user.user_profile
-    msg = None
-    resume = None
-    if not UserProfile.objects.get(user=user).is_new:
-        return HttpResponseRedirect("/user/thank-you/")
-
-        #return HttpResponseRedirect('/user/')
-    if request.method == 'POST':
-        mentor_form = MentorProfileForm(request.POST,request.FILES,instance=user_profile)
-        education_form = EducationForm(data=request.POST,instance=user_profile)
-        mentee_form = MenteeProfileForm(request.POST,request.FILES,instance=user_profile)
-        if request.POST['password1'] != request.POST['password2'] or request.POST['password1'] == '':
-            msg = "The confirmation password doesn't matches."
-            template = 'user/register.html'
-            context_dict['selected'] = request.POST['selected']
-            context_dict['error'] = msg
-        
-        #set the user provided password first so that in case of a mishap user can login again later on 
-        #and complete his/her registeration
-        if msg == None:
-            user.set_password(request.POST["password1"])
-            user.save()
-
-        if request.POST['selected'] == 'mentor' and msg == None:
-            #the post is for mentor registration, save the form or else display it
-            if mentor_form.is_valid() and education_form.is_valid():
-                mentor_profile = mentor_form.save(commit=False)
-                mentor_profile.user = user
-                mentor_profile.is_mentor = True
-                mentor_profile.is_new = False
-                print request.POST
-                if "url" in request.POST:
-                    print "url received"
-                    cropAndSave(user, request.POST)
-                    mentor_profile.picture = request.POST['url']
-                else:
-                    print "url not received"
-                    mentor_profile.picture = (SocialAccount.objects.get(user=user)).get_avatar_url()
-                mentor_profile.save()
-                education = education_form.save(commit=False)
-                education.parent = mentor_profile
-                education.save()
-                return HttpResponseRedirect("/user/thank-you/")
-            
-                #return HttpResponseRedirect("/user/")
-            
-            # Invalid form or forms - mistakes or something else?
-            # Print problems to the terminal.
-            # They'll also be shown to the user.
-            else:
-                print mentor_form.errors, education_form.errors
-
-        if request.POST['selected'] == 'mentee' and msg == None:
-            #the post is for mentee registration, save the form or else display it
-            if mentee_form.is_valid():
-               
-                mentee_profile = mentee_form.save(commit=False)
-                mentee_profile.user = user
-                mentee_profile.is_mentor = False
-                mentee_profile.is_new = False
-                if "url" in request.POST:
-                    cropAndSave(user, request.POST)
-                    mentee_profile.picture = request.POST['url']
-                else:
-                    mentee_profile.picture = (SocialAccount.objects.get(user=user)).get_avatar_url()
-                mentee_profile.save()
-                return HttpResponseRedirect("/user/thank-you/")
-
-                #return HttpResponseRedirect("/user/")            
-            # Invalid form or forms - mistakes or something else?
-            # Print problems to the terminal.
-            # They'll also be shown to the user.
-            else:
-                print mentee_form.errors
-
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
-    else:
-        mentor_form = MentorProfileForm(instance=user_profile)
-        mentee_form = MenteeProfileForm(instance=user_profile)
-        education_form = EducationForm(instance=user_profile)
-    # Render the template depending on the context.
-    context_dict['selected'] = request.POST['selected']
-    context_dict['mentor_form'] =  mentor_form
-    context_dict['mentee_form'] =  mentee_form
-    context_dict['education_form'] =  education_form
-    return render_to_response(template,context_dict,context)
-'''
 
 
 def user_logout(request):
@@ -393,3 +307,20 @@ def get_details(request):
     details["ln"] = user.last_name
     details['pic_url'] = userProfile.picture
     return JsonResponse(details)
+
+@login_required
+def root(request):
+    """
+    Search > Root
+    """
+
+    search_query = request.GET.get('q', '')
+
+    # we retrieve the query to display it in the template
+    form = MentorSearchForm(request.GET)
+    # we call the search method from the MentorSearchForm. Haystack do the work!
+    results = form.search()
+    return render(request, 'mentee/search_root.html', {
+        'search_query' : search_query,
+        'mentors' : results,
+    })

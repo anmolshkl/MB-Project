@@ -58,6 +58,7 @@ def index(request):
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
+            print context_dict['pic_url']
         template = "mentor/index.html"
 
     return render_to_response(template,context_dict,context_instance = RequestContext(request))
