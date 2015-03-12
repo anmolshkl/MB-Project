@@ -5,6 +5,9 @@
 	  -o-background-size: cover;
 	  background-size: cover;
 }
+.date-picker {
+	z-index: 104001;
+}
 }
 .no-margin {
 	margin: 0px !important; 

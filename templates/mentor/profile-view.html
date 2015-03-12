@@ -37,18 +37,16 @@
           </div>
           <div class="modal-body">
             <form id="scheduleForm" method="post">
-                <div class="input-append success date">
-                    <input type="text" class="form-control">
+                <div class="input-append success date date-picker">
+                    <input class="datepicker" data-date-format="mm/dd/yyyy">
                     <span class="add-on"><span class="arrow"></span><i class="fa fa-th"></i></span> 
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Default Timepicker</label>
-                  <div class="controls">
-                    <div class="input-append bootstrap-timepicker-component">
-                      <input type="text" class="timepicker-default span12">
-                      <span class="add-on"><span class="arrow"></span><i class="fa fa-clock-o"></i></span> </div>
-                  </div>
-                </div>
+                
+                      <div class="input-group bootstrap-timepicker">
+                         <input id="timepicker1" type="text" class="input-small">
+                         <span class="input-group-addon"><i class="glyphicon glyphicon-time"> </i></span>
+                      </div>
+                
             </form>
             <div class="button-group">
                 <button class="flatButton scheduleSelect" value="0">Web-to-Web Call</button>
@@ -251,9 +249,12 @@
         $(".button-group").hide();
         $("#scheduleForm").show();
         $("#scheduleForm").append('<input type="hidden" name="callType" id="callType" value="'+ $(this).val()+'" />');
-
-
     });
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        startDate: '-3d'
+    })
+     $('#timepicker1').timepicker();
 </script>
 
 {% endblock %}
