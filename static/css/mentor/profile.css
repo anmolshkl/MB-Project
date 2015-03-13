@@ -8,7 +8,6 @@
 .date-picker {
 	z-index: 104001;
 }
-}
 .no-margin {
 	margin: 0px !important; 
 }
@@ -17,18 +16,28 @@
 		margin-left: 30px !important;
 	}
 }
+.xdsoft_datetimepicker {
+	position: absolute !important;
+	z-index: 999999 !important;
+}
 .pd-s {
-	padding: 5px;
+	padding: 5px !important;
 	box-sizing: border-box;
 }
 .pd-l {
 	padding: 15px;
+}
+.pd-xl {
+	padding: 20px;
 }
 .mg-top-s {
 	margin-top: 10px;
 }
 .mg-top-m {
 	margin-top: 15px;
+}
+.mg-s {
+	margin: 5px;
 }
 .bg-purple {
 	background-color: #4A148C !important;
@@ -38,8 +47,11 @@
 .txt-white {
 	color: #fff !important;
 }
-.center {
-	margin: 0 auto;
+.txt-m {
+	font-size: 15px;
+}
+.line-ht-s {
+	line-height: 50% !important;
 }
 .flatButton {
 	display: block;
