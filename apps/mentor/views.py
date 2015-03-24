@@ -1,68 +1,77 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse,HttpResponseRedirect
-from apps.user.forms import UserForm,UserEditForm
+from django.http import HttpResponse, HttpResponseRedirect
+from apps.user.forms import UserForm, UserEditForm
 from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.user.models import UserProfile,SocialProfiles
+from apps.user.models import UserProfile, SocialProfiles
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
-from apps.mentor.forms import EducationDetailsFormSet,EmploymentDetailsFormSet
-from apps.mentor.models import EducationDetails,EmploymentDetails
-from allauth.socialaccount.models import SocialAccount,SocialApp
+from apps.mentor.forms import EducationDetailsFormSet, EmploymentDetailsFormSet
+from apps.mentor.models import EducationDetails, EmploymentDetails
+from allauth.socialaccount.models import SocialAccount, SocialApp
 # Create your views here.
 from django.conf import settings
 
 from PIL import Image
+
 import os
+
+from django.http import JsonResponse
+
+from apps.user.models import Request
+
+from datetime import datetime, timedelta
+
+
 def cropAndSave(user, POST):
-    x1=POST['x1']
-    x2=POST['x2']
-    y1=POST['y1']
-    y2=POST['y2']
-    w=POST['w']
-    h=POST['h']
+    x1 = POST['x1']
+    x2 = POST['x2']
+    y1 = POST['y1']
+    y2 = POST['y2']
+    w = POST['w']
+    h = POST['h']
     try:
         path = POST['url']
         im = Image.open(path)
-        box = (x1, y1, x2, y2) #(left, upper, right, lower)
+        box = (x1, y1, x2, y2)  # (left, upper, right, lower)
         box = (int(x) for x in box)
         cropped = im.crop(box)
-        newPath = os.path.join(settings.MEDIA_ROOT,"profile_images",user.username)
+        newPath = os.path.join(settings.MEDIA_ROOT, "profile_images", user.username)
         if not os.path.exists(newPath):
             os.makedirs(newPath)
-        cropped.save(os.path.join(newPath,user.username+"CRPD.jpg"),"jpeg")
-        im.save(os.path.join(newPath,user.username+".jpg"),"jpeg")
+        cropped.save(os.path.join(newPath, user.username + "CRPD.jpg"), "jpeg")
+        im.save(os.path.join(newPath, user.username + ".jpg"), "jpeg")
     except Exception as e:
         print str(e)
 
 
 def index(request):
     context_dict = {}
-    template = "user/loginV3.html" #default template to render
+    template = "user/loginV3.html"  # default template to render
     user = None
     user_profile = None
 
     user = request.user.id
     if user != None:
-        user_profile,created = UserProfile.objects.get_or_create(user=user)
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
     else:
         return HttpResponseRedirect(settings.SITE_URL)
-    
-    #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+
+    # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html" #User has to select either Mentor/Mentee,so redirect to select.html
+        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
             print context_dict['pic_url']
         template = "mentor/index.html"
 
-    return render_to_response(template,context_dict,context_instance = RequestContext(request))
-
+    return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
 
 def register(request):
@@ -77,9 +86,10 @@ def register(request):
     if request.method == 'POST':
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
-        data = request.POST.copy() # so we can manipulate data
+        data = request.POST.copy()  # so we can manipulate data
         # random username
-        data['username'] = data['email'] #useless,rather keep email as data['email'] username ''.join([choice(letters) for i in xrange(30)])
+        data['username'] = data[
+            'email']  # useless,rather keep email as data['email'] username ''.join([choice(letters) for i in xrange(30)])
         data['is_new'] = False
         user_form = UserForm(data)
         profile_form = UserProfileForm(data=request.POST)
@@ -111,14 +121,14 @@ def register(request):
             profile.is_mentor = True
             education = education_form.save(commit=False)
             education.parent = profile
-            #employee = employment_form.save(commit=False)
-            #employee.parent = profile
+            # employee = employment_form.save(commit=False)
+            # employee.parent = profile
 
             profile.save()
             if education.institution != '':
                 education.save()
-            #if employee.organization != '':
-                #employee.save()
+                # if employee.organization != '':
+                # employee.save()
             # Update our variable to tell the template registration was successful.
             registered = True
             return HttpResponseRedirect("/user/thank-you/")
@@ -126,22 +136,22 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, profile_form.errors,education_form.errors
+            print user_form.errors, profile_form.errors, education_form.errors
             return HttpResponse("Invalid user Input.")
-            
+
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
         education_form = EducationForm()
-        #employment_form = EmploymentForm()
+        # employment_form = EmploymentForm()
     # Render the template depending on the context.
     return render_to_response(
-            'mentor/register.html',
-            {'user_form': user_form, 'profile_form': profile_form, 'education_form': education_form,'registered': registered},
-            context)
-
+        'mentor/register.html',
+        {'user_form': user_form, 'profile_form': profile_form, 'education_form': education_form,
+         'registered': registered},
+        context)
 
 
 @login_required
@@ -153,38 +163,38 @@ def self_profile_view(request):
     context = RequestContext(request)
     context_dict = {}
     user = request.user
-    user_profile_object = UserProfile.objects.get(user=user) 
+    user_profile_object = UserProfile.objects.get(user=user)
     if user_profile_object.is_new:
         return HttpResponseRedirect('user/select.html')
-    
-    #Social Profile
+
+    # Social Profile
     try:
         social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
     except SocialProfiles.DoesNotExist:
         social_profiles_object = None
-    
-    #Education Profile 
+
+    # Education Profile
     try:
         eduObjs = EducationDetails.objects.filter(parent=user_profile_object)
     except EducationDetails.DoesNotExist:
         eduObjs = None
-    
-    #Employment Profile
+
+    # Employment Profile
     try:
         empObjs = EmploymentDetails.objects.filter(parent=user_profile_object)
     except EmploymentDetails.DoesNotExist:
         empObjs = None
-    
+
     # TODO add personal details after the user model
     # is finalized
     # initialize all to None
     context_dict['full_name'] = None
     context_dict['gender'] = None
-    context_dict['date_of_birth'] = None 
-    context_dict['city'] = None 
-    context_dict['country'] = None 
-    context_dict['college'] = None 
-    context_dict['email'] = None 
+    context_dict['date_of_birth'] = None
+    context_dict['city'] = None
+    context_dict['country'] = None
+    context_dict['college'] = None
+    context_dict['email'] = None
     context_dict['contact_number'] = None
     context_dict['about'] = None
     context_dict['provider'] = None
@@ -193,7 +203,7 @@ def self_profile_view(request):
     context_dict['edu_list'] = None
     context_dict['emp_list'] = None
 
-    gender_options={'male':"M",'female':'F'}
+    gender_options = {'male': "M", 'female': 'F'}
 
     name = user.first_name + " " + user.last_name
     context_dict['full_name'] = name
@@ -208,20 +218,20 @@ def self_profile_view(request):
 
     city = user_profile_object.city
     if city != '':
-        context_dict['city'] = city 
-    
+        context_dict['city'] = city
+
     country = user_profile_object.country
     if country != '':
         context_dict['country'] = country
-    
+
     email_field = user.email
     if email_field != None:
         context_dict['email'] = email_field
-    
+
     contact = user_profile_object.contact
     if contact != None:
         context_dict['contact_number'] = contact
-    
+
     about = user_profile_object.about
     if about:
         context_dict['about'] = about
@@ -229,12 +239,12 @@ def self_profile_view(request):
     college = user_profile_object.college
     if college:
         context_dict['college'] = college
-        
+
     provider = None
-    
-    picture_url= None
-    
-    profile_url =None
+
+    picture_url = None
+
+    profile_url = None
 
     if social_profiles_object:
 
@@ -242,41 +252,187 @@ def self_profile_view(request):
             provider = "LinkedIn"
             picture_url = social_profiles_object.profile_pic_url_linkedin
             profile_url = social_profiles_object.profile_url_linkedin
-            
-            #If there is no pic uploaded, render LinkedIn pic
-            if(not user_profile_object.picture):
+
+            # If there is no pic uploaded, render LinkedIn pic
+            if (not user_profile_object.picture):
                 context_dict['pic_url'] = picture_url
 
         elif social_profiles_object.profile_pic_url_facebook:
             provider = "Facebook"
             picture_url = social_profiles_object.profile_pic_url_facebook
             profile_url = social_profiles_object.profile_url_facebook
-        
+
         if provider:
             context_dict['provider'] = provider
 
         if picture_url != None:
-            context_dict['picture_url'] = picture_url 
+            context_dict['picture_url'] = picture_url
 
         if profile_url != None:
-            context_dict['profile_url'] = profile_url 
-    
+            context_dict['profile_url'] = profile_url
+
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
-            edu_list.append({'inst':obj.institution,'loc':obj.location,'degree':obj.degree,
-                            'branch':obj.branch,'from':obj.from_year,'to':obj.to_year,'coun':obj.country})
+            edu_list.append({'inst': obj.institution, 'loc': obj.location, 'degree': obj.degree,
+                             'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'coun': obj.country})
 
         context_dict['edu_list'] = edu_list
 
     if empObjs:
         emp_list = []
         for obj in empObjs:
-            emp_list.append({'org':obj.organization,'loc':obj.location,'pos':obj.position,
-                            'from':obj.from_date,'to':obj.to_date})
+            emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
+                             'from': obj.from_date, 'to': obj.to_date})
 
         context_dict['emp_list'] = emp_list
-    return render_to_response("mentor/profile-view.html",context_dict,context)
+    return render_to_response("mentor/profile-view.html", context_dict, context)
+
+
+@login_required
+def get_profile(request, mentorid):
+    """
+    This function returns all the fields
+    for viewing mentor's profile
+    """
+    context = RequestContext(request)
+    context_dict = {}
+    try:
+        user = User.objects.get(id=mentorid)
+    except ObjectDoesNotExist:
+        context_dict['error'] = "User doest not exist"
+        return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
+
+    user_profile_object = UserProfile.objects.get(user=user)
+
+    if user_profile_object.is_new:
+        return HttpResponseRedirect('user/select.html')
+
+    # Social Profile
+    try:
+        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
+    except SocialProfiles.DoesNotExist:
+        social_profiles_object = None
+
+    # Education Profile
+    try:
+        eduObjs = EducationDetails.objects.filter(parent=user_profile_object)
+    except EducationDetails.DoesNotExist:
+        eduObjs = None
+
+    # Employment Profile
+    try:
+        empObjs = EmploymentDetails.objects.filter(parent=user_profile_object)
+    except EmploymentDetails.DoesNotExist:
+        empObjs = None
+
+    # TODO add personal details after the user model
+    # is finalized
+    # initialize all to None
+    context_dict['full_name'] = None
+    context_dict['gender'] = None
+    context_dict['mentor_id'] = None
+    context_dict['date_of_birth'] = None
+    context_dict['city'] = None
+    context_dict['country'] = None
+    context_dict['college'] = None
+    context_dict['email'] = None
+    context_dict['contact_number'] = None
+    context_dict['about'] = None
+    context_dict['provider'] = None
+    context_dict['picture_url'] = None
+    context_dict['profile_url'] = None
+    context_dict['edu_list'] = None
+    context_dict['emp_list'] = None
+
+    gender_options = {'male': "M", 'female': 'F'}
+
+    name = user.first_name + " " + user.last_name
+    context_dict['full_name'] = name
+
+    context_dict['mentor_id'] = mentorid
+
+    gender = user_profile_object.gender
+    if gender in gender_options.keys():
+        context_dict['gender'] = gender_options[gender]
+
+    date_of_birth = user_profile_object.date_of_birth
+    if date_of_birth != '':
+        context_dict['date_of_birth'] = date_of_birth
+
+    city = user_profile_object.city
+    if city != '':
+        context_dict['city'] = city
+
+    country = user_profile_object.country
+    if country != '':
+        context_dict['country'] = country
+
+    email_field = user.email
+    if email_field != None:
+        context_dict['email'] = email_field
+
+    contact = user_profile_object.contact
+    if contact != None:
+        context_dict['contact_number'] = contact
+
+    about = user_profile_object.about
+    if about:
+        context_dict['about'] = about
+
+    college = user_profile_object.college
+    if college:
+        context_dict['college'] = college
+
+    provider = None
+
+    picture_url = None
+
+    profile_url = None
+
+    if social_profiles_object:
+
+        if social_profiles_object.profile_pic_url_linkedin:
+            provider = "LinkedIn"
+            picture_url = social_profiles_object.profile_pic_url_linkedin
+            profile_url = social_profiles_object.profile_url_linkedin
+
+            # If there is no pic uploaded, render LinkedIn pic
+            if not user_profile_object.picture:
+                context_dict['picture_url'] = picture_url
+
+        elif social_profiles_object.profile_pic_url_facebook:
+            provider = "Facebook"
+            picture_url = social_profiles_object.profile_pic_url_facebook
+            profile_url = social_profiles_object.profile_url_facebook
+
+        if provider:
+            context_dict['provider'] = provider
+
+        if picture_url != None:
+            context_dict['picture_url'] = picture_url
+
+        if profile_url != None:
+            context_dict['profile_url'] = profile_url
+
+    if eduObjs:
+        edu_list = []
+        for obj in eduObjs:
+            edu_list.append({'inst': obj.institution, 'loc': obj.location, 'degree': obj.degree,
+                             'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'coun': obj.country})
+
+        context_dict['edu_list'] = edu_list
+
+    if empObjs:
+        emp_list = []
+        for obj in empObjs:
+            emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
+                             'from': obj.from_date, 'to': obj.to_date})
+
+        context_dict['emp_list'] = emp_list
+    print context_dict
+    return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
+
 
 @login_required
 def edit_profile(request):
@@ -288,10 +444,10 @@ def edit_profile(request):
     if request.POST:
         user_form = UserEditForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
-        #education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
-        #employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
-        edu_formset= EducationDetailsFormSet(request.POST, instance=user_profile)
-        emp_formset= EmploymentDetailsFormSet(request.POST, instance=user_profile)
+        # education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
+        # employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
+        edu_formset = EducationDetailsFormSet(request.POST, instance=user_profile)
+        emp_formset = EmploymentDetailsFormSet(request.POST, instance=user_profile)
         if user_form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
             user_form.save()
             profile_form.save()
@@ -315,9 +471,10 @@ def edit_profile(request):
         for emp in EmploymentDetails.objects.filter(parent=user_profile):
             empFormList.append(EmploymentForm(instance=emp))
         '''
-        #edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
-        #emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
+        # edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
+        # emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
     return render(request, "mentor/edit_profile.html", locals())
+
 
 @login_required
 def get_data(request):
@@ -329,27 +486,27 @@ def get_data(request):
     except:
         pass
     if extra_data:
-        location = extra_data['location']['name']  #rename address as area
+        location = extra_data['location']['name']  # rename address as area
         first_name = extra_data['first-name']
         last_name = extra_data['last-name']
         user.first_name = first_name
         user.last_name = last_name
-        (location,country) = location.split(',')
-        #date_of_birth = extra_data['date-of-birth'] 
+        (location, country) = location.split(',')
+        # date_of_birth = extra_data['date-of-birth']
         userProfile = UserProfile.objects.get(user=user)
         userProfile.location = location
         userProfile.country = country
         userProfile.save()
         user.save()
-        print "saved user profile" 
+        print "saved user profile"
 
-        #Save Education Data if received
+        # Save Education Data if received
         if 'educations' in extra_data:
             educations = extra_data['educations']['education']
 
         if educations:
             for individual_edu in educations:
-                if not EducationDetails.objects.filter(parent=user,institution=individual_edu['school-name']):
+                if not EducationDetails.objects.filter(parent=user, institution=individual_edu['school-name']):
                     edu_profile = EducationDetails.objects.create(parent=userProfile)
                     edu_profile.institution = individual_edu['school-name']
                     edu_profile.location = ""
@@ -361,25 +518,26 @@ def get_data(request):
                     edu_profile.to_year = individual_edu['end-date']['year']
                     edu_profile.country = ""
                     edu_profile.save()
-        socialProfile,created = SocialProfiles.objects.get_or_create(parent=userProfile)
-        #socialProfile = SocialProfiles(parent=userProfile)
+        socialProfile, created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        # socialProfile = SocialProfiles(parent=userProfile)
         socialProfile.profile_url_linkedin = extra_data['public-profile-url']
         socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfile.save()
     return HttpResponseRedirect("/mentor/edit-profile/")
 
+
 @login_required
-def manage_social_profiles(request,action=None,provider=None):
+def manage_social_profiles(request, action=None, provider=None):
     user = request.user
-    #to get an actual live object from SimpleLazyObject
+    # to get an actual live object from SimpleLazyObject
     user = User.objects.get(id=user.id)
     user_profile = UserProfile.objects.get(user=user)
     social_objects = SocialAccount.objects.filter(user=user)
     # dictionary stores all profile(profile-links/avatar-links) linked to different social apps
     if action == 'remove':
         try:
-            if SocialAccount.objects.get(user=user,provider=provider):
-                SocialAccount.objects.get(user=user,provider=provider).delete()
+            if SocialAccount.objects.get(user=user, provider=provider):
+                SocialAccount.objects.get(user=user, provider=provider).delete()
                 sp = SocialProfiles.objects.get(parent=user_profile)
                 if provider == 'facebook':
                     sp.profile_pic_url_facebook = ""
@@ -398,14 +556,86 @@ def manage_social_profiles(request,action=None,provider=None):
             pass
     sp_dict = {}
     for obj in social_objects:
-        sp_dict[obj.provider] = {'profile_url':obj.get_profile_url(),'avatar_url':obj.get_avatar_url()}
-    
-    return render(request,'mentor/manage-social-profiles.html',locals())
+        sp_dict[obj.provider] = {'profile_url': obj.get_profile_url(), 'avatar_url': obj.get_avatar_url()}
+
+    return render(request, 'mentor/manage-social-profiles.html', locals())
+
 
 @login_required
 def getCalendar(request):
     return render_to_response()
 
+
 @login_required
 def live(request):
-    return render_to_response('mentor/live.html',{},RequestContext(request))
+    return render_to_response('mentor/live.html', {}, RequestContext(request))
+
+
+# A Utility function to check whether the Mentor is available on a given date and time
+def check_utility(date, time, max_duration, mentor_id):
+    response = True
+
+    # Convert date & time in django friendly format
+
+    date = datetime.strptime(date, '%d/%m/%Y').strftime('%Y-%m-%d')
+    time = datetime.strptime(time, '%H:%M')
+
+    # check that no request has been approved within max_duration/2 (eg 15 mins if max_duration=30) of proposed time
+
+    requests = Request.objects.filter(mentorId_id=mentor_id, date=date,
+                                      time__gte=time - timedelta(minutes=max_duration / 2),
+                                      time__lte=time + timedelta(minutes=max_duration / 2))
+    if requests:
+        response = False
+
+    return response
+
+
+@login_required
+def check_availability(request):
+    date1 = request.POST['date1']
+    time1 = request.POST['time1']
+    dur1 = request.POST['dur1']
+    date2 = request.POST['date2']
+    time2 = request.POST['time2']
+    dur2 = request.POST['dur2']
+    mentor_id = request.POST['mentor_id']
+    response = {'1': check_utility(date1, time1, 30, mentor_id),
+                '2': check_utility(date2, time2, 30, mentor_id)}
+
+    return JsonResponse(response)
+
+
+@login_required
+def send_request(request):
+    # extract the POST dictionary
+    post = request.POST
+    error = False
+    msg = None
+    if 'date' in post and 'time' in post and 'duration' in post and 'mentor_id' in post:
+        if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '':
+            if 5 < int(post['duration']) < 30:
+                if check_utility(post['date'], post['time'], 30, post['mentor_id']):
+                    date = datetime.strptime(post['date'], '%d/%m/%Y').strftime('%Y-%m-%d')
+                    time = datetime.strptime(post['time'], '%H:%M')
+                    request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'], date=date,
+                                          time=time,
+                                          duration=post['duration'])
+                    request_obj.save()
+                    msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
+                else:
+                    error = True
+                    msg = 'Sorry! The mentor is unavailable during this time.<br>Please select another time & date.'
+            else:
+                error = True
+                print post['duration']
+                msg = "Duration has to between 5-30 min."
+        else:
+            error = True
+            msg = 'Received Empty Fields. Try Again!'
+    else:
+        error = True
+        msg = 'Missing Fields. Try Again!'
+
+    json_obj = {"error": error, "msg": msg}
+    return JsonResponse(json_obj)

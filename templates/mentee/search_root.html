@@ -1,22 +1,29 @@
 {% extends 'mentee/base.html' %}
-
-{% block container_block %}
-
-     
-     <p>Your query "{{ search_query }}" has returned {{ mentors.count }} result{{ mentors|pluralize }}</p>
-     {% for mentor in mentors %}
-     <h1>{{ mentor.first_name }} {{ mentor.last_name}}</h1>
-     <p>
-         {{ mentor.college }}
-         {{ mentor.city }}
-         {{ mentor.state }} 
-         {{ mentor.id }}
-               
-         
-
-     </p>
-     {% endfor %}
-         
-        
+{% load static %}
+{%  block stylesheets %}
+    <link rel="stylesheet" href="{% static 'css/mentee/search.css' %} " type="text/css" />
 {% endblock %}
 
+{%  block container_title %}
+<h1>Search Results</h1>
+{% endblock %}
+{% block container_block %}
+
+     <p>Your query "{{ search_query }}" has returned {{ mentors.count }} result{{ mentors|pluralize }}</p>
+    <div class="container">
+        <div class="row">
+            {% for mentor in mentors %}
+                 <div class="col-xs-3 tile textCenter">
+
+                     <p>
+                         <a href="/mentor/get-profile/{{ mentor.id }}/"><h2>{{ mentor.first_name }} {{ mentor.last_name}}</h2></a>
+                         {{ mentor.college }}<br>
+                         {{ mentor.city }}<br>
+                         {{ mentor.state }}
+
+                     </p>
+                 </div>
+             {% endfor %}
+        </div>
+    </div>
+{% endblock %}

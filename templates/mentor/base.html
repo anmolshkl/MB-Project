@@ -75,7 +75,12 @@
                 </div>
                 
                 <div id="callLog" class="col-xs-12 textCenter well">
-                  <div class="clock center"></div>
+                  <div class="row">
+                      <div class="col-md-8 col-md-offset-2 col-xs-12">
+                          <div class="clock center"></div>
+                      </div>
+
+                  </div>
                 </div>
                 
                 <div class="error col-xs-12 textCenter well">
@@ -700,7 +705,8 @@ callClient.addEventListener({
       type: 'post',
       dataType: 'json',
       data: {
-             csrfmiddlewaretoken: '{{ csrf_token }}' // just the token value
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+             userId: userId
         },
       url: '/user/getDetails/',
       success: function(data) {
@@ -762,6 +768,10 @@ var handleError = function(error) {
     error.message = "Server failure";
   }
 }
+$('#callModal').on('hidden.bs.modal', function (e) {
+  $('#callLog').html(" ");
+  $('#error').html(" ");
+})
 
 </script>
 </body>

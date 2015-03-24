@@ -5,6 +5,14 @@
 	  -o-background-size: cover;
 	  background-size: cover;
 }
+.highlight-blue:focus {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1) !important;
+  border: 1px solid rgba(81, 203, 238, 1) !important;
+}
+.highlight-red {
+  box-shadow: 0 0 5px rgba(255, 0, 0, 1) !important;
+  border: 1px solid rgba(81, 203, 238, 1) !important;
+}
 .date-picker {
 	z-index: 104001;
 }

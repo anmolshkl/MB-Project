@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="Django localhost" uuid="6904de6c-c9af-4b48-8e31-6d3c9ae2a4b2">
+      <user-name>mentorbuddy</user-name>
+      <user-password>dfc7dfcfdfc4dfdedfc5dfd8dfc8dfdfdfcedfcedfd3</user-password>
+      <schema-pattern>mb_db2.*</schema-pattern>
+      <default-schemas>mb_db2.*</default-schemas>
+    </data-source>
+    <data-source name="Django localhost2" uuid="b04b0758-9a1f-41c4-ada3-c17b935a6930">
+      <user-name>mentorbuddy</user-name>
+      <user-password>dfc7dfcfdfc4dfdedfc5dfd8dfc8dfdfdfcedfcedfd3</user-password>
+      <schema-pattern>mb_db2.*</schema-pattern>
+      <default-schemas>mb_db2.*</default-schemas>
+    </data-source>
+  </component>
+</project>

@@ -185,7 +185,7 @@ $('button#logOut').on('click', function(event) {
 	//Allow re-login
 	$('button#loginUser').attr('disabled', false);
 	$('button#createUser').attr('disabled', false);
-	
+
 	//Reload page.
 	window.location.reload();
 });

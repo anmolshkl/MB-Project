@@ -32,18 +32,18 @@
 			<div class="col-md-12 well" id="call">
 					
 					<div class="row">
-						<div class="col-sm-4 textCenter">
+						<div class="col-sm-3 textCenter">
 							<img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center"/>
 							<h4>Mentor 1</h4>
 							
 						</div>
-						<div class="col-sm-4 pad-s">
-							<div class="clock center"></div>
+						<div class="col-sm-5 pad-s">
+							<div class="clock"></div>
 						</div>
 						<div class="col-sm-4">
 						<div class="pull-right">
 							<form id="newCalls">
-								<input type="hidden" id="calleeId" value="user36" />
+								<input type="hidden" id="calleeId" value="user38" />
 								<button id="call">Call</button>
 								<button id="hangup">Hangup</button>
 							</form>
@@ -65,9 +65,9 @@
 		</div>
 	</div>
 {% endblock %}
-{% block scripts %}
+{% block scripts %}s
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'sinch/WEBsample.js' %}"></script>
+<script type="text/javascript" src="{% static 'sinch/WEBsampleMentee.js' %}"></script>
 <script src="{% static 'flipclock/flipclock.min.js' %}"></script>
 <script type="text/javascript">
 	clock = new FlipClock($('.clock'), {
