@@ -25,61 +25,9 @@
       <div class="modal-body"> Widget settings form goes here </div>
     </div>
 
-    <!-- Schedule Modal -->
-    <div class="modal fade" id="scheduleModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">How would you like to connect?</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <form id="scheduleForm" method="post">
-                    <div class="row well pd-s mg-s">
-                        <ul class="txt-m" type="number">
-                            <h4><li>Select upto 2 dates and a time.</li></h4>
-                            <h4><li>Check availability.</li></h4>
-                        </ul> 
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row pd-s">
-                            <div class="col-xs-12 well textCenter">
-                                <input id="date1" type="text" class="mg-s highlight-blue" placeholder="Enter Date & Time">
-                                <input type="text" class="highlight-blue" id="dur1" placeholder="Duration: eg 15 min"/>
-                            </div>
-                        </div>  
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row pd-s">
-                            <div class="col-xs-12 well textCenter">
-                                <input id="date2" type="text" placeholder="Enter Date & Time" class="mg-s highlight-blue" />
-                                <input type="text" class="highlight-blue" id="dur2" placeholder="Duration: eg 15 min"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row textCenter">
-                    <a class="btn btn-warning btn-large center checkAv">Check Availability</a>
-                    </div>
-                </form>
-            </div>
-
-            <div class="button-group">
-                <button class="flatButton scheduleSelect" value="0">Web-to-Web Call</button>
-                <button class="flatButton scheduleSelect disabled" value="1">Web-to-Phone Call</button>
-                <button class="flatButton scheduleSelect disabled" value="2">Video Call</button> 
-            </div>
-        
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     <div style="margin-top:100px;" class="clearfix"></div>
-        <div class="row">
+        <div class="row no-padding">
             <div class="col-md-6 no-margin margin-left-3">
                 <div class="row no-padding">
                     <div class="tiles green cover-pic-wrapper">                     
@@ -132,7 +80,7 @@
 
                             </div>
                             <div class="col-md-3 col-sm-3 pd-l">
-                                <button class="btn center" data-toggle="modal" data-target="#scheduleModal">Connect</button>
+                                <button class="btn center disabled btn-success" data-toggle="modal"  data-target="#scheduleModal">Connect</button>
                             </div>
                         </div>
 
@@ -165,37 +113,30 @@
             
             <div class="col-md-5 margin-left-3">
                 <div class="row">
-                <div class="tiles white col-md-12  no-padding">         
+                    <div class="tiles white col-md-12  no-padding">
                     <div class="tiles-body">
                         <h5 ><span class="semi-bold">Your Blogs and shared posts</span>&nbsp;&nbsp; <a href="#" class="text-info normal-text">view more</a></h5>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="">
-                                    <div class="">
+                                <div class="row  pad-s">
+                                    <div class="col-xs-12">
+                                        <h4>Blog 1</h4>
                                     </div>
-                                    <div class="">
-                                        <div class="">
-                                            Blog 2
-                                        </div>
-                                        <div class="">
-                                            Australian Adventures!
-                                        </div>
+                                    <div class="col-xs-12">
+                                        Australian Adventures!
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
+                            <hr>
                             <div class="col-md-12">
-                                <div class="">
-                                    <div class="">
-                                        <div class="">
-                                            Blog 1
-                                        </div>
-                                        <div class="normal">
-                                            Education the Beer nation!
-                                        </div>
+                                <div class="row  pad-s">
+                                    <div class="col-xs-12">
+                                        <h4>Blog 2</h4>
                                     </div>
-                                    <div class="clearfix"></div>
-                                </div>  
+                                    <div class="col-xs-12">
+                                        Let's go to Beer Nation!
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,6 +161,15 @@
                     <div class="clearfix"></div>
                     </div>                                      
                     </div>
+                </div>
+            <br>
+                <div class="row">
+                  <div class="col-md-12 tiles white textCenter pad-m">
+                    <span><h4>Favored call timings</h4></span>
+                      <hr>
+                      <h5>Weekdays: 9pm-10pm(IST)</h5>
+                      <h5>Weekends: 2pm-5pm(IST)</h5>
+                  </div>
                 </div>
                 
                 <div class="row">

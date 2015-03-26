@@ -153,13 +153,13 @@ class Request(models.Model):
     date = models.DateField(blank=False, default=datetime.date.today)
     time = models.TimeField(blank=False, default=datetime.datetime.now)
     duration = apps.user.fields.IntegerRangeField(min_value=1, max_value=30)
-    is_approved = models.BooleanField(default=False)
+    is_approved = models.NullBooleanField(default=None, null=True)
     is_rescheduled = models.BooleanField(default=False)
     requestDate = models.DateField(blank=False, default=datetime.date.today)
+    callType = apps.user.fields.IntegerRangeField(min_value=1, max_value=3, default=1)
 
     class Meta:
         verbose_name = "Request"
-
 
 
 class CallLog(models.Model):

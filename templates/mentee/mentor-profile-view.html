@@ -4,7 +4,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/profile.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}"/ >
+<link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
     <style>
         .statusSign {
             margin-top: 20px;
@@ -18,8 +18,24 @@
         .clickable {
             cursor: pointer;
         }
+        .error {
+           color: #ff102c;
+        }
+        .fieldError {
+            border: 1px solid #ff102c !important;
+        }
+        .pad-m {
+            padding: 20px;
+        }
+        @media screen and (max-width: 800px) {
+            .no-padding-xs {
+                padding: 0px !important;
+            }
+        }
 
     </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'button/button.css' %}" />
+	<script src="{% static 'button/snap.svg-min.js' %}"></script>
 {% endblock %}
 
 {% block container_title %}
@@ -30,16 +46,7 @@
 
 
 
-<div class="container-fluid"> 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-      <div class="modal-header">
-        <button data-dismiss="modal" class="close" type="button"></button>
-        <h3>Widget Settings</h3>
-      </div>
-      <div class="modal-body"> Widget settings form goes here </div>
-    </div>
-
+<div class="container-fluid">
     <!-- Schedule Modal -->
     <div class="modal fade" id="scheduleModal">
       <div class="modal-dialog">
@@ -50,12 +57,13 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <form id="scheduleForm" method="post">
+              <div id="scheduleDiv">
                     <div class="row well pd-s mg-s">
-                        <ul class="txt-m" type="number">
-                            <h4 id="step1"><li>Select upto 2 dates and a time.</li></h4>
-                            <h4 id="step2"><li>Check availability.</li></h4>
-                            <h4 id="step3"><li>Select an available date & time.</li></h4>
+                        <ul class="txt-m">
+                            <li id="step1"><h4>Select upto 2 dates and a time.</h4></li>
+                            <li id="step2"><h4>Check availability.</h4></li>
+                            <li id="step3"><h4>Select an available date & time.</h4></li>
+                            <span id="errorDiv" ><h5 class="error"></h5></span>
                         </ul> 
                     </div>
                     <div class="col-md-6">
@@ -75,15 +83,22 @@
                         </div>
                     </div>
                     <div class="row textCenter">
-                    <a class="btn btn-warning btn-large center checkAv">Check Availability</a>
+                    <button class="checkButton checkAv button--fill button--effect-2">
+                        <span class="morph-shape" data-morph-active="M282.5,62.5c0,27.891-8.648,51.994-36.5,50.5c-24.049-1.29-44.75-8-96-8c-56.75,0-71.952,6.71-96,8c-27.851,1.494-36.5-22.609-36.5-50.5l0,0C17.5,34.609,26.215,9.572,54,12c23.973,2.095,39.75,7,96,7c51.502,0,72.01-5.125,96-7C273.807,9.827,282.5,34.609,282.5,62.5L282.5,62.5z">
+                            <svg width="100%" height="100%" viewBox="0 0 300 125" preserveAspectRatio="none">
+                                <path d="M286.5,62.5C286.5,90.39099999999999,273.891,113,246,113C201.75,113,201.25,113,150,113C93.25,113,93.5,113,54,113C26.109,113,13.5,90.39099999999999,13.5,62.5C13.5,62.5,13.5,62.5,13.5,62.5C13.5,34.609,26.109,12,54,12C93.5,12,93.75,12,150,12C201.502,12,201.5,12,246,12C273.891,12,286.5,34.609,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5"></path>
+                            <desc>Check Availability</desc><defs></defs></svg>
+                        </span>
+                        <span class="button__text">Check Availability</span>
+                    </button>
                     </div>
-                </form>
+                </div>
             </div>
 
             <div class="button-group">
-                <button class="flatButton scheduleSelect" value="0">Web-to-Web Call</button>
-                <button class="flatButton scheduleSelect disabled" value="1">Web-to-Phone Call</button>
-                <button class="flatButton scheduleSelect disabled" value="2">Video Call</button> 
+                <button class="flatButton scheduleSelect" value="1">Web-to-Web Call</button>
+                <button class="flatButton scheduleSelect disabled" value="2">Web-to-Phone Call</button>
+                <button class="flatButton scheduleSelect disabled" value="3">Video Call</button>
             </div>
         
           </div>
@@ -96,7 +111,7 @@
 
     <div style="margin-top:100px;" class="clearfix"></div>
         <div class="row">
-            <div class="col-md-6 no-margin margin-left-3">
+            <div class="col-md-6  margin-left-3 no-padding-xs">
                 <div class="row no-padding">
                     <div class="tiles green cover-pic-wrapper">                     
                         <div class="overlayer bottom-right">
@@ -183,35 +198,28 @@
                 <div class="row">
                 <div class="tiles white col-md-12  no-padding">         
                     <div class="tiles-body">
-                        <h5 ><span class="semi-bold">Your Blogs and shared posts</span>&nbsp;&nbsp; <a href="#" class="text-info normal-text">view more</a></h5>
+                        <h5 ><span class="semi-bold">{{ full_name}}'s Blogs and shared posts</span>&nbsp;&nbsp; <a href="#" class="text-info normal-text">view more</a></h5>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="">
-                                    <div class="">
+                                <div class="row  pad-s">
+                                    <div class="col-xs-12">
+                                        <h4>Blog 1</h4>
                                     </div>
-                                    <div class="">
-                                        <div class="">
-                                            Blog 2
-                                        </div>
-                                        <div class="">
-                                            Australian Adventures!
-                                        </div>
+                                    <div class="col-xs-12">
+                                        Australian Adventures!
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
+                            <hr>
                             <div class="col-md-12">
-                                <div class="">
-                                    <div class="">
-                                        <div class="">
-                                            Blog 1
-                                        </div>
-                                        <div class="normal">
-                                            Education the Beer nation!
-                                        </div>
+                                <div class="row  pad-s">
+                                    <div class="col-xs-12">
+                                        <h4>Blog 2</h4>
                                     </div>
-                                    <div class="clearfix"></div>
-                                </div>  
+                                    <div class="col-xs-12">
+                                        Let's go to Beer Nation!
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -219,23 +227,12 @@
                 </div>
                 <br>
                 <div class="row">
-                  <div class="col-md-12 no-padding">
-                    <div class="tiles white">
-                        <textarea rows="3"  class="form-control user-status-box post-input"  placeholder="Whats on your mind?"></textarea>
-                    </div>
-
-                    <div class="tiles grey padding-10">
-                    <div class="pull-left">
-                        <button class="btn btn-default btn-sm btn-small" type="button"><i class="fa fa-camera"></i></button>
-                        <button class="btn btn-default btn-sm btn-small" type="button"><i class="fa fa-map-marker"></i></button>
-                    </div>
-
-                    <div class="pull-right">
-                        <button class="btn btn-primary btn-sm btn-small" type="button">POST</button>
-                    </div>                  
-                    <div class="clearfix"></div>
-                    </div>                                      
-                    </div>
+                  <div class="col-md-12 tiles white textCenter pad-m">
+                    <span><h4>Favored call timings</h4></span>
+                      <hr>
+                      <h5>Weekdays: 9pm-10pm(IST)</h5>
+                      <h5>Weekends: 2pm-5pm(IST)</h5>
+                  </div>
                 </div>
                 
                 <div class="row">
@@ -267,7 +264,6 @@
             </div>    
             </div>
         </div>
-  </div>
 <!-- END CONTAINER -->
 {% endblock %}
 
@@ -275,21 +271,23 @@
 
 <script src="{% static 'datetimepicker/jquery.datetimepicker.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
-    $("#scheduleForm").hide();
-    $("#backToSelect").hide();
+
+    $("#scheduleDiv").hide();
+    $("#step3").hide();
+
+    $(".scheduleSelect > input").focus(function() {
+       if($(this).value != "") {
+           $("#step2").show();
+       }
+    });
     $(".scheduleSelect").click(function() {
         $(".button-group").hide();
         setTimeout( function() {
-            $("#scheduleForm").show();
+            $("#scheduleDiv").show();
             $("#backToSelect").show();
         }, 00);
 
-        $("#scheduleForm").append('<input type="hidden" name="callType" id="callType" value="'+ $(this).val()+'" />');
-    });
-    $("#backToSelect").click(function() {
-        $("#scheduleForm").hide();
-        $("#backToSelect").hide();
-        $(".button-group").show();
+        $("#scheduleDiv").append('<input type="hidden" name="callType" id="callType" value="'+ $(this).val()+'" />');
     });
 
     $('#date1').datetimepicker({
@@ -303,6 +301,13 @@
         lazyInit: true,
         validateOnBlur: true,
     });
+
+    $('#scheduleDiv input').focusout(function() {
+        if($(this).val() != '')  {
+            $(this).removeClass("fieldError");
+        }
+    });
+
     $(".checkAv").click(function() {
         var date1,date2,res,time1,time2,dur1,dur2;
         date1 = $("#date1").val();
@@ -315,36 +320,35 @@
         time2 = res[1];
         dur1 = $("#dur1").val();
         dur2 = $("#dur2").val();
-        error = false;
-        if(dur1 == "") {
-            $("#dur1").css({
-                "border": "1px solid #F35958"
-            });
+        var error = false;
+        if(dur1 == "" || (dur1 < 5 || dur1 > 30) ) {
+            $("#dur1").addClass("fieldError");
             error = true;
-            alert("1.");
         }
-        if(dur2 == "") {
-            $("#dur2").css({
-                "border": "1px solid #F35958",
-            });
+        if(dur2 == "" || (dur2 < 5 || dur2 > 30)) {
+            $("#dur2").addClass("fieldError");
             error = true;
-            alert("2.");
         }
         if(date1 == "") {
-            $("#date1").css({
-                "border": "1px solid #F35958"
-            });
+            $("#date1").addClass("fieldError");
             error = true;
-            alert("3");
         }
         if(date2 == "") {
-            $("#date2").css({
-                "border": "1px solid #F35958"
-            });
+            $("#date2").addClass("fieldError");
             error = true;
-            alert("4");
+        }
+        if(error == true) {
+            $("#errorDiv h5").html("Please fill all the fields");
+        }
+        else {
+            $("#errorDiv h5").html("");
+        }
+        if((dur1 < 5 || dur1 > 30) || (dur2 < 5 || dur2 > 30)) {
+            error = true;
+            $("#errorDiv h5").html("Duration has to be between 5-30(min)");
         }
         if(error==false) {
+            $("#errorDiv h5").html("");
             $.ajax({
                 url: "/mentor/checkAvailability/",
                 data: {"date1":date1,"date2":date2,"time1":time1,"time2":time2,"dur1":dur1,"dur2":dur2,"csrfmiddlewaretoken": '{{  csrf_token }}',
@@ -353,6 +357,13 @@
                 dataType: "json",
                 success: function(data) {
                     $(".statusSign").remove();
+                    //show step 3 if both dates are available
+                    if(data["1"] == true && data["2"] == true) {
+                        $("#step3").show();
+                    }
+
+                    $("#step3").show();
+                    //check and highlight the time and date which is available
                     if(data["1"] == true) {
                         $("#timeBox1").css({"border":"1px solid #00C78C","cursor":"pointer"});
                         $("#timeBox1").append('<i class="fa fa-check-circle icon-3x statusSign"></i>');
@@ -380,17 +391,22 @@
                     }
                     $(".clickable").click(function(event) {
                         if(event.target.tagName.toUpperCase() != 'INPUT') {
+                            $(this).css({"background-color": "rgba(74,201,72,0.7)"});
                             var inputs = $(this).children("input");
                             var dateTime = inputs[0].value.split(" ");
                             $.ajax({
                                 url: "/mentor/send-request/",
-                                data: { "date":dateTime[0], "time":dateTime[1], "duration":inputs[1].value,
+                                data: { "date":dateTime[0], "time":dateTime[1],"callType": $("#callType").val(), "duration":inputs[1].value,
                                     "csrfmiddlewaretoken":'{{ csrf_token }}',"mentor_id": {{ mentor_id }} },
                                 type: "post",
                                 dataType: "json",
                                 success: function(data) {
                                     if(data['error'] == false) {
-
+                                        $("#scheduleDiv").html(data['msg']);
+                                        $("#scheduleDiv").addClass("textCenter");
+                                    }
+                                    else {
+                                        $("#errorDiv").html(data["msg"]);
                                     }
                                 }
 
@@ -406,6 +422,75 @@
 
     });
 
-</script>
 
+
+</script>
+<script>
+    (function() {
+
+        function extend( a, b ) {
+            for( var key in b ) {
+                if( b.hasOwnProperty( key ) ) {
+                    a[key] = b[key];
+                }
+            }
+            return a;
+        }
+
+        function SVGButton( el, options ) {
+            this.el = el;
+            this.options = extend( {}, this.options );
+            extend( this.options, options );
+            this.init();
+        }
+
+        SVGButton.prototype.options = {
+            speed : { reset : 800, active : 150 },
+            easing : { reset : mina.elastic, active : mina.easein }
+        };
+
+        SVGButton.prototype.init = function() {
+            this.shapeEl = this.el.querySelector( 'span.morph-shape' );
+
+            var s = Snap( this.shapeEl.querySelector( 'svg' ) );
+            this.pathEl = s.select( 'path' );
+            this.paths = {
+                reset : this.pathEl.attr( 'd' ),
+                active : this.shapeEl.getAttribute( 'data-morph-active' )
+            };
+
+            this.initEvents();
+        };
+
+        SVGButton.prototype.initEvents = function() {
+            this.el.addEventListener( 'mousedown', this.down.bind(this) );
+            this.el.addEventListener( 'touchstart', this.down.bind(this) );
+
+            this.el.addEventListener( 'mouseup', this.up.bind(this) );
+            this.el.addEventListener( 'touchend', this.up.bind(this) );
+
+            this.el.addEventListener( 'mouseout', this.up.bind(this) );
+        };
+
+        SVGButton.prototype.down = function() {
+            this.pathEl.stop().animate( { 'path' : this.paths.active }, this.options.speed.active, this.options.easing.active );
+        };
+
+        SVGButton.prototype.up = function() {
+            this.pathEl.stop().animate( { 'path' : this.paths.reset }, this.options.speed.reset, this.options.easing.reset );
+        };
+
+        [].slice.call( document.querySelectorAll( 'button.button--effect-1' ) ).forEach( function( el ) {
+            new SVGButton( el );
+        } );
+
+        [].slice.call( document.querySelectorAll( 'button.button--effect-2' ) ).forEach( function( el ) {
+            new SVGButton( el, {
+                speed : { reset : 650, active : 650 },
+                easing : { reset : mina.elastic, active : mina.elastic }
+            } );
+        } );
+
+    })();
+</script>
 {% endblock %}

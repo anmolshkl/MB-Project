@@ -1,0 +1,155 @@
+{% extends "mentor/base.html" %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    {% block stylesheets %}
+    <style>
+        .accept {
+            color: rgba(71, 195, 42, 0.5);
+            margin: 10px !important;
+        }
+        .accept:hover {
+            color: rgba(71, 195, 42, 1);
+            margin: 10px !important;
+        }
+        .reject {
+            color: rgba(255, 5, 14, 0.5);
+            margin: 10px !important;
+        }
+        .reject:hover {
+            color: rgba(255, 5, 14, 1);
+            margin: 10px !important;
+        }
+        .acceptDiv {
+            border: 1px solid #4CC552;
+        }
+        .rejectDiv {
+            border: 1px solid rgba(255, 0, 0, 0.8);
+        }
+        .errorDiv {
+            color: rgba(255, 0, 0, 0.8);
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block container_title %}
+        <h1>Your Requests!</h1>
+    {% endblock %}
+
+    {% block container_block %}
+        <div class="row">
+            <div class="col-xs-12 errorDiv well" style="display: none">
+                Some error occurred. Please try again or refresh the page.
+            </div>
+            {% if req_list %}
+                {% for request in req_list %}
+                    <div class="col-xs-12 well">
+                        <div class="pull-left">
+                            <input type="hidden" class="request_id" value="{{ request.request_id }}"> </input>
+                            <h3>{{ request.mentee_name }}, {{ request.country }}</h3><hr>
+                            <h5><b>{{ request.date }}</b></h5>
+                            <h5>{{ request.time }}</h5>
+                            Call Type:<b>
+                            {% if request.callType == 1 %}
+                                Web-to-Web Call
+                            {% elif request.callType == 2%}
+                                Web-to-Phone Call
+                            {% else %}
+                                Video Call
+                            {% endif %}
+                            </b>
+                            Date Requested: {{ request.req_date }}
+                        </div>
+                        <div class="pull-right textCenter">
+                            <a href="#" class="fa fa-times-circle fa-4x reject"></a>
+                            <a href="#" class="fa fa-check-circle fa-4x accept"></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-xs-12 well textCenter">
+                    <h3>No pending requests. You're done for today!</h3>
+                </div>
+            {% endif %}
+        </div>
+
+    {% endblock %}
+
+{% block scripts %}
+<script>
+    $(".accept").on({
+        mouseenter: function () {
+            //stuff to do on mouse enter
+            $(this).parent().parent().addClass("acceptDiv");
+        },
+        mouseleave: function () {
+            //stuff to do on mouse leave
+            $(this).parent().parent().removeClass("acceptDiv");
+        }
+    });
+     $(".reject").on({
+            mouseenter: function () {
+                //stuff to do on mouse enter
+                $(this).parent().parent().addClass("rejectDiv");
+            },
+            mouseleave: function () {
+                //stuff to do on mouse leave
+                $(this).parent().parent().removeClass("rejectDiv");
+            }
+     });
+    $(".accept").click(function() {
+        var parentDiv = $(this).parent().parent();
+        var request_id = $(this).parent().parent().find(".request_id").val();
+        if(request_id != '') {
+            $.ajax({
+                url: "/mentor/handle-request/",
+                type: "post",
+                data: {"request_id":request_id, "status": "1", "csrfmiddlewaretoken": '{{ csrf_token }}'},
+                dataType: "json",
+                success: function(data) {
+                    if(data["error"] == false) {
+                        parentDiv.fadeOut();
+                    }
+                    else {
+                        $(".errorDiv").show();
+                    }
+                },
+                failure: function() {
+                    $(".errorDiv").show();
+                }
+
+            });
+        }
+    });
+$   (".reject").click(function() {
+        var parentDiv = $(this).parent().parent();
+        var request_id = $(this).parent().parent().find(".request_id").val();
+        if(request_id != '') {
+            $.ajax({
+                url: "/mentor/handle-request/",
+                type: "post",
+                data: {"request_id":request_id, "status": "0", "csrfmiddlewaretoken": '{{ csrf_token }}'},
+                dataType: "json",
+                success: function(data) {
+                    if(data["error"] == false) {
+                        parentDiv.fadeOut();
+                    }
+                    else {
+                        $(".errorDiv").show();
+                    }
+                },
+                failure: function(data) {
+                    $(".errorDiv").show();
+                }
+
+            });
+        }
+    });
+</script>
+{% endblock %}
+</body>
+</html>

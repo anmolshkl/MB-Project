@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import model_to_dict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -165,7 +166,7 @@ def self_profile_view(request):
     user = request.user
     user_profile_object = UserProfile.objects.get(user=user)
     if user_profile_object.is_new:
-        return HttpResponseRedirect('user/select.html')
+        return HttpResponseRedirect('/user/')
 
     # Social Profile
     try:
@@ -612,15 +613,16 @@ def send_request(request):
     post = request.POST
     error = False
     msg = None
-    if 'date' in post and 'time' in post and 'duration' in post and 'mentor_id' in post:
-        if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '':
+    if 'date' in post and 'time' in post and 'duration' in post and 'mentor_id' in post and 'callType' in post:
+        if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' and int(
+                post['callType']) < 4 and int(post['callType']) > 0:
             if 5 < int(post['duration']) < 30:
                 if check_utility(post['date'], post['time'], 30, post['mentor_id']):
                     date = datetime.strptime(post['date'], '%d/%m/%Y').strftime('%Y-%m-%d')
                     time = datetime.strptime(post['time'], '%H:%M')
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'], date=date,
                                           time=time,
-                                          duration=post['duration'])
+                                          duration=post['duration'], callType=post['callType'])
                     request_obj.save()
                     msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
                 else:
@@ -639,3 +641,45 @@ def send_request(request):
 
     json_obj = {"error": error, "msg": msg}
     return JsonResponse(json_obj)
+
+
+@login_required
+def get_requests(request):
+    user = request.user
+    context = RequestContext(request)
+    context_dict = {}
+    req_objs = Request.objects.filter(mentorId=user.id, is_approved=None)
+    if req_objs:
+        req_list = []
+        for obj in req_objs:
+            mentee = User.objects.get(id=obj.menteeId_id)
+            req_list.append({'request_id': obj.id, 'date': obj.date, 'time': obj.time, 'duration': obj.duration,
+                             'callType': obj.callType, 'req_date': obj.requestDate,
+                             "mentee_name": mentee.get_full_name(), "country": mentee.user_profile.country})
+            context_dict['req_list'] = req_list
+
+    return render_to_response("mentor/requests.html", context_dict, context)
+
+
+@login_required
+def handle_request(request):
+    error = False
+    response = {}
+    post = request.POST
+    if "request_id" in post and "status" in post and post["request_id"] != '' and post['status'] != '':
+        if post['status'] == '0':
+            # disapprove the request
+            req = Request.objects.get(id=post["request_id"])
+            req.is_approved = True
+            req.save()
+        elif post['status'] == '1':
+            # disapprove the request
+            req = Request.objects.get(id=post["request_id"])
+            req.is_approved = False
+            req.save()
+        else:
+            error = True
+    else:
+        error = True
+    response["error"] = error
+    return JsonResponse(response)

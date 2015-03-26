@@ -81,6 +81,7 @@
       <exported-key name="socialaccount_socialacc_user_id_3fd78aac97693583_fk_auth_user_id" table="socialaccount_socialaccount" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="menteeId_id"/>
       <exported-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="mentorId_id"/>
+      <exported-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" table="user_userprofile" schema="" catalog="mb_db2" columns="user_id"/>
       <index name="username" unique="true" columns="username"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="mb_db2" type="TABLE">
@@ -153,7 +154,6 @@
     </table>
     <table name="mentor_educationdetails" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="institution" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="location" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="degree" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
@@ -161,21 +161,22 @@
       <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="country" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="parent_id_refs_user_id_aa0c1dbd" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="mentor_educationdetails_410d0aac" unique="false" columns="parent_id"/>
+      <foreign-key name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_educationdetails_6be37982" unique="false" columns="parent_id"/>
     </table>
     <table name="mentor_employmentdetails" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="organization" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="location" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="position" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="from_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
       <column name="to_date" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="parent_id_refs_user_id_4d3beff4" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="mentor_employmentdetails_410d0aac" unique="false" columns="parent_id"/>
+      <foreign-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_employmentdetails_6be37982" unique="false" columns="parent_id"/>
     </table>
     <table name="socialaccount_socialaccount" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -244,6 +245,7 @@
       <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="is_rescheduled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="requestDate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="callType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
@@ -255,7 +257,6 @@
     </table>
     <table name="user_socialprofiles" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="profile_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
@@ -266,8 +267,9 @@
       <column name="profile_pic_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_pic_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_pic_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="parent_id_refs_user_id_f9d6c4be" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="user_socia_parent_id_996d0db48e667e8_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="user_userprofile" schema="" catalog="mb_db2" type="TABLE">
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -286,9 +288,10 @@
       <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="user_id"/>
-      <exported-key name="parent_id_refs_user_id_aa0c1dbd" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
-      <exported-key name="parent_id_refs_user_id_4d3beff4" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
-      <exported-key name="parent_id_refs_user_id_f9d6c4be" table="user_socialprofiles" schema="" catalog="mb_db2" columns="parent_id"/>
+      <foreign-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="user_socia_parent_id_996d0db48e667e8_fk_user_userprofile_user_id" table="user_socialprofiles" schema="" catalog="mb_db2" columns="parent_id"/>
     </table>
   </data-source>
   <data-source name="Django localhost2" uuid="b04b0758-9a1f-41c4-ada3-c17b935a6930">

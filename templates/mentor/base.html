@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load request_tags %}
 {% load socialaccount %}
 <html>
 <head>
@@ -258,11 +259,11 @@
    <!-- BEGIN SIDEBAR MENU -->  
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>    
-      <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-important pull-right">5</span></a> </li>
+      <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-disable pull-right">5</span></a> </li>
       <li class=""> <a href="/mentor/self-profile/"> <i class="fa fa-user"></i> <span class="title">Profile</span></a></li>
       <li class=""> <a href="/mentor/self-profile/"> <i class="fa fa-user"></i> <span class="title">Edit Profile</span></a></li>
       
-      <li class=""> <a href="#"> <i class="fa fa-envelope"></i> <span class="title">Requests</span>  <span class=" badge badge-disable pull-right ">03</span></a> </li>
+      <li class=""> <a href="/mentor/requests/"> <i class="fa fa-envelope"></i> <span class="title">Requests</span>  <span class=" badge badge-important pull-right ">{% request_number 2 %}</span></a> </li>
       <li class=""> <a href="/mentor/calendar/"> <i class="fa fa-calendar"></i> <span class="title">Calendar</span></a> </li>      
       <li class=""> <a href="../frontend/index.html"> <i class="fa fa-flag"></i>  <span class="title">Social Accounts</span></a></li>      
       
