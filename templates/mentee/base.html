@@ -143,7 +143,7 @@
                         </div>              
                 </div>
                 <div class="profile-pic"> 
-                    <img src="{{ pic_url }}"  alt="" data-src="{{ pic_url }}" data-src-retina="{{ pic_url }}" width="35" height="35" />
+                    <img src="{{ user.user_profile.picture }}"  alt="" data-src="{{ user.user_profile.picture }}" data-src-retina="{{ user.user_profile.picture }}" width="35" height="35" />
                 </div>                  
             </div>
          <ul class="nav quick-section ">
@@ -189,7 +189,7 @@
   <!-- BEGIN MINI-PROFILE -->
    <div class="user-info-wrapper">  
     <div class="profile-wrapper">
-        <img src="{{ pic_url }}"  alt="profile-image" data-src="{{ pic_url }}" data-src-retina="{% static 'template/webarch/assets/img/profiles/avatar2x.jpg' %}" width="69" height="69" />
+        <img src="{{ user.user_profile.picture }}"  alt="profile-image" data-src="{{ user.user_profile.picture }}" data-src-retina="{{ user.user_profile.picture }}" width="69" height="69" />
     </div>
     <div class="user-info">
       <div class="greeting">Welcome</div>

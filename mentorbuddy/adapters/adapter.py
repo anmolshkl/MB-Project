@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 from allauth.exceptions import ImmediateHttpResponse
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from django.http import HttpResponse
 
 
 class SocialLoginAdapter(DefaultSocialAccountAdapter):

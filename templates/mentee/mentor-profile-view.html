@@ -32,6 +32,9 @@
                 padding: 0px !important;
             }
         }
+        .green-bg {
+            background-color: rgba(74,201,72,0.7);
+        }
 
     </style>
     <link rel="stylesheet" type="text/css" href="{% static 'button/button.css' %}" />
@@ -321,6 +324,10 @@
         dur1 = $("#dur1").val();
         dur2 = $("#dur2").val();
         var error = false;
+
+        //remove the green background from old accepted DIVs
+        $(".clickable").removeClass(".green-bg");
+
         if(dur1 == "" || (dur1 < 5 || dur1 > 30) ) {
             $("#dur1").addClass("fieldError");
             error = true;
@@ -391,7 +398,7 @@
                     }
                     $(".clickable").click(function(event) {
                         if(event.target.tagName.toUpperCase() != 'INPUT') {
-                            $(this).css({"background-color": "rgba(74,201,72,0.7)"});
+                            $(this).addClass("green-bg")
                             var inputs = $(this).children("input");
                             var dateTime = inputs[0].value.split(" ");
                             $.ajax({

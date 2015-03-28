@@ -198,7 +198,7 @@
                         </div>              
                 </div>
                 <div class="profile-pic"> 
-                    <img src="{{ pic_url }}"  alt="" data-src="{{ pic_url }}" data-src-retina="{{ pic_url }}" width="35" height="35" /> 
+                    <img src="{{ user.user_profile.picture }}"  alt="" data-src="{{ user.user_profile.picture }}" data-src-retina="{{ user.user_profile.picture }}" width="35" height="35" />
                 </div>                  
             </div>
          <ul class="nav quick-section ">
@@ -209,7 +209,7 @@
                 <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
                   <li><a href="user-profile.html"> My Account</a>
                   </li>
-                  <li><a href="calender.html">My Calendar</a>
+                  <li><a href="/mentor/calender/">My Calendar</a>
                   </li>
                   <li class="divider"></li>                
                   <li><a href="/user/logout/"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
@@ -246,7 +246,7 @@
   <!-- BEGIN MINI-PROFILE -->
    <div class="user-info-wrapper">  
     <div class="profile-wrapper">
-        <img src="{{ pic_url }}"  alt="profile-image" data-src="{{ pic_url }}" data-src-retina="{{ pic_url }}" width="69" height="69" />
+        <img src="{{ user.user_profile.picture }}"  alt="profile-image" data-src="{{ user.user_profile.picture }}" data-src-retina="{{ user.user_profile.picture }}" width="69" height="69" />
     </div>
     <div class="user-info">
       <div class="greeting">Welcome</div>
@@ -373,7 +373,7 @@
                 </div>  
                 <div class="user-details-wrapper" data-chat-status="busy" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="David Nester">
                     <div class="user-profile">
-                        <img src="' %}{% static 'template/webarch/assets/img/profiles/c.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
+                        <img src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
                     </div>
                     <div class="user-details">
                         <div class="user-name">
@@ -567,13 +567,8 @@
 <!-- BEGIN PAGE LEVEL JS --> 
 <script src="{% static 'template/webarch/assets/plugins/pace/pace.min.js' %}" type="text/javascript"></script>  
 <script src="{% static 'template/webarch/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script> 
-<script src="{% static 'template/webarch/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script> 
 <script src="{% static 'template/webarch/assets/plugins/jquery-block-ui/jqueryblockui.js' %}" type="text/javascript"></script>
 <script src="{% static 'template/webarch/assets/plugins/jquery-slider/jquery.sidr.min.js' %}" type="text/javascript"></script>    
-<script src="{% static 'template/webarch/assets/plugins/jquery-jvectormap/js/jquery-jvectormap-us-lcc-en.js' %}" type="text/javascript"></script>   
-<script src="{% static 'template/webarch/assets/plugins/jquery-sparkline/jquery-sparkline.js' %}"></script>
-<script src="{% static 'template/webarch/assets/plugins/jquery-flot/jquery.flot.min.js' %}"></script>
-<script src="{% static 'template/webarch/assets/plugins/jquery-flot/jquery.flot.animator.min.js' %}"></script>
 <script src="{% static 'template/webarch/assets/plugins/skycons/skycons.js' %}"></script>
 <!-- END PAGE LEVEL PLUGINS   -->   
 
@@ -582,7 +577,6 @@
 <!-- BEGIN CORE TEMPLATE JS --> 
 <script src="{% static 'template/webarch/assets/js/core.js' %}" type="text/javascript"></script> 
 <script src="{% static 'template/webarch/assets/js/chat.js' %}" type="text/javascript"></script> 
-<script src="{% static 'template/webarch/assets/js/demo.js' %}" type="text/javascript"></script> 
 <!-- END CORE TEMPLATE JS -->
 {% block scripts %}
 {% endblock scripts %}
@@ -591,6 +585,7 @@
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
 <script src="{% static 'flipclock/flipclock.min.js' %}"></script>
 
+ <!-- Initialize Flip Clock -->
 <script type="text/javascript">
   clock = new FlipClock($('.clock'), {
     autoStart: false,
@@ -605,7 +600,6 @@ var global_username = '';
 
 //$('#callModal').modal('show');
 
-
 /** Always clear errors **/
 var clearError = function() {
   $('div.error').hide();
@@ -614,9 +608,9 @@ var clearError = function() {
 /*** Set up sinchClient ***/
 
     sinchClient = new SinchClient({
-    applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7', /* NOTE: Use same application key in backend-example.py, and start python script. */ 
+    applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7', /* NOTE: Use same application key in backend-example.py, and start python script. */
     capabilities: {calling: true},
-    startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */ 
+    startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
     //Note: For additional loging, please uncomment the three rows below
     onLogMessage: function(message) {
       console.log(message);
@@ -772,7 +766,8 @@ var handleError = function(error) {
 $('#callModal').on('hidden.bs.modal', function (e) {
   $('#callLog').html(" ");
   $('#error').html(" ");
-})
+});
+
 
 </script>
 </body>

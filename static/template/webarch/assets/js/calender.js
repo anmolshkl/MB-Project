@@ -1,10 +1,5 @@
-	$(document).ready(function() {
-	
-	
-		/* initialize the external events
-		-----------------------------------------------------------------*/
-	
-		$('#external-events div.external-event').each(function() {
+
+		$('#external-ev ents div.external-event').each(function() {
 		
 			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 			// it doesn't need to have a start or end
@@ -84,6 +79,7 @@
 		});
 		
 		$('#change-view-month').click(function(){
+            alert("hello");
 			$('#calendar').fullCalendar('changeView', 'month');
 		});
 		$('#change-view-week').click(function(){
@@ -92,4 +88,3 @@
 		$('#change-view-day').click(function(){
 			$('#calendar').fullCalendar( 'changeView','agendaDay');
 		});
-	});

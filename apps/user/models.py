@@ -53,12 +53,12 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=128, blank=True)
     about = models.TextField(blank=True)
     resume = models.FileField(upload_to=path_and_rename, null=True, blank=True)
-    picture = models.CharField(max_length=128, blank=True, null=True)  # Contains URL
+    picture = models.CharField(max_length=256, default='/static/img/no-profile-pic.jpg')  # Contains URL
     is_mentor = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
     email_verified = models.BooleanField(default=False)
-
+    timezone = models.CharField(max_length=256, null=True, default=None)
     def full_name(self):
         return self.user.get_full_name()
 
@@ -124,6 +124,9 @@ def save_data(sender, **kwargs):
     except:
         pass
     if extra_data:
+        # Save user's social profile image everytime he logs in/hardcode for LinkedIn
+        userProfile.picture = extra_data['picture-url']
+        userProfile.save()
         socialProfiles.profile_url_linkedin = extra_data['public-profile-url']
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfiles.save()
@@ -150,8 +153,8 @@ class MentorSearchForm(SearchForm):
 class Request(models.Model):
     menteeId = models.ForeignKey(User, related_name="requestsMade", blank=False)
     mentorId = models.ForeignKey(User, related_name="requestsReceived", blank=False)
-    date = models.DateField(blank=False, default=datetime.date.today)
-    time = models.TimeField(blank=False, default=datetime.datetime.now)
+    dateTime = models.DateTimeField(blank=False, default=datetime.datetime.now)
+    # time = models.TimeField(blank=False, default=datetime.datetime.now)
     duration = apps.user.fields.IntegerRangeField(min_value=1, max_value=30)
     is_approved = models.NullBooleanField(default=None, null=True)
     is_rescheduled = models.BooleanField(default=False)

@@ -25,7 +25,8 @@ from django.http import JsonResponse
 
 from apps.user.models import Request
 
-from datetime import datetime, timedelta
+from datetime import datetime as dt, timedelta as td
+from pytz import timezone
 
 
 def cropAndSave(user, POST):
@@ -69,7 +70,6 @@ def index(request):
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
-            print context_dict['pic_url']
         template = "mentor/index.html"
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
@@ -431,7 +431,6 @@ def get_profile(request, mentorid):
                              'from': obj.from_date, 'to': obj.to_date})
 
         context_dict['emp_list'] = emp_list
-    print context_dict
     return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
 
@@ -577,15 +576,15 @@ def check_utility(date, time, max_duration, mentor_id):
     response = True
 
     # Convert date & time in django friendly format
-
-    date = datetime.strptime(date, '%d/%m/%Y').strftime('%Y-%m-%d')
-    time = datetime.strptime(time, '%H:%M')
-
+    date_time = dt.strptime(date + " " + time, '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
+    date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
+    # Now we need to make this datetime timezone aware
+    datetime_obj_utc = date_time.replace(tzinfo=timezone('UTC'))
     # check that no request has been approved within max_duration/2 (eg 15 mins if max_duration=30) of proposed time
 
-    requests = Request.objects.filter(mentorId_id=mentor_id, date=date,
-                                      time__gte=time - timedelta(minutes=max_duration / 2),
-                                      time__lte=time + timedelta(minutes=max_duration / 2))
+    requests = Request.objects.filter(mentorId_id=mentor_id,
+                                      dateTime__gte=datetime_obj_utc - td(minutes=max_duration / 2),
+                                      dateTime__lte=datetime_obj_utc + td(minutes=max_duration / 2))
     if requests:
         response = False
 
@@ -618,11 +617,13 @@ def send_request(request):
                 post['callType']) < 4 and int(post['callType']) > 0:
             if 5 < int(post['duration']) < 30:
                 if check_utility(post['date'], post['time'], 30, post['mentor_id']):
-                    date = datetime.strptime(post['date'], '%d/%m/%Y').strftime('%Y-%m-%d')
-                    time = datetime.strptime(post['time'], '%H:%M')
-                    request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'], date=date,
-                                          time=time,
-                                          duration=post['duration'], callType=post['callType'])
+                    date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
+                        '%Y-%m-%d %H:%M')
+                    date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
+                    # Now we need to make this datetime timezone aware
+                    datetime_obj_utc = date_time.replace(tzinfo=timezone('UTC'))
+                    request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
+                                          dateTime=datetime_obj_utc, duration=post['duration'], callType=post['callType'])
                     request_obj.save()
                     msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
                 else:
@@ -630,7 +631,6 @@ def send_request(request):
                     msg = 'Sorry! The mentor is unavailable during this time.<br>Please select another time & date.'
             else:
                 error = True
-                print post['duration']
                 msg = "Duration has to between 5-30 min."
         else:
             error = True
@@ -652,8 +652,10 @@ def get_requests(request):
     if req_objs:
         req_list = []
         for obj in req_objs:
+            print obj.dateTime
             mentee = User.objects.get(id=obj.menteeId_id)
-            req_list.append({'request_id': obj.id, 'date': obj.date, 'time': obj.time, 'duration': obj.duration,
+            req_list.append({'request_id': obj.id, 'date': obj.dateTime.date(), 'time': obj.dateTime.time(),
+                             'duration': obj.duration,
                              'callType': obj.callType, 'req_date': obj.requestDate,
                              "mentee_name": mentee.get_full_name(), "country": mentee.user_profile.country})
             context_dict['req_list'] = req_list
@@ -683,3 +685,9 @@ def handle_request(request):
         error = True
     response["error"] = error
     return JsonResponse(response)
+
+
+@login_required
+def get_calendar(request):
+    print "hello"
+    return render_to_response("mentor/calendar.html", {}, RequestContext(request))

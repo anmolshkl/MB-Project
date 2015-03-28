@@ -301,16 +301,14 @@ $(document).ready(function() {
 	  }
 	 }
 	});
-//***********************************END Main Menu Toggle *****************************	
-	
+//***********************************END Main Menu Toggle *****************************
+
 //***********************************BEGIN Slimscroller *****************************		
-	$('.scroller').each(function () {
+	$(".pagecontent").each(function () {
         $(this).slimScroll({
                 size: '7px',
                 color: '#a1b2bd',
                 height: $(this).attr("data-height"),
-                alwaysVisible: ($(this).attr("data-always-visible") == "1" ? true : false),
-                railVisible: ($(this).attr("data-rail-visible") == "1" ? true : false),
                 disableFadeOut: true
         });
     });

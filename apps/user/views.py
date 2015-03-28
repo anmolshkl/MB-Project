@@ -64,8 +64,6 @@ def index(request):
         #attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
-        if not 'pic_url' in request.session:
-            request.session['pic_url'] = UserProfile.objects.get(user=request.user).picture
         if user_profile.is_mentor == True:
             return HttpResponseRedirect("/mentor/")
         else:
@@ -94,7 +92,6 @@ def user_login(request):
                 login(request, user)
                 user_profile = UserProfile.objects.get(user=user)
                 (social_profile, created) = SocialProfiles.objects.get_or_create(parent=user_profile)
-                request.session['pic_url'] = social_profile.profile_pic_url_linkedin
                 return HttpResponseRedirect("/user/")
                 #return HttpResponseRedirect('/user/')
             else:

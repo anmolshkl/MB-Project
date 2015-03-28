@@ -239,15 +239,14 @@
     </table>
     <table name="user_request" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
-      <column name="time" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
       <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="is_rescheduled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="requestDate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="callType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" columns="menteeId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" columns="mentorId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
@@ -282,11 +281,12 @@
       <column name="country" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="about" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
       <column name="resume" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
-      <column name="picture" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="picture" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
       <column name="is_mentor" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="is_new" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="timezone" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="user_id"/>
       <foreign-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>

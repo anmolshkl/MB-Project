@@ -101,6 +101,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.django_visitor_information.middleware.TimezoneMiddleware',
+    'apps.django_visitor_information.middleware.VisitorInformationMiddleware',
+
 )
 
 SITE_ID = 1
@@ -250,3 +253,27 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 #SITE URL 
 SITE_URL = "http://localhost:8000/"
+
+#Use Time Zones
+USE_TZ = True
+
+VISITOR_INFO_GEOIP_DATABASE_PATH = os.path.join(BASE_DIR, 'apps', 'django_visitor_information', 'static', 'GeoLiteCity.dat')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR,'debug.log'),
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
