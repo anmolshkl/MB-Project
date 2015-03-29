@@ -79,6 +79,7 @@
       <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="socialaccount_socialacc_user_id_3fd78aac97693583_fk_auth_user_id" table="socialaccount_socialaccount" schema="" catalog="mb_db2" columns="user_id"/>
+      <exported-key name="user_feedback_user_id_c0180df95145bd5_fk_auth_user_id" table="user_feedback" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="menteeId_id"/>
       <exported-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="mentorId_id"/>
       <exported-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" table="user_userprofile" schema="" catalog="mb_db2" columns="user_id"/>
@@ -236,6 +237,19 @@
       <column name="endCause" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="request_id"/>
       <foreign-key name="user_calllog_request_id_1356ed6ef80fc12c_fk_user_request_id" columns="request_id" ref-table="user_request" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" table="user_feedback" schema="" catalog="mb_db2" columns="call_id"/>
+    </table>
+    <table name="user_feedback" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="rating" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="feedback" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
+      <column name="call_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="user_feedback_user_id_c0180df95145bd5_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" columns="call_id" ref-table="user_calllog" ref-schema="" ref-catalog="mb_db2" ref-columns="request_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_feedback_5d26c52f" unique="false" columns="call_id"/>
+      <index name="user_feedback_e8701ad4" unique="false" columns="user_id"/>
     </table>
     <table name="user_request" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

@@ -43,7 +43,6 @@ class UserProfile(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     )
-
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M', blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
     contact = models.CharField(max_length=128, blank=True)
@@ -59,6 +58,7 @@ class UserProfile(models.Model):
     is_approved = models.BooleanField(default=False)
     email_verified = models.BooleanField(default=False)
     timezone = models.CharField(max_length=256, null=True, default=None)
+
     def full_name(self):
         return self.user.get_full_name()
 
@@ -164,6 +164,14 @@ class Request(models.Model):
     class Meta:
         verbose_name = "Request"
 
+    def __unicode__(self):
+        request_name = User.objects.get(id=self.menteeId_id).first_name + " to " + User.objects.get(
+            id=self.mentorId_id).first_name + " for " + str(self.dateTime.date())
+        if request_name:
+            return request_name
+        else:
+            return self.id
+
 
 class CallLog(models.Model):
     request = models.OneToOneField(Request, related_name="callLog", primary_key=True)
@@ -174,3 +182,22 @@ class CallLog(models.Model):
 
     class Meta:
         verbose_name = "Call Log"
+
+    def __unicode__(self):
+        request_name = User.objects.get(id=self.request.menteeId_id).first_name + " to " + User.objects.get(
+            id=self.request.mentorId_id).first_name + " for " + str(self.dateTime.date())
+        if request_name:
+            return request_name
+        else:
+            return self.id
+
+
+class Feedback(models.Model):
+    """"Stores Feedback for every call """""
+    user = models.ForeignKey(User, editable=False)
+    call = models.ForeignKey(CallLog, editable=False)
+    rating = models.FloatField(null=False, default=0.0, blank=False)
+    feedback = models.CharField(max_length=512, null=False, blank=True)
+
+    class Meta:
+        verbose_name = "Feedback"
