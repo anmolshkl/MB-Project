@@ -3,7 +3,26 @@
 
 {% block stylesheets %}
 <link href="{%  static 'template/webarch/assets/plugins/fullcalendar/fullcalendar.css' %}" rel="stylesheet" type="text/css" media="screen"/>
-
+<style>
+    .blue-bg {
+        background-color: #0a6ea0 !important;
+    }
+    .white-text {
+        color: white !important;
+    }
+    .info {
+        position: relative;
+        margin-top: 50px;
+        background-color: snow;
+        color: #000000;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.2;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 300;
+    }
+</style>
 
 {% endblock %}
 
@@ -20,17 +39,15 @@
                 <h3 class="text-white semi-bold" id="calender-current-day"></h3>
                 <h2 class="text-white" id="calender-current-date"></h2>
                 <div id='external-events' class="hide-inphone events-wrapper">
-                  <div class="events-heading">&nbsp;Draggable Events</div>
-                  <div class='external-event'>My Event 1</div>
-                  <div class='external-event'>My Event 2</div>
-                  <div class='external-event'>My Event 3</div>
-                  <div class='external-event'>My Event 4</div>
-                  <div class='external-event'>My Event 5</div>
+                  <div class="events-heading ">&nbsp;<h5 class="white-text">Draggable Events(Coming Soon!)</h5></div>
+                  <div class='external-event'>Busy</div>
+                  <div class='external-event blue-bg'>Message Only</div>
+                  <div class='external-event'>Phone Calls Only</div>
 
-                  <div class="checkbox check-default p-t-20">
-                    <input type="checkbox" value="1" id='drop-remove'>
-                    <label for="drop-remove">Keep Me Signed in</label>
-                  </div>
+                    <div class="info well">
+                        For a more detailed view please click on "week" or "day" tab.
+                    </div>
+
 
                 </div>
               </div>
@@ -65,5 +82,29 @@
 <script src="{%  static 'template/webarch/assets/plugins/fullcalendar/fullcalendar.min.js' %}"></script>
 
 <!-- PAGE JS -->
+
+<script>
+
+    events_obj = [
+        {% for request in req_list %}
+        {
+            id: {{ request.request_id }},
+            start: "{{ request.startDateTime }}",
+            end: "{{ request.endDateTime }}",
+            title: "{{ request.mentee_name }}",
+            allDay: false,
+            color:
+            {% if request.status == False %}
+                    "#FF030D"
+            {% elif request.status == True %}
+                    "#51AC74"
+            {% else %}
+                    "#FF8600"
+            {% endif %},
+            description: 'This is an event'
+        },
+        {% endfor %}
+    ]
+</script>
 <script src="{%  static 'template/webarch/assets/js/calender.js' %}" type="text/javascript"></script>
 {% endblock  %}

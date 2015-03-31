@@ -1,6 +1,8 @@
 
-		$('#external-ev ents div.external-event').each(function() {
-		
+    $(document).ready(function () {
+        alert('Hello');
+	});
+		$('div.external-event').each(function() {
 			// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 			// it doesn't need to have a start or end
 			var eventObject = {
@@ -11,6 +13,7 @@
 			$(this).data('eventObject', eventObject);
 			
 			// make the event draggable using jQuery UI
+
 			$(this).draggable({
 				zIndex: 999,
 				revert: true,      // will cause the event to go back to its
@@ -19,7 +22,7 @@
 			
 		});
 	
-	
+
 		/* initialize the calendar
 		-----------------------------------------------------------------*/
 		
@@ -27,7 +30,7 @@
 			header: {
 				left: 'prev,next today',
 				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
+				right: 'month,agendaWeek,agendaDay',
 			},
 			editable: true,
 			droppable: true, // this allows things to be dropped onto the calendar !!!
@@ -53,7 +56,8 @@
 					$(this).remove();
 				}
 				
-			}
+			},
+            events: events_obj
 		});
 		/* Hide Default header : coz our bottons look awesome */ 
 		$('.fc-header').hide();
@@ -79,7 +83,6 @@
 		});
 		
 		$('#change-view-month').click(function(){
-            alert("hello");
 			$('#calendar').fullCalendar('changeView', 'month');
 		});
 		$('#change-view-week').click(function(){

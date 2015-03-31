@@ -615,7 +615,7 @@ def send_request(request):
     if 'date' in post and 'time' in post and 'duration' in post and 'mentor_id' in post and 'callType' in post:
         if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' and int(
                 post['callType']) < 4 and int(post['callType']) > 0:
-            if 5 < int(post['duration']) < 30:
+            if 5 <= int(post['duration']) <= 30:
                 if check_utility(post['date'], post['time'], 30, post['mentor_id']):
                     date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
                         '%Y-%m-%d %H:%M')
@@ -623,7 +623,8 @@ def send_request(request):
                     # Now we need to make this datetime timezone aware
                     datetime_obj_utc = date_time.replace(tzinfo=timezone('UTC'))
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
-                                          dateTime=datetime_obj_utc, duration=post['duration'], callType=post['callType'])
+                                          dateTime=datetime_obj_utc, duration=post['duration'],
+                                          callType=post['callType'])
                     request_obj.save()
                     msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
                 else:
@@ -652,7 +653,6 @@ def get_requests(request):
     if req_objs:
         req_list = []
         for obj in req_objs:
-            print obj.dateTime
             mentee = User.objects.get(id=obj.menteeId_id)
             req_list.append({'request_id': obj.id, 'date': obj.dateTime.date(), 'time': obj.dateTime.time(),
                              'duration': obj.duration,
@@ -669,12 +669,12 @@ def handle_request(request):
     response = {}
     post = request.POST
     if "request_id" in post and "status" in post and post["request_id"] != '' and post['status'] != '':
-        if post['status'] == '0':
-            # disapprove the request
+        if post['status'] == '1':
+            # approve the request
             req = Request.objects.get(id=post["request_id"])
             req.is_approved = True
             req.save()
-        elif post['status'] == '1':
+        elif post['status'] == '0':
             # disapprove the request
             req = Request.objects.get(id=post["request_id"])
             req.is_approved = False
@@ -689,5 +689,22 @@ def handle_request(request):
 
 @login_required
 def get_calendar(request):
-    print "hello"
-    return render_to_response("mentor/calendar.html", {}, RequestContext(request))
+    user = request.user
+    context = RequestContext(request)
+    context_dict = {}
+    req_objs = Request.objects.filter(mentorId=user.id)
+    if req_objs:
+        req_list = []
+        for obj in req_objs:
+            mentee = User.objects.get(id=obj.menteeId_id)
+            print  obj.dateTime.strftime("%Y-%m-%d")+" "+obj.dateTime.strftime("%H:%M")
+            end = obj.dateTime + td(minutes=obj.duration)
+            req_list.append({'request_id': obj.id, 'startDateTime': obj.dateTime.strftime("%Y-%m-%d")+" "+obj.dateTime.strftime("%H:%M"),
+                             'endDateTime': end.strftime("%Y-%m-%d")+" "+end.strftime("%H:%M"),
+                             'duration': obj.duration,
+                             'status': obj.is_approved,
+                             'callType': obj.callType, 'req_date': obj.requestDate,
+                             "mentee_name": mentee.get_full_name(), "country": mentee.user_profile.country})
+            context_dict['req_list'] = req_list
+
+    return render_to_response("mentor/calendar.html", context_dict, context)

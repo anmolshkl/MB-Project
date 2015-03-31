@@ -118,7 +118,6 @@ def user_login(request):
     return render_to_response('user/loginV3.html', {}, context_instance=context)
 
 
-@login_required
 def select(request):
     error = False
     msg = None
@@ -148,7 +147,6 @@ def select(request):
     return JsonResponse({"error": error, "message": msg})
 
 
-@login_required
 def set_password(request):
     error = False
     msg = None

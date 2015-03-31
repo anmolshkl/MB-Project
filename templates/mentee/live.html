@@ -13,59 +13,61 @@
 {% block container_block %}
 	<div class="container-fluid">
 		<div class="top1">
-		</div>	
-		<div id="chromeFileWarning" class="frame big">
-			<b style="color: red;">Warning!</b> Protocol "file" used to load page in Chrome.<br>
-			Chrome disables access to microphone when loading from disk, which prevents proper functionality.
-			<br><br>
-			You can allow working local files, if you start Chrome with the flag <i>'--allow-file-access-from-files'</i>:
-			
-			<b>OS X: </b><i>'$ open -a Google\ Chrome --args --allow-file-access-from-files'</i>
-			<br>
-			<b>Windows: </b><i>'"C:\>Program Files\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files'</i>
-			<br>
-			<b>GNU/Linux: </b><i>'$ chrome --allow-file-access-from-files'</i>
 		</div>
-
 
 		<div class="row-fluid">
-			<div class="col-md-12 well" id="call">
-					
-					<div class="row">
-						<div class="col-sm-3 textCenter">
-							<img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center"/>
-							<h4>Mentor 1</h4>
-							
-						</div>
-						<div class="col-sm-5 pad-s">
-							<div class="clock"></div>
-						</div>
-						<div class="col-sm-4">
-						<div class="pull-right">
-							<form id="newCalls">
-								<input type="hidden" id="calleeId" value="user38" />
-								<button id="call">Call</button>
-								<button id="hangup">Hangup</button>
-							</form>
-							</div>
-						</div>
-							
-						<audio id="incoming" autoplay></audio>
-						<audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
-						<audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
-					</div>	
-			</div>	
-			<div id="callLog" class="col-xs-6 textCenter well">
-				<h3>Your Call Log</h3>
-				
+			<div class="col-md-7 " class="call">
+                    {% if req_list %}
+                        {% for request in req_list %}
+                        <div class="row well margin-s">
+                            <div class="col-sm-3 textCenter">
+                                <img src="{{ request.mentor_pic }}" class="img-responsive img-circle center"/>
+                            </div>
+                            <div class="col-sm-4 textCenter">
+                                <h4>{{ request.mentor_name }}</h4>
+                                <input type="hidden" class="request_id" value="{{ request.request_id }}"></input>
+                                {{ request.date }}<br>
+                                {{ request.startTime }}-{{ request.endTime }}
+                            </div>
+
+                            <div class="col-sm-5 well textCenter">
+                                <input type="hidden" class="calleeId" value="user{{ request.mentor_id }}" />
+                                <input type="hidden" class="callUserName" value="{{ request.mentor_name }}" />
+                                <button class="call">Call</button>
+                                <button class="hangup">Hangup</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+
 			</div>
-			<div class="error col-xs-6 well">
-			asf
+            <div class="col-sm-5 textCenter margin-s pad-s">
+                <div class="clock center"></div>
+                <div id="callLog" class="row textCenter margin-s no-display well ">
+                    <h3>Your Call Log</h3>
+
+                </div>
+            </div>
+
+
+
+			<div class="error col-xs-6 well no-display">
+
 			</div>
+
 		</div>
+
+
 	</div>
+    {% else %}
+        <div class="row well">
+            <h4>You don't have any call scheduled for today. Come back tomorrow! :)</h4>
+        </div>
+    {% endif %}
+    <audio class="incoming" autoplay></audio>
+    <audio class="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
+    <audio class="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
 {% endblock %}
-{% block scripts %}s
+{% block scripts %}
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'sinch/WEBsampleMentee.js' %}"></script>
 <script src="{% static 'flipclock/flipclock.min.js' %}"></script>

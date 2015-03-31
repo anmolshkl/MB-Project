@@ -1,5 +1,13 @@
 
-
+ul > li {
+    padding-left: 0px !important;
+}
+.no-display {
+    display: none;
+}
+.flip-clock-wrapper {
+    width: 300px !important;
+}
 body {
 	font-family: 'Arial', 'Helvetica', 'Sans Serif';
 	margin: 0px;
@@ -17,8 +25,11 @@ h3 {
 .pad-s {
 	padding: 20px;
 }
+.margin-s {
+    margin-top: 10px !important;
+}
 .textCenter {
-	text-align: center;
+	text-align: center !important;
 }
 .center {
 	margin: 0px auto !important;
@@ -190,12 +201,12 @@ div.error {
 	padding: 5px;
 }
 
-div#chromeFileWarning {
+div.chromeFileWarning {
 	display: none;
 	background-color: pink;
 }
 
-form#userForm {
+form.userForm {
 	display: none;
 }
 
@@ -229,16 +240,15 @@ button {
 	border: none;
 	outline: 0 none;
 	padding: 10px 15px 10px 15px;
-	float: left;
 	margin: 2px;
 }
 
-div#userInfo {
+div.userInfo {
 	font-size: 14px;
 	display: none;
 }
 
-span#username {
+span.username {
 }
 
 div.top1 {
@@ -266,49 +276,49 @@ div.top1 h1 {
 
 
 
-div.frame div#call {
+div.frame div.call {
 	display: none;
 }
 
-div#callLog {
+div.callLog {
 	font-size: 12px;
 }
 
-div#callLog #title {
+div.callLog .title {
 	margin-top: 10px;
 	font-size: 13px;
 	font-weight: 700;
 }
 
-div#callLog #stats {
+div.callLog #stats {
 	margin-left: 20px;
 }
 
-button#call.incall {
+button.call.incall {
 	background-color: #d9bfe9;
 }
 
-button#call.callwaiting {
+button.call.callwaiting {
 	background-color: #d9bfe9;
 }
 
-button#hangup {
+button.hangup {
 	background-color: #d9bfe9;
 }
 
-button#hangup.incall {
+button.hangup.incall {
 	background-color: #62029d;
 }
 
-button#answer {
+button.answer {
 	background-color: #d9bfe9;
 }
 
-button#answer.callwaiting {
+button.answer.callwaiting {
 	background-color: #62029d;
 }
 
-form#newCall button {
+form.newCall button {
 	float: right;
 }
 
