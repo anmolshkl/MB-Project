@@ -14,4 +14,6 @@ urlpatterns = patterns('',
 		url(r'^getDetails/$', views.get_details, name='get-details'),
 		url(r'^mail/$', views.sendMail, name='send-email'),
 		url(r'^query/$', views.root, name='root'),
+		url(r'^confirm/$', views.register_confirm, name='register_confirm'),
+
 		)

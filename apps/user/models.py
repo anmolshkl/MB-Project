@@ -79,6 +79,16 @@ class UserProfile(models.Model):
 
     models.signals.post_save.connect(create_user_profile, sender=User)
 
+class VerificationCodes(models.Model):
+    user = models.OneToOneField(User)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(default=datetime.date.today())
+      
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural=u'VerificationCodes'
 
 class SocialProfiles(models.Model):
     """Stores social profile urls of the user"""

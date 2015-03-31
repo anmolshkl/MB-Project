@@ -1,11 +1,15 @@
 from django.template import RequestContext
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
-from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm
+from django.contrib.auth.models import *
+from apps.user.models import *
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+
+import hashlib, datetime, random
+from django.utils import timezone
+
 # new
 #from apps.user.backends import EmailAuthBackend 
 from django.conf import settings
@@ -201,6 +205,29 @@ def register(request):
                 profile.user = user
                 profile.save()
 
+                #sameer
+
+                #generate key
+
+                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]            
+                activation_key = hashlib.sha1(salt+email).hexdigest()            
+                key_expires = datetime.datetime.today() + datetime.timedelta(2)
+
+                #save key
+
+                new_key = VerificationCodes(user=user, activation_key=activation_key,key_expires=key_expires)
+                new_key.save()
+
+                # Send email with activation key
+                email_subject = 'Account confirmation'
+                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
+                48hours http://127.0.0.1:8000/user/confirm/%s" % (fn, activation_key)
+
+                print "trying to send mail with activation key"
+                send_mail(email_subject, email_body, 'anmol@mentorbuddy.in',[email], fail_silently=False)
+                print "mail sent with activation key"
+
+
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -208,6 +235,27 @@ def register(request):
 
     else:
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
+
+
+def register_confirm(request, activation_key):
+    #check if user is already logged in and if he is redirect him to some other url, e.g. home
+    if request.user.is_authenticated():
+        HttpResponseRedirect('/')
+
+    # check if there is UserProfile which matches the activation key (if not then display 404)
+    user_profile = get_object_or_404(VerificationCodes, activation_key=activation_key)
+
+    #check if the activation key has expired, if it hase then render confirm_expired.html
+    if user_profile.key_expires < timezone.now():       
+        print "the activation key has expired"
+        return redirect('/user/')
+    #if the key hasn't expired save user and set him as active and render some template to confirm activation
+    user = user_profile.user
+    user.is_active = True
+    user.save()
+    print "user email confirmed"
+    login(request,user)
+    return redirect('/user/')
 
 
 def user_logout(request):
