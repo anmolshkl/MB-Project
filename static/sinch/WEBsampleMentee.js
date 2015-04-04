@@ -1,3 +1,11 @@
+/*
+$(".call-button").click(function() {
+        $(this).parent().addClass("active open");
+
+});
+$(".icon-close").click(function () {
+   $(this).parents('.morph-button').removeClass("active open");
+});*/
 var global_username = '';
 
 
@@ -16,7 +24,7 @@ var showUI = function() {
 sinchClient = new SinchClient({
 	applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7',
 	capabilities: {calling: true,video: true},
-	startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */ 
+	startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
 	//Note: For additional loging, please uncomment the three rows below
 	onLogMessage: function(message) {
 		console.log(message);
@@ -52,7 +60,7 @@ var callListeners = {
 		$('audio.ringback').trigger("play");
 
 		//Report call
-		$('#callLog').append('<div class="stats">Ringing...</div>');
+		$('.callLog').append('<div class="stats">Ringing...</div>');
 	},
 	onCallEstablished: function(call) {
 		$('audio.incoming').attr('src', call.incomingStreamURL);
@@ -64,7 +72,7 @@ var callListeners = {
 		})
 		//Report call stats
 		var callDetails = call.getDetails();
-		$('div#callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
+		$('.callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
 	},
 	onCallEnded: function(call) {
 		$('audio.ringback').trigger("pause");
@@ -75,18 +83,18 @@ var callListeners = {
 		$('button').removeClass('callwaiting');
 
 		clock.stop();
-		
+
 		//Report call stats
 		var callDetails = call.getDetails();
-		$('div#callLog').append('<div class="stats">Ended: '+callDetails.endedTime+'</div>');
-		$('div#callLog').append('<div class="stats">Duration (s): '+callDetails.duration+'</div>');
-		$('div#callLog').append('<div class="stats">End cause: '+call.getEndCause()+'</div>');
+		$('div.callLog').append('<div class="stats">Ended: '+callDetails.endedTime+'</div>');
+		$('div.callLog').append('<div class="stats">Duration (s): '+callDetails.duration+'</div>');
+		$('div.callLog').append('<div class="stats">End cause: '+call.getEndCause()+'</div>');
 		if(call.error) {
-			$('div#callLog').append('<div id="stats">Failure message: '+call.error.message+'</div>');
+			$('div.callLog').append('<div id="stats">Failure message: '+call.error.message+'</div>');
 		}
-        $.ajax({
-           url: "/"
-        });
+
+
+
 	}
 }
 
@@ -95,7 +103,7 @@ var callListeners = {
 var callClient = sinchClient.getCallClient();
 callClient.initStream().then(function() { // Directly init streams, in order to force user to accept use of media sources at a time we choose
 	$('div.frame').not('.chromeFileWarning').show();
-}); 
+});
 var call;
 
 
@@ -110,13 +118,43 @@ $('button.call').click(function(event) {
 		clearError();
 
 		$(this).parent().find('button').addClass('incall');
-        $("#callLog").show();
-		$('#callLog').append('<div class="title">Calling <b>' + $(this).parent().find('.callUserName').val()+'</b></div>');
+        clock = new FlipClock($(this).parent().find('.clock'), {
+            autoStart: false,
+            clockFace: 'MinuteCounter'
+        });
+        var owner = $(this);
+        $.ajax({
+            url: '/user/call-valid',
+            type: 'GET',
+            data: {'request_id': owner.parent().find('.request_id').val()},
+            success: function(data) {
+                if(data == "True") {
+                    owner.parent().find(".callLog").show();
+                    owner.parent().find(".call-title").html("Relax while we place your call...");
+                    owner.parent().find(".clock").show();
+                    owner.parent().find('.form-feedback').css({'left': '-500px' });
+                    owner.parent().find('.hangup').show();
+                    owner.parent().find(".callLog").html("");
+                    owner.parent().find('.icon-close').addClass('close-alert');
+                    /*** Prevent Closing of overlay when in call ***/
+                    $('.close-alert').click(function(e) {
+                        e.preventDefault();
+                    });
+                    owner.parent().find('.callLog').append('<div class="title">Calling <b>' + owner.parent().find('.callUserName').val()+'</b></div>');
 
-		console.log('Placing call to: ' + $('input.callUserName').val());
-		call = callClient.callUser($(this).parent().find(".calleeId").val());
+                    console.log('Placing call to: ' + owner.parent().find('.callUserName').val());
+                    call = callClient.callUser(owner.parent().find(".calleeId").val());
 
-		call.addEventListener(callListeners);
+                    call.addEventListener(callListeners);
+                }
+                else {
+                    owner.parent().find('.call-overlay-content').html("<h2>Sorry but you have completed this call!</h2>");
+                }
+
+
+            }
+        });
+
 	}
 });
 
@@ -127,10 +165,42 @@ $('button.hangup').click(function(event) {
 
 	if($(this).hasClass("incall")) {
 		clearError();
-		
+
 		console.info('Will request hangup..');
 
 		call && call.hangup();
+
+        //remove close-alert class from close icon
+        $(this).parent().find('.icon-close').removeClass('close-alert');
+        callDetails = call.getDetails();
+        var est_time = callDetails.establishedTime + "";
+        var end_time = callDetails.endedTime + "";
+        var owner = $(this);
+        $.ajax({
+            url: "/user/submit-callLog/",
+            type: "post",
+            data: {'csrfmiddlewaretoken': csrf, 'request_id': $(this).parent().find('.request_id').val(),
+                    'est_time': est_time.split(" ")[4], 'end_time': end_time.split(" ")[4],
+                    'end_cause': call.getEndCause(), 'duration': callDetails.duration},
+            dataType: "json",
+            success: function(data) {
+                owner.fadeOut();
+                owner.parent().find(".clock").fadeOut();
+                owner.parent().find(".callLog").fadeOut();
+                owner.parent().find(".call-title").fadeOut();
+                owner.parent().find(".call-title").html("Your feedback is valuable to us!");
+                setInterval(function() {
+                    owner.parent().find(".call-title").fadeIn();
+                    owner.parent().find(".form-feedback").animate({
+                        left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
+                    }, 200);
+                }, 1000);
+                owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
+            },
+            failure: function() {
+                alert("failed call log submission");
+            }
+        });
 	}
 });
 
@@ -157,6 +227,5 @@ if(location.protocol == 'file:' && navigator.userAgent.toLowerCase().indexOf('ch
 }
 
 $('button').prop('disabled', false); //Solve Firefox issue, ensure buttons always clickable after load
-
 
 

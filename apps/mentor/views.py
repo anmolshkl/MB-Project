@@ -27,6 +27,7 @@ from apps.user.models import Request
 
 from datetime import datetime as dt, timedelta as td
 from pytz import timezone
+import pytz
 
 
 def cropAndSave(user, POST):
@@ -606,6 +607,10 @@ def check_availability(request):
     return JsonResponse(response)
 
 
+
+
+
+
 @login_required
 def send_request(request):
     # extract the POST dictionary
@@ -620,8 +625,9 @@ def send_request(request):
                     date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
                         '%Y-%m-%d %H:%M')
                     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
+                    time_zone = pytz.timezone(request.user.user_profile.timezone)
                     # Now we need to make this datetime timezone aware
-                    datetime_obj_utc = date_time.replace(tzinfo=timezone('UTC'))
+                    datetime_obj_utc = time_zone.localize(date_time)
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
                                           dateTime=datetime_obj_utc, duration=post['duration'],
                                           callType=post['callType'])
@@ -655,6 +661,7 @@ def get_requests(request):
         for obj in req_objs:
             mentee = User.objects.get(id=obj.menteeId_id)
             req_list.append({'request_id': obj.id, 'date': obj.dateTime.date(), 'time': obj.dateTime.time(),
+                             'dateTime': obj.dateTime,
                              'duration': obj.duration,
                              'callType': obj.callType, 'req_date': obj.requestDate,
                              "mentee_name": mentee.get_full_name(), "country": mentee.user_profile.country})
@@ -697,10 +704,11 @@ def get_calendar(request):
         req_list = []
         for obj in req_objs:
             mentee = User.objects.get(id=obj.menteeId_id)
-            print  obj.dateTime.strftime("%Y-%m-%d")+" "+obj.dateTime.strftime("%H:%M")
+            date_utc = obj.dateTime
+
             end = obj.dateTime + td(minutes=obj.duration)
-            req_list.append({'request_id': obj.id, 'startDateTime': obj.dateTime.strftime("%Y-%m-%d")+" "+obj.dateTime.strftime("%H:%M"),
-                             'endDateTime': end.strftime("%Y-%m-%d")+" "+end.strftime("%H:%M"),
+            req_list.append({'request_id': obj.id, 'startDateTime': obj.dateTime,
+                             'endDateTime': end,
                              'duration': obj.duration,
                              'status': obj.is_approved,
                              'callType': obj.callType, 'req_date': obj.requestDate,

@@ -261,6 +261,7 @@
       <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="is_completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" columns="menteeId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" columns="mentorId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>

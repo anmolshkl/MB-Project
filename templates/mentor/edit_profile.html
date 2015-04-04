@@ -1,23 +1,112 @@
 {% extends 'mentor/base.html' %}
+{% load static %}
+{% block stylesheets %}
+    <style>
+    .tab-content {
+        padding: 20px !important;
+    }
+    .basic-form input  {
+        width: 50% !important;
+    }
+    .education-form .form-group {
+        display: inline-block !important;
+        margin: 5px;
+    }
+    .nav-tabs {
+        background-color: transparent !important;
+    }
+    .margin-s {
+        margin-top: 10px !important;
+    }
+    .tab-form {
+        margin: 0px auto;
+    }
+    </style>
+{%  endblock %}
+{% block container_title %}<h2>Edit Profile</h2>{% endblock %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block container_block %}
+    <!--
+   <a class="btn btn-primary margin-s" href="/accounts/linkedin/login/?method=oauth2&next=/mentor/get-data/">Get you data from your LinkedIn profile</a>
+    -->
+    <form id="tab-form">
+    <div role="tabpanel" class="tab-form margin-s">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Personal</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Education</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employment</a></li>
+      </ul>
 
-{% block body_block %}
-   <a href="/accounts/linkedin/login/?method=oauth2&next=/mentor/get-data/">Get you data from your LinkedIn profile</a>
-    <form method="post" action=/mentor/edit-profile/>
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ form.as_p }}
-        <hr>
-        {% for edu_form in edu_formset %}
-        {{ edu_form.as_p }}
-        <hr>
-        {% endfor %}
-        {% for emp_form in emp_formset %}
-        {{ emp_form.as_p }}
-        <hr>
-        {% endfor %}
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="home">
+            {% csrf_token %}
+          <div class="basic-form center">
+            {% for field in user_form %}
 
-        <input type="submit" name="action" value="Submit" />
+             <div class="form-group">
+                <label class="form-label"><h4>{{ field.label }}</h4></label>
+                    <br>
+                  {{ field }}
+              </div>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="profile">
+            {% for field in form %}
+             <div class="form-group">
+                <label class="form-label"><h4>{{ field.label }}</h4></label>
+                    <br>
+                  {{ field }}
+              </div>
+            {% endfor %}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="messages">
+            {% for edu_form in edu_formset %}
+                <div class="row well education-form">
+                {% for field in edu_form %}
+                     <div class="form-group">
+                        {% if field.label != 'Parent' and field.label != 'Id' %}
+                        <label class="form-label">{{ field.label }}</label>
+                            <br>
+                         {% endif %}
+                          {{ field }}
+                      </div>
+                {% endfor %}
+                </div>
+            {% endfor %}
+        {{ edu_formset.management_form }}
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="settings">
+            {% for emp_form in emp_formset %}
+            {{ emp_form.as_p }}
+            {% endfor %}
+
+        {{ emp_formset.management_form }}
+        </div>
+      </div>
+
+    </div>
     </form>
+    <a class="btn btn-success btn-large center update"> Update</a>
 {% endblock %}
+
+{% block scripts %}
+    <script src="{%  static 'morph/classie.js' %}"></script>
+    <script>
+        var data = $('#tab-form').serializeArray();
+        $('.update').click(function() {
+            $.ajax({
+                url: '/mentor/edit-profile/',
+                data: data,
+                type: 'post',
+                success: function() {
+                    alert("maza a gaya");
+                }
+            });
+        });
+    </script>
+{%  endblock %}

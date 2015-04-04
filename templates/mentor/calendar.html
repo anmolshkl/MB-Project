@@ -46,6 +46,10 @@
 
                     <div class="info well">
                         For a more detailed view please click on "week" or "day" tab.
+                        {% for request in req_list %}
+                        {{ request.startDateTime|date:"d-m-Y" }}
+                        {{ request.startDateTime|time:"H:m" }}
+                        {% endfor %}
                     </div>
 
 
@@ -89,8 +93,8 @@
         {% for request in req_list %}
         {
             id: {{ request.request_id }},
-            start: "{{ request.startDateTime }}",
-            end: "{{ request.endDateTime }}",
+            start: "{{ request.startDateTime|date:'c' }}",
+            end: "{{ request.endDateTime|date:'c' }}",
             title: "{{ request.mentee_name }}",
             allDay: false,
             color:

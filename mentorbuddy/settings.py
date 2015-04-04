@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import warnings
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SETTINGS_DIR = os.path.dirname(__file__)
@@ -277,3 +279,7 @@ LOGGING = {
         },
     },
 }
+
+warnings.filterwarnings(
+        'error', r"DateTimeField .* received a naive datetime",
+        RuntimeWarning, r'django\.db\.models\.fields')

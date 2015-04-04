@@ -1,20 +1,24 @@
+from decimal import Decimal
+
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect
 from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm
+from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm, Request, CallLog, Feedback
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+
 # new
-#from apps.user.backends import EmailAuthBackend 
+# from apps.user.backends import EmailAuthBackend
 from django.conf import settings
 
 from PIL import Image
 
-#import magic
+# import magic
 # Create your views here.
 from django.core.mail import send_mail
+import pytz, datetime
 
 
 def sendMail(request):
@@ -36,7 +40,7 @@ def cropAndSave(user, POST):
     try:
         path = POST['url']
         im = Image.open(path)
-        box = (x1, y1, x2, y2)  #(left, upper, right, lower)
+        box = (x1, y1, x2, y2)  # (left, upper, right, lower)
         box = (int(x) for x in box)
         cropped = im.crop(box)
         newPath = os.path.join(settings.MEDIA_ROOT, "profile_images", user.username)
@@ -50,18 +54,18 @@ def cropAndSave(user, POST):
 
 def index(request):
     context_dict = {}
-    template = "user/loginV3.html"  #default template to render
+    template = "user/loginV3.html"  # default template to render
     user = None
     user_profile = None
 
     if request.user.is_authenticated():
         user_profile, created = UserProfile.objects.get_or_create(user=request.user.id)
 
-    #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+    # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  #User has to select either Mentor/Mentee,so redirect to select.html
-        #attach required forms to display in the template
+        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
+        # attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
         if user_profile.is_mentor == True:
@@ -93,15 +97,15 @@ def user_login(request):
                 user_profile = UserProfile.objects.get(user=user)
                 (social_profile, created) = SocialProfiles.objects.get_or_create(parent=user_profile)
                 return HttpResponseRedirect("/user/")
-                #return HttpResponseRedirect('/user/')
+                # return HttpResponseRedirect('/user/')
             else:
                 # An inactive account was used - no logging in!
                 return HttpResponseRedirect("/user/")
-                #return HttpResponse("Your Mentor Buddy account is disabled.")
+                # return HttpResponse("Your Mentor Buddy account is disabled.")
         else:
             # Bad login details were provided. So we can't log the user in.
             print "Invalid login details: {0}, {1}".format(email, password)
-            #return HttpResponse("Invalid login details supplied.")
+            # return HttpResponse("Invalid login details supplied.")
             return render_to_response('user/loginV3.html', {'error': "Invalid Email/Password"},
                                       context_instance=context)
 
@@ -125,7 +129,7 @@ def select(request):
         return HttpResponseRedirect('/user/')
 
     if request.method == 'POST':
-        #check whether a request is POST request after submitted choice has come
+        # check whether a request is POST request after submitted choice has come
         if 'choice' in request.POST:
             if request.POST['choice'] == "mentor":
                 user_profile.is_mentor = True
@@ -153,14 +157,14 @@ def set_password(request):
         return HttpResponseRedirect('/user/')
 
     if request.method == 'POST':
-        #check whether a request is POST request after submitted choice has come
+        # check whether a request is POST request after submitted choice has come
         if 'password' in request.POST and 'confirmPassword' in request.POST:
             if request.POST['password'] == request.POST['confirmPassword'] and request.POST['password'] != '':
                 if len(request.POST['password']) >= 6:
                     user.set_password(request.POST['password'])
                     user.save()
 
-                    #check if it's a new user
+                    # check if it's a new user
                     if user_profile.is_new:
                         user_profile.is_new = False
                         user_profile.save()
@@ -178,9 +182,9 @@ def set_password(request):
 
 
 def register(request):
-    post = request.POST  #for convenience
+    post = request.POST  # for convenience
     msg = None
-    #check if we got all the input fields
+    # check if we got all the input fields
     if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'college' in post and 'city' in post and 'country' in post:
         fn = request.POST['fn']
         ln = request.POST['ln']
@@ -221,7 +225,7 @@ def save_image(request):
         if request.FILES['uncroppedPic']:
             uploaded_file = request.FILES['uncroppedPic']
             try:
-                #try opening the image,if it fails then its guranteed that its not an Image
+                # try opening the image,if it fails then its guranteed that its not an Image
                 im = Image.open(uploaded_file)
                 if im.format not in ('BMP', 'PNG', 'JPEG'):
                     return HttpResponse("failed")
@@ -256,7 +260,7 @@ def crop_image(request):
             try:
                 path = request.POST['url']
                 im = Image.open(path)
-                box = (x1, y1, x2, y2)  #(left, upper, right, lower)
+                box = (x1, y1, x2, y2)  # (left, upper, right, lower)
                 box = (int(x) for x in box)
                 cropped = im.crop(box)
                 if not user.is_anonymous():
@@ -283,7 +287,7 @@ def crop_image(request):
 
 
 def thank_you(request):
-    #logout user and say thank you :p
+    # logout user and say thank you :p
     request.session.flush()
     logout(request)
     return render_to_response('user/thankYou.html')
@@ -323,5 +327,101 @@ def root(request):
         'mentors': results,
     })
 
-#@login_required
-#def check_availability(request):
+
+def get_utc_time(request, time):
+    # first we need to convert this local time to UTC time
+    time_zone = pytz.timezone(request.user.user_profile.timezone)
+    # get naive date
+    date = datetime.datetime.now().date()
+    # get naive time
+    time = datetime.time(int(time.split(":")[0]), int(time.split(":")[1]), int(time.split(":")[2]))
+    date_time = datetime.datetime.combine(date, time)
+    # make time zone aware
+    date_time = time_zone.localize(date_time)
+    # convert to UTC
+    utc_date_time = date_time.astimezone(pytz.utc)
+    # get time
+    return utc_date_time.time()
+
+
+@login_required
+def submit_call_log(request):
+    error = False
+    msg = None
+    request_id = None
+    if request.method == 'POST':
+        post = request.POST
+        if 'request_id' in post and 'end_time' in post and 'end_cause' in post and 'duration' in post:
+            if post['request_id'] != '' and post['end_time'] != '' and post[
+                'end_cause'] != '' and post['duration'] != '':
+                request_obj = Request.objects.get(id=post['request_id'])
+                request_id = post['request_id']
+                utc_est_time = get_utc_time(request, post['est_time'])
+                utc_end_time = get_utc_time(request, post['end_time'])
+                (cl_obj, created) = CallLog.objects.get_or_create(request=request_obj)
+                # if any of the speaker has intentionally disconnected, we need to mark request as fulfilled
+                if post['end_cause'] == 'HUNG_UP':
+                    request_obj.is_completed = True
+                    request_obj.save()
+                if created:
+                    cl_obj.establishedTime = utc_est_time
+                    cl_obj.endTime = utc_end_time
+                    # Round off secs
+                    cl_obj.duration = int(Decimal(post['duration']))
+                else:
+                    cl_obj.duration += int(Decimal(post['duration']))
+                    cl_obj.endTime = utc_end_time
+                cl_obj.endCause = post['end_cause']
+                cl_obj.save()
+            else:
+                error = True
+                msg = "Received empty fields"
+        else:
+            error = True
+            msg = "Missing fields"
+    else:
+        error = True
+        msg = "Not a Post Request"
+
+    return JsonResponse({'error': error, 'msg': msg, 'request_id': request_id})
+
+
+@login_required
+def submit_feedback(request):
+    error = False
+    msg = None
+    if request.method == 'POST':
+        post = request.POST
+        if 'request_id' in post and 'rating' in post and 'feedback' in post:
+            if post['rating'] != '' and post['feedback'] != '' and post[
+                'request_id'] != '':
+                request_obj = Request.objects.get(id=post['request_id'])
+                call_log_obj = request_obj.callLog
+                feedback_obj = Feedback(user=request.user)
+                feedback_obj.call = call_log_obj
+                feedback_obj.rating = post['rating']
+                feedback_obj.feedback = post['feedback']
+                feedback_obj.save()
+            else:
+                error = True
+                msg = "Received empty fields"
+        else:
+            error = True
+            msg = "Missing fields"
+    else:
+        error = True
+        msg = "Not a Post Request"
+
+    return JsonResponse({'error': error, 'msg': msg})
+
+
+def is_call_valid(request):
+    request_obj = Request.objects.get(id=request.GET['request_id'])
+    call_obj = request_obj.callLog
+    valid = True
+    if request_obj and call_obj:
+        if call_obj.duration >= 1800 or request_obj.is_completed == True:
+            valid = False
+
+    return HttpResponse(valid)
+

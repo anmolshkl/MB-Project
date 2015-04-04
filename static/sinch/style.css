@@ -1,3 +1,58 @@
+.form-feedback {
+    position: absolute;
+    left: -500px;
+    max-width: 500px;
+    width: 90%;
+}
+.form-feedback h4 {
+    font-size: 20px !important;
+    color: black !important;
+}
+.limit {
+    margin: 20px;
+    text-align: right !important;
+    font-size: 12px !important;
+}
+.feedback {
+    width: 100%;
+    font-size: 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.feedback:focus {
+    outline: none;
+    border-width: thick;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
+.rating-c {
+    width: 200px;
+}
+.rating-c .br-widget {
+    height: 52px;
+    width: 200px;
+}
+
+.rating-c .br-widget a {
+    display: block;
+    width: 35px;
+    height: 35px;
+    float: left;
+    background-color: #e3e3e3;
+    margin: 2px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 2.2;
+    text-align: center;
+    color: #b6b6b6;
+}
+
+.rating-c .br-widget a.br-active,
+.rating-c .br-widget a.br-selected {
+    background-color: #59a6d6;
+    color: white;
+}
+
 
 ul > li {
     padding-left: 0px !important;
@@ -7,6 +62,34 @@ ul > li {
 }
 .flip-clock-wrapper {
     width: 300px !important;
+}
+.description-box {
+    padding: 20px;
+    background-color:#f2f4f6;
+    height: 100%;
+    position: relative;
+}
+.hangup {
+    margin: 20px !important;
+}
+.callLog {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    color: #fff;
+    background-color: rgba(71, 71, 71, 0.9);
+    font-family: "Open Sans", "Helvetica", "Arial";
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+}
+.form-feedback {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    color: #000;
+    background-color: #3F51B5;
+    font-family: "Open Sans", "Helvetica", "Arial";
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+
 }
 body {
 	font-family: 'Arial', 'Helvetica', 'Sans Serif';

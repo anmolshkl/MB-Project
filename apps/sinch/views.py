@@ -1,20 +1,19 @@
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 import json
 import uuid
 import hmac
 import hashlib
 import base64
 from django.contrib.auth.models import User
-from apps.user.models import UserProfile
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
 
 # App key + secret
+import pytz
+
 SINCH_APPLICATION_KEY = '7ecce9b0-b11d-48ef-9792-67a0467942d7'
 SINCH_APPLICATION_SECRET = 'WKPpEbTsr025To67v0JKXA=='
 
@@ -35,23 +34,25 @@ def index(request):
     if user.user_profile.is_mentor:
         template = "mentor/live.html"
     else:
-        today = datetime.now()
-        today_min = datetime.combine(date.today(), time.min)
-        today_max = datetime.combine(date.today(), time.max)
+        now = datetime.now(pytz.timezone('utc'))
+        min_dt = now - td(minutes=15)
+        max_dt = now + td(minutes=15)
         req_objs = Request.objects.filter(menteeId_id=request.user.id, is_approved=True,
-                                          dateTime__range=(today_min, today_max))
+                                          dateTime__startswith=now.date())
         if req_objs:
             req_list = []
             for obj in req_objs:
-                mentor = User.objects.get(id=obj.mentorId_id)
-                endTime = obj.dateTime + td(minutes=obj.duration)
-                req_list.append({'request_id': obj.id, 'date': obj.dateTime.date(), 'startTime': obj.dateTime.time(),
-                                 'endTime': endTime.time,
-                                 'duration': obj.duration,
-                                 'status': obj.is_approved,
-                                 'callType': obj.callType, 'req_date': obj.requestDate,
-                                 "mentor_name": mentor.get_full_name(), "country": mentor.user_profile.country,
-                                 "mentor_id": mentor.id, "mentor_pic": mentor.user_profile.picture})
+                if obj.dateTime.date() == now.date() and min_dt.time() <= obj.dateTime.time() <= max_dt.time():
+                    mentor = User.objects.get(id=obj.mentorId_id)
+                    endTime = obj.dateTime + td(minutes=obj.duration)
+                    req_list.append(
+                        {'request_id': obj.id, 'date': obj.dateTime, 'startTime': obj.dateTime,
+                         'endTime': endTime,
+                         'duration': obj.duration,
+                         'status': obj.is_approved,
+                         'callType': obj.callType, 'req_date': obj.requestDate,
+                         "mentor_name": mentor.get_full_name(), "country": mentor.user_profile.country,
+                         "mentor_id": mentor.id, "mentor_pic": mentor.user_profile.picture})
             context_dict['req_list'] = req_list
         template = "mentee/live.html"
 

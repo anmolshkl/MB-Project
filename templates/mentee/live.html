@@ -3,6 +3,11 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'morph/component.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'morph/content.css' %}" />
+<link rel="shortcut icon" href="{% static 'fonts/favicon.ico' %}">
+
+
 <link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
 {% endblock %}
 
@@ -16,50 +21,70 @@
 		</div>
 
 		<div class="row-fluid">
-			<div class="col-md-7 " class="call">
-                    {% if req_list %}
-                        {% for request in req_list %}
-                        <div class="row well margin-s">
-                            <div class="col-sm-3 textCenter">
-                                <img src="{{ request.mentor_pic }}" class="img-responsive img-circle center"/>
-                            </div>
-                            <div class="col-sm-4 textCenter">
-                                <h4>{{ request.mentor_name }}</h4>
-                                <input type="hidden" class="request_id" value="{{ request.request_id }}"></input>
-                                {{ request.date }}<br>
-                                {{ request.startTime }}-{{ request.endTime }}
-                            </div>
+			<div class="col-md-12 " class="call">
+                {% if req_list %}
+                    {% for request in req_list %}
+                    <div class="row well margin-s">
+                        <div class="col-sm-3 textCenter">
+                            <img src="{{ request.mentor_pic }}" class="img-responsive img-circle center"/>
+                            <h4>{{ request.mentor_name }}</h4>
 
-                            <div class="col-sm-5 well textCenter">
+                        </div>
+                        <br>
+                        <div class="col-sm-4 textCenter description-box ">
+                            {{ request.date|date }}<br>
+                            <h2>{{ request.startTime|time }}-{{ request.endTime|time }}</h2>
+                        </div>
+
+                        <div class="col-sm-5 well textCenter">
+
+                            <div class="morph-button morph-button-overlay morph-button-fixed">
                                 <input type="hidden" class="calleeId" value="user{{ request.mentor_id }}" />
                                 <input type="hidden" class="callUserName" value="{{ request.mentor_name }}" />
-                                <button class="call">Call</button>
-                                <button class="hangup">Hangup</button>
+                                <button type="button" class="call-button call">Call</button>
+                                <div class="morph-content" style="left: 493px; top: 72.234375px;">
+                                    <div class="content-style-overlay">
+                                        <span class="icon icon-close">Close the overlay</span>
+                                        <div class="call-overlay-content">
+                                            <input type="hidden" class="request_id" value="{{ request.request_id }}" />
+                                            <h2 class="call-title">Relax while we place your call...</h2>
+                                            <div class="clock center"></div>
+                                            <button class="hangup">Hangup</button>
+                                            <div class="row callLog textCenter margin-s">
+                                                <h3>Your Call Log</h3>
+                                            </div>
+                                            <div class="row form-feedback textCenter margin-s">
+                                                <h4>Rate your mentor!</h4>
+                                                <div class="rating-c center">
+                                                  <select class="ratings">
+                                                     <option value="1">1</option>
+                                                     <option value="2">2</option>
+                                                     <option value="3">3</option>
+                                                     <option value="4">4</option>
+                                                     <option value="5">5</option>
+                                                  </select>
+                                                </div>
+                                                <h4>How helpful was this session?</h4>
+                                                <textarea name="feedback" class="feedback" rows='4' placeholder="write your review here..."></textarea>
+                                                <br><p class="limit"><span class="characters">240</span> characters left</p>
+                                                <button class="btn btn-primary btn-large feedback-submit">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                    </div>
                     {% endfor %}
-
 			</div>
-            <div class="col-sm-5 textCenter margin-s pad-s">
-                <div class="clock center"></div>
-                <div id="callLog" class="row textCenter margin-s no-display well ">
-                    <h3>Your Call Log</h3>
-
-                </div>
-            </div>
-
-
 
 			<div class="error col-xs-6 well no-display">
-
 			</div>
-
 		</div>
-
-
 	</div>
     {% else %}
-        <div class="row well">
+        <div class="row well textCenter">
             <h4>You don't have any call scheduled for today. Come back tomorrow! :)</h4>
         </div>
     {% endif %}
@@ -68,16 +93,151 @@
     <audio class="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'sinch/WEBsampleMentee.js' %}"></script>
+
+
 <script src="{% static 'flipclock/flipclock.min.js' %}"></script>
 <script type="text/javascript">
-	clock = new FlipClock($('.clock'), {
-		autoStart: false,
-		clockFace: 'MinuteCounter'
 
+</script>
+<script src="{% static 'morph/classie.js' %}"></script>
+<script src="{% static 'morph/modernizr.custom.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
+<script src="{%  static 'morph/uiMorphingButton_fixed.js' %}"></script>
+<script src="{% static 'barrating/jquery.barrating.min.js' %}"></script>
+<script>
+var csrf = '{{ csrf_token }}';
+//For bar-rating
+   $('.ratings').barrating('show',{
+       showValues:true,
+       showSelectedRating:false
+   });
+
+/* Limit Feedback Imput */
+document.getElementsByClassName('feedback')[0].addEventListener('keypress', limitHandler);
+document.getElementsByClassName('feedback')[0].addEventListener('keydown', limitDeleteHandler);
+
+function limitHandler(e) {
+    if($(this).val().length >= 240 ) {
+        e.preventDefault();
+    }
+    else {
+        $('.characters').html(240-$(this).val().length-1);
+    }
+}
+function limitDeleteHandler(e) {
+    if(e.keyCode == 8)  {
+        var value = parseInt($(this).parent().find('.characters').html());
+        if(value > 0 && $(".feedback").html() != '') {
+            $(this).parent().find(".characters").html(value - 1);
+        }
+    }
+}
+/* Feedback Form submit */
+$(".feedback-submit").click(function() {
+    var rating = $(this).parent().find('.ratings').val();
+    var feedback = $(this).parent().find('.feedback').val();
+    var owner = $(this);
+    if(isNaN(rating) == true) {
+        alert("not a number");
+    }
+    else {
+        $.ajax({
+          url: '/user/submit-feedback/',
+          data: { 'rating': rating, 'feedback': feedback, 'request_id': $(this).parent().find('.request_id').val(), 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+          type: "post",
+          dataType: "json",
+          success: function() {
+              alert("Feedback submitted");
+              owner.closest('.form-feedback').fadeOut();
+              owner.parent().parent().find('.call-title').html("Thank you for your feedback!");
+              setInterval(function() {
+                  owner.parent().parent().find('.call-title').animate({'margin-top': "50px"});
+              }, 500);
+          },
+          failure: function() {
+
+          }
+
+        })
+    }
 });
+/* For morphing button */
+(function() {
+
+        var docElem = window.document.documentElement, didScroll, scrollPosition;
+
+        // trick to prevent scrolling when opening/closing button
+        function noScrollFn() {
+            window.scrollTo( scrollPosition ? scrollPosition.x : 0, scrollPosition ? scrollPosition.y : 0 );
+        }
+
+        function noScroll() {
+            window.removeEventListener( 'scroll', scrollHandler );
+            window.addEventListener( 'scroll', noScrollFn );
+        }
+
+        function scrollFn() {
+            window.addEventListener( 'scroll', scrollHandler );
+        }
+
+        function canScroll() {
+            window.removeEventListener( 'scroll', noScrollFn );
+            scrollFn();
+        }
+
+        function scrollHandler() {
+            if( !didScroll ) {
+                didScroll = true;
+                setTimeout( function() { scrollPage(); }, 60 );
+            }
+        };
+
+        function scrollPage() {
+            scrollPosition = { x : window.pageXOffset || docElem.scrollLeft, y : window.pageYOffset || docElem.scrollTop };
+            didScroll = false;
+        };
+
+        scrollFn();
+
+        var el = document.querySelector( '.morph-button' );
+        [].slice.call(document.querySelectorAll( '.morph-button' )).forEach( function(el) {
+            new UIMorphingButton(el, {
+                closeEl: '.icon-close',
+                onBeforeOpen: function () {
+                    // don't allow to scroll
+                    noScroll();
+                },
+                onAfterOpen: function () {
+                    // can scroll again
+                    canScroll();
+                    // add class "noscroll" to body
+                    classie.addClass(document.body, 'noscroll');
+                    // add scroll class to main el
+                    classie.addClass(el, 'scroll');
+                },
+                onBeforeClose: function () {
+                    // remove class "noscroll" to body
+                    classie.removeClass(document.body, 'noscroll');
+                    // remove scroll class from main el
+                    classie.removeClass(el, 'scroll');
+                    // don't allow to scroll
+                    noScroll();
+                },
+                onAfterClose: function () {
+                    // can scroll again
+                    canScroll();
+                }
+            });
+        });
+    })();
 
 
 </script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript" src="{% static 'sinch/WEBsampleMentee.js' %}"></script>
 {% endblock %}

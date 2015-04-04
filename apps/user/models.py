@@ -160,6 +160,7 @@ class Request(models.Model):
     is_rescheduled = models.BooleanField(default=False)
     requestDate = models.DateField(blank=False, default=datetime.date.today)
     callType = apps.user.fields.IntegerRangeField(min_value=1, max_value=3, default=1)
+    is_completed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Request"
@@ -177,7 +178,7 @@ class CallLog(models.Model):
     request = models.OneToOneField(Request, related_name="callLog", primary_key=True)
     establishedTime = models.TimeField(blank=False, default=datetime.datetime.now)
     endTime = models.TimeField(blank=False, default=datetime.datetime.now)
-    duration = apps.user.fields.IntegerRangeField(min_value=1, max_value=30)
+    duration = apps.user.fields.IntegerRangeField(min_value=5, max_value=30, verbose_name="Duration(sec)")
     endCause = models.CharField(max_length=20)
 
     class Meta:
@@ -185,7 +186,7 @@ class CallLog(models.Model):
 
     def __unicode__(self):
         request_name = User.objects.get(id=self.request.menteeId_id).first_name + " to " + User.objects.get(
-            id=self.request.mentorId_id).first_name + " for " + str(self.dateTime.date())
+            id=self.request.mentorId_id).first_name + " on " + str(self.request.dateTime.date().strftime("%d-%m-%y"))
         if request_name:
             return request_name
         else:
@@ -201,3 +202,7 @@ class Feedback(models.Model):
 
     class Meta:
         verbose_name = "Feedback"
+
+    def __unicode__(self):
+        user = self.user.get_full_name()
+        return "from " + user

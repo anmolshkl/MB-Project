@@ -1,0 +1,1100 @@
+.input {
+	position: relative !important !important
+	z-index: 1 !important !important
+	display: inline-block !important !important
+	margin: 1em !important !important
+	max-width: 350px !important !important
+	width: calc(100% - 2em) !important !important
+	vertical-align: top !important !important
+}
+
+.input__field {
+	position: relative !important !important
+	display: block !important !important
+	float: right !important !important
+	padding: 0.8em !important !important
+	width: 60% !important !important
+	border: none !important !important
+	border-radius: 0 !important !important
+	background: #f0f0f0 !important !important
+	color: #aaa !important !important
+	font-weight: bold !important !important
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important !important
+	-webkit-appearance: none !important !important /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+	outline: none !important !important
+}
+
+.input__label {
+	display: inline-block !important !important
+	float: right !important !important
+	padding: 0 1em !important !important
+	width: 40% !important !important
+	color: #6a7989 !important !important
+	font-weight: bold !important !important
+	font-size: 70.25% !important !important
+	-webkit-font-smoothing: antialiased !important !important
+    -moz-osx-font-smoothing: grayscale !important !important
+	-webkit-touch-callout: none !important !important
+	-webkit-user-select: none !important !important
+	-khtml-user-select: none !important !important
+	-moz-user-select: none !important !important
+	-ms-user-select: none !important !important
+	user-select: none !important !important
+}
+
+.input__label-content {
+	position: relative !important !important
+	display: block !important !important
+	padding: 1.6em 0 !important !important
+	width: 100% !important !important
+}
+
+.graphic {
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	fill: none !important
+}
+
+.icon {
+	color: #ddd !important
+	font-size: 150% !important
+}
+
+/* Individual styles */
+
+/* Haruki */
+
+.input--haruki {
+	margin: 4em 1em 1em !important
+}
+
+.input__field--haruki {
+	padding: 0.4em 0.25em !important
+	width: 100% !important
+	background: transparent !important
+	color: #AFB5BB !important
+	font-size: 1.55em !important
+}
+
+.input__label--haruki {
+	position: absolute !important
+	width: 100% !important
+	text-align: left !important
+	pointer-events: none !important
+}
+
+.input__label-content--haruki {
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--haruki::before,
+.input__label--haruki::after {
+	content: '' !important
+	position: absolute !important
+	left: 0 !important
+	z-index: -1 !important
+	width: 100% !important
+	height: 4px !important
+	background: #6a7989 !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--haruki::before {
+	top: 0 !important
+}
+
+.input__label--haruki::after {
+	bottom: 0 !important
+}
+
+.input__field--haruki:focus + .input__label--haruki .input__label-content--haruki,
+.input--filled .input__label-content--haruki {
+	-webkit-transform: translate3d(0, -90%, 0) !important
+	transform: translate3d(0, -90%, 0) !important
+}
+
+.input__field--haruki:focus + .input__label--haruki::before,
+.input--filled .input__label--haruki::before {
+	-webkit-transform: translate3d(0, -0.5em, 0) !important
+	transform: translate3d(0, -0.5em, 0) !important
+}
+
+.input__field--haruki:focus + .input__label--haruki::after,
+.input--filled .input__label--haruki::after {
+	-webkit-transform: translate3d(0, 0.5em, 0) !important
+	transform: translate3d(0, 0.5em, 0) !important
+}
+
+/* Hoshi */
+.input--hoshi {
+	overflow: hidden !important !important
+}
+
+.input__field--hoshi {
+	margin-top: 1em !important !important
+	padding: 0.85em 0.15em !important !important
+	width: 100% !important !important
+	background: transparent !important !important
+	color: #595F6E !important !important
+}
+
+.input__label--hoshi {
+	position: absolute !important !important
+	bottom: 0 !important !important
+	left: 0 !important !important
+	padding: 0 0.25em !important !important
+	width: 100% !important !important
+	height: calc(100% - 1em) !important !important
+	text-align: left !important !important
+	pointer-events: none !important !important
+}
+
+.input__label-content--hoshi {
+	position: absolute !important !important
+}
+
+.input__label--hoshi::before,
+.input__label--hoshi::after {
+	content: '' !important !important
+	position: absolute !important !important
+	top: 0 !important !important
+	left: 0 !important !important
+	width: 100% !important !important
+	height: calc(100% - 10px) !important !important
+	border-bottom: 1px solid #B9C1CA !important !important
+}
+
+.input__label--hoshi::after {
+	margin-top: 2px !important !important
+	border-bottom: 4px solid red !important !important
+	-webkit-transform: translate3d(-100%, 0, 0) !important !important
+	transform: translate3d(-100%, 0, 0) !important !important
+	-webkit-transition: -webkit-transform 0.3s !important !important
+	transition: transform 0.3s !important !important
+}
+
+.input__label--hoshi-color-1::after {
+	border-color: hsl(200, 100%, 50%) !important !important
+}
+
+.input__label--hoshi-color-2::after {
+	border-color: hsl(160, 100%, 50%) !important !important
+}
+
+.input__label--hoshi-color-3::after {
+	border-color: hsl(20, 100%, 50%) !important !important
+}
+
+.input__field--hoshi:focus + .input__label--hoshi::after,
+.input--filled .input__label--hoshi::after {
+	-webkit-transform: translate3d(0, 0, 0) !important !important
+	transform: translate3d(0, 0, 0) !important !important
+}
+
+.input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
+.input--filled .input__label-content--hoshi {
+	-webkit-animation: anim-1 0.3s forwards !important
+	animation: anim-1 0.3s forwards !important
+}
+
+@-webkit-keyframes anim-1 {
+	50% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(1em, 0, 0) !important
+		transform: translate3d(1em, 0, 0) !important
+	}
+	51% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(-1em, -40%, 0) !important
+		transform: translate3d(-1em, -40%, 0) !important
+	}
+	100% {
+		opacity: 1 !important
+		-webkit-transform: translate3d(0, -40%, 0) !important
+		transform: translate3d(0, -40%, 0) !important
+	}
+}
+
+@keyframes anim-1 {
+	50% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(1em, 0, 0) !important
+		transform: translate3d(1em, 0, 0) !important
+	}
+	51% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(-1em, -40%, 0) !important
+		transform: translate3d(-1em, -40%, 0) !important
+	}
+	100% {
+		opacity: 1 !important
+		-webkit-transform: translate3d(0, -40%, 0) !important
+		transform: translate3d(0, -40%, 0) !important
+	}
+}
+
+/* Kuro */
+.input--kuro {
+	max-width: 320px !important
+	margin-bottom: 3em !important
+}
+
+.input__field--kuro {
+	width: 100% !important
+	background: transparent !important
+	color: #9196A1 !important
+	opacity: 0 !important
+	text-align: center !important
+	-webkit-transition: opacity 0.3s !important
+	transition: opacity 0.3s !important
+}
+
+.input__label--kuro {
+	position: absolute !important
+	left: 0 !important
+	width: 100% !important
+	color: #df6589 !important
+	pointer-events: none !important
+}
+
+.input__label--kuro::before,
+.input__label--kuro::after {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 50% !important
+	height: 100% !important
+	border: 4px solid #747981 !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--kuro::before {
+	border-right: none !important
+}
+
+.input__label--kuro::after {
+	left: 50% !important
+	border-left: none !important
+}
+
+.input__field--kuro:focus,
+.input--filled .input__field--kuro {
+	opacity: 1 !important
+	-webkit-transition-delay: 0.3s !important
+	transition-delay: 0.3s !important
+}
+
+.input__field--kuro:focus + .input__label--kuro::before,
+.input--filled .input__label--kuro::before {
+	-webkit-transform: translate3d(-10%, 0, 0) !important
+	transform: translate3d(-10%, 0, 0) !important
+}
+
+.input__field--kuro:focus + .input__label--kuro::after,
+.input--filled .input__label--kuro::after {
+	-webkit-transform: translate3d(10%, 0, 0) !important
+	transform: translate3d(10%, 0, 0) !important
+}
+
+.input__field--kuro:focus + .input__label--kuro .input__label-content--kuro,
+.input--filled .input__label-content--kuro {
+	-webkit-animation: anim-2 0.3s forwards !important
+	animation: anim-2 0.3s forwards !important
+}
+
+@-webkit-keyframes anim-2 {
+	50% {
+		opacity: 0 !important
+		-webkit-transform: scale3d(0.3, 0.3, 1) !important
+		transform: scale3d(0.3, 0.3, 1) !important
+	}
+	51% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(0, 3.7em, 0) scale3d(0.3, 0.3, 1) !important
+		transform: translate3d(0, 3.7em, 0) scale3d(0.3, 0.3, 1) !important
+	}
+	100% {
+		opacity: 1 !important
+		-webkit-transform: translate3d(0, 3.7em, 0) !important
+		transform: translate3d(0, 3.7em, 0) !important
+	}
+}
+
+@keyframes anim-2 {
+	50% {
+		opacity: 0 !important
+		-webkit-transform: scale3d(0.3, 0.3, 1) !important
+		transform: scale3d(0.3, 0.3, 1) !important
+	}
+	51% {
+		opacity: 0 !important
+		-webkit-transform: translate3d(0, 3.7em, 0) scale3d(0.3, 0.3, 1) !important
+		transform: translate3d(0, 3.7em, 0) scale3d(0.3, 0.3, 1) !important
+	}
+	100% {
+		opacity: 1 !important
+		-webkit-transform: translate3d(0, 3.7em, 0) !important
+		transform: translate3d(0, 3.7em, 0) !important
+	}
+}
+
+/* Jiro */
+.input--jiro {
+	margin-top: 2em !important
+}
+
+.input__field--jiro {
+	padding: 0.85em 0.5em !important
+	width: 100% !important
+	background: transparent !important
+	color: #DDE2E2 !important
+	opacity: 0 !important
+	-webkit-transition: opacity 0.3s !important
+	transition: opacity 0.3s !important
+}
+
+.input__label--jiro {
+	position: absolute !important
+	left: 0 !important
+	padding: 0 0.85em !important
+	width: 100% !important
+	height: 100% !important
+	text-align: left !important
+	pointer-events: none !important
+}
+
+.input__label-content--jiro {
+	-webkit-transition: -webkit-transform 0.3s 0.3s !important
+	transition: transform 0.3s 0.3s !important
+}
+
+.input__label--jiro::before,
+.input__label--jiro::after {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 100% !important
+	height: 100% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--jiro::before {
+	border-top: 2px solid #6a7989 !important
+	-webkit-transform: translate3d(0, 100%, 0) translate3d(0, -2px, 0) !important
+	transform: translate3d(0, 100%, 0) translate3d(0, -2px, 0) !important
+	-webkit-transition-delay: 0.3s !important
+	transition-delay: 0.3s !important
+}
+
+.input__label--jiro::after {
+	z-index: -1 !important
+	background: #6a7989 !important
+	-webkit-transform: scale3d(1, 0, 1) !important
+	transform: scale3d(1, 0, 1) !important
+	-webkit-transform-origin: 50% 0% !important
+	transform-origin: 50% 0% !important
+}
+
+.input__field--jiro:focus,
+.input--filled .input__field--jiro {
+	opacity: 1 !important
+	-webkit-transition-delay: 0.3s !important
+	transition-delay: 0.3s !important
+}
+
+.input__field--jiro:focus + .input__label--jiro .input__label-content--jiro,
+.input--filled .input__label-content--jiro {
+	-webkit-transform: translate3d(0, -80%, 0) !important
+	transform: translate3d(0, -80%, 0) !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+.input__field--jiro:focus + .input__label--jiro::before,
+.input--filled .input__label--jiro::before {
+	-webkit-transition-delay: 0s !important
+	transition-delay: 0s !important
+}
+
+.input__field--jiro:focus + .input__label--jiro::before,
+.input--filled .input__label--jiro::before {
+	-webkit-transform: translate3d(0, 0, 0) !important
+	transform: translate3d(0, 0, 0) !important
+}
+
+.input__field--jiro:focus + .input__label--jiro::after,
+.input--filled .input__label--jiro::after {
+	-webkit-transform: scale3d(1, 1, 1) !important
+	transform: scale3d(1, 1, 1) !important
+	-webkit-transition-delay: 0.3s !important
+	transition-delay: 0.3s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+/* Minoru */
+.input__field--minoru {
+	width: 100% !important
+	background: #fff !important
+	box-shadow: 0px 0px 0px 2px transparent !important
+	color: #eca29b !important
+	-webkit-transition: box-shadow 0.3s !important
+	transition: box-shadow 0.3s !important
+}
+
+.input__label--minoru {
+	padding: 0 !important
+	width: 100% !important
+	text-align: left !important
+}
+
+.input__label--minoru::after {
+	content: '' !important
+  	position: absolute !important
+  	top: 0 !important
+  	z-index: -1 !important
+  	width: 100% !important
+  	height: 4em !important
+	box-shadow: 0px 0px 0px 0px !important
+	color: rgba(199,152,157, 0.6) !important
+}
+
+.input__field--minoru:focus {
+	box-shadow: 0px 0px 0px 2px #eca29b !important
+}
+
+.input__field--minoru:focus + .input__label--minoru {
+	pointer-events: none !important
+}
+
+.input__field--minoru:focus + .input__label--minoru::after {
+	-webkit-animation: anim-shadow 0.3s forwards !important
+	animation: anim-shadow 0.3s forwards !important
+}
+
+@-webkit-keyframes anim-shadow {
+	to {
+		box-shadow: 0px 0px 100px 50px !important
+    	opacity: 0 !important
+	}
+}
+
+@keyframes anim-shadow {
+	to {
+		box-shadow: 0px 0px 100px 50px !important
+    	opacity: 0 !important
+	}
+}
+
+.input__label-content--minoru {
+	padding: 0.75em 0.15em !important
+}
+
+/* Yoko */
+.input__field--yoko {
+	z-index: 10 !important
+	width: 100% !important
+	background: transparent !important
+	color: #f5f5f5 !important
+	opacity: 0 !important
+	-webkit-transition: opacity 0.3s !important
+	transition: opacity 0.3s !important
+}
+
+.input__label--yoko {
+	position: relative !important
+	width: 100% !important
+	color: #b04b40 !important
+	text-align: left !important
+}
+
+.input__label--yoko::before {
+	content: '' !important
+	position: absolute !important
+	bottom: 100% !important
+	left: 0 !important
+	width: 100% !important
+	height: 4em !important
+	background: #c5564a !important
+	-webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 90deg) !important
+	transform: perspective(1000px) rotate3d(1, 0, 0, 90deg) !important
+	-webkit-transform-origin: 50% 100% !important
+	transform-origin: 50% 100% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--yoko::after {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 100% !important
+	height: 0.25em !important
+	background: #ad473c !important
+	-webkit-transform-origin: 50% 0% !important
+	transform-origin: 50% 0% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label-content--yoko {
+	padding: 0.75em 0 !important
+}
+
+.input__field--yoko:focus,
+.input--filled .input__field--yoko {
+	opacity: 1 !important
+	-webkit-transition-delay: 0.3s !important
+	transition-delay: 0.3s !important
+}
+
+.input__field--yoko:focus + .input__label--yoko::before,
+.input--filled .input__label--yoko::before {
+	-webkit-transform: perspective(1000px) rotate3d(1, 0, 0, 0deg) !important
+	transform: perspective(1000px) rotate3d(1, 0, 0, 0deg) !important
+}
+
+.input__field--yoko:focus + .input__label--yoko,
+.input--filled .input__label--yoko {
+	pointer-events: none !important
+}
+
+.input__field--yoko:focus + .input__label--yoko::after,
+.input--filled .input__label--yoko::after {
+	-webkit-transform: perspective(1000px) rotate3d(1, 0, 0, -90deg) !important
+	transform: perspective(1000px) rotate3d(1, 0, 0, -90deg) !important
+}
+
+/* Kyo */
+.input--kyo {
+	z-index: auto !important
+}
+
+.input__field--kyo {
+	padding: 0.85em 1.5em !important
+	width: 100% !important
+	border-radius: 2em !important
+	background: #fff !important
+	color: #535d92 !important
+}
+
+.input__label--kyo {
+	z-index: 0 !important
+	padding: 0 0 0 2em !important
+	width: 100% !important
+	text-align: left !important
+}
+
+.input__label--kyo::after {
+	content: '' !important
+	position: fixed !important
+	top: 0 !important
+	left: 0 !important
+	z-index: 1000 !important
+	width: 100% !important
+	height: 100% !important
+	background: rgba(11, 43, 205, 0.6) !important
+	opacity: 0 !important
+	-webkit-transition: opacity 0.3s !important
+	transition: opacity 0.3s !important
+	pointer-events: none !important
+}
+
+.input__label-content--kyo {
+	padding: 0.5em 0 !important
+}
+
+.input__field--kyo:focus,
+.input__field--kyo:focus +  .input__label--kyo .input__label-content--kyo {
+	z-index: 10000 !important
+}
+
+.input__field--kyo:focus + .input__label--kyo {
+	color: #fff !important
+}
+
+.input__field--kyo:focus + .input__label--kyo::after {
+	opacity: 1 !important
+}
+
+/* Akira */
+.input--akira {
+	margin-top: 2em !important
+}
+
+.input__field--akira {
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	z-index: 10 !important
+	display: block !important
+	padding: 0 1em !important
+	width: 100% !important
+	height: 100% !important
+	background: transparent !important
+	text-align: center !important
+}
+
+.input__label--akira {
+	padding: 0 !important
+	width: 100% !important
+	background: #696a6e !important
+	color: #cc6055 !important
+	cursor: text !important
+}
+
+.input__label--akira::before {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 100% !important
+	height: 100% !important
+	background: #2f3238 !important
+	-webkit-transform: scale3d(0.97, 0.85, 1) !important
+	transform: scale3d(0.97, 0.85, 1) !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label-content--akira {
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__field--akira:focus + .input__label--akira::before,
+.input--filled .input__label--akira::before {
+	-webkit-transform: scale3d(0.99, 0.95, 1) !important
+	transform: scale3d(0.99, 0.95, 1) !important
+}
+
+.input__field--akira:focus + .input__label--akira,
+.input--filled .input__label--akira {
+	cursor: default !important
+	pointer-events: none !important
+}
+
+.input__field--akira:focus + .input__label--akira .input__label-content--akira,
+.input--filled .input__label-content--akira {
+	-webkit-transform: translate3d(0, -3.5em, 0) !important
+	transform: translate3d(0, -3.5em, 0) !important
+}
+
+/* Ichiro */
+.input--ichiro {
+	margin-top: 2em !important
+}
+
+.input__field--ichiro {
+	position: absolute !important
+	top: 4px !important
+	left: 4px !important
+	z-index: 100 !important
+	display: block !important
+	padding: 0 0.55em !important
+	width: calc(100% - 8px) !important
+	height: calc(100% - 8px) !important
+	background: #f0f0f0 !important
+	color: #7F8994 !important
+	opacity: 0 !important
+	-webkit-transform: scale3d(1, 0, 1) !important
+	transform: scale3d(1, 0, 1) !important
+	-webkit-transform-origin: 50% 100% !important
+	transform-origin: 50% 100% !important
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s !important
+	transition: opacity 0.3s, transform 0.3s !important
+}
+
+.input__label--ichiro {
+	width: 100% !important
+	text-align: left !important
+	cursor: text !important
+}
+
+.input__label--ichiro::before {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 100% !important
+	height: 100% !important
+	background: #fff !important
+	-webkit-transform-origin: 50% 100% !important
+	transform-origin: 50% 100% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label-content--ichiro {
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__field--ichiro:focus,
+.input--filled .input__field--ichiro {
+	opacity: 1 !important
+	-webkit-transform: scale3d(1, 1, 1) !important
+	transform: scale3d(1, 1, 1) !important
+}
+
+.input__field--ichiro:focus + .input__label--ichiro,
+.input--filled .input__label--ichiro {
+	cursor: default !important
+	pointer-events: none !important
+}
+
+.input__field--ichiro:focus + .input__label--ichiro::before,
+.input--filled .input__label--ichiro::before {
+	-webkit-transform: scale3d(1, 1.5, 1) !important
+	transform: scale3d(1, 1.5, 1) !important
+}
+
+.input__field--ichiro:focus + .input__label--ichiro .input__label-content--ichiro,
+.input--filled .input__label-content--ichiro {
+	-webkit-transform: translate3d(0, -3.15em, 0) scale3d(0.8, 0.8, 1) !important
+	transform: translate3d(0, -3.15em, 0) scale3d(0.8, 0.8, 1) translateZ(1px) !important
+}
+
+/* Juro */
+.input--juro {
+	overflow: hidden !important
+}
+
+.input__field--juro {
+	position: absolute !important
+	z-index: 100 !important
+	padding: 2.15em 0.75em 0 !important
+	width: 100% !important
+	background: transparent !important
+	color: #1784cd !important
+	font-size: 0.85em !important
+}
+
+.input__label--juro {
+	padding: 0 !important
+	width: 100% !important
+	height: 100% !important
+	background: #fff !important
+	text-align: left !important
+}
+
+.input__label-content--juro {
+	padding: 2em 1em !important
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.3s, color 0.3s !important
+	transition: transform 0.3s, color 0.3s !important
+
+	text-rendering: geometricPrecision !important
+}
+
+.input__label--juro::before {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	width: 100% !important
+	height: 100% !important
+	border: 0px solid transparent !important
+	-webkit-transition: border-width 0.3s, border-color 0.3s !important
+	transition: border-width 0.3s, border-color 0.3s !important
+}
+
+.input__field--juro:focus + .input__label--juro::before,
+.input--filled .input__label--juro::before {
+	border-width: 8px !important
+	border-color: #1784cd !important
+	border-top-width: 2em !important
+}
+
+.input__field--juro:focus + .input__label--juro .input__label-content--juro,
+.input--filled .input__label--juro .input__label-content--juro {
+	color: #fff !important
+	-webkit-transform: translate3d(0, -1.5em, 0) scale3d(0.75, 0.75, 1) !important
+	transform: translate3d(0, -1.5em, 0) scale3d(0.75, 0.75, 1) translateZ(1px) !important
+}
+
+/* Hideo */
+.input--hideo {
+	overflow: hidden !important
+	background: #fff !important
+}
+
+.input__field--hideo {
+	padding: 0.85em 0.85em 0.85em 3em !important
+	width: 100% !important
+	background: transparent !important
+	-webkit-transform: translate3d(1em, 0, 0) !important
+	transform: translate3d(1em, 0, 0) !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label--hideo {
+	position: absolute !important
+	padding: 1.25em 0 0 !important
+	width: 4em !important
+	height: 100% !important
+}
+
+.input__label--hideo::before {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	z-index: -1 !important
+	width: 4em !important
+	height: 100% !important
+	background: #899dda !important
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.icon--hideo {
+	color: #fff !important
+	-webkit-transform: scale3d(1, 1, 1) !important /* Needed for Chrome bug */
+	transform: scale3d(1, 1, 1) !important
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.input__label-content--hideo {
+	position: absolute !important
+	top: 100% !important
+}
+
+.input__field--hideo:focus {
+	-webkit-transform: translate3d(0, 0, 0) !important
+	transform: translate3d(0, 0, 0) !important
+}
+
+.input__field--hideo:focus + .input__label--hideo::before {
+	-webkit-transform: scale3d(0.8, 1, 1) !important
+	transform: scale3d(0.8, 1, 1) !important
+}
+
+.input__field--hideo:focus + .input__label--hideo .icon--hideo {
+	-webkit-transform: scale3d(0.6, 0.6, 1) !important
+	transform: scale3d(0.6, 0.6, 1) !important
+}
+
+/* Madoka */
+.input--madoka {
+	margin: 1.1em !important
+}
+
+.input__field--madoka {
+	width: 100% !important
+	background: transparent !important
+	color: #7A7593 !important
+}
+
+.input__label--madoka {
+	position: absolute !important
+	width: 100% !important
+	height: 100% !important
+	color: #7A7593 !important
+	text-align: left !important
+	cursor: text !important
+}
+
+.input__label-content--madoka {
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.3s !important
+	transition: transform 0.3s !important
+}
+
+.graphic--madoka {
+	-webkit-transform: scale3d(1, -1, 1) !important
+	transform: scale3d(1, -1, 1) !important
+	-webkit-transition: stroke-dashoffset 0.3s !important
+	transition: stroke-dashoffset 0.3s !important
+	pointer-events: none !important
+
+	stroke: #7A7593 !important
+	stroke-width: 4px !important
+	stroke-dasharray: 962 !important
+	stroke-dashoffset: 558 !important
+}
+
+.input__field--madoka:focus + .input__label--madoka,
+.input--filled .input__label--madoka {
+	cursor: default !important
+	pointer-events: none !important
+}
+
+.input__field--madoka:focus + .input__label--madoka .graphic--madoka,
+.input--filled .graphic--madoka {
+	stroke-dashoffset: 0 !important
+}
+
+.input__field--madoka:focus + .input__label--madoka .input__label-content--madoka,
+.input--filled .input__label-content--madoka {
+	-webkit-transform: scale3d(0.81, 0.81, 1) translate3d(0, 4em, 0) !important
+	transform: scale3d(0.81, 0.81, 1) translate3d(0, 4em, 0) !important
+}
+
+/* Kaede */
+.input--kaede {
+	display: block !important
+	overflow: hidden !important
+	margin: 1em auto 2em !important
+	background: #EFEEEE !important
+}
+
+.input__field--kaede {
+	position: absolute !important
+	top: 0 !important
+	right: 100% !important
+	width: 60% !important
+	height: 100% !important
+	background: #fff !important
+	color: #9DABBA !important
+	-webkit-transition: -webkit-transform 0.5s !important
+	transition: transform 0.5s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+.input__label--kaede {
+	z-index: 10 !important
+	display: block !important
+	width: 100% !important
+	height: 100% !important
+	text-align: left !important
+	cursor: text !important
+	-webkit-transform-origin: 0% 50% !important
+	transform-origin: 0% 50% !important
+	-webkit-transition: -webkit-transform 0.5s !important
+	transition: transform 0.5s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+.input__label-content--kaede {
+	padding: 1.5em 0 !important
+}
+
+.input__field--kaede:focus,
+.input--filled .input__field--kaede {
+	-webkit-transform: translate3d(100%, 0, 0) !important
+	transform: translate3d(100%, 0, 0) !important
+	-webkit-transition-delay: 0.06s !important
+	transition-delay: 0.06s !important
+}
+
+.input__field--kaede:focus + .input__label--kaede,
+.input--filled .input__label--kaede  {
+	-webkit-transform: translate3d(60%, 0, 0) !important
+	transform: translate3d(60%, 0, 0) !important
+	pointer-events: none !important
+}
+
+@media screen and (max-width: 34em) {
+	.input__field--kaede:focus + .input__label--kaede,
+	.input--filled .input__label--kaede  {
+		-webkit-transform: translate3d(65%, 0, 0) scale3d(0.65, 0.65, 1) !important
+		transform: translate3d(65%, 0, 0) scale3d(0.65, 0.65, 1) !important
+		pointer-events: none !important
+	}
+}
+
+/* Isao */
+.input__field--isao {
+	z-index: 10 !important
+	padding: 0.75em 0.1em 0.25em !important
+	width: 100% !important
+	background: transparent !important
+	color: #afb3b8 !important
+}
+
+.input__label--isao {
+	position: relative !important
+	overflow: hidden !important
+	padding: 0 !important
+	width: 100% !important
+	color: #dadada !important
+	text-align: left !important
+}
+
+.input__label--isao::before {
+	content: '' !important
+	position: absolute !important
+	top: 0 !important
+	width: 100% !important
+	height: 7px !important
+	background: #dadada !important
+	-webkit-transform: scale3d(1, 0.4, 1) !important
+	transform: scale3d(1, 0.4, 1) !important
+	-webkit-transform-origin: 50% 100% !important
+	transform-origin: 50% 100% !important
+	-webkit-transition: -webkit-transform 0.3s, background-color 0.3s !important
+	transition: transform 0.3s, background-color 0.3s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+.input__label--isao::after {
+	content: attr(data-content) !important
+	position: absolute !important
+	top: 0 !important
+	left: 0 !important
+	padding: 0.75em 0.15em !important
+	color: #da7071 !important
+	opacity: 0 !important
+	-webkit-transform: translate3d(0, 50%, 0) !important
+	transform: translate3d(0, 50%, 0) !important
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s !important
+	transition: opacity 0.3s, transform 0.3s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	pointer-events: none !important
+}
+
+.input__field--isao:focus + .input__label--isao::before {
+	background-color: #da7071 !important
+	-webkit-transform: scale3d(1, 1, 1) !important
+	transform: scale3d(1, 1, 1) !important
+}
+
+.input__field--isao:focus + .input__label--isao {
+	pointer-events: none !important
+}
+
+.input__field--isao:focus + .input__label--isao::after {
+	opacity: 1 !important
+	-webkit-transform: translate3d(0, 0, 0) !important
+	transform: translate3d(0, 0, 0) !important
+}
+
+.input__label-content--isao {
+	padding: 0.75em 0.15em !important
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s !important
+	transition: opacity 0.3s, transform 0.3s !important
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1) !important
+}
+
+.input__field--isao:focus + .input__label--isao .input__label-content--isao {
+	opacity: 0 !important
+	-webkit-transform: translate3d(0, -50%, 0) !important
+	transform: translate3d(0, -50%, 0) !important
+}
