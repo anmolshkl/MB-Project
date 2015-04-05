@@ -18,4 +18,5 @@ urlpatterns = patterns('',
                        url(r'^submit-callLog/$', views.submit_call_log, name='submit call-Log'),
                        url(r'^submit-feedback/$', views.submit_feedback, name='submit feedback'),
                        url(r'^call-valid/$', views.is_call_valid, name='call validity check'),
+                       url(r'^confirm/$', views.register_confirm, name='register_confirm'),
                        )

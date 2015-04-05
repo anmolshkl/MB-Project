@@ -6,6 +6,7 @@ from allauth.account.signals import user_logged_in, user_signed_up
 import datetime
 
 # for upload_to
+from django.utils import timezone
 
 from django.utils.deconstruct import deconstructible
 import os
@@ -206,3 +207,15 @@ class Feedback(models.Model):
     def __unicode__(self):
         user = self.user.get_full_name()
         return "from " + user
+
+
+class VerificationCodes(models.Model):
+    user = models.OneToOneField(User)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+    class Meta:
+        verbose_name_plural=u'VerificationCodes'
