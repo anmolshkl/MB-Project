@@ -127,6 +127,7 @@ def save_data(sender, **kwargs):
     if extra_data:
         # Save user's social profile image everytime he logs in/hardcode for LinkedIn
         userProfile.picture = extra_data['picture-url']
+        userProfile.email_verified = True
         userProfile.save()
         socialProfiles.profile_url_linkedin = extra_data['public-profile-url']
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
@@ -210,7 +211,7 @@ class Feedback(models.Model):
 
 
 class VerificationCodes(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name="verification", primary_key=True)
     activation_key = models.CharField(max_length=40, blank=True)
     key_expires = models.DateTimeField(auto_now_add=True)
 

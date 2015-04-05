@@ -12,6 +12,10 @@
         display: inline-block !important;
         margin: 5px;
     }
+    .education-form input {
+
+        background-color: transparent;
+    }
     .nav-tabs {
         background-color: transparent !important;
     }
@@ -20,6 +24,11 @@
     }
     .tab-form {
         margin: 0px auto;
+    }
+    .cnt {
+        display: block;
+        margin: 0 auto;
+        max-width: 300px;
     }
     </style>
 {%  endblock %}
@@ -70,7 +79,7 @@
                 {% for field in edu_form %}
                      <div class="form-group">
                         {% if field.label != 'Parent' and field.label != 'Id' %}
-                        <label class="form-label">{{ field.label }}</label>
+                        <label class="form-label" for="{{ field.name }}" ><h5>{{ field.label }}</h5></label>
                             <br>
                          {% endif %}
                           {{ field }}
@@ -79,6 +88,7 @@
                 </div>
             {% endfor %}
         {{ edu_formset.management_form }}
+        <a class="btn btn-primary cnt" id="add_more">Add a field</a>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="settings">
             {% for emp_form in emp_formset %}
@@ -107,6 +117,30 @@
                     alert("maza a gaya");
                 }
             });
+        });
+    </script>
+    <script>
+        /* http://stackoverflow.com/questions/501719/dynamically-adding-a-form-to-a-django-formset-with-ajax */
+        function cloneMore(selector, type) {
+            var newElement = $(selector).clone(true);
+            var total = $('#id_' + type + '-TOTAL_FORMS').val();
+            newElement.find(':input').each(function() {
+                var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+                var id = 'id_' + name;
+                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                $(this).val(" ");
+            });
+            newElement.find('label').each(function() {
+                var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+                $(this).attr('for', newFor);
+            });
+            total++;
+            $('#id_' + type + '-TOTAL_FORMS').val(total);
+            $(selector).after(newElement);
+        }
+
+        $('#add_more').click(function() {
+            cloneMore('.education-form:last', 'educationdetails_set');
         });
     </script>
 {%  endblock %}

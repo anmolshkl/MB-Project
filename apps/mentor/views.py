@@ -454,6 +454,7 @@ def edit_profile(request):
             profile_form.save()
             emp_formset.save()
             edu_formset.save()
+            print "forms saved"
             return HttpResponseRedirect("/user/")
             # return here if different behaviour desired
     else:

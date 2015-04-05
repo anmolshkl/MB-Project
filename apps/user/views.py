@@ -3,7 +3,7 @@ import hashlib
 import random
 
 from django.template import RequestContext
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
@@ -21,6 +21,7 @@ from PIL import Image
 # import magic
 # Create your views here.
 from django.core.mail import send_mail
+from django.utils import timezone
 import pytz, datetime
 
 
@@ -206,23 +207,23 @@ def register(request):
                 profile.user = user
                 profile.save()
 
-                 #sameer
+                # sameer
 
-                #generate key
+                # generate key
 
                 salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-                activation_key = hashlib.sha1(salt+email).hexdigest()
+                activation_key = hashlib.sha1(salt + email).hexdigest()
                 key_expires = datetime.datetime.now(pytz.utc) + datetime.timedelta(2)
 
-                #save key
+                # save key
 
                 new_key = VerificationCodes(user=user, activation_key=activation_key, key_expires=key_expires)
                 new_key.save()
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
-                48hours http://127.0.0.1:8000/user/confirm/%s" % (fn, activation_key)
+                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within 48 hours http://127.0.0.1:8000/user/confirm/%s" % (
+                    fn, activation_key)
 
                 print "trying to send mail with activation key"
                 send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [email], fail_silently=False)
@@ -451,23 +452,27 @@ def is_call_valid(request):
     return HttpResponse(valid)
 
 
-def register_confirm(request, activation_key):
+def register_confirm(request, ak):
     # check if user is already logged in and if he is redirect him to some other url, e.g. home
     if request.user.is_authenticated():
         HttpResponseRedirect('/')
 
     # check if there is UserProfile which matches the activation key (if not then display 404)
-    user_profile = get_object_or_404(VerificationCodes, activation_key=activation_key)
+    verification_obj = get_object_or_404(VerificationCodes, activation_key=ak)
+    # ver_obj = VerificationCodes.objects.get(activation_key=activation_key)
+    # check if the activation key has expired, if it has then render confirm_expired.html
 
-    # check if the activation key has expired, if it hase then render confirm_expired.html
-    if user_profile.key_expires < timezone.now():
+    if verification_obj.key_expires < timezone.now():
         print "the activation key has expired"
         return redirect('/user/')
     # if the key hasn't expired save user and set him as active and render some template to confirm activation
-    user = user_profile.user
+    user = verification_obj.user
     user.is_active = True
     user.save()
     print "user email confirmed"
+    # small hack, since we do not call authenticate() on user we need to manually set the backend
+    # which has authenticated it
+    user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
     return redirect('/user/')
 
