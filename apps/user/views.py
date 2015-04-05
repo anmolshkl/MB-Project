@@ -7,6 +7,8 @@ from apps.user.models import *
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+import smtplib
+
 import hashlib, datetime, random
 from django.utils import timezone
 
@@ -222,7 +224,7 @@ def register(request):
                 48hours http://127.0.0.1:8000/user/confirm/%s" % (fn, activation_key)
 
                 print "trying to send mail with activation key"
-                send_mail(email_subject, email_body, 'anmol@mentorbuddy.in',[email], fail_silently=False)
+                send_mail(email_subject, email_body, 'sameer@mentorbuddy.in',[email], fail_silently=False)
                 print "mail sent with activation key"
 
 

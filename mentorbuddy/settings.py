@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'apps.mentor',
     'apps.mentee',
     'apps.user',
+    'apps.background_threads',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -236,6 +237,8 @@ EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
 EMAIL_HOST_PASSWORD = '8zryfcgve33k'
 EMAIL_PORT = 587
+
+
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
