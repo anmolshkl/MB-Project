@@ -457,6 +457,9 @@ def edit_profile(request):
             print "forms saved"
             for form in edu_formset:
                 print form
+
+            for form in emp_formset:
+                print form
             return JsonResponse({'error': False})
             # return here if different behaviour desired
         else:

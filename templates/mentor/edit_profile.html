@@ -2,6 +2,10 @@
 {% load static %}
 {% block stylesheets %}
     <style>
+    .page-content {
+        background-image: url({% static 'img/bg11.jpg' %}) !important;
+        background-size: cover;
+    }
     .tab-content {
         padding: 20px !important;
     }
@@ -43,6 +47,28 @@
         display: block;
         margin: 0 auto;
         max-width: 300px;
+    }
+    .btn-round {
+        background-color: #d23f31;
+        border-radius: 999em;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        line-height: 1;
+        font-size: 36px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .btn-round span {
+        position: absolute;
+         left: 0;
+        top: 50%;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        margin-top: -22px;
+        color: #FFF;
     }
     </style>
 {%  endblock %}
@@ -88,44 +114,82 @@
             {% endfor %}
         </div>
         <div role="tabpanel" class="tab-pane fade" id="messages">
+        {% if edu_formset.total_form_count != 0 %}
             {% for edu_form in edu_formset %}
                 <div class="row well education-form">
                 {% for field in edu_form %}
+                    {% if field.label != 'Delete' %}
                      <div class="form-group">
+
                         {% if field.label != 'Parent' and field.label != 'Id' %}
                         <h3>{{ field.label_tag }}</h3>
-                            <br>
+
                          {% endif %}
                           {{ field }}
-                      </div>
+                     </div>
+                     {% else %}
+                        <div class="checkbox check-danger margin-s">
+                        {{ field }}
+                        {{ field.label_tag }}
+                         </div>
+                     {% endif %}
+
                 {% endfor %}
                 </div>
             {% endfor %}
+        {% else %}
+            <div class="row well education-form" style="display: none">
+                {% for field in edu_formset.empty_form %}
+                     <div class="form-group">
+                        {% if field.label != 'Parent' and field.label != 'Id' %}
+                            <h3>{{ field.label_tag }}</h3>
+                              <br>
+                         {% endif %}
+                            {{ field }}
+                      </div>
+                {% endfor %}
+
+            </div>
+        {% endif %}
         {{ edu_formset.management_form }}
-        <a class="btn btn-primary cnt" id="addMoreEdu">Add a field</a>
+        <a class="cnt btn-round" id="addMoreEdu"><span>+</span></a>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="settings">
-            {% for emp_form in emp_formset %}
-                <div class="row well employment-form form-inline">
-                {% for field in emp_form %}
-                     <div class="form-group">
-                        {% if field.label != 'Parent' and field.label != 'Id' %}
-                        <h3>{{ field.label_tag }}</h3>
-                            <br>
-                         {% endif %}
-                          {{ field }}
-                      </div>
+            {% if emp_formset.total_form_count != 0 %}
+                {% for emp_form in emp_formset %}
+                    <div class="row well employment-form form-inline">
+                    {% for field in emp_form %}
+                         <div class="form-group">
+                            {% if field.label != 'Parent' and field.label != 'Id' %}
+                            <h3>{{ field.label_tag }}</h3>
+                                <br>
+                             {% endif %}
+                              {{ field }}
+                          </div>
+                    {% endfor %}
+                    </div>
                 {% endfor %}
+            {% else %}
+                <div class="row well employment-form form-inline" style="display: none">
+                    {% for field in emp_formset.empty_form %}
+                         <div class="form-group">
+                            {% if field.label != 'Parent' and field.label != 'Id' %}
+                            <h3>{{ field.label_tag }}</h3>
+                                <br>
+                             {% endif %}
+                              {{ field }}
+                          </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            {% endif %}
             {{ emp_formset.management_form }}
-        <a class="btn btn-primary cnt" id="addMoreEmp">Add a field</a>
+        <a class="btn-round cnt" id="addMoreEmp"><span>+</span></a>
         </div>
       </div>
 
     </div>
     </form>
-    <a class="btn btn-success btn-large center update"> Update</a>
+    <a class="btn btn-success btn-large cnt update"> Update</a>
 {% endblock %}
 
 {% block scripts %}
@@ -164,11 +228,28 @@
 
         $('#addMoreEdu').click(function() {
             cloneMore('.education-form:last', 'educationdetails_set');
+            $('.education-form:last').show();
         });
 
         $('#addMoreEmp').click(function() {
             cloneMore('.employment-form:last', 'employmentdetails_set');
+            $('.employment-form:last').show();
         });
+        // Now we need to change the prefix of empty form generated by django
+        {% if emp_formset.total_form_count == 0 %}
+            $('.employment-form input').each(function() {
+               var newName = $(this).attr('name').replace('__prefix__',"0");
+               var newId = $(this).attr('id').replace('__prefix__',"0");
+                $(this).attr({'name': newName, 'id': newId});
+            });
+        {% endif %}
 
+        {% if edu_formset.total_form_count == 0 %}
+            $('.education-form input').each(function() {
+               var newName = $(this).attr('name').replace('__prefix__',"0");
+               var newId = $(this).attr('id').replace('__prefix__',"0");
+                $(this).attr({'name': newName, 'id': newId});
+            });
+        {% endif %}
     </script>
 {%  endblock %}
