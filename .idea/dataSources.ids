@@ -229,7 +229,7 @@
       <column name="request_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="establishedTime" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
       <column name="endTime" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
-      <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="endCause" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="request_id"/>
       <foreign-key name="request_id_refs_id_8400f301" columns="request_id" ref-table="user_request" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>

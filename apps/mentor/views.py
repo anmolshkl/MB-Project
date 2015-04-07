@@ -442,7 +442,7 @@ def edit_profile(request):
     user = request.user
     user_profile = user.user_profile
 
-    if request.POST:
+    if request.method == 'POST' and request.POST:
         user_form = UserEditForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
         # education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
@@ -455,13 +455,20 @@ def edit_profile(request):
             emp_formset.save()
             edu_formset.save()
             print "forms saved"
-            return HttpResponseRedirect("/user/")
+            for form in edu_formset:
+                print form
+            return JsonResponse({'error': False})
             # return here if different behaviour desired
+        else:
+            for form in edu_formset:
+                print form.errors
+            return JsonResponse({'error': True})
     else:
         user_form = UserEditForm(instance=user)
         form = UserProfileForm(instance=user_profile)
         edu_formset = EducationDetailsFormSet(instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
+        return render(request, "mentor/edit_profile.html", locals())
         '''
         # build a list of all different educational forms from individual education entry
         eduFormList = []
@@ -475,7 +482,7 @@ def edit_profile(request):
         '''
         # edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
         # emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
-    return render(request, "mentor/edit_profile.html", locals())
+
 
 
 @login_required

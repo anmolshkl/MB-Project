@@ -180,7 +180,7 @@ class CallLog(models.Model):
     request = models.OneToOneField(Request, related_name="callLog", primary_key=True)
     establishedTime = models.TimeField(blank=False, default=datetime.datetime.now)
     endTime = models.TimeField(blank=False, default=datetime.datetime.now)
-    duration = apps.user.fields.IntegerRangeField(min_value=5, max_value=30, verbose_name="Duration(sec)")
+    duration = apps.user.fields.IntegerRangeField(default=0, min_value=5, max_value=30, verbose_name="Duration(sec)")
     endCause = models.CharField(max_length=20)
 
     class Meta:

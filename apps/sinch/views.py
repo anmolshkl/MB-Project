@@ -42,7 +42,11 @@ def index(request):
         if req_objs:
             req_list = []
             for obj in req_objs:
-                if obj.dateTime.date() == now.date() and min_dt.time() <= obj.dateTime.time() <= max_dt.time():
+                print obj.dateTime.time()
+                print min_dt
+                print max_dt
+                if obj.dateTime.date() == now.date() and min_dt.time() <= obj.dateTime.time() <= max_dt.time() \
+                        and obj.is_completed == False:
                     mentor = User.objects.get(id=obj.mentorId_id)
                     endTime = obj.dateTime + td(minutes=obj.duration)
                     req_list.append(
@@ -52,7 +56,8 @@ def index(request):
                          'status': obj.is_approved,
                          'callType': obj.callType, 'req_date': obj.requestDate,
                          "mentor_name": mentor.get_full_name(), "country": mentor.user_profile.country,
-                         "mentor_id": mentor.id, "mentor_pic": mentor.user_profile.picture})
+                         "mentor_id": mentor.id, "mentor_pic": mentor.user_profile.picture,
+                         "number": mentor.user_profile.contact})
             context_dict['req_list'] = req_list
         template = "mentee/live.html"
 
@@ -83,3 +88,8 @@ def ticketHandler(request):
 
 def pingHandler(request):
     return JsonResponse({'hell': 'o'})
+
+
+def getCallerInfo(request):
+    user = User.objects.get(id=request.POST['userId'])
+    return JsonResponse({'fullName': user.get_full_name(), 'picture': user.user_profile.picture})

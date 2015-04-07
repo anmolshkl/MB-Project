@@ -63,7 +63,7 @@
           <div class="modal-body">
               <div class="row-fluid">
                 <div class="col-xs-12 textCenter">
-                  <img src="https://placeimg.com/100/100/any" class="img-responsive img-circle center callerPic"/>
+                  <img src="" class="img-responsive img-circle center callerPic"/>
                   <span class="callerName"><h5></h5></span>
                 </div>
 
@@ -77,7 +77,8 @@
                 
                 <div id="callLog" class="col-xs-12 textCenter well">
                   <div class="row">
-                      <div class="col-md-8 col-md-offset-2 col-xs-12">
+                      <div class="col-md-8 col-md-offset-2 col-xs-12 callBody">
+                          <video id="incomingVideo" autoplay></video>
                           <div class="clock center"></div>
                       </div>
 
@@ -609,7 +610,7 @@ var clearError = function() {
 
     sinchClient = new SinchClient({
     applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7', /* NOTE: Use same application key in backend-example.py, and start python script. */
-    capabilities: {calling: true},
+    capabilities: {calling: true, video: true},
     startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
     //Note: For additional loging, please uncomment the three rows below
     onLogMessage: function(message) {
@@ -641,37 +642,42 @@ var callListeners = {
     $('audio#ringback').prop("currentTime", 0);
     $('audio#ringback').trigger("play");
 
-    //Report call stats
-    $('div#callLog').append('<div id="stats">Ringing...</div>');
   },
   onCallEstablished: function(call) {
     $('audio#incoming').attr('src', call.incomingStreamURL);
     $('audio#ringback').trigger("pause");
     $('audio#ringtone').trigger("pause");
+    $('#incomingVideo').attr('src', call.incomingStreamURL);
 
     clock.start();
 
     //Report call stats
     var callDetails = call.getDetails();
-    $('div#callLog').append('<div id="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
+
   },
   onCallEnded: function(call) {
-    $('audio#ringback').trigger("pause");
-    $('audio#ringtone').trigger("pause");
-    $('audio#incoming').attr('src', '');
-
-    $('button').removeClass('incall');
-    $('button').removeClass('callwaiting');
-
-    clock.stop();
-
     //Report call stats
     var callDetails = call.getDetails();
-    $('div#callLog').append('<div id="stats">Ended: '+callDetails.endedTime+'</div>');
-    $('div#callLog').append('<div id="stats">Duration (s): '+callDetails.duration+'</div>');
-    $('div#callLog').append('<div id="stats">End cause: '+call.getEndCause()+'</div>');
+      $('audio#ringback').trigger("pause");
+    $('audio#ringtone').trigger("pause");
+    $('audio#incoming').attr('src', '');
+    $('#incomingVideo').attr('src', '');
+
+    $('#callModal button').removeClass('incall');
+    $('#callModal button').removeClass('callwaiting');
+
+      clock.stop();
+      alert(call.getEndCause);
+      $('#callLog').html('<h2>Experienced any technical issues?<br><br><button class="btn btn-warning report">REPORT A PROBLEM</button></h2>');
+      $('.callerName').hide();
+      $('.callerPic').hide();
+      $('#hangup').hide();
+      $('#answer').hide();
+
+      $('#callModal .modal-title').html("Looks like you're done with this call!");
+
     if(call.error) {
-      $('div#callLog').append('<div id="stats">Failure message: '+call.error.message+'</div>');
+
     }
   }
 }
@@ -687,29 +693,31 @@ var call;
 
 callClient.addEventListener({
   onIncomingCall: function(incomingCall) {
-    $('#callModal').modal('show');
     //Play some groovy tunes 
     $('audio#ringtone').prop("currentTime", 0);
     $('audio#ringtone').trigger("play");
 
-    //Print statistics
-    $('div#callLog').append('<div id="title">Incoming call from ' + incomingCall.fromId + '</div>');
     var userId = incomingCall.fromId;
     userId = userId.substr(4,userId.length-1);
     $.ajax({
-      type: 'post',
-      dataType: 'json',
-      data: {
-             csrfmiddlewaretoken: '{{ csrf_token }}',
-             userId: userId
+        url: '/live/get-caller-info/',
+        type: 'post',
+        dataType: 'json',
+        data: {
+             'csrfmiddlewaretoken': '{{ csrf_token }}',
+             'userId': userId
         },
-      url: '/user/getDetails/',
-      success: function(data) {
-          $('.callerPic').attr('src',data['pic_url']);
-          $('.callerName').text(data['fn']+" "+data['ln']);
-      }
+        success: function(data) {
+            $('.callerPic').attr('src',data['picture']);
+            $('.callerName').text(data['fullName']);
+            $('.callerName').hide();
+              $('.callerPic').show();
+              $('#hangup').show();
+              $('#answer').show();
+
+            $('#callModal').modal('show');
+        }
     });
-    $('div#callLog').append('<div id="stats">Ringing...</div>');
     $('#callModal button').addClass('incall');
 
     //Manage the call object

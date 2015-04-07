@@ -8,6 +8,16 @@
     .basic-form input  {
         width: 50% !important;
     }
+    .education-form {
+        /*background-image: url("{% static 'img/geometry16.jpg' %}") !important;*/
+        background-color: #81D4FA;
+        box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+    }
+    .education-form h3, education-form lable {
+        color: black !important;
+        line-height: 1 !important;
+        margin-bottom: 0px !important;
+    }
     .education-form .form-group {
         display: inline-block !important;
         margin: 5px;
@@ -15,6 +25,10 @@
     .education-form input {
 
         background-color: transparent;
+    }
+    .employment-form label, .employment-form h3, .employment-form input {
+        display: inline !important;
+        max-width: 200px !important;
     }
     .nav-tabs {
         background-color: transparent !important;
@@ -79,7 +93,7 @@
                 {% for field in edu_form %}
                      <div class="form-group">
                         {% if field.label != 'Parent' and field.label != 'Id' %}
-                        <label class="form-label" for="{{ field.name }}" ><h5>{{ field.label }}</h5></label>
+                        <h3>{{ field.label_tag }}</h3>
                             <br>
                          {% endif %}
                           {{ field }}
@@ -88,14 +102,24 @@
                 </div>
             {% endfor %}
         {{ edu_formset.management_form }}
-        <a class="btn btn-primary cnt" id="add_more">Add a field</a>
+        <a class="btn btn-primary cnt" id="addMoreEdu">Add a field</a>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="settings">
             {% for emp_form in emp_formset %}
-            {{ emp_form.as_p }}
+                <div class="row well employment-form form-inline">
+                {% for field in emp_form %}
+                     <div class="form-group">
+                        {% if field.label != 'Parent' and field.label != 'Id' %}
+                        <h3>{{ field.label_tag }}</h3>
+                            <br>
+                         {% endif %}
+                          {{ field }}
+                      </div>
+                {% endfor %}
+                </div>
             {% endfor %}
-
-        {{ emp_formset.management_form }}
+            {{ emp_formset.management_form }}
+        <a class="btn btn-primary cnt" id="addMoreEmp">Add a field</a>
         </div>
       </div>
 
@@ -107,8 +131,8 @@
 {% block scripts %}
     <script src="{%  static 'morph/classie.js' %}"></script>
     <script>
-        var data = $('#tab-form').serializeArray();
         $('.update').click(function() {
+            var data = $('#tab-form').serializeArray();
             $.ajax({
                 url: '/mentor/edit-profile/',
                 data: data,
@@ -128,7 +152,6 @@
                 var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
                 var id = 'id_' + name;
                 $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-                $(this).val(" ");
             });
             newElement.find('label').each(function() {
                 var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
@@ -139,8 +162,13 @@
             $(selector).after(newElement);
         }
 
-        $('#add_more').click(function() {
+        $('#addMoreEdu').click(function() {
             cloneMore('.education-form:last', 'educationdetails_set');
         });
+
+        $('#addMoreEmp').click(function() {
+            cloneMore('.employment-form:last', 'employmentdetails_set');
+        });
+
     </script>
 {%  endblock %}

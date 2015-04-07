@@ -323,18 +323,6 @@ def explore(request):
     return render_to_response('user/explore.html')
 
 
-@login_required
-def get_details(request):
-    user = request.user
-    details = {}
-    userId = request.POST['userId']
-    mentee = User.objects.get(id=userId)
-    userProfile = user.user_profile
-    details["fn"] = mentee.first_name
-    details["ln"] = mentee.last_name
-    details['pic_url'] = userProfile.picture
-    return JsonResponse(details)
-
 
 @login_required
 def root(request):
@@ -377,9 +365,9 @@ def submit_call_log(request):
     request_id = None
     if request.method == 'POST':
         post = request.POST
-        if 'request_id' in post and 'end_time' in post and 'end_cause' in post and 'duration' in post:
+        if 'request_id' in post and 'end_time' in post and 'est_time' in post and 'end_cause' in post and 'duration' in post:
             if post['request_id'] != '' and post['end_time'] != '' and post[
-                'end_cause'] != '' and post['duration'] != '':
+                'end_cause'] != '' and post['duration'] != '' and post['est_time'] != '':
                 request_obj = Request.objects.get(id=post['request_id'])
                 request_id = post['request_id']
                 utc_est_time = get_utc_time(request, post['est_time'])
@@ -419,8 +407,7 @@ def submit_feedback(request):
     if request.method == 'POST':
         post = request.POST
         if 'request_id' in post and 'rating' in post and 'feedback' in post:
-            if post['rating'] != '' and post['feedback'] != '' and post[
-                'request_id'] != '':
+            if post['rating'] != '' and post['request_id'] != '':
                 request_obj = Request.objects.get(id=post['request_id'])
                 call_log_obj = request_obj.callLog
                 feedback_obj = Feedback(user=request.user)
@@ -443,7 +430,10 @@ def submit_feedback(request):
 
 def is_call_valid(request):
     request_obj = Request.objects.get(id=request.GET['request_id'])
-    call_obj = request_obj.callLog
+    try:
+        call_obj = CallLog.objects.get(request=request_obj)
+    except CallLog.DoesNotExist:
+        call_obj = None
     valid = True
     if request_obj and call_obj:
         if call_obj.duration >= 1800 or request_obj.is_completed == True:

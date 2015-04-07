@@ -1,13 +1,7 @@
-/*
-$(".call-button").click(function() {
-        $(this).parent().addClass("active open");
 
-});
-$(".icon-close").click(function () {
-   $(this).parents('.morph-button').removeClass("active open");
-});*/
 var global_username = '';
-
+var callType = 1;
+var owner;
 
 /*** After successful authentication, show user interface ***/
 
@@ -23,7 +17,7 @@ var showUI = function() {
 
 sinchClient = new SinchClient({
 	applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7',
-	capabilities: {calling: true,video: true},
+	capabilities: {calling: true, video: true},
 	startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
 	//Note: For additional loging, please uncomment the three rows below
 	onLogMessage: function(message) {
@@ -66,15 +60,23 @@ var callListeners = {
 		$('audio.incoming').attr('src', call.incomingStreamURL);
 		$('audio.ringback').trigger("pause");
 		$('audio.ringtone').trigger("pause");
-
+        alert(callType);
+        if(callType == 3) {
+            owner.find('#incomingVideo').show();
+            owner.find('#incomingVideo').attr('src', call.incomingStreamURL);
+        }
 		clock.start(function() {
 		// this (optional) callback will fire each time the clock flips
 		})
 		//Report call stats
 		var callDetails = call.getDetails();
-		$('.callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
+		owner.find('.callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
 	},
 	onCallEnded: function(call) {
+        if(callType == 3) {
+            //owner.find('#outgoingVideo').attr('src', '');
+		    owner.find('#incomingVideo').attr('src', '');
+        }
 		$('audio.ringback').trigger("pause");
 		$('audio.ringtone').trigger("pause");
 		$('audio.incoming').attr('src', '');
@@ -86,6 +88,40 @@ var callListeners = {
 
 		//Report call stats
 		var callDetails = call.getDetails();
+        var est_time = callDetails.establishedTime + "";
+        var end_time = callDetails.endedTime + "";
+
+        $.ajax({
+            url: "/user/submit-callLog/",
+            type: "post",
+            data: {'csrfmiddlewaretoken': csrf, 'request_id': owner.parent().find('.request_id').val(),
+                    'est_time': est_time.split(" ")[4], 'end_time': end_time.split(" ")[4],
+                    'end_cause': 'TEST'/*call.getEndCause()*/, 'duration': callDetails.duration},
+            dataType: "json",
+            success: function(data) {
+                owner.fadeOut();
+                owner.parent().find(".clock").fadeOut();
+                owner.parent().find(".callLog").fadeOut();
+                owner.parent().find(".hangup").fadeOut();
+                owner.parent().find(".call-title").fadeOut();
+                if(callType == 3) {
+                    owner.parent().find('#incomingVideo').remove();
+                    //owner.parent().find('#outgoingVideo').remove();
+                }
+                owner.parent().find(".call-title").html("Your feedback is valuable to us!");
+                setInterval(function() {
+                    owner.parent().find(".call-title").fadeIn();
+                    owner.parent().find(".form-feedback").animate({
+                        left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
+                    }, 200);
+                }, 1000);
+                owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
+            },
+            failure: function() {
+                alert("failed to submit call log details");
+            }
+        });
+
 		$('div.callLog').append('<div class="stats">Ended: '+callDetails.endedTime+'</div>');
 		$('div.callLog').append('<div class="stats">Duration (s): '+callDetails.duration+'</div>');
 		$('div.callLog').append('<div class="stats">End cause: '+call.getEndCause()+'</div>');
@@ -122,7 +158,7 @@ $('button.call').click(function(event) {
             autoStart: false,
             clockFace: 'MinuteCounter'
         });
-        var owner = $(this);
+        owner = $(this);
         $.ajax({
             url: '/user/call-valid',
             type: 'GET',
@@ -143,15 +179,28 @@ $('button.call').click(function(event) {
                     owner.parent().find('.callLog').append('<div class="title">Calling <b>' + owner.parent().find('.callUserName').val()+'</b></div>');
 
                     console.log('Placing call to: ' + owner.parent().find('.callUserName').val());
-                    call = callClient.callUser(owner.parent().find(".calleeId").val());
+                    callType = parseInt(owner.parent().find(".callType").val());
+                    alert(owner.parent().find(".callType").val());
+                    if(callType == 1 || callType == 3) {
+                        // Video or web call
+                        call = callClient.callUser(owner.parent().find(".calleeId").val());
+                    }
+                    else if(callType == 2) {
+                        // phone call
+                        call = callClient.callPhoneNumber($(this).parent().find('.number'));
+                    }
 
+                    //Remove video element if call Type is not 3
+                    if(callType != 3) {
+                        //owner.parent().find('#outgoingVideo').hide();
+                        owner.parent().find('#incomingVideo').hide();
+
+                    }
                     call.addEventListener(callListeners);
                 }
                 else {
                     owner.parent().find('.call-overlay-content').html("<h2>Sorry but you have completed this call!</h2>");
                 }
-
-
             }
         });
 
@@ -172,35 +221,6 @@ $('button.hangup').click(function(event) {
 
         //remove close-alert class from close icon
         $(this).parent().find('.icon-close').removeClass('close-alert');
-        callDetails = call.getDetails();
-        var est_time = callDetails.establishedTime + "";
-        var end_time = callDetails.endedTime + "";
-        var owner = $(this);
-        $.ajax({
-            url: "/user/submit-callLog/",
-            type: "post",
-            data: {'csrfmiddlewaretoken': csrf, 'request_id': $(this).parent().find('.request_id').val(),
-                    'est_time': est_time.split(" ")[4], 'end_time': end_time.split(" ")[4],
-                    'end_cause': call.getEndCause(), 'duration': callDetails.duration},
-            dataType: "json",
-            success: function(data) {
-                owner.fadeOut();
-                owner.parent().find(".clock").fadeOut();
-                owner.parent().find(".callLog").fadeOut();
-                owner.parent().find(".call-title").fadeOut();
-                owner.parent().find(".call-title").html("Your feedback is valuable to us!");
-                setInterval(function() {
-                    owner.parent().find(".call-title").fadeIn();
-                    owner.parent().find(".form-feedback").animate({
-                        left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
-                    }, 200);
-                }, 1000);
-                owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
-            },
-            failure: function() {
-                alert("failed call log submission");
-            }
-        });
 	}
 });
 

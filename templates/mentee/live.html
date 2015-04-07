@@ -41,6 +41,8 @@
                             <div class="morph-button morph-button-overlay morph-button-fixed">
                                 <input type="hidden" class="calleeId" value="user{{ request.mentor_id }}" />
                                 <input type="hidden" class="callUserName" value="{{ request.mentor_name }}" />
+                                <input type="hidden" class="callType" value="{{ request.callType }}" />
+                                <input type="hidden" class="number" value="{{ request.contact }}" />
                                 <button type="button" class="call-button call">Call</button>
                                 <div class="morph-content" style="left: 493px; top: 72.234375px;">
                                     <div class="content-style-overlay">
@@ -48,6 +50,7 @@
                                         <div class="call-overlay-content">
                                             <input type="hidden" class="request_id" value="{{ request.request_id }}" />
                                             <h2 class="call-title">Relax while we place your call...</h2>
+			                                <video id="incomingVideo" autoplay></video>
                                             <div class="clock center"></div>
                                             <button class="hangup">Hangup</button>
                                             <div class="row callLog textCenter margin-s">

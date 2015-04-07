@@ -1,4 +1,7 @@
-
+.callerPic {
+    max-width: 70px;
+    max-height: 70px;
+}
 
 #callModal {
   font-family: 'Arial', 'Helvetica', 'Sans Serif';
