@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-LOGFILE=/home/anmolshkl/repo/MB-beta1/gunicorn.log
+LOGFILE=/home/ubuntu/MB-Project/gunicorn.log
 LOGDIR=$(dirname $LOGFILE)
 NUM_WORKERS=3
 # user/group to run as
