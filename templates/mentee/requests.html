@@ -1,0 +1,100 @@
+{% extends 'mentee/base.html' %}
+{% load static %}
+    {% block stylesheets %}
+        <style type="text/css">
+            .mg-left-s {
+                margin-left: 20px;
+            }
+            .mg-top-l {
+                margin-top: 40px;
+            }
+            .None {
+                border: 1px solid #ffff66 !important;
+            }
+            .True {
+                border: 1px solid green !important;
+            }
+            .False {
+                border: 1px solid red !important;
+            }
+            .reqStatus {
+                position: absolute;
+                margin: 0 auto;
+                display: block;
+                bottom: 5px;
+                height: 15px;
+                margin: 5px;
+            }
+            .textCenter {
+                text-align: center;
+            }
+            .center {
+                margin: 0 auto;
+            }
+            .btn-round {
+              background-color: #ffa54f;
+              border-radius: 999em;
+              width: 40px;
+              height: 40px;
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+              line-height: 1;
+              font-size: 36px;
+              position: absolute;
+              top: 100px;
+              right: 80px;
+              cursor: pointer;
+              display: inline-block;
+            }
+
+            .btn-round i {
+                position: absolute;
+              left: 0;
+              top: 70%;
+              height: 100%;
+              width: 100%;
+              text-align: center;
+              margin-top: -22px;
+              color: #FFF;
+                font-size: 25px;
+            }
+            .popover {
+                margin-right: 5px !important;
+            }
+
+
+        </style>
+    {% endblock %}
+ {% block container_title %}
+    <h2>Pending requests</h2>
+ {% endblock %}
+ {% block container_block %}
+     <div class="container-fluid mg-top-l">
+        <div class="row">
+             {% for reqObj in userRequests %}
+                <div class="col-md-3 mg-left-s well {{ reqObj.is_approved }} textCenter">
+                    <img src="{{ reqObj.picture }}" class="img-responsive img-circle center" />
+                    <h3>{{ reqObj.mentorName }}</h3><br>
+                    <h4>{{ reqObj.dateTime }}</h4><br>
+                    {{ reqObj.duration }} min<br>
+                    Requested on: {{ reqObj.requestDate }}<br>
+                    {% if reqObj.is_approved == True %}
+                        <span class="reqStatus fa fa-check"></span>
+                    {% elif reqObj.is_approved == False %}
+                        <span class="reqStatus fa fa-times"></span>
+                    {% else %}
+                        <span class="reqStatus fa fa-minus-circle"></span>
+                    {% endif %}
+                </div>
+             {% endfor %}
+        </div>
+        <div title="help" class="btn-round" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="<i class='fa fa-minus-circle'>&nbsp;&nbsp;&nbsp;Request Pending</i><br><i class='fa fa-times'>&nbsp;&nbsp;&nbsp;Request Rejected</i><br><i class='fa fa-check'>&nbsp;&nbsp;&nbsp;Request Accepted</i><br>" data-html="true"><i class="fa fa-question"></i></div>
+     </div>
+
+ {% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+            $(".btn-round").click(function () {
+                $(".btn-round").popover('toggle');
+            });
+    </script>
+{% endblock %}

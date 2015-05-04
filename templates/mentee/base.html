@@ -7,8 +7,8 @@
 <meta charset="utf-8" />
 <title>{% block title %}Mentor Buddy{% endblock %}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta content="" name="description" />
-<meta content="" name="author" />
+<meta content="Welcome Mentee" name="description" />
+<meta content="MentorBuddy" name="author" />
 
 <!-- BEGIN PLUGIN CSS -->
 <link href="{% static 'template/webarch/assets/plugins/pace/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" media="screen"/>
@@ -17,6 +17,7 @@
 <link href="{% static 'template/webarch/assets/plugins/jquery-slider/css/jquery.sidr.light.css' %}" rel="stylesheet" type="text/css" media="screen"/>
 <link href="{% static 'template/webarch/assets/plugins/bootstrap-select2/select2.css' %}" rel="stylesheet" type="text/css" media="screen"/>
 <link href="{% static 'template/webarch/assets/plugins/boostrap-checkbox/css/bootstrap-checkbox.css' %}" rel="stylesheet" type="text/css" media="screen"/>
+
 <!-- END PLUGIN CSS -->
 
 <!-- BEGIN CORE CSS FRAMEWsORK -->
@@ -32,9 +33,12 @@
 <link href="{% static 'template/webarch/assets/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
 <link href="{% static 'template/webarch/assets/css/custom-icon-set.css' %}" rel="stylesheet" type="text/css"/>
 <!-- END CSS TEMPLATE -->
-<style>
+<style type="text/css">
     .top-search {
         top: 0px !important;
+    }
+    .navbar {
+        z-index: 9999 !important;
     }
 </style>
 {% block stylesheets %}
@@ -207,10 +211,11 @@
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>    
       <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-important pull-right">5</span></a> </li>
-      <li class=""> <a href="javascript:;"> <i class="fa fa-user"></i> <span class="title">Profile</span></a></li>
-      <li class=""> <a href="#"> <i class="fa fa-envelope"></i> <span class="title">Requests</span></a> </li>
+      <li class=""> <a href="/mentee/self-profile/"> <i class="fa fa-user"></i> <span class="title">Profile</span></a></li>
+      <li class=""> <a href="/mentee/edit-profile/"> <i class="fa fa-edit"></i> <span class="title">Edit Profile</span></a></li>
+      <li class=""> <a href="/mentee/requests/"> <i class="fa fa-envelope"></i> <span class="title">Requests</span></a> </li>
            
-      <li class=""> <a href="../frontend/index.html"> <i class="fa fa-flag"></i>  <span class="title">Social Accounts</span></a></li>      
+      <li class=""> <a href="/mentee/manage-social-profiles/"> <i class="fa fa-flag"></i>  <span class="title">Social Accounts</span></a></li>
       
       <li class=""> <a href="/live/"> <i class="fa fa-phone"></i> <span class="title">Go Live!</span></a></li>
     </ul>

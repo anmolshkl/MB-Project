@@ -1,12 +1,87 @@
 {% extends 'mentee/base.html' %}
+{% load static %}
+{% block stylesheets %}
 
-{% block title %}Edit Profile{% endblock %}
+    <link href="{% static 'css/mentee/edit-profile.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'template/webarch/assets/plugins/bootstrap-datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'template/webarch/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css' %}" rel="stylesheet" type="text/css" />
 
-{% block body_block %}
-    <form method="post" action=/mentee/edit-profile/>
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ form.as_p }}
-        <input type="submit" name="action" value="Submit" />
-    </form>
+{%  endblock %}
+{% block container_title %}<h1>Edit Profile</h1><hr>{% endblock %}
+
+{% block container_block %}
+
+
+    <div id="Clouds">
+      <div class="Cloud Foreground"></div>
+      <div class="Cloud Background"></div>
+      <div class="Cloud Foreground"></div>
+      <div class="Cloud Background"></div>
+      <div class="Cloud Foreground"></div>
+      <div class="Cloud Background"></div>
+      <div class="Cloud Background"></div>
+      <div class="Cloud Foreground"></div>
+      <div class="Cloud Background"></div>
+      <div class="Cloud Background"></div>
+    <!--  <svg viewBox="0 0 40 24" class="Cloud"><use xlink:href="#Cloud"></use></svg>-->
+    </div>
+
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+         width="40px" height="24px" viewBox="0 0 40 24" enable- xml:space="preserve">
+      <defs>
+        <path id="Cloud" d="M33.85,14.388c-0.176,0-0.343,0.034-0.513,0.054c0.184-0.587,0.279-1.208,0.279-1.853c0-3.463-2.809-6.271-6.272-6.271
+        c-0.38,0-0.752,0.039-1.113,0.104C24.874,2.677,21.293,0,17.083,0c-5.379,0-9.739,4.361-9.739,9.738
+        c0,0.418,0.035,0.826,0.084,1.229c-0.375-0.069-0.761-0.11-1.155-0.11C2.811,10.856,0,13.665,0,17.126
+        c0,3.467,2.811,6.275,6.272,6.275c0.214,0,27.156,0.109,27.577,0.109c2.519,0,4.56-2.043,4.56-4.562
+        C38.409,16.43,36.368,14.388,33.85,14.388z"/>
+      </defs>
+    </svg>
+    <form class="cbp-mc-form" method="post" action="/mentee/edit-profile/">
+    {% csrf_token %}
+	<div class="cbp-mc-column">
+		{% for field in user_form %}
+                {{ field.label_tag }}
+                {{ field }}
+        {% endfor %}
+        {{ profile_form.about.label_tag }}
+        {{ profile_form.about }}
+
+
+	</div>
+	<div class="cbp-mc-column">
+        <label for="id_picture">Profile Image</label>
+        <img src="{{ profile_form.picture.value }}" class="img-circle center edit-pic" />
+        {{ profile_form.picture }}
+        <button class="btn btn-primary mg-left-s">Upload new</button>
+        {{ profile_form.gender.label_tag }}
+        {{ profile_form.gender }}
+
+
+        {{ profile_form.date_of_birth.label_tag }}
+        {{ profile_form.date_of_birth }}
+
+        {{ profile_form.contact.label_tag }}
+        {{ profile_form.contact }}
+
+	</div>
+	<div class="cbp-mc-column">
+        {{ profile_form.college.label_tag }}
+        {{ profile_form.college }}
+
+        {{ profile_form.city.label_tag }}
+        {{ profile_form.city }}
+
+        {{ profile_form.state.label_tag }}
+        {{ profile_form.state }}
+
+        {{ profile_form.country.label_tag }}
+        {{ profile_form.country }}
+
+	</div>
+	<div class="cbp-mc-submit-wrap"><input class="cbp-mc-submit" type="submit" value="Update" /></div>
+</form>
 {% endblock %}
+{%  block scripts %}
+<script src="{% static 'template/webarch/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>
+<script src="{% static 'template/webarch/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js' %}" type="text/javascript"></script>
+{%  endblock %}

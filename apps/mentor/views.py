@@ -272,7 +272,7 @@ def self_profile_view(request):
 
         if profile_url != None:
             context_dict['profile_url'] = profile_url
-
+    print eduObjs
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
@@ -288,6 +288,8 @@ def self_profile_view(request):
                              'from': obj.from_date, 'to': obj.to_date})
 
         context_dict['emp_list'] = emp_list
+
+    print context_dict
     return render_to_response("mentor/profile-view.html", context_dict, context)
 
 
