@@ -198,7 +198,7 @@ SOCIALACCOUNT_PROVIDERS = \
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
-         {'SCOPE': ['email', 'publish_stream', 'public_profile', 'user_birthday', 'user_education_history',
+         {'SCOPE': ['email', 'publish_actions', 'public_profile', 'user_birthday', 'user_education_history',
                     'user_location'],
           'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
           'METHOD': 'oauth2',
@@ -206,7 +206,7 @@ SOCIALACCOUNT_PROVIDERS = \
           'VERIFIED_EMAIL': False},
 
      'linkedin':
-         {'SCOPE': ['r_emailaddress', 'r_fullprofile', 'r_basicprofile'],
+         {'SCOPE': ['r_emailaddress', 'r_fullprofile'],
           'PROFILE_FIELDS': ['id',
                              'first-name',
                              'last-name',
@@ -250,8 +250,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 # custom adapter to override login behavior and associate different social profiles with same email,with same user
-SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.MySocialAccountAdapter'
-ACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.MyLoginAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
 
 #Crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

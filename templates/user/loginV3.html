@@ -89,7 +89,8 @@
               
               <button type="submit" class="button buttonBlue singUpButton">SIGN UP
               </button>
-              <button href="{% provider_login_url "linkedin" method="oauth2" %}" class="button signUpLinkedIn"><i class="fa fa-linkedin fa-2x"></i><span class="socialButtonLabel">Sign up with LinkedIn</span></button>
+              <a href="{% provider_login_url "linkedin" method="oauth2" %}" class="button signUpLinkedIn"><i class="fa fa-linkedin fa-2x"></i><span class="socialButtonLabel">Sign up with LinkedIn</span></a>
+              <a href="{% provider_login_url "facebook" method="oauth2" next="/user/" %}" class="button signUpFacebook"><i class="fa fa-facebook fa-2x"></i><span class="socialButtonLabel">Sign up with Facebook</span></a>
             </form>
               
           </div>

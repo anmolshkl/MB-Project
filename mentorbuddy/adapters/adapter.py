@@ -1,55 +1,32 @@
-from allauth.account.adapter import DefaultAccountAdapter
-from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+'''See this for this adapter design: http://stackoverflow.com/questions/19354009/
+django-allauth-social-login-automatically-linking-social-site-profiles-using-th/19443127#19443127'''
+
+from django.contrib.auth.models import User
+
 from allauth.exceptions import ImmediateHttpResponse
-from allauth.socialaccount.signals import pre_social_login
-from allauth.account.utils import perform_login
-from allauth.utils import get_user_model
-from django.dispatch import receiver
-from django.shortcuts import redirect
-from django.conf import settings
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from django.http import HttpResponse
 
 
-class MyLoginAccountAdapter(DefaultAccountAdapter):
-    '''
-    Overrides allauth.account.adapter.DefaultAccountAdapter.ajax_response to avoid changing
-    the HTTP status_code to 400
-    '''
-
-    def get_login_redirect_url(self, request):
-        """
-        """
-        if request.user.is_authenticated():
-            return settings.LOGIN_REDIRECT_URL.format(
-                id=request.user.id)
-        else:
-            return "/"
-
-
-class MySocialAccountAdapter(DefaultSocialAccountAdapter):
-    '''
-    Overrides allauth.socialaccount.adapter.DefaultSocialAccountAdapter.pre_social_login to
-    perform some actions right after successful login
-    '''
+class SocialLoginAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
-        pass    # TODOFuture: To perform some actions right after successful login
-
-@receiver(pre_social_login)
-def link_to_local_user(sender, request, sociallogin, **kwargs):
-    ''' Login and redirect
-    This is done in order to tackle the situation where user's email retrieved
-    from one provider is different from already existing email in the database
-    (e.g facebook and google both use same email-id). Specifically, this is done to
-    tackle following issues:
-    * https://github.com/pennersr/django-allauth/issues/215
-
+        # This isn't tested, but should work
+        try:
+            user = User.objects.get(email=sociallogin.account.user.email)
+            sociallogin.connect(request, user)
+            # Create a response object
+            response = HttpResponse()
+            raise ImmediateHttpResponse(response)
+        except Exception:
+            pass
     '''
-    email_address = sociallogin.account.extra_data['email']
-    print "printing email"
-    print email_address
-    User = get_user_model()
-    users = User.objects.filter(email=email_address)
-    if users:
-        # allauth.account.app_settings.EmailVerificationMethod
-        sociallogin.connect(request, users[0])
-        perform_login(request, users[0], email_verification='optional')
-        raise ImmediateHttpResponse(redirect(settings.LOGIN_REDIRECT_URL.format(id=request.user.id)))
+    def get_login_redirect_url(self, request):
+        print "get_login_redirect_url"
+        user = User.objects.get(email=sociallogin.account.user.email)
+        user_profile = UserProfile.objects.get(user=user)
+        if user_profile.is_new:
+            login_url = "/user/newsuser/"
+        else:
+            loin_url = "/user/"
+        return login_url
+    '''

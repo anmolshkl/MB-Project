@@ -304,7 +304,7 @@ p {
 }
 .signUpForm .button:focus { outline: 0; }
 
-.signUpLinkedIn i {
+.signUpLinkedIn i, .signUpFacebook i {
 	position: relative;
 	float: left;
 	vertical-align: middle !important;
@@ -318,6 +318,14 @@ p {
     text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
 }
 .signUpLinkedIn:hover {
+    opacity: 0.8;
+}
+.signUpFacebook {
+    padding: 0px !important;
+    background: #3b5998 !important;
+    text-shadow: 2px 2px 0 rgba(39, 110, 204, .5);
+}
+.signUpFacebook:hover {
     opacity: 0.8;
 }
 /* Button modifiers */
