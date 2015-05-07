@@ -183,7 +183,7 @@
                     {% endif %}
                 </div>
                 <br>
-                {% if edu_list %}
+                {% if emp_list %}
                 <div class="row">
                     <div class="col-xs-12 white tiles pd-s textCenter bg-purple">
                         <h3 class="txt-white">Employment Details</h3>
@@ -197,6 +197,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                    <br>
                 {%endif%}
             </div>    
             </div>
@@ -209,6 +210,11 @@
 
 <script src="{% static 'datetimepicker/jquery.datetimepicker.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
+    //Simple todolist
+	 $('.todo-list').click(function () {
+         alert("clicked");
+		$(this).parent().children('label').toggleClass('done');
+	});
     $("#scheduleForm").hide();
     $(".scheduleSelect").click(function() {
         $(".button-group").hide();

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.user.models import Request, CallLog, Feedback
+from apps.user.models import Request, CallLog, Feedback, VerificationCodes
 
 
 class RequestInline(admin.TabularInline):
@@ -20,3 +20,6 @@ admin.site.register(Request)
 admin.site.register(CallLog)
 
 admin.site.register(Feedback)
+
+admin.site.register(VerificationCodes)
+

@@ -81,10 +81,8 @@ def index(request):
 
 
 def user_login(request):
-    # Like before, obtain the context for the user's request.
-    print "inside user_login view"
-    context = RequestContext(request)
-
+    error = False
+    msg = None
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -96,30 +94,22 @@ def user_login(request):
             # Is the account active? It could have been disabled.
             if user.is_active:
                 # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the userpage.
                 login(request, user)
                 user_profile = UserProfile.objects.get(user=user)
                 (social_profile, created) = SocialProfiles.objects.get_or_create(parent=user_profile)
-                return HttpResponseRedirect("/user/")
-                # return HttpResponseRedirect('/user/')
             else:
-                # An inactive account was used - no logging in!
-                return HttpResponseRedirect("/user/")
-                # return HttpResponse("Your Mentor Buddy account is disabled.")
+                error = True
+                msg = "Your account is not active. Please contact the admin."
         else:
-            # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(email, password)
-            # return HttpResponse("Invalid login details supplied.")
-            return render_to_response('user/loginV3.html', {'error': "Invalid Email/Password"},
-                                      context_instance=context)
+            error = True
+            msg = "Please check your email/password."
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GETself.
     else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render_to_response('user/loginV3.html', {}, context_instance=context)
-    return render_to_response('user/loginV3.html', {}, context_instance=context)
+        error = True
+        msg = "Not a POST request."
+    return JsonResponse({"error": error, "msg": msg})
 
 
 def select(request):
@@ -452,6 +442,8 @@ def register_confirm(request, ak):
     # ver_obj = VerificationCodes.objects.get(activation_key=activation_key)
     # check if the activation key has expired, if it has then render confirm_expired.html
 
+    print verification_obj.key_expires
+    print timezone.now()
     if verification_obj.key_expires < timezone.now():
         print "the activation key has expired"
         return redirect('/user/')

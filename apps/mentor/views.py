@@ -25,7 +25,7 @@ from django.http import JsonResponse
 
 from apps.user.models import Request
 
-from datetime import datetime as dt, timedelta as td
+from datetime import datetime as dt, timedelta as td, datetime
 from pytz import timezone
 import pytz
 
@@ -272,7 +272,6 @@ def self_profile_view(request):
 
         if profile_url != None:
             context_dict['profile_url'] = profile_url
-    print eduObjs
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
@@ -282,6 +281,8 @@ def self_profile_view(request):
         context_dict['edu_list'] = edu_list
 
     if empObjs:
+        print "empObjs"
+        print empObjs
         emp_list = []
         for obj in empObjs:
             emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
@@ -668,7 +669,7 @@ def get_requests(request):
     user = request.user
     context = RequestContext(request)
     context_dict = {}
-    req_objs = Request.objects.filter(mentorId=user.id, is_approved=None)
+    req_objs = Request.objects.filter(mentorId=user.id, is_approved=None, dateTime__gte=datetime.now(pytz.utc))
     if req_objs:
         req_list = []
         for obj in req_objs:
