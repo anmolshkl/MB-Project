@@ -133,6 +133,20 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfiles.save()
 
+    try:
+        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
+    except:
+        pass
+    if extra_data:
+        # Save user's social profile image everytime he logs in/hardcode for facebook
+        userProfile.picture = "http://graph.facebook.com/"+user.socialaccount_set.filter(provider='facebook')[0].uid+"/picture?type=large"
+        userProfile.email_verified = True
+        userProfile.save()
+        socialProfiles.profile_url_facebook = extra_data['link']
+        socialProfiles.profile_pic_url_facebook = userProfile.picture
+        socialProfiles.save()
+
+
 
 class MentorSearchForm(SearchForm):
     def no_query_found(self):

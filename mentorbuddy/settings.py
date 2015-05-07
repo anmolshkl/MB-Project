@@ -198,7 +198,7 @@ SOCIALACCOUNT_PROVIDERS = \
 
 SOCIALACCOUNT_PROVIDERS = \
     {'facebook':
-         {'SCOPE': ['email', 'publish_actions', 'public_profile', 'user_birthday', 'user_education_history',
+         {'SCOPE': ['email', 'public_profile', 'user_birthday', 'user_education_history',
                     'user_location'],
           'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
           'METHOD': 'oauth2',
