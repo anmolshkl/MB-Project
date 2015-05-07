@@ -212,7 +212,7 @@ def register(request):
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within 48 hours http://127.0.0.1:8000/user/confirm/%s" % (
+                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within 48 hours"+settings.SITE_URL+"/user/confirm/%s" % (
                     fn, activation_key)
 
                 print "trying to send mail with activation key"
