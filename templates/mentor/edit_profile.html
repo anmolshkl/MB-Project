@@ -70,6 +70,139 @@
         margin-top: -22px;
         color: #FFF;
     }
+    .cbp-mc-form {
+        position: relative;
+    }
+
+    /* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+    .cbp-mc-form:before,
+    .cbp-mc-form:after {
+        content: " "; display: table;
+    }
+
+    .cbp-mc-form:after {
+        clear: both;
+    }
+
+    .cbp-mc-column-2 {
+        width: 50%;
+        padding: 10px 30px;
+        float: left;
+    }
+    .cbp-mc-column-3 {
+        width: 33%;
+        padding: 10px 30px;
+        float: left;
+    }
+
+    .cbp-mc-form label {
+        display: block;
+        padding: 40px 5px 5px 2px;
+        font-size: 1.1em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        color: #362819;
+    }
+
+    .cbp-mc-form input,
+    .cbp-mc-form textarea,
+    .cbp-mc-form select {
+        font-family: 'Lato', Calibri, Arial, sans-serif;
+        line-height: 1.5;
+        font-size: 1.4em;
+        padding: 5px 10px;
+        color: black;
+        display: block;
+        width: 100%;
+        background: transparent;
+    }
+
+    .cbp-mc-form input,
+    .cbp-mc-form select,
+    .cbp-mc-form textarea {
+        border: 3px solid #3B3B3B;
+    }
+
+    .cbp-mc-form textarea {
+        min-height: 200px;
+    }
+
+    .cbp-mc-form input:focus,
+    .cbp-mc-form textarea:focus,
+    .cbp-mc-form label:active + input,
+    .cbp-mc-form label:active + textarea {
+        outline: none;
+        border: 3px solid #8B8B83;
+    }
+
+    .cbp-mc-form select:focus {
+        outline: none;
+    }
+
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        color: #10689a;
+        font-style: italic;
+    }
+
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: #10689a;
+        font-style: italic;
+    }
+
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: #10689a;
+        font-style: italic;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: #10689a;
+        font-style: italic;
+    }
+
+    .cbp-mc-submit-wrap {
+        text-align: center;
+        padding-top: 40px;
+        clear: both;
+    }
+
+    .cbp-mc-form input.cbp-mc-submit {
+        background: #10689a;
+        border: none;
+        color: #fff;
+        width: auto;
+        cursor: pointer;
+        text-transform: uppercase;
+        display: inline-block;
+        padding: 15px 30px;
+        font-size: 1.1em;
+        border-radius: 2px;
+        letter-spacing: 1px;
+    }
+
+    .cbp-mc-form input.cbp-mc-submit:hover {
+        background: #1478b1;
+    }
+
+    @media screen and (max-width: 70em) {
+        .cbp-mc-column {
+            width: 50%;
+        }
+        .cbp-mc-column:nth-child(3) {
+            width: 100%;
+        }
+    }
+
+    @media screen and (max-width: 48em) {
+        .cbp-mc-column {
+            width: 100%;
+            padding: 10px;
+        }
+    }
+    #id_picture {
+        display: none;
+        visibility: hidden;
+    }
     </style>
 {%  endblock %}
 {% block container_title %}<h2>Edit Profile</h2>{% endblock %}
@@ -90,65 +223,130 @@
 
       <!-- Tab panes -->
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="home">
+        <div role="tabpanel" class="tab-pane fade in active cbp-mc-form" id="home">
             {% csrf_token %}
-          <div class="basic-form center">
-            {% for field in user_form %}
+            <div class="cbp-mc-column-2 textCenter">
+                <label for="id_picture">Profile Image</label>
+                <img src="{{ profile_form.picture.value }}" class="img-circle center edit-pic" />
+                {{ profile_form.picture }}
+                <br><br>
+                <button class="btn btn-primary mg-left-s">Upload new</button>
 
-             <div class="form-group">
-                <label class="form-label"><h4>{{ field.label }}</h4></label>
-                    <br>
-                  {{ field }}
-              </div>
-            {% endfor %}
+            </div>
+            <div class="cbp-mc-column-2">
+                {% for field in user_form %}
+
+                 <div class="form-group">
+                    <label class="form-label"><h4>{{ field.label }}</h4></label>
+                        <br>
+                      {{ field }}
+                  </div>
+                {% endfor %}
             </div>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="profile">
-            {% for field in form %}
-             <div class="form-group">
-                <label class="form-label"><h4>{{ field.label }}</h4></label>
-                    <br>
-                  {{ field }}
-              </div>
-            {% endfor %}
+        <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="profile">
+            <div class="cbp-mc-column-2">
+
+                {{ profile_form.gender.label_tag }}
+                {{ profile_form.gender }}
+
+                {{ profile_form.date_of_birth.label_tag }}
+                {{ profile_form.date_of_birth }}
+
+                {{ profile_form.contact.label_tag }}
+                {{ profile_form.contact }}
+            </div>
+            <div class="cbp-mc-column-2">
+                {{ profile_form.resume.label_tag }}
+                {{ profile_form.resume }}
+
+                {{ profile_form.city.label_tag }}
+                {{ profile_form.city }}
+
+                {{ profile_form.country.label_tag }}
+                {{ profile_form.country }}
+
+                {{ profile_form.about.label_tag }}
+                {{ profile_form.about }}
+            </div>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="messages">
+        <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
         {% if edu_formset.total_form_count != 0 %}
             {% for edu_form in edu_formset %}
                 <div class="row well education-form">
-                {% for field in edu_form %}
-                    {% if field.label != 'Delete' %}
-                     <div class="form-group">
+                    {{ edu_form.parent }}
+                    {{ edu_form.id }}
 
-                        {% if field.label != 'Parent' and field.label != 'Id' %}
-                        <h3>{{ field.label_tag }}</h3>
+                    <div class="cbp-mc-column-3">
+                        {{ edu_form.instituition.label_tag }}
+                        {{ edu_form.instituition }}
 
-                         {% endif %}
-                          {{ field }}
-                     </div>
-                     {% else %}
-                        <div class="checkbox check-danger margin-s">
-                        {{ field }}
-                        {{ field.label_tag }}
-                         </div>
-                     {% endif %}
+                        {{ edu_form.branch.label_tag }}
+                        {{ edu_form.branch }}
 
-                {% endfor %}
+                        {{ edu_form.degree.label_tag }}
+                        {{ edu_form.degree }}
+                    </div>
+                    <div class="cbp-mc-column-3">
+                        {{ edu_form.location.label_tag }}
+                        {{ edu_form.location }}
+
+                        {{ edu_form.state.label_tag }}
+                        {{ edu_form.state }}
+
+                        {{ edu_form.country.label_tag }}
+                        {{ edu_form.country }}
+                    </div>
+                    <div class="cbp-mc-column-3">
+                        {{ edu_form.from_year.label_tag }}
+                        {{ edu_form.from_year }}
+
+                        {{ edu_form.to_year.label_tag }}
+                        {{ edu_form.to_year }}
+
+                        {{ edu_form.delete.label_tag }}
+                        {{ edu_form.delete }}
+                    </div>
+
                 </div>
+        </div>
             {% endfor %}
         {% else %}
             <div class="row well education-form" style="display: none">
-                {% for field in edu_formset.empty_form %}
-                     <div class="form-group">
-                        {% if field.label != 'Parent' and field.label != 'Id' %}
-                            <h3>{{ field.label_tag }}</h3>
-                              <br>
-                         {% endif %}
-                            {{ field }}
-                      </div>
-                {% endfor %}
+                    {{ edu_formset.empty_form.parent }}
+                    {{ edu_formset.empty_form.id }}
 
+                    <div class="cbp-mc-column-3">
+                        {{ edu_formset.empty_form.institution.label_tag }}
+                        {{ edu_formset.empty_form.institution }}
+
+                        {{ edu_formset.empty_form.branch.label_tag }}
+                        {{ edu_formset.empty_form.branch }}
+
+                        {{ edu_formset.empty_form.degree.label_tag }}
+                        {{ edu_formset.empty_form.degree }}
+                    </div>
+                    <div class="cbp-mc-column-3">
+                        {{ edu_formset.empty_form.city.label_tag }}
+                        {{ edu_formset.empty_form.city }}
+
+                        {{ edu_formset.empty_form.state.label_tag }}
+                        {{ edu_formset.empty_form.state }}
+
+                        {{ edu_formset.empty_form.country.label_tag }}
+                        {{ edu_formset.empty_form.country }}
+                    </div>
+                    <div class="cbp-mc-column-3">
+                        {{ edu_formset.empty_form.from_year.label_tag }}
+                        {{ edu_formset.empty_form.from_year }}
+
+                        {{ edu_formset.empty_form.to_year.label_tag }}
+                        {{ edu_formset.empty_form.to_year }}
+
+                        <label for="id_educationdetails_set-__prefix__-DELETE">Delete:</label>
+                        <input value="" id="id_educationdetails_set-1-DELETE" name="educationdetails_set-1-DELETE" type="checkbox">
+                    </div>
             </div>
         {% endif %}
         {{ edu_formset.management_form }}
@@ -157,6 +355,23 @@
         <div role="tabpanel" class="tab-pane fade" id="settings">
             {% if emp_formset.total_form_count != 0 %}
                 {% for emp_form in emp_formset %}
+                    <div class="cbp-mc-column-2">
+                        {{ emp_form.organization.label_tag }}
+                        {{ emp_form.organization }}
+
+                        {{ emp_form.location.label_tag }}
+                        {{ emp_form.llocation }}
+
+                        {{ emp_form.postion.label_tag }}
+                        {{ emp_form.postion. }}
+                    </div>
+                    <div class="cbp-mc-column-2">
+                        {{ emp_form.from_date.label_tag }}
+                        {{ emp_form.from_date }}
+
+                        {{ emp_form.to_date.label_tag }}
+                        {{ emp_form.to_date }}
+                    </div>
                     <div class="row well employment-form form-inline">
                     {% for field in emp_form %}
                          <div class="form-group">

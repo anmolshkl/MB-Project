@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mentorbuddy/settings.py" afterPath="$PROJECT_DIR$/mentorbuddy/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/views.py" afterPath="$PROJECT_DIR$/apps/user/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentor/edit_profile.html" afterPath="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/forms.py" afterPath="$PROJECT_DIR$/apps/mentor/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/forms.py" afterPath="$PROJECT_DIR$/apps/user/forms.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/models.py" afterPath="$PROJECT_DIR$/apps/mentor/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/models.py" afterPath="$PROJECT_DIR$/apps/user/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/views.py" afterPath="$PROJECT_DIR$/apps/mentor/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MB-Project.iws" />
@@ -37,53 +43,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="profile-view.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/mentor/profile-view.html">
+      <file leaf-file-name="edit_profile.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/mentee/edit_profile.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.962963" vertical-offset="3700" max-vertical-offset="5256">
-              <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
+            <state vertical-scroll-proportion="-54.0" vertical-offset="0" max-vertical-offset="1674">
+              <caret line="81" column="7" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/mentor/base.html">
+      <file leaf-file-name="edit-profile.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/css/mentee/edit-profile.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9482758" vertical-offset="15089" max-vertical-offset="18972">
-              <caret line="851" column="26" selection-start-line="851" selection-start-column="26" selection-end-line="851" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5694" max-vertical-offset="7794">
+              <caret line="419" column="9" selection-start-line="419" selection-start-column="9" selection-end-line="419" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="loginV3.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/user/loginV3.html">
+      <file leaf-file-name="edit_profile.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.79310346" vertical-offset="1520" max-vertical-offset="11250">
-              <caret line="87" column="14" selection-start-line="87" selection-start-column="14" selection-end-line="87" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="loginV3.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/user/loginV3.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5456" max-vertical-offset="9792">
-              <caret line="306" column="34" selection-start-line="306" selection-start-column="34" selection-end-line="306" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/user/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.064516" vertical-offset="162" max-vertical-offset="8388">
-              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.28614458" vertical-offset="6007" max-vertical-offset="8568">
+              <caret line="339" column="35" selection-start-line="339" selection-start-column="35" selection-end-line="339" selection-end-column="35" />
               <folding>
-                <element signature="e#0#27#0" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#3;n#div#1;n#div#0;n#form#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,18 +79,40 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4788" max-vertical-offset="13014">
-              <caret line="283" column="22" selection-start-line="283" selection-start-column="22" selection-end-line="283" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="8143" max-vertical-offset="13014">
+              <caret line="472" column="25" selection-start-line="472" selection-start-column="25" selection-end-line="472" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mentorbuddy/settings.py">
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/mentor/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48973608" vertical-offset="4513" max-vertical-offset="5328">
-              <caret line="261" column="19" selection-start-line="261" selection-start-column="19" selection-end-line="261" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="1044">
+              <caret line="0" column="20" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/user/forms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="654" max-vertical-offset="1026">
+              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#24#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/user/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2344" max-vertical-offset="4338">
+              <caret line="135" column="21" selection-start-line="135" selection-start-column="21" selection-end-line="135" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -117,7 +126,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="/Python Fragment (views.py:22369).py" />
         <option value="$PROJECT_DIR$/static/button/button.css" />
         <option value="$PROJECT_DIR$/static/css/mentor/profile.css" />
         <option value="$PROJECT_DIR$/apps/django_visitor_information/settings.py" />
@@ -125,7 +133,6 @@
         <option value="$PROJECT_DIR$/apps/mentor/urls.py" />
         <option value="$PROJECT_DIR$/static/template/webarch/assets/js/core.js" />
         <option value="$PROJECT_DIR$/static/template/webarch/assets/js/calender.js" />
-        <option value="$PROJECT_DIR$/apps/mentor/models.py" />
         <option value="$PROJECT_DIR$/static/morph/uiMorphingButton_fixed.js" />
         <option value="$PROJECT_DIR$/static/morph/component.css" />
         <option value="$PROJECT_DIR$/templates/mentor/calendar.html" />
@@ -134,7 +141,6 @@
         <option value="$PROJECT_DIR$/static/inputEffects/set2.css" />
         <option value="$PROJECT_DIR$/static/inputEffects/set1.css" />
         <option value="$PROJECT_DIR$/templates/mentee/search_root.html" />
-        <option value="$PROJECT_DIR$/apps/mentor/forms.py" />
         <option value="$PROJECT_DIR$/apps/user/urls.py" />
         <option value="$PROJECT_DIR$/apps/sinch/urls.py" />
         <option value="$PROJECT_DIR$/apps/sinch/views.py" />
@@ -145,7 +151,6 @@
         <option value="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
         <option value="$PROJECT_DIR$/templates/mentee/edit_profile.html" />
         <option value="$PROJECT_DIR$/static/css/mentee/edit-profile.css" />
-        <option value="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
         <option value="$PROJECT_DIR$/templates/mentee/requests.html" />
         <option value="$PROJECT_DIR$/apps/mentee/views.py" />
         <option value="$PROJECT_DIR$/templates/mentee/profile-view.html" />
@@ -159,15 +164,19 @@
         <option value="$PROJECT_DIR$/apps/mentor/templatetags/request_tags.py" />
         <option value="$PROJECT_DIR$/static/css/mentor/base.css" />
         <option value="$PROJECT_DIR$/static/template/webarch/assets/css/style.css" />
-        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
         <option value="$PROJECT_DIR$/templates/mentor/profile-view.html" />
         <option value="$PROJECT_DIR$/templates/mentor/base.html" />
         <option value="$PROJECT_DIR$/mentorbuddy/adapters/adapter.py" />
         <option value="$PROJECT_DIR$/templates/user/loginV3.html" />
         <option value="$PROJECT_DIR$/static/css/user/loginV3.css" />
-        <option value="$PROJECT_DIR$/apps/user/models.py" />
         <option value="$PROJECT_DIR$/apps/user/views.py" />
         <option value="$PROJECT_DIR$/mentorbuddy/settings.py" />
+        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
+        <option value="$PROJECT_DIR$/apps/mentor/models.py" />
+        <option value="$PROJECT_DIR$/apps/user/models.py" />
+        <option value="$PROJECT_DIR$/apps/mentor/forms.py" />
+        <option value="$PROJECT_DIR$/apps/user/forms.py" />
+        <option value="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
       </list>
     </option>
   </component>
@@ -231,6 +240,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -296,6 +306,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="mentor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mentee" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -401,7 +429,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -785,7 +812,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1301" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -799,14 +826,14 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21752498" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32786885" sideWeight="0.49961567" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4008942" sideWeight="0.49884704" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4008942" sideWeight="0.49884704" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32626426" sideWeight="0.49961567" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32626426" sideWeight="0.49961567" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -832,20 +859,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/sinch/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="216">
-          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/sinch/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1620">
-          <caret line="48" column="53" selection-start-line="48" selection-start-column="53" selection-end-line="48" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/allauth/socialaccount/adapter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.69974554" vertical-offset="553" max-vertical-offset="2808">
@@ -892,29 +905,6 @@
     <entry file="file://$PROJECT_DIR$/static/img/bg7.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37894738" vertical-offset="0" max-vertical-offset="4698">
-          <caret line="8" column="18" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentee/edit_profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52105266" vertical-offset="540" max-vertical-offset="1674">
-          <caret line="41" column="33" selection-start-line="41" selection-start-column="24" selection-end-line="41" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/mentee/edit-profile.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17197452" vertical-offset="0" max-vertical-offset="7794">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
@@ -1037,7 +1027,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="162">
           <caret line="3" column="23577" selection-start-line="3" selection-start-column="23577" selection-end-line="3" selection-end-column="23577" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1077,23 +1066,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.29032257" vertical-offset="108" max-vertical-offset="1008">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#28#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/mentor/templatetags/request_tags.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.61290324" vertical-offset="276" max-vertical-offset="648">
           <caret line="28" column="24" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#47#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1109,7 +1085,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30083567" vertical-offset="0" max-vertical-offset="6768">
           <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1117,7 +1092,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33147633" vertical-offset="2149" max-vertical-offset="9234">
           <caret line="126" column="18" selection-start-line="126" selection-start-column="18" selection-end-line="126" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1125,7 +1099,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9832869" vertical-offset="73141" max-vertical-offset="135918">
           <caret line="4083" column="23" selection-start-line="4083" selection-start-column="23" selection-end-line="4083" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1139,16 +1112,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mentor/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9482758" vertical-offset="15089" max-vertical-offset="18972">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15318" max-vertical-offset="18972">
           <caret line="851" column="26" selection-start-line="851" selection-start-column="26" selection-end-line="851" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4788" max-vertical-offset="13014">
-          <caret line="283" column="22" selection-start-line="283" selection-start-column="22" selection-end-line="283" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -1163,7 +1128,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mentor/profile-view.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.962963" vertical-offset="3700" max-vertical-offset="5256">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3834" max-vertical-offset="5256">
           <caret line="213" column="12" selection-start-line="213" selection-start-column="12" selection-end-line="213" selection-end-column="12" />
           <folding />
         </state>
@@ -1179,7 +1144,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/user/loginV3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.79310346" vertical-offset="1520" max-vertical-offset="11250">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1566" max-vertical-offset="11250">
           <caret line="87" column="14" selection-start-line="87" selection-start-column="14" selection-end-line="87" selection-end-column="14" />
           <folding />
         </state>
@@ -1195,25 +1160,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/user/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2287" max-vertical-offset="4320">
-          <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/django/conf/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33147633" vertical-offset="115" max-vertical-offset="3078">
           <caret line="20" column="6" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/user/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.064516" vertical-offset="162" max-vertical-offset="8388">
+        <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="8388">
           <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
@@ -1223,9 +1179,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mentorbuddy/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48973608" vertical-offset="4513" max-vertical-offset="5328">
-          <caret line="261" column="19" selection-start-line="261" selection-start-column="19" selection-end-line="261" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="4513" max-vertical-offset="5328">
+          <caret line="259" column="10" selection-start-line="259" selection-start-column="10" selection-end-line="259" selection-end-column="10" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mentee/edit-profile.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5532" max-vertical-offset="7794">
+          <caret line="419" column="9" selection-start-line="419" selection-start-column="9" selection-end-line="419" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/edit_profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-54.0" vertical-offset="0" max-vertical-offset="1674">
+          <caret line="81" column="7" selection-start-line="81" selection-start-column="7" selection-end-line="81" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="110" max-vertical-offset="1008">
+          <caret line="14" column="59" selection-start-line="14" selection-start-column="59" selection-end-line="14" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2344" max-vertical-offset="4338">
+          <caret line="135" column="21" selection-start-line="135" selection-start-column="21" selection-end-line="135" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="8143" max-vertical-offset="13014">
+          <caret line="472" column="25" selection-start-line="472" selection-start-column="25" selection-end-line="472" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1026">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1044">
+          <caret line="0" column="20" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28614458" vertical-offset="6007" max-vertical-offset="8568">
+          <caret line="339" column="35" selection-start-line="339" selection-start-column="35" selection-end-line="339" selection-end-column="35" />
+          <folding>
+            <element signature="n#style#0;n#div#3;n#div#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#3;n#div#1;n#div#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

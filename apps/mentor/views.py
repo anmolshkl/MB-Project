@@ -458,20 +458,20 @@ def edit_profile(request):
             emp_formset.save()
             edu_formset.save()
             print "forms saved"
-            for form in edu_formset:
-                print form
+            for profile_form in edu_formset:
+                print profile_form
 
-            for form in emp_formset:
-                print form
+            for profile_form in emp_formset:
+                print profile_form
             return JsonResponse({'error': False})
             # return here if different behaviour desired
         else:
-            for form in edu_formset:
-                print form.errors
+            for profile_form in edu_formset:
+                print profile_form.errors
             return JsonResponse({'error': True})
     else:
         user_form = UserEditForm(instance=user)
-        form = UserProfileForm(instance=user_profile)
+        profile_form = UserProfileForm(instance=user_profile)
         edu_formset = EducationDetailsFormSet(instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
         return render(request, "mentor/edit_profile.html", locals())

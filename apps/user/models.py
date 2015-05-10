@@ -133,6 +133,7 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
         socialProfiles.save()
 
+    extra_data = None
     try:
         extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
     except:

@@ -14,12 +14,13 @@ class EducationDetails(models.Model):
 
     parent = models.ForeignKey(UserProfile, editable=False)
     institution = models.CharField(max_length=128, blank=True)
-    location = models.CharField(max_length=128, blank=True)
+    city = models.CharField(max_length=128, blank=True)
+    state = models.CharField(max_length=128, blank=True, null=True)
+    country = models.CharField(max_length=128, blank=True)
     degree = models.CharField(max_length=64, blank=True)
     branch = models.CharField(max_length=256, blank=True)
     from_year = models.IntegerField(max_length=4, blank=True, null=True)
     to_year = models.IntegerField(max_length=4, blank=True, null=True)
-    country = models.CharField(max_length=128, blank=True)
 
     def __unicode__(self):
         return u'{1} from {0}'.format(self.institution, self.branch)

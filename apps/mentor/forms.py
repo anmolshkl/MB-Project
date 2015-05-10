@@ -10,19 +10,25 @@ class EmploymentForm(forms.ModelForm):
         fields = ('organization', 'location', 'position', 'from_date', 'to_date')
         widgets = {
             'from_date': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
-            'to_date': forms.DateInput(
-                attrs={'placeholder': 'MM/DD/YYYY'}),
+            'to_date': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Menlo Park, CA-USA'}),
+            'organization': forms.TextInput(attrs={'placeholder': 'SAP'}),
+            'position': forms.TextInput(attrs={'placeholder': 'Business Analyst'}),
         }
 
 
 class EducationForm(forms.ModelForm):
     class Meta:
         model = EducationDetails
-        fields = ('institution', 'location', 'degree', 'branch', 'from_year', 'to_year', 'country')
+        fields = ('institution', 'city', 'state', 'country', 'degree', 'branch', 'from_year', 'to_year')
         widgets = {
             'from_year': forms.DateInput(attrs={'placeholder': '2010'}),
-            'to_year': forms.DateInput(
-                attrs={'placeholder': '2014'}),
+            'to_year': forms.DateInput(attrs={'placeholder': '2014'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Pittsburgh'}),
+            'state': forms.TextInput(attrs={'placeholder': 'Pennsylvania, if any'}),
+            'country': forms.TextInput(attrs={'placeholder': 'USA'}),
+            'degree': forms.TextInput(attrs={'placeholder': 'MS'}),
+            'branch': forms.TextInput(attrs={'placeholder': 'MIS'}),
         }
 
 
@@ -31,7 +37,11 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('gender', 'date_of_birth', 'contact', 'city', 'country', 'about', 'picture', 'resume')
         widgets = {
-            'about': forms.Textarea(attrs={'rows': 3}),
+            'about': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Please enter a description here'}),
+            'contact': forms.TextInput(attrs={'placeholder': 'eg +91 9970631445'}),
+            'date_of_birth': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Barcelona'}),
+            'country': forms.TextInput(attrs={'placeholder': 'Spain'}),
         }
 
 

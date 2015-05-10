@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+
 class UserForm(UserCreationForm):
     """ Require email address when a user signs up """
     email = forms.EmailField(label='Email address', max_length=75)
@@ -33,12 +34,18 @@ class UserForm(UserCreationForm):
             
         return user
 
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('email','first_name','last_name') 
-        widgets = {
-          'about': forms.Textarea(attrs={'rows':3}),
+        fields = ('email', 'first_name', 'last_name')
+        widgets={
+            'email': forms.TextInput(attrs={'readonly': True}),
         }
 
+    def clean_email(self):
+        if self.instance:
+            return self.instance.email
+        else:
+            return self.fields['email']
 
