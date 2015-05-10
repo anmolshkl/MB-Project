@@ -22,6 +22,7 @@ from PIL import Image
 # Create your views here.
 from django.core.mail import send_mail
 from django.utils import timezone
+from mentorbuddy.settings import SITE_URL
 import pytz, datetime
 
 
@@ -231,7 +232,7 @@ def register(request):
 def user_logout(request):
     request.session.flush()
     logout(request)
-    return redirect('http://localhost:8000')
+    return redirect(SITE_URL)
 
 
 def save_image(request):
