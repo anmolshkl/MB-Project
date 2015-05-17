@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 """
 Django settings for mentorbuddy project.
 
@@ -10,6 +12,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from datetime import timedelta
+
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SETTINGS_DIR = os.path.dirname(__file__)
@@ -123,6 +129,30 @@ HAYSTACK_CONNECTIONS = {
     'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
   },
 }
+
+
+
+#celery settings 
+
+
+
+#: Only add pickle to this list if your broker is secured
+#: from unwanted access (see userguide/security.html)
+
+BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+'''
+CELERYBEAT_SCHEDULE = {
+    'mail-every-1-hour': {
+        'task': 'tasks.mailme',
+        'schedule': timedelta(seconds=15),
+        'args': (16, 16)
+    },
+}
+'''
 
 
 # Database
