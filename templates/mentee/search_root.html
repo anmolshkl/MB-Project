@@ -13,15 +13,17 @@
     <div class="container">
         <div class="row">
             {% for mentor in mentors %}
-                 <div class="col-xs-3 tile textCenter">
-
-                     <p>
-                         <h2><a href="/mentor/get-profile/{{ mentor.id }}/">{{ mentor.first_name }} {{ mentor.last_name}}</a></h2>
+                 <div class="col-xs-3 textCenter">
+                     <div class="tiles white">
+                         <h3><a href="/mentor/get-profile/{{ mentor.id }}/">{{ mentor.first_name }} {{ mentor.last_name}}</a></h3>
+                         {% if mentor.college %}
                          {{ mentor.college }}<br>
-                         {{ mentor.city }}<br>
-                         {{ mentor.state }}
-
-                     </p>
+                         {% else %}
+                         College not specified<br>
+                         {% endif %}
+                         {{ mentor.city }},
+                         {{ mentor.country }}
+                     </div>
                  </div>
              {% endfor %}
         </div>

@@ -10,9 +10,9 @@ class UserProfileIndex(indexes.SearchIndex, indexes.Indexable):
     last_name = indexes.CharField(model_attr='user__last_name')
     id = indexes.CharField(model_attr='user__id')
     city = indexes.CharField(model_attr='city')
-    state = indexes.CharField(model_attr='state')
-    # content_auto = indexes.EdgeNgramField(model_attr='city')
+    country = indexes.CharField(model_attr='country')
 
+    # content_auto = indexes.EdgeNgramField(model_attr='city')
 
     def get_model(self):
         return UserProfile

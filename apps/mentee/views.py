@@ -1,4 +1,4 @@
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
@@ -21,11 +21,13 @@ from allauth.socialaccount.models import SocialAccount, SocialApp
 
 from PIL import Image
 from django.utils.datetime_safe import datetime
+from mentorbuddy import settings
 import os
 import pytz
 
 
 def cropAndSave(user, POST):
+    print "entered crop and save"
     x1 = POST['x1']
     x2 = POST['x2']
     y1 = POST['y1']
@@ -38,14 +40,16 @@ def cropAndSave(user, POST):
         box = (x1, y1, x2, y2)  #(left, upper, right, lower)
         box = (int(x) for x in box)
         cropped = im.crop(box)
-
-        newPath = os.path.join(settings.MEDIA_ROOT, "profile_images", user.username)
+        print "2"
+        newPath = os.path.join(settings.MEDIA_ROOT, "profile_images", str(user.id))
         if not os.path.exists(newPath):
             os.makedirs(newPath)
-        cropped.save(os.path.join(newPath, user.username + "CRPD.jpg"), "jpeg")
-        im.save(os.path.join(newPath, user.username + ".jpg"), "jpeg")
+        cropped.save(os.path.join(newPath, str(user.id) + "CRPD.jpg"), "jpeg")
+        im.save(os.path.join(newPath, str(user.id) + ".jpg"), "jpeg")
     except Exception as e:
         print str(e)
+
+    return os.path.join(newPath, str(user.id) + "CRPD.jpg")
 
 
 # Create your views here.
@@ -242,24 +246,30 @@ def self_profile_view(request):
 
 @login_required
 def edit_profile(request):
-    # The following form method use taken from slide 66 of
-    # http://www.slideshare.net/pydanny/advanced-django-forms-usage
     user = request.user
     user_profile = user.user_profile
+    error = False
+    msg = None
 
     if request.POST:
-        print "ghusa 0"
         user_form = UserEditForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
         if user_form.is_valid():
-            print "ghusa 1"
             user_profile = user_form.save()
             user_profile.save()
             if profile_form.is_valid():
-                print "ghusa 2"
                 profile = profile_form.save()
-                profile.save()
+                if "url" in request.POST:
+                    print "saving profile pic"
+                    profile.picture = cropAndSave(user, request.POST)
                 # return here if different behaviour desired
+                profile.save()
+
+                return JsonResponse({error: False,msg: "Profile Updated!"})
+            else:
+                return JsonResponse({error: True,msg: "Please check the required fields"})
+        else:
+            return JsonResponse({error: True,msg: "Please check the required fields"})
     else:
         user_form = UserEditForm(instance=user)
         profile_form = UserProfileForm(instance=user_profile)

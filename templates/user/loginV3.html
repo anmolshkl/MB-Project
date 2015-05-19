@@ -4,45 +4,44 @@
 {% load socialaccount %}
 <html>
 <head>
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<meta charset="utf-8" />
-<title>Mentor Buddy</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta content="MentorBuddy" name="author" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta charset="utf-8" />
+    <title>Mentor Buddy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="MentorBuddy" name="author" />
+    <link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/headereffects/css/component.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/headereffects/css/normalize.css' %}" />
+    <link href="{% static 'template/frontend/assets/plugins/pace/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" media="screen"/>
 
-<link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/owl-carousel/owl.carousel.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/owl-carousel/owl.theme.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/headereffects/css/component.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/headereffects/css/normalize.css' %}" />
-<link href="{% static 'template/frontend/assets/plugins/pace/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" media="screen"/>
+    <!-- BEGIN CORE CSS FRAMEWORK -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 
-<!-- BEGIN CORE CSS FRAMEWORK -->
-<link href="{% static 'template/frontend/assets/plugins/boostrapv3/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'template/frontend/assets/plugins/boostrapv3/css/bootstrap-theme.min.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'template/frontend/assets/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
-<!-- END CORE CSS FRAMEWORK -->
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link href="{% static 'template/frontend/assets/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- END CORE CSS FRAMEWORK -->
 
-<!-- BEGIN CSS TEMPLATE -->
-<link href="{% static 'template/frontend/assets/css/style.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'template/frontend/assets/css/magic_space.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'template/frontend/assets/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
-<link href="{% static 'template/frontend/assets/css/animate.min.css' %}" rel="stylesheet" type="text/css"/>
-<!-- END CSS TEMPLATE -->
+    <!-- BEGIN CSS TEMPLATE -->
+    <link href="{% static 'template/frontend/assets/css/style.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'template/frontend/assets/css/magic_space.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'template/frontend/assets/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'template/frontend/assets/css/animate.min.css' %}" rel="stylesheet" type="text/css"/>
+    <!-- END CSS TEMPLATE -->
 
-<!-- jquery 
+    <!-- jquery
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
--->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
- <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/modernizr.custom.js' %}"></script>
-<!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-<script type="text/javascript" src="{% static 'template/frontend/assets/plugins/rs-plugin/js/jquery.themepunch.plugins.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'template/frontend/assets/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/rs-plugin/css/settings.css' %}" media="screen" />
+     <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/modernizr.custom.js' %}"></script>
+    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
+    <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/rs-plugin/js/jquery.themepunch.plugins.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'template/frontend/assets/plugins/rs-plugin/css/settings.css' %}" media="screen" />
 
-<!-- Custom CSS -->
-<link rel="stylesheet" type="text/css" href="{% static 'css/user/loginV3.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user/loginV3.css' %}">
 
 </head>
 <!-- END HEAD -->
@@ -56,7 +55,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <form class="signUpForm" method="POST" action="/user/register/">
+            <form class="signUpForm" method="POST" action="/user/register/" autocomplete="off">
                 {% csrf_token %}
               <div id="signUpError">
               </div>
@@ -89,8 +88,12 @@
               
               <button type="submit" class="button buttonBlue singUpButton">SIGN UP
               </button>
-              <a href="{% provider_login_url "linkedin" method="oauth2" %}" class="button signUpLinkedIn"><i class="fa fa-linkedin fa-2x"></i><span class="socialButtonLabel">Sign up with LinkedIn</span></a>
-              <a href="{% provider_login_url "facebook" method="oauth2" next="/user/" %}" class="button signUpFacebook"><i class="fa fa-facebook fa-2x"></i><span class="socialButtonLabel">Sign up with Facebook</span></a>
+                <span class="black">or  Sign Up using:</span>
+                <div class="icons">
+                  <a href="{% provider_login_url "facebook" method="oauth2" %}" class="fa fa-facebook facebook social-icon"></a>
+                  <a href="{% provider_login_url "linkedin" method="oauth" %}" class="fa fa-linkedin linkedin social-icon"></a>
+                  <!-- <a target="_blank" href="https://plus.google.com/+CreativepunchNetBlog" class="fa fa-google-plus google-plus social-icon"></a> -->
+                </div>
             </form>
               
           </div>
@@ -105,7 +108,7 @@
         <div class="modal-content">
           
           <div class="modal-body">
-            <form class="loginForm" method="POST" action="/user/login/">
+            <form class="loginForm" method="POST" action="/user/login/" autocomplete="off">
                 {% csrf_token %}
               <div id="loginError" class="black">
               </div>
@@ -145,7 +148,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				  </button>
-				  <a href="{% static 'template/frontend/# ' %}" class="navbar-brand compressed"><img src="{% static 'template/frontend/assets/img/logo_condensed.png' %}" alt="" data-src="{% static 'template/frontend/assets/img/logo_condensed.png' %}" data-src-retina="{% static 'template/frontend/assets/img/logo2x.png' %}" width="119" height="22"/></a>
+				  <a href="{% static 'template/frontend/# ' %}" class="navbar-brand compressed">Mentor Buddy</a>
 				</div>
 				<div class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav navbar-right" >
@@ -153,7 +156,7 @@
 					<li ><a href="{% static '/template/frontend/tour.html' %}" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
 					<li ><a href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a></li>
 					<li><a href="{% static '/template/frontend/pricing.html' %}">Team</a></li>
-					<li ><a href="{% static '/template/frontend/portfolio.html' %}">Contact</a></li>
+					<li ><a href="{% static '/user/' %}">Contact</a></li>
 					
 				  </ul>
 				</div><!--/.nav-collapse -->
@@ -173,7 +176,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="{% static '/template/frontend/#' %}" class="navbar-brand"><img src="{% static 'template/frontend/assets/img/logo.png' %}" data-src="{% static 'template/frontend/assets/img/logo.png' %}" data-src-retina="{% static 'template/frontend/assets/img/logo_2x.png' %}" width="119" height="22" alt=""/></a>		 
+          <span href="{% static '/' %}" class="navbar-brand">Mentor Buddy</span>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right" >
@@ -181,10 +184,11 @@
 			<li ><a href="#" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
 			<li ><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
 			<li><a href="#">Team</a></li>
-			<li ><a href="#">Contact</a></li>
+			<li ><a href="/user/contact/">Contact</a></li>
 			
           </ul>
         </div><!--/.nav-collapse -->
+
       </div>
     </div>
 </div>
@@ -195,8 +199,9 @@
 				<!-- SLIDE  -->
 				<li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
 					<!-- MAIN IMAGE -->
-					<img src="{% static 'template/frontend/assets/img/bg/slide_one.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
+                    <!-- <img src="{% static 'template/frontend/assets/img/bg/slide_one.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat"> -->
+                    <img src="{% static 'img/bg17.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
 					<!-- LAYERS -->
 					<div class="tp-caption mediumlarge_light_white_center sft tp-resizeme slider"
@@ -208,7 +213,7 @@
 							data-endspeed="300"
 							data-endeasing="Power1.easeIn"
 							data-captionhidden="off"
-							style="z-index: 6"><h2 class="text-white custom-font title ">Mentor Buddy</h2>
+							style="z-index: 6"><h2 class="text-white custom-font title "></h2>
 							
 					</div>
 					<div class="tp-caption sfb slider tp-resizeme slider center"
@@ -221,13 +226,14 @@
 						data-endspeed="300"
 						data-endeasing="Power1.easeIn"
 						data-captionhidden="off"
-						style="z-index: 6" >
-						<h2>Enabling Global Education</h2>
-                        <div class="well translucent" style="word-break:break-all;"><h4><span class="semi-bold">Mentor Buddy</span> is a place which connects.<br>
+						style="z-index: 6;text-align: center" >
+						<div class="well translucent" style="word-break:break-all;"><h4><span class="semi-bold">Mentor Buddy</span> is a place which connects.<br>
                             With over 100+ verified experts from top universities
                             we bring you the complete blend of professionals.
                         </h4>
 						</div>
+                        <h2 style="color: #000000;background: rgba(45, 49, 57, 0.3);max-width: 400px;display: inline-block;margin: 5px auto;"> <i class="fa fa-quote-left"></i>Enabling Global Education<i class="fa fa-quote-right"></i> </h2>
+                        <br>
                         <a href="#" id="loginButton"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">LOGIN</a>
                         <a href="#" id="signUpButton"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#signUpModal">Sign Up</a>
 						<br>
@@ -248,7 +254,7 @@
 				</li>					
 				<li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
 					<!-- MAIN IMAGE -->
-					<img src="{% static 'img/bg11.jpg' %}"   alt="slidebg2"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+					<img src="{% static 'img/bg18.jpg' %}"   alt="slidebg2"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
 					<!-- LAYERS -->
 					<div class="tp-caption mediumlarge_light_white_center sft tp-resizeme slider"
@@ -273,7 +279,7 @@
 						data-endspeed="300"
 						data-endeasing="Power1.easeIn"
 						data-captionhidden="off"
-						style="z-index: 6">	<a href="#" class="btn btn-danger btn-lg  btn-large m-r-10">BUY IT NOW</a>
+						style="z-index: 6">	<span><h3>SOME TEXT</h3></span>
 					</div>
 					
 				</li>
@@ -398,34 +404,32 @@
 	<section id="mainFooter">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-6">
-					<div class="footerWidget">
-						<img src="" alt="latest from Mentor Buddy" id="footerLogo">
+				<div class="col-sm-6 pad-s">
+					<div class="footerWidget well">
 						<p><a href="http://www.mentorbuddy.in" title="Mentor Buddy, Enabling global eductaion">MentorBuddy</a> is a global platform. We, at MentorBuddy, connect students aspiring to study abroad to connect with their dreams. </p>
 					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-3 top-pad">
 					<div class="footerWidget">
 
 						<h3>Mentor Buddy</h3>
 						<address>
-							<p> <i class="fa fa-location-arrow"></i>&nbsp;77 Mass. Ave., E14/E15<br>
-								Seattle, MA 02139-4307 USA <br>
-								<i class="fa fa-phone"></i>&nbsp;615.987.1234 <br>
-								<i class="fa fa-mail"></i>&nbsp;<a href="mailto:admin@mb.in">admin@mb.in</a> </p>
-							</address>
-						</div>
+                            <p> <i class="fa fa-location-arrow"></i>&nbsp;77 Mass. Ave., E14/E15<br>
+                                Seattle, MA 02139-4307 USA <br>
+                                <i class="fa fa-phone"></i>&nbsp;615.987.1234 <br>
+                                <i class="fa fa-mail"></i>&nbsp;<a href="mailto:admin@mb.in">admin@mb.in</a> </p>
+						</address>
 					</div>
-					<div class="col-sm-3">
+				</div>
+					<div class="col-sm-3 top-pad ">
 						<div class="footerWidget">
 							<h3>Follow us, we are social</h3>
-							<div class="socialNetwork">
-								<a href="#" class="tips" title="follow me on Facebook"><i class="fa fa-facebook fa-2x iconRounded"></i></a>
-								<a href="#" class="tips" title="follow me on Twitter"><i class="fa fa-twitter fa-2x iconRounded"></i></a>
-								<a href="#" class="tips" title="follow me on Google+"><i class="fa fa-google-plus fa-2x iconRounded"></i></a>
-								<a href="#" class="tips" title="follow me on Linkedin"><i class="fa fa-linkedin fa-2x iconRounded"></i></a>
-								<a href="#" class="tips" title="follow me on Dribble"><i class="fa fa-dribbble fa-2x iconRounded"></i></a>
-							</div>
+                            <ul class="social-nav model-2">
+                              <li><a href="https://twitter.com/mentor_buddy" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                              <li><a href="https://www.facebook.com/mentorbuddy" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                              <li><a href="https://plus.google.com/101980935667414019691"" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+
+                            </ul>
 						</div>
 					</div>
 				</div>
@@ -443,10 +447,9 @@
 		</section>
 </footer>
 
-<script src="{% static 'template/frontend/assets/plugins/boostrapv3/js/bootstrap.min.js' %}" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="{% static 'template/frontend/assets/plugins/pace/pace.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'template/frontend/assets/plugins/jquery-unveil/jquery.unveil.min.js' %}" type="text/javascript"></script> 
-<script src="{% static 'template/frontend/assets/plugins/owl-carousel/owl.carousel.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'template/frontend/assets/plugins/jquery-unveil/jquery.unveil.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'template/frontend/assets/plugins/waypoints.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/parrallax/js/jquery.parallax-1.1.3.js' %}"></script>
 <script type="text/javascript" src="{% static 'template/frontend/assets/plugins/jquery-nicescroll/jquery.nicescroll.min.js' %}"></script>

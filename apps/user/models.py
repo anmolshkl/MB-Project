@@ -9,6 +9,7 @@ import datetime
 from django.utils import timezone
 
 from django.utils.deconstruct import deconstructible
+from mentorbuddy import settings
 import os
 
 from haystack.forms import SearchForm
@@ -22,19 +23,27 @@ import apps.user.fields
 class PathAndRename(object):
     def __init__(self, sub_path):
         self.path = sub_path
-
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
         # set filename as random string
         filename = '{}.{}'.format(instance.user.username, ext)
         # return the whole path to the file
-        return os.path.join(self.path, filename)
+        newPath = os.path.join(settings.MEDIA_ROOT, "resume")
+        if not os.path.exists(newPath):
+            os.makedirs(newPath)
+
+        return os.path.join(self.path, instance.user.username+ext)
 
 
-path_and_rename = PathAndRename("resume/")
+path_and_rename = PathAndRename("/static/resume/")
 
 
 class UserProfile(models.Model):
+    @staticmethod
+    def generate_new_filename(instance, filename):
+        f, ext = os.path.splitext(filename)
+        return '%s%s' % (instance.user.username, ext)
+
     """Associates the User with a 'Profile'."""
 
     # Stores username, password, first_name, last_name, email

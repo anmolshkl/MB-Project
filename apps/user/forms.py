@@ -36,11 +36,12 @@ class UserForm(UserCreationForm):
 
 
 class UserEditForm(forms.ModelForm):
+    required_css_class = 'required'
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name')
         widgets={
-            'email': forms.TextInput(attrs={'readonly': True}),
+            'email': forms.TextInput(attrs={'readonly': 'True'}),
         }
 
     def clean_email(self):

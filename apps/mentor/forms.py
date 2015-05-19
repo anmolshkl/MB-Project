@@ -1,16 +1,17 @@
 from django import forms
 from apps.user.models import UserProfile
 from apps.mentor.models import EducationDetails, EmploymentDetails
+from django.forms import DateField
 from django.forms.models import inlineformset_factory
 
 
 class EmploymentForm(forms.ModelForm):
     class Meta:
         model = EmploymentDetails
-        fields = ('organization', 'location', 'position', 'from_date', 'to_date')
+        fields = ('organization', 'location', 'position', 'from_year', 'to_year')
         widgets = {
-            'from_date': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
-            'to_date': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
+            'from_year': forms.TextInput(attrs={'placeholder': '2012'}),
+            'to_year': forms.TextInput(attrs={'placeholder': '2013'}),
             'location': forms.TextInput(attrs={'placeholder': 'Menlo Park, CA-USA'}),
             'organization': forms.TextInput(attrs={'placeholder': 'SAP'}),
             'position': forms.TextInput(attrs={'placeholder': 'Business Analyst'}),
@@ -22,8 +23,8 @@ class EducationForm(forms.ModelForm):
         model = EducationDetails
         fields = ('institution', 'city', 'state', 'country', 'degree', 'branch', 'from_year', 'to_year')
         widgets = {
-            'from_year': forms.DateInput(attrs={'placeholder': '2010'}),
-            'to_year': forms.DateInput(attrs={'placeholder': '2014'}),
+            'from_year': forms.TextInput(attrs={'placeholder': '2010'}),
+            'to_year': forms.TextInput(attrs={'placeholder': '2014'}),
             'city': forms.TextInput(attrs={'placeholder': 'Pittsburgh'}),
             'state': forms.TextInput(attrs={'placeholder': 'Pennsylvania, if any'}),
             'country': forms.TextInput(attrs={'placeholder': 'USA'}),
@@ -39,7 +40,7 @@ class UserProfileForm(forms.ModelForm):
         widgets = {
             'about': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Please enter a description here'}),
             'contact': forms.TextInput(attrs={'placeholder': 'eg +91 9970631445'}),
-            'date_of_birth': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}),
+            'date_of_birth': forms.DateInput(attrs={'placeholder': 'MM/DD/YYYY'}, format="%m/%d/%Y"),
             'city': forms.TextInput(attrs={'placeholder': 'Barcelona'}),
             'country': forms.TextInput(attrs={'placeholder': 'Spain'}),
         }

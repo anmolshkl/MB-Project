@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from datetime import timedelta			#topmost line
+
 """
 Django settings for mentorbuddy project.
 
@@ -70,6 +73,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'haystack',
     'whoosh',
+    'widget_tweaks',
     # 'debug_toolbar',
 )
 
@@ -234,11 +238,12 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False}}
 '''
 
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
 EMAIL_HOST_PASSWORD = '8zryfcgve33k'
-EMAIL_PORT = 587
+EMAIL_PORT = 465
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
@@ -289,3 +294,14 @@ LOGGING = {
 warnings.filterwarnings(
     'error', r"DateTimeField .* received a naive datetime",
     RuntimeWarning, r'django\.db\.models\.fields')
+
+DATETIME_INPUT_FORMATS = ['%m-%d-%Y']
+
+####### CELERY SETTINGS ##########
+
+BROKER_URL = 'amqp://guest:guest@localhost//'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+

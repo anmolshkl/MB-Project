@@ -88,7 +88,7 @@
 	</div>
     {% else %}
         <div class="row well textCenter">
-            <h4>You don't have any call scheduled for today. Come back tomorrow! :)</h4>
+            <h4>You don't have any call scheduled for now. Come back tomorrow! :)</h4>
         </div>
     {% endif %}
     <audio class="incoming" autoplay></audio>
@@ -116,7 +116,7 @@ var csrf = '{{ csrf_token }}';
        showSelectedRating:false
    });
 
-/* Limit Feedback Imput */
+/* Limit Feedback Input */
 document.getElementsByClassName('feedback')[0].addEventListener('keypress', limitHandler);
 document.getElementsByClassName('feedback')[0].addEventListener('keydown', limitDeleteHandler);
 
@@ -129,6 +129,7 @@ function limitHandler(e) {
     }
 }
 function limitDeleteHandler(e) {
+    alert("keydown");
     if(e.keyCode == 8)  {
         var value = parseInt($(this).parent().find('.characters').html());
         if(value > 0 && $(".feedback").html() != '') {

@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from apps.user import views
+from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
@@ -18,4 +19,8 @@ urlpatterns = patterns('',
                        url(r'^submit-feedback/$', views.submit_feedback, name='submit feedback'),
                        url(r'^call-valid/$', views.is_call_valid, name='call validity check'),
                        url(r'^confirm/(?P<ak>.*)/$', views.register_confirm, name='register_confirm'),
+                       url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
+                       url(r'^contact/submit/$', views.contact, name='contact'),
+
+
                        )

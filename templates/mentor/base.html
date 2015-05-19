@@ -33,7 +33,9 @@
 <link href="{% static 'template/webarch/assets/css/custom-icon-set.css' %}" rel="stylesheet" type="text/css"/>
 <!-- END CSS TEMPLATE -->
 
+<!--
 <link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
+-->
 
 <!-- CUSTOM CSS -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/base.css' %}">
@@ -267,9 +269,8 @@
       <li class=""> <a href="/mentor/calendar/"> <i class="fa fa-calendar"></i> <span class="title">Calendar</span></a> </li>      
       <li class=""> <a href="/mentor/manage-social-profiles/"> <i class="fa fa-flag"></i>  <span class="title">Social Accounts</span></a></li>
       
-      <!--
+
       <li class=""> <a href="/live/"> <i class="fa fa-phone"></i> <span class="title">Go Live!</span></a></li>
-       -->
     </ul>
     <div class="side-bar-widgets">
     <p class="menu-title">FOLDER <span class="pull-right"><a href="#" class="create-folder"> <i class="fa fa-plus"></i></a></span></p>
@@ -833,16 +834,13 @@ END CHAT -->
 
 <!-- PAGE JS -->    
 
-<!-- BEGIN CORE TEMPLATE JS --> 
+<!-- BEGIN CORE TEMPLATE JS
 <script src="{% static 'template/webarch/assets/js/core.js' %}" type="text/javascript"></script> 
 <script src="{% static 'template/webarch/assets/js/chat.js' %}" type="text/javascript"></script> 
-<!-- END CORE TEMPLATE JS -->
-{% block scripts %}
-{% endblock scripts %}
+ END CORE TEMPLATE JS -->
 
-<!-- SINCH.MIN.JS -->
-<script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
-<script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+ {% block scripts %}
+{% endblock scripts %}
 
  <!-- Initialize Flip Clock -->
 <script type="text/javascript">
@@ -853,196 +851,8 @@ END CHAT -->
         $(this).parent().children('label').toggleClass('done');
     });
 
-  clock = new FlipClock($('.clock'), {
-    autoStart: false,
-    clockFace: 'MinuteCounter'
-
-});
 </script>
 
-<script type="text/javascript">
-
-var global_username = '';
-
-//$('#callModal').modal('show');
-
-/** Always clear errors **/
-var clearError = function() {
-  $('div.error').hide();
-}
-
-/*** Set up sinchClient ***/
-
-    sinchClient = new SinchClient({
-    applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7', /* NOTE: Use same application key in backend-example.py, and start python script. */
-    capabilities: {calling: true, video: true},
-    startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
-    //Note: For additional loging, please uncomment the three rows below
-    onLogMessage: function(message) {
-      console.log(message);
-    },
-  });
-
-
-/*** Name of session, can be anything. ***/
-
-var sessionName = 'sinchSessionWEB-' + sinchClient.applicationKey;
-
-  $.ajax({
-    url: 'http://localhost:8000/live/login/',
-    type: 'get',
-    dataType: 'json',
-    success: function(ticket) {
-      sinchClient.start(ticket, function() {
-        //Store session & manage in some way (optional)
-        localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
-      }).fail(handleError);
-    }
-  });
-
-/*** Define listener for managing calls ***/
-
-var callListeners = {
-  onCallProgressing: function(call) {
-    $('audio#ringback').prop("currentTime", 0);
-    $('audio#ringback').trigger("play");
-
-  },
-  onCallEstablished: function(call) {
-    $('audio#incoming').attr('src', call.incomingStreamURL);
-    $('audio#ringback').trigger("pause");
-    $('audio#ringtone').trigger("pause");
-    $('#incomingVideo').attr('src', call.incomingStreamURL);
-
-    clock.start();
-
-    //Report call stats
-    var callDetails = call.getDetails();
-
-  },
-  onCallEnded: function(call) {
-    //Report call stats
-    var callDetails = call.getDetails();
-      $('audio#ringback').trigger("pause");
-    $('audio#ringtone').trigger("pause");
-    $('audio#incoming').attr('src', '');
-    $('#incomingVideo').attr('src', '');
-
-    $('#callModal button').removeClass('incall');
-    $('#callModal button').removeClass('callwaiting');
-
-      clock.stop();
-      alert(call.getEndCause);
-      $('#callLog').html('<h2>Experienced any technical issues?<br><br><button class="btn btn-warning report">REPORT A PROBLEM</button></h2>');
-      $('.callerName').hide();
-      $('.callerPic').hide();
-      $('#hangup').hide();
-      $('#answer').hide();
-
-      $('#callModal .modal-title').html("Looks like you're done with this call!");
-
-    if(call.error) {
-
-    }
-  }
-}
-
-
-/*** Set up callClient and define how to handle incoming calls ***/
-
-var callClient = sinchClient.getCallClient();
-callClient.initStream().then(function() { // Directly init streams, in order to force user to accept use of media sources at a time we choose
-  $('div.frame').not('#chromeFileWarning').show();
-}); 
-var call;
-
-callClient.addEventListener({
-  onIncomingCall: function(incomingCall) {
-    //Play some groovy tunes 
-    $('audio#ringtone').prop("currentTime", 0);
-    $('audio#ringtone').trigger("play");
-
-    var userId = incomingCall.fromId;
-    userId = userId.substr(4,userId.length-1);
-    $.ajax({
-        url: '/live/get-caller-info/',
-        type: 'post',
-        dataType: 'json',
-        data: {
-             'csrfmiddlewaretoken': '{{ csrf_token }}',
-             'userId': userId
-        },
-        success: function(data) {
-            $('.callerPic').attr('src',data['picture']);
-            $('.callerName').text(data['fullName']);
-            $('.callerName').hide();
-              $('.callerPic').show();
-              $('#hangup').show();
-              $('#answer').show();
-
-            $('#callModal').modal('show');
-        }
-    });
-    $('#callModal button').addClass('incall');
-
-    //Manage the call object
-    call = incomingCall;
-    call.addEventListener(callListeners);
-    $('#callModal button').addClass('callwaiting');
-  }
-});
-
-$('button#answer').click(function(event) {
-  event.preventDefault();
-
-  if($(this).hasClass("callwaiting")) {
-    clearError();
-
-    try {
-      call.answer();
-      $('button').removeClass('callwaiting');
-    }
-    catch(error) {
-      handleError(error);
-    }
-  }
-});
-
-
-/*** Hang up a call ***/
-
-$('button#hangup').click(function(event) {
-  event.preventDefault();
-
-  if($(this).hasClass("incall")) {
-    clearError();
-    
-    console.info('Will request hangup..');
-
-    call && call.hangup();
-  }
-});
-
-/*** Handle errors, report them and re-enable UI ***/
-
-var handleError = function(error) {
-  try {
-    error.responseJSON = error.responseJSON || {};
-    error.errorCode = error.errorCode || error.responseJSON.errorCode || '0';
-    error.message = error.message || (error.errorCode  + ' ' + (error.responseJSON.message || 'No backend'));
-  }
-  catch(e) {
-    console.error('FAIL', e);
-    error.message = "Server failure";
-  }
-}
-$('#callModal').on('hidden.bs.modal', function (e) {
-  $('#callLog').html(" ");
-  $('#error').html(" ");
-});
-
-
-</script>
 
 
 </body>

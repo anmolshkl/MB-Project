@@ -3,68 +3,261 @@
 
 {% block stylesheets %}
 <link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
+<link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
+
+<!-- CUSTOM CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/mentor/base.css' %}">
+
 {% endblock %}
 
 {% block container_block %}
+     <!-- MODAL FOR INCOMING CALL -->
+ <div class="modal fade" id="callModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+
+            <h4 class="modal-title">You have an incoming call...</h4>
+          </div>
+
+          <div class="modal-body">
+              <div class="row-fluid">
+                <div class="col-xs-12 textCenter">
+                  <img src="" class="img-responsive img-circle center callerPic"/>
+                  <span class="callerName"><h5></h5></span>
+                </div>
+
+                <div id="call col-xs-12 textCenter well">
+                  <form id="newCall">
+                    <audio id="incoming" autoplay></audio>
+                    <audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
+                    <audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
+                  </form>
+                </div>
+
+                <div id="callLog" class="col-xs-12 textCenter well">
+                  <div class="row">
+                      <div class="col-md-8 col-md-offset-2 col-xs-12 callBody">
+                          <video id="incomingVideo" autoplay></video>
+                          <div class="clock center"></div>
+                      </div>
+
+                  </div>
+                </div>
+
+                <div class="error col-xs-12 textCenter well">
+                </div>
+
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button id="hangup">Hangup</button>
+            <button id="answer">Answer</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+  </div>
+ <!-- /.modal -->
+
 	<div class="top1">
 		<h1>Authentication</h1>
-	</div>
-	<div class="">
-	
-		<div id="chromeFileWarning" class="frame big">
-			<b style="color: red;">Warning!</b> Protocol "file" used to load page in Chrome.<br>
-			Chrome disables access to microphone when loading from disk, which prevents proper functionality.
-			<br><br>
-			You can allow working local files, if you start Chrome with the flag <i>'--allow-file-access-from-files'</i>:
-			<p>
-			<b>OS X: </b><i>'$ open -a Google\ Chrome --args --allow-file-access-from-files'</i>
-			<br>
-			<b>Windows: </b><i>'"C:\>Program Files\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files'</i>
-			<br>
-			<b>GNU/Linux: </b><i>'$ chrome --allow-file-access-from-files'</i>
-		</div>
-
-		<div class="clearfix"></div>
-
-		<div class="frame">
-			<div class="inner loginBox">
-				<h3 id="login">Sign in</h3>
-				<form id="userForm">
-					<input id="username" placeholder="USERNAME"><br>
-					<input id="password" type="password" placeholder="PASSWORD"><br>
-					<button id="loginUser">Login</button>
-					<button id="createUser">Create</button>
-				</form>
-				<div id="userInfo">
-					<h3><span id="username"></span></h3>
-					<button id="logOut">Logout</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="frame">
-			<h3>Web Call</h3>
-			<div id="call">
-				<form id="newCall">
-					<input id="callUserName" placeholder="Username (alice)"><br>
-					<button id="call">Call</button>
-					<button id="hangup">Hangup</button>
-					<button id="answer">Answer</button>
-					
-					<audio id="incoming" autoplay></audio>
-					<audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
-					<audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
-				</form>
-			</div>
-			<div class="clearfix"></div>
-			<div id="callLog">
-			</div>
-			<div class="error">
-			</div>
-		</div>
 	</div>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'sinch/WEBsampleMentor.js' %}"></script>
+<script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+
+ <!-- Initialize Flip Clock -->
+<script type="text/javascript">
+  clock = new FlipClock($('.clock'), {
+    autoStart: false,
+    clockFace: 'MinuteCounter'
+  });
+
+</script>
+
+<script type="text/javascript">
+
+    var global_username = '';
+
+    //$('#callModal').modal('show');
+
+    /** Always clear errors **/
+    var clearError = function() {
+      $('div.error').hide();
+    }
+
+    /*** Set up sinchClient ***/
+
+        sinchClient = new SinchClient({
+        applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7', /* NOTE: Use same application key in backend-example.py, and start python script. */
+        capabilities: {calling: true, video: true},
+        startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
+        //Note: For additional loging, please uncomment the three rows below
+        onLogMessage: function(message) {
+          console.log(message);
+        },
+      });
+
+
+    /*** Name of session, can be anything. ***/
+
+    var sessionName = 'sinchSessionWEB-' + sinchClient.applicationKey;
+
+      $.ajax({
+        url: 'http://localhost:8000/live/login/',
+        type: 'get',
+        dataType: 'json',
+        success: function(ticket) {
+          sinchClient.start(ticket, function() {
+            //Store session & manage in some way (optional)
+            localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
+          }).fail(handleError);
+        }
+      });
+
+    /*** Define listener for managing calls ***/
+
+    var callListeners = {
+      onCallProgressing: function(call) {
+        $('audio#ringback').prop("currentTime", 0);
+        $('audio#ringback').trigger("play");
+
+      },
+      onCallEstablished: function(call) {
+        $('audio#incoming').attr('src', call.incomingStreamURL);
+        $('audio#ringback').trigger("pause");
+        $('audio#ringtone').trigger("pause");
+        $('#incomingVideo').attr('src', call.incomingStreamURL);
+
+        clock.start();
+
+        //Report call stats
+        var callDetails = call.getDetails();
+
+      },
+      onCallEnded: function(call) {
+        //Report call stats
+        var callDetails = call.getDetails();
+          $('audio#ringback').trigger("pause");
+        $('audio#ringtone').trigger("pause");
+        $('audio#incoming').attr('src', '');
+        $('#incomingVideo').attr('src', '');
+
+        $('#callModal button').removeClass('incall');
+        $('#callModal button').removeClass('callwaiting');
+
+          clock.stop();
+          alert(call.getEndCause);
+          $('#callLog').html('<h2>Experienced any technical issues?<br><br><button class="btn btn-warning report">REPORT A PROBLEM</button></h2>');
+          $('.callerName').hide();
+          $('.callerPic').hide();
+          $('#hangup').hide();
+          $('#answer').hide();
+
+          $('#callModal .modal-title').html("Looks like you're done with this call!");
+
+        if(call.error) {
+
+        }
+      }
+    }
+
+
+    /*** Set up callClient and define how to handle incoming calls ***/
+
+    var callClient = sinchClient.getCallClient();
+    callClient.initStream().then(function() { // Directly init streams, in order to force user to accept use of media sources at a time we choose
+      $('div.frame').not('#chromeFileWarning').show();
+    });
+    var call;
+
+    callClient.addEventListener({
+      onIncomingCall: function(incomingCall) {
+        //Play some groovy tunes
+        $('audio#ringtone').prop("currentTime", 0);
+        $('audio#ringtone').trigger("play");
+
+        var userId = incomingCall.fromId;
+        userId = userId.substr(4,userId.length-1);
+        $.ajax({
+            url: '/live/get-caller-info/',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+                 'userId': userId
+            },
+            success: function(data) {
+                $('.callerPic').attr('src',data['picture']);
+                $('.callerName').text(data['fullName']);
+                $('.callerName').hide();
+                  $('.callerPic').show();
+                  $('#hangup').show();
+                  $('#answer').show();
+
+                $('#callModal').modal('show');
+            }
+        });
+        $('#callModal button').addClass('incall');
+
+        //Manage the call object
+        call = incomingCall;
+        call.addEventListener(callListeners);
+        $('#callModal button').addClass('callwaiting');
+      }
+    });
+
+    $('button#answer').click(function(event) {
+      event.preventDefault();
+
+      if($(this).hasClass("callwaiting")) {
+        clearError();
+
+        try {
+          call.answer();
+          $('button').removeClass('callwaiting');
+        }
+        catch(error) {
+          handleError(error);
+        }
+      }
+    });
+
+
+    /*** Hang up a call ***/
+
+    $('button#hangup').click(function(event) {
+      event.preventDefault();
+
+      if($(this).hasClass("incall")) {
+        clearError();
+
+        console.info('Will request hangup..');
+
+        call && call.hangup();
+      }
+    });
+
+    /*** Handle errors, report them and re-enable UI ***/
+
+    var handleError = function(error) {
+      try {
+        error.responseJSON = error.responseJSON || {};
+        error.errorCode = error.errorCode || error.responseJSON.errorCode || '0';
+        error.message = error.message || (error.errorCode  + ' ' + (error.responseJSON.message || 'No backend'));
+      }
+      catch(e) {
+        console.error('FAIL', e);
+        error.message = "Server failure";
+      }
+    }
+    $('#callModal').on('hidden.bs.modal', function (e) {
+      $('#callLog').html(" ");
+      $('#error').html(" ");
+    });
+
+
+</script>
+
 {% endblock %}

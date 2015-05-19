@@ -191,7 +191,8 @@ def register(request):
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'error': True, 'message': 'User with this email already exists!'})
             else:
-                user = User(username=email, first_name=fn, last_name=ln, email=email)
+                username = email[0:29]
+                user = User(username=username, first_name=fn, last_name=ln, email=email)
                 user.save()
 
                 profile = UserProfile(city=city, country=country, college=college)
@@ -213,17 +214,13 @@ def register(request):
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within 48 hours"+settings.SITE_URL+"/user/confirm/%s" % (
-                    fn, activation_key)
-
+                email_body = "Hey " + fn + ", thanks for signing up. To activate your account, click this link within 48 hours" + settings.SITE_URL + "/user/confirm/" + activation_key
                 print "trying to send mail with activation key"
                 send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [email], fail_silently=False)
                 print "mail sent with activation key"
-
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
-
 
     else:
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
@@ -312,7 +309,6 @@ def thank_you(request):
 
 def explore(request):
     return render_to_response('user/explore.html')
-
 
 
 @login_required
@@ -458,4 +454,27 @@ def register_confirm(request, ak):
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
     return redirect('/user/')
+
+
+def contact(request):
+    error = False
+    msg = None
+    if request.method == "POST":
+        if "name" in request.POST and "email" in request.POST and "query" in request.POST:
+            if request.POST['name'] != '' and request.POST['email'] != '' and request.POST['query'] != '':
+                send_mail("New query from " + request.POST['name'],
+                          request.POST['query'] + "\n - " + request.POST['name'] + "\n" + request.POST['email'],
+                          "anmol@mentorbuddy.in", ["anmol@mentorbuddy.in"], fail_silently=False)
+            else:
+                error = True
+                msg = "Input fields can't be empty!"
+        else:
+            error = True
+            msg = "Missing fields"
+    else:
+        error = True
+        msg = "Submit form using a POST method"
+
+    return JsonResponse({'error': error, "msg": msg})
+
 

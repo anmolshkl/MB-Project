@@ -57,6 +57,7 @@ var callListeners = {
 		$('.callLog').append('<div class="stats">Ringing...</div>');
 	},
 	onCallEstablished: function(call) {
+        alert("call established");
 		$('audio.incoming').attr('src', call.incomingStreamURL);
 		$('audio.ringback').trigger("pause");
 		$('audio.ringtone').trigger("pause");
@@ -180,7 +181,6 @@ $('button.call').click(function(event) {
 
                     console.log('Placing call to: ' + owner.parent().find('.callUserName').val());
                     callType = parseInt(owner.parent().find(".callType").val());
-                    alert(owner.parent().find(".callType").val());
                     if(callType == 1 || callType == 3) {
                         // Video or web call
                         call = callClient.callUser(owner.parent().find(".calleeId").val());
@@ -210,6 +210,7 @@ $('button.call').click(function(event) {
 /*** Hang up a call ***/
 
 $('button.hangup').click(function(event) {
+    alert("hang up");
 	event.preventDefault();
 
 	if($(this).hasClass("incall")) {

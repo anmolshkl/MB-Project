@@ -21,7 +21,7 @@
 	</div>
 
 	<!-- Selection FOrm -->
-	<form action="/user/select/" method="POST" id="selectionForm">
+	<form action="/user/select/" method="POST" id="selectionForm" autocomplete="off">
 		{% csrf_token %}
 	    Please select your options:<br>
 	    <input type="radio" id="menteeChoice" name="choice" value="mentee">Mentor<br>
@@ -30,7 +30,7 @@
 	</form>
 
 	<!-- Password form -->
-	<form class="passwordForm" method="POST" action="/user/select/password/">
+	<form class="passwordForm" method="POST" action="/user/select/password/" autocomplete="off">
 	  {% csrf_token %}
   	  <div id="signUpError">
 	  </div>

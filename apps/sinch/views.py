@@ -30,17 +30,19 @@ def index(request):
     context_dict = {}
     user = request.user
     template = None
+    print "retrieving requests"
 
     if user.user_profile.is_mentor:
         template = "mentor/live.html"
     else:
         now = datetime.now(pytz.timezone('utc'))
-        min_dt = now - td(minutes=15)
+        min_dt = now - td(minutes=150)
         max_dt = now + td(minutes=15)
         req_objs = Request.objects.filter(menteeId_id=request.user.id, is_approved=True,
                                           dateTime__startswith=now.date())
         if req_objs:
             req_list = []
+            print req_objs
             for obj in req_objs:
                 print obj.dateTime.time()
                 print min_dt

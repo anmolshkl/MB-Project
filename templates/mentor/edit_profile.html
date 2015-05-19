@@ -1,7 +1,34 @@
 {% extends 'mentor/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block stylesheets %}
     <style>
+    .imgareaselect-border1 {
+        border: 1px solid black;
+    }
+    #target {
+        display: none;
+        visibility: hidden;
+        margin: 0 auto;
+        max-width: 300px;
+        max-height: 800px;
+    }
+    #preview {
+        display: none;
+        visibility: hidden;
+    }
+    #uncroppedPic {
+        border-color: blue;
+        box-shadow: blue 0px 0px 10px;
+    }
+    .error {
+        color: red;
+        font-weight: 400;
+    }
+    .edit-pic {
+        width: 100px;
+        height: 100px;
+    }
     .page-content {
         background-image: url({% static 'img/bg11.jpg' %}) !important;
         background-size: cover;
@@ -13,26 +40,22 @@
         width: 50% !important;
     }
     .education-form {
-        /*background-image: url("{% static 'img/geometry16.jpg' %}") !important;*/
-        background-color: transparent;
-        box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.26) !important;
+        border: 1px solid black;
+        margin: 20px auto;
+
     }
     .education-form h3, education-form lable {
         color: black !important;
         line-height: 1 !important;
         margin-bottom: 0px !important;
     }
-    .education-form .form-group {
-        display: inline-block !important;
-        margin: 5px;
-    }
     .education-form input {
 
         background-color: transparent;
     }
-    .employment-form label, .employment-form h3, .employment-form input {
-        display: inline !important;
-        max-width: 200px !important;
+    input[type='checkbox'] {
+        float: left;
+        width: auto !important;
     }
     .nav-tabs {
         background-color: transparent !important;
@@ -58,17 +81,24 @@
         font-size: 36px;
         position: relative;
         cursor: pointer;
+        transition: 2s;
+        -webkit-transition: width 2s; /* For Safari 3.1 to 6.0 */
+
     }
 
     .btn-round span {
         position: absolute;
          left: 0;
-        top: 50%;
+        top: 55%;
         height: 100%;
         width: 100%;
         text-align: center;
         margin-top: -22px;
         color: #FFF;
+
+    }
+    .btn-round:hover {
+        opacity: 0.8;
     }
     .cbp-mc-form {
         position: relative;
@@ -203,223 +233,371 @@
         display: none;
         visibility: hidden;
     }
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
     </style>
 {%  endblock %}
-{% block container_title %}<h2>Edit Profile</h2>{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/jcrop/imgareaselect-default.css' %}" />
+
+<link href="{% static 'datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
+{% block container_title %}{% endblock %}
 
 {% block container_block %}
-    <!--
-   <a class="btn btn-primary margin-s" href="/accounts/linkedin/login/?method=oauth2&next=/mentor/get-data/">Get you data from your LinkedIn profile</a>
-    -->
-    <form id="tab-form">
-    <div role="tabpanel" class="tab-form margin-s">
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
-        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Personal</a></li>
-        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Education</a></li>
-        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employment</a></li>
-      </ul>
-
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active cbp-mc-form" id="home">
-            {% csrf_token %}
-            <div class="cbp-mc-column-2 textCenter">
-                <label for="id_picture">Profile Image</label>
-                <img src="{{ profile_form.picture.value }}" class="img-circle center edit-pic" />
-                {{ profile_form.picture }}
-                <br><br>
-                <button class="btn btn-primary mg-left-s">Upload new</button>
-
+    <!-- Image Crop Modal -->
+      <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Set a Profile Picture</h4>
             </div>
-            <div class="cbp-mc-column-2">
-                {% for field in user_form %}
-
-                 <div class="form-group">
-                    <label class="form-label"><h4>{{ field.label }}</h4></label>
-                        <br>
-                      {{ field }}
-                  </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="profile">
-            <div class="cbp-mc-column-2">
-
-                {{ profile_form.gender.label_tag }}
-                {{ profile_form.gender }}
-
-                {{ profile_form.date_of_birth.label_tag }}
-                {{ profile_form.date_of_birth }}
-
-                {{ profile_form.contact.label_tag }}
-                {{ profile_form.contact }}
-            </div>
-            <div class="cbp-mc-column-2">
-                {{ profile_form.resume.label_tag }}
-                {{ profile_form.resume }}
-
-                {{ profile_form.city.label_tag }}
-                {{ profile_form.city }}
-
-                {{ profile_form.country.label_tag }}
-                {{ profile_form.country }}
-
-                {{ profile_form.about.label_tag }}
-                {{ profile_form.about }}
-            </div>
-        </div>
-        <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
-        {% if edu_formset.total_form_count != 0 %}
-            {% for edu_form in edu_formset %}
-                <div class="row well education-form">
-                    {{ edu_form.parent }}
-                    {{ edu_form.id }}
-
-                    <div class="cbp-mc-column-3">
-                        {{ edu_form.instituition.label_tag }}
-                        {{ edu_form.instituition }}
-
-                        {{ edu_form.branch.label_tag }}
-                        {{ edu_form.branch }}
-
-                        {{ edu_form.degree.label_tag }}
-                        {{ edu_form.degree }}
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xs-12">
+                  <form id="uploadForm" method="POST" action="/user/save-image/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                     <div class="form-group">
+                      <p class="error"></p>
+                      <label for="uncroppedPic">Upload a picture</label>
+                      <input type="file" id="uncroppedPic" name="uncroppedPic"  accept="image/*">
+                      <p class="help-block">Please selct an image of dimensions less than 600x600px.</p>
+                      <input type="submit" class="btn btn-default" value="UPLOAD" />
                     </div>
-                    <div class="cbp-mc-column-3">
-                        {{ edu_form.location.label_tag }}
-                        {{ edu_form.location }}
-
-                        {{ edu_form.state.label_tag }}
-                        {{ edu_form.state }}
-
-                        {{ edu_form.country.label_tag }}
-                        {{ edu_form.country }}
-                    </div>
-                    <div class="cbp-mc-column-3">
-                        {{ edu_form.from_year.label_tag }}
-                        {{ edu_form.from_year }}
-
-                        {{ edu_form.to_year.label_tag }}
-                        {{ edu_form.to_year }}
-
-                        {{ edu_form.delete.label_tag }}
-                        {{ edu_form.delete }}
-                    </div>
+                  </form>
 
                 </div>
-        </div>
-            {% endfor %}
-        {% else %}
-            <div class="row well education-form" style="display: none">
-                    {{ edu_formset.empty_form.parent }}
-                    {{ edu_formset.empty_form.id }}
+              </div>
 
-                    <div class="cbp-mc-column-3">
-                        {{ edu_formset.empty_form.institution.label_tag }}
-                        {{ edu_formset.empty_form.institution }}
-
-                        {{ edu_formset.empty_form.branch.label_tag }}
-                        {{ edu_formset.empty_form.branch }}
-
-                        {{ edu_formset.empty_form.degree.label_tag }}
-                        {{ edu_formset.empty_form.degree }}
-                    </div>
-                    <div class="cbp-mc-column-3">
-                        {{ edu_formset.empty_form.city.label_tag }}
-                        {{ edu_formset.empty_form.city }}
-
-                        {{ edu_formset.empty_form.state.label_tag }}
-                        {{ edu_formset.empty_form.state }}
-
-                        {{ edu_formset.empty_form.country.label_tag }}
-                        {{ edu_formset.empty_form.country }}
-                    </div>
-                    <div class="cbp-mc-column-3">
-                        {{ edu_formset.empty_form.from_year.label_tag }}
-                        {{ edu_formset.empty_form.from_year }}
-
-                        {{ edu_formset.empty_form.to_year.label_tag }}
-                        {{ edu_formset.empty_form.to_year }}
-
-                        <label for="id_educationdetails_set-__prefix__-DELETE">Delete:</label>
-                        <input value="" id="id_educationdetails_set-1-DELETE" name="educationdetails_set-1-DELETE" type="checkbox">
-                    </div>
-            </div>
-        {% endif %}
-        {{ edu_formset.management_form }}
-        <a class="cnt btn-round" id="addMoreEdu"><span>+</span></a>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="settings">
-            {% if emp_formset.total_form_count != 0 %}
-                {% for emp_form in emp_formset %}
-                    <div class="cbp-mc-column-2">
-                        {{ emp_form.organization.label_tag }}
-                        {{ emp_form.organization }}
-
-                        {{ emp_form.location.label_tag }}
-                        {{ emp_form.llocation }}
-
-                        {{ emp_form.postion.label_tag }}
-                        {{ emp_form.postion. }}
-                    </div>
-                    <div class="cbp-mc-column-2">
-                        {{ emp_form.from_date.label_tag }}
-                        {{ emp_form.from_date }}
-
-                        {{ emp_form.to_date.label_tag }}
-                        {{ emp_form.to_date }}
-                    </div>
-                    <div class="row well employment-form form-inline">
-                    {% for field in emp_form %}
-                         <div class="form-group">
-                            {% if field.label != 'Parent' and field.label != 'Id' %}
-                            <h3>{{ field.label_tag }}</h3>
-                                <br>
-                             {% endif %}
-                              {{ field }}
-                          </div>
-                    {% endfor %}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <div class="row well employment-form form-inline" style="display: none">
-                    {% for field in emp_formset.empty_form %}
-                         <div class="form-group">
-                            {% if field.label != 'Parent' and field.label != 'Id' %}
-                            <h3>{{ field.label_tag }}</h3>
-                                <br>
-                             {% endif %}
-                              {{ field }}
-                          </div>
-                    {% endfor %}
+                <div class="row">
+                  <p class="target_p">
+                    <img id="target" src="" class="img-responsive" />
+                  </p>
                 </div>
-            {% endif %}
-            {{ emp_formset.management_form }}
-        <a class="btn-round cnt" id="addMoreEmp"><span>+</span></a>
+            </div>
+            <div class="modal-footer">
+              <input type="button" class="btn btn-success cropSubmit" value="Make this my profile pic!">
+              <button type="button" class="btn btn-primary modal-close" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
       </div>
 
+    <!--
+   <a class="btn btn-primary margin-s" href="/accounts/linkedin/login/?method=oauth2&next=/mentor/get-data/">Get you data from your LinkedIn profile</a>
+    -->
+    <!-- Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="errorModalLabel">Uh Oh...</h4>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <form id="tab-form" method="POST" enctype="multipart/form-data">
+        <input type="hidden" id="x1" name="x1" value="" />
+        <input type="hidden" id="x2" name="x2" value="" />
+        <input type="hidden" id="y1" name="y1" value="" />
+        <input type="hidden" id="y2" name="y2" value="" />
+        <input type="hidden" id="w" name="w" value="" />
+        <input type="hidden" id="h" name="h" value="" />
+        <div role="tabpanel" class="tab-form margin-s">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Basic</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Personal</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Education</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employment</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active cbp-mc-form" id="home">
+                {% csrf_token %}
+                <div class="cbp-mc-column-2 textCenter">
+                    <label for="id_picture">Profile Image</label>
+                    <img src="{{ profile_form.picture.value }}" class="img-circle center edit-pic" />
+                    {{ profile_form.picture }}
+                    <br><br>
+                    <button class="btn btn-primary mg-left-s uploadPic" type="button" data-toggle="modal" data-target="cropModal">Upload new</button>
+
+                </div>
+                <div class="cbp-mc-column-2">
+                    {% for field in user_form %}
+                        {{ field.label_tag }}
+                        {{ field|add_class:"required" }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="profile">
+                <div class="cbp-mc-column-2">
+
+                    {{ profile_form.gender.label_tag }}
+                    {{ profile_form.gender }}
+
+                    {{ profile_form.date_of_birth.label_tag }}
+                    {{ profile_form.date_of_birth|add_class:"required" }}
+
+                    {{ profile_form.contact.label_tag }}
+                    {{ profile_form.contact|add_class:"required" }}
+
+                    <label for="id_resume">RESUME</label>
+                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                    <div class="fileUpload btn btn-primary">
+                        <span>Upload</span>
+                        <input id="id_resume" name="resume" type="file" class="upload" />
+                    </div>
+
+                </div>
+                <div class="cbp-mc-column-2">
+                    {{ profile_form.city.label_tag }}
+                    {{ profile_form.city|add_class:"required" }}
+
+                    {{ profile_form.country.label_tag }}
+                    {{ profile_form.country|add_class:"required" }}
+
+                    {{ profile_form.about.label_tag }}
+                    {{ profile_form.about }}
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
+                {% if edu_formset.total_form_count != 0 %}
+                    {% for edu_form in edu_formset %}
+                        <div class="row well education-form">
+                            {{ edu_form.parent }}
+                            {{ edu_form.id }}
+
+                            <div class="cbp-mc-column-3">
+                                {{ edu_form.institution.label_tag }}
+                                {{ edu_form.institution|add_class:"required" }}
+
+                                {{ edu_form.branch.label_tag }}
+                                {{ edu_form.branch|add_class:"required" }}
+
+                                {{ edu_form.degree.label_tag }}
+                                {{ edu_form.degree|add_class:"required" }}
+                            </div>
+                            <div class="cbp-mc-column-3">
+                                {{ edu_form.city.label_tag }}
+                                {{ edu_form.city|add_class:"required" }}
+
+                                {{ edu_form.state.label_tag }}
+                                {{ edu_form.state }}
+
+                                {{ edu_form.country.label_tag }}
+                                {{ edu_form.country|add_class:"required" }}
+                            </div>
+                            <div class="cbp-mc-column-3">
+                                {{ edu_form.from_year.label_tag }}
+                                {{ edu_form.from_year|add_class:"year" }}
+
+                                {{ edu_form.to_year.label_tag }}
+                                {{ edu_form.to_year|add_class:"year" }}
+
+                                {{ edu_form.DELETE.label_tag }}
+                                {{ edu_form.DELETE }}
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row education-form" style="display: none">
+                        {{ edu_formset.empty_form.parent }}
+                        {{ edu_formset.empty_form.id }}
+
+                        <div class="cbp-mc-column-3">
+                            {{ edu_formset.empty_form.institution.label_tag }}
+                            {{ edu_formset.empty_form.institution }}
+
+                            {{ edu_formset.empty_form.branch.label_tag }}
+                            {{ edu_formset.empty_form.branch }}
+
+                            {{ edu_formset.empty_form.degree.label_tag }}
+                            {{ edu_formset.empty_form.degree }}
+                        </div>
+                        <div class="cbp-mc-column-3">
+                            {{ edu_formset.empty_form.city.label_tag }}
+                            {{ edu_formset.empty_form.city }}
+
+                            {{ edu_formset.empty_form.state.label_tag }}
+                            {{ edu_formset.empty_form.state }}
+
+                            {{ edu_formset.empty_form.country.label_tag }}
+                            {{ edu_formset.empty_form.country }}
+                        </div>
+                        <div class="cbp-mc-column-3">
+                            {{ edu_formset.empty_form.from_year.label_tag }}
+                            {{ edu_formset.empty_form.from_year }}
+
+                            {{ edu_formset.empty_form.to_year.label_tag }}
+                            {{ edu_formset.empty_form.to_year }}
+
+                            {{ edu_formset.empty_form.DELETE.label_tag }}
+                            {{ edu_formset.empty_form.DELETE }}
+                        </div>
+                    </div>
+                {% endif %}
+                {{ edu_formset.management_form }}
+                <a class="cnt btn-round" id="addMoreEdu"><span>+</span></a>
+            </div>
+
+
+            <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="settings">
+                {% if emp_formset.total_form_count != 0 %}
+                    {% for emp_form in emp_formset %}
+                        <div class="row employment-form">
+                            {{ emp_form.parent }}
+                            {{ emp_form.id }}
+
+                            <div class="cbp-mc-column-2">
+                                {{ emp_form.organization.label_tag }}
+                                {{ emp_form.organization|add_class:"required" }}
+
+                                {{ emp_form.location.label_tag }}
+                                {{ emp_form.location }}
+
+                                {{ emp_form.position.label_tag }}
+                                {{ emp_form.position }}
+                            </div>
+                            <div class="cbp-mc-column-2">
+                                {{ emp_form.from_year.label_tag }}
+                                {{ emp_form.from_year|add_class:"year" }}
+
+                                {{ emp_form.to_year.label_tag }}
+                                {{ emp_form.to_year|add_class:"year" }}
+
+                                {{ emp_form.DELETE.label_tag }}
+                                {{ emp_form.DELETE }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="row employment-form" style="display: none">
+                        {{ emp_formset.empty_form.parent }}
+                        {{ emp_formset.empty_form.id }}
+                        <div class="cbp-mc-column-2">
+                            {{ emp_formset.empty_form.organization.label_tag }}
+                            {{ emp_formset.empty_form.organization}}
+
+                            {{ emp_formset.empty_form.location.label_tag }}
+                            {{ emp_formset.empty_form.location }}
+
+                            {{ emp_formset.empty_form.position.label_tag }}
+                            {{ emp_formset.empty_form.position }}
+                        </div>
+                        <div class="cbp-mc-column-2">
+                            {{ emp_formset.empty_form.from_year.label_tag }}
+                            {{ emp_formset.empty_form.from_year }}
+
+                            {{ emp_formset.empty_form.to_year.label_tag }}
+                            {{ emp_formset.empty_form.to_year }}
+
+                            {{ emp_formset.empty_form.DELETE.label_tag }}
+                            {{ emp_formset.empty_form.DELETE }}
+                        </div>
+                    </div>
+                {% endif %}
+                {{ emp_formset.management_form }}
+            <a class="btn-round cnt" id="addMoreEmp"><span>+</span></a>
+            </div>
+          </div>
+
+        </div>
+        <button type="submit" class="btn btn-success btn-large cnt update"> Update</button>
+    <br>
     </form>
-    <a class="btn btn-success btn-large cnt update"> Update</a>
+
 {% endblock %}
 
 {% block scripts %}
     <script src="{%  static 'morph/classie.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="{% static 'datepicker/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>
+    <script type="text/javascript" src="{% static 'js/jcrop/jquery.imgareaselect.pack.js' %}"></script>
     <script>
-        $('.update').click(function() {
-            var data = $('#tab-form').serializeArray();
-            $.ajax({
-                url: '/mentor/edit-profile/',
-                data: data,
-                type: 'post',
-                success: function() {
-                    alert("maza a gaya");
+        document.getElementById("id_resume").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;
+        };
+        var blankFields = "";
+        var errorFields = "";
+        function validate() {
+            var valid = 1;
+            blankFields = "";
+            $(".required").each(function (i, obj) {
+                if($(this).val().trim() == '') {
+                    valid *= 0;
+                    var label = $("label[for='"+this.id+"']");
+                    blankFields += label.text().slice(0,-1)+"<br>";
                 }
             });
+            var reGoodDate = /^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
+            if(!reGoodDate.test($("#id_date_of_birth").val())) {
+                valid *= 0;
+                errorFields += "Date of Birth<br>";
+            }
+            $(".year").each(function (i, obj) {
+                if(isNaN($(this).val()) == true) {
+                    valid *= 0;
+                    errorFields += $("label[for='"+this.id+"']").text().slice(0,-1)+"<br>";
+                }
+            });
+
+            return valid;
+        }
+        $('#tab-form').submit(function(e) {
+            e.preventDefault();
+            if(validate() == 1) {
+                var formData = new FormData($(this)[0]);
+                console.log(formData);
+                $.ajax({
+                    url: '/mentor/edit-profile/',
+                    data: formData,
+                    type: 'post',
+                    contentType: false,
+                    processData: false,
+                    success: function() {
+                        location.reload();
+                    },
+                    failure: function() {
+                        alert("failed");
+                    }
+                });
+            } else {
+                var msg = "<h5>The following fields are required:</h5><br>"+blankFields;
+                if(errorFields != "") {
+                    msg += "<h5>Please check the following fields for format error:</h5><br>"+errorFields;
+                }
+                $("#errorModal .modal-body").html(msg);
+                $('#errorModal').modal('show')
+            }
+
+
         });
     </script>
     <script>
@@ -443,12 +621,12 @@
 
         $('#addMoreEdu').click(function() {
             cloneMore('.education-form:last', 'educationdetails_set');
-            $('.education-form:last').show();
+            $('.education-form:last').fadeIn('slow');
         });
 
         $('#addMoreEmp').click(function() {
             cloneMore('.employment-form:last', 'employmentdetails_set');
-            $('.employment-form:last').show();
+            $('.employment-form:last').fadeIn();
         });
         // Now we need to change the prefix of empty form generated by django
         {% if emp_formset.total_form_count == 0 %}
@@ -466,5 +644,147 @@
                 $(this).attr({'name': newName, 'id': newId});
             });
         {% endif %}
+
+        var ias; // Stores Instance of ImageAreaSelect
+        $(document).ready(function() {
+          $('.cropSubmit').hide();
+        });
+        $(document).ready(function() {
+          $('.passHelp').hide();
+        });
+        $(document).ready(function() {
+          $('input[type=password]').focus(function() {
+              $('.passHelp').show();
+          });
+        });
+
+
+
+
+        function preview(img, selection) {
+            var scaleX = 100 / (selection.width || 1);
+            var scaleY = 100 / (selection.height || 1);
+
+            var image = document.getElementById('target');
+
+            $('#x1').val(selection.x1);
+            $('#y1').val(selection.y1);
+            $('#x2').val(selection.x2);
+            $('#y2').val(selection.y2);
+            $('#w').val(selection.width);
+            $('#h').val(selection.height);
+
+            var scaleX = 100 / selection.width;
+            var scaleY = 100 / selection.height;
+
+
+            var tarImg  =document.getElementById('target');
+
+            $('#id_picture').css({
+                width: Math.round(scaleX * tarImg.naturalWidth),
+                height: Math.round(scaleY * tarImg.naturalHeight),
+                marginLeft: -Math.round(scaleX * selection.x1),
+                marginTop: -Math.round(scaleY * selection.y1)
+            });
+
+            if(tarImg.naturalHeight > 400 || tarImg.naturalWidth >400) {
+              $('#preview2').remove();
+            }
+
+            if(selection.width == 0) {
+              $(".cropSubmit").hide();
+            }
+            else {
+             $(".cropSubmit").show();
+            }
+        }
+
+
+         //Program a custom submit function for the form
+          $("#uploadForm").submit(function(event){
+
+            //disable the default form submission
+            event.preventDefault();
+
+            //grab all form data
+            var formData = new FormData($(this)[0]);
+
+            if($('#uncroppedPic').val() == '') {
+              $('#cropModal .error').html("Please select an Image to upload.");
+              return;
+            }
+
+              $.ajax({
+                url: '/user/save-image/',
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                  if(returndata === 'failed') {
+                      $('#cropModal .error').html("Please check the image type.<br>Only JPG/JPEG,PNG,GIFs are allowed!");
+                      return;
+                  }
+                  $('#target').attr("src",returndata);
+
+                  $('#target').css("display","block");
+                  $('#target').css("visibility","visible");
+
+
+                  var image = document.getElementById('target');
+
+
+                  var pic_real_width, pic_real_height;
+                  $("<img/>") // Make in memory copy of image to avoid css issues
+                      .attr("src", $(image).attr("src"))
+                      .load(function() {
+                          pic_real_width = this.width;   // Note: $(this).width() will not
+                          pic_real_height = this.height; // work for in memory images.
+
+                          ias = $('#target').imgAreaSelect({
+                          aspectRatio: '1:1',
+                          handles: true,
+                          fadeSpeed: 200,
+                          onSelectChange: preview,
+                          imageWidth: pic_real_width,
+                          imageHeight: pic_real_height,
+                          maxHeight: 400,
+                          maxWidth: 400,
+                          instance: true
+                        });
+                        $('.cropSubmit').show();
+                      });
+                }
+              });
+        });
+
+
+        $('.modal-close').click(function() {
+          ias.cancelSelection();
+        });
+
+        //Program a custom submit function for the form
+          $(".cropSubmit").click(function(event){
+            //disable the default form submission
+            event.preventDefault();
+
+            //grab all form data
+            var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "url").val($('#target').attr('src'));
+            $('.form').append($(input));
+
+            $(".modal-close")[0].click();
+        });
+
+        $(".uploadPic").click(function() {
+           $("#cropModal").modal('show');
+        });
+        $('#id_date_of_birth').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+
     </script>
 {%  endblock %}

@@ -19,8 +19,8 @@ class EducationDetails(models.Model):
     country = models.CharField(max_length=128, blank=True)
     degree = models.CharField(max_length=64, blank=True)
     branch = models.CharField(max_length=256, blank=True)
-    from_year = models.IntegerField(max_length=4, blank=True, null=True)
-    to_year = models.IntegerField(max_length=4, blank=True, null=True)
+    from_year = models.IntegerField(blank=True, null=True)
+    to_year = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u'{1} from {0}'.format(self.institution, self.branch)
@@ -36,8 +36,8 @@ class EmploymentDetails(models.Model):
     organization = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
     position = models.CharField(max_length=256, blank=True)
-    from_date = models.DateField(blank=True, null=True)
-    to_date = models.DateField(blank=True, null=True)
+    from_year = models.IntegerField(blank=True, null=True)
+    to_year = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return u'{}'.format(self.organization)

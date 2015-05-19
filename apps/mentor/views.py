@@ -50,6 +50,7 @@ def cropAndSave(user, POST):
         im.save(os.path.join(newPath, user.username + ".jpg"), "jpeg")
     except Exception as e:
         print str(e)
+    return os.path.join(newPath, user.username + "CRPD.jpg")
 
 
 def index(request):
@@ -281,8 +282,6 @@ def self_profile_view(request):
         context_dict['edu_list'] = edu_list
 
     if empObjs:
-        print "empObjs"
-        print empObjs
         emp_list = []
         for obj in empObjs:
             emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
@@ -290,7 +289,6 @@ def self_profile_view(request):
 
         context_dict['emp_list'] = emp_list
 
-    print context_dict
     return render_to_response("mentor/profile-view.html", context_dict, context)
 
 
@@ -438,58 +436,45 @@ def get_profile(request, mentorid):
     return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
 
+
 @login_required
 def edit_profile(request):
-    # The following form method use taken from slide 66 of
-    # http://www.slideshare.net/pydanny/advanced-django-forms-usage
     user = request.user
     user_profile = user.user_profile
 
     if request.method == 'POST' and request.POST:
+        print "post request received"
         user_form = UserEditForm(request.POST, instance=user)
-        profile_form = UserProfileForm(request.POST, instance=user_profile)
-        # education_detail_formset = EducationDetailFormSet(request.POST, instance=user_profile)
-        # employment_detail_formset,created = EmploymentDetailFormSet(request.POST, instance=user_profile)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         edu_formset = EducationDetailsFormSet(request.POST, instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(request.POST, instance=user_profile)
-        if user_form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
+        print "war"
+        if user_form.is_valid() and profile_form.is_valid():
+            print "saving profile"
+            if "url" in request.POST:
+                print "saving pic"
+                profile_form.picture = cropAndSave(user, request.POST)
+
+            print "1"
             user_form.save()
             profile_form.save()
             emp_formset.save()
             edu_formset.save()
-            print "forms saved"
-            for profile_form in edu_formset:
-                print profile_form
-
-            for profile_form in emp_formset:
-                print profile_form
-            return JsonResponse({'error': False})
+            print "2"
+            return render(request, "mentor/edit_profile.html", locals())
             # return here if different behaviour desired
         else:
-            for profile_form in edu_formset:
-                print profile_form.errors
-            return JsonResponse({'error': True})
+            print "validation error"
+            print user_form.errors
+            print profile_form.errors
+            return render(request, "mentor/edit_profile.html", locals())
     else:
         user_form = UserEditForm(instance=user)
         profile_form = UserProfileForm(instance=user_profile)
         edu_formset = EducationDetailsFormSet(instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
-        return render(request, "mentor/edit_profile.html", locals())
-        '''
-        # build a list of all different educational forms from individual education entry
-        eduFormList = []
-        for edu in EducationDetails.objects.filter(parent=user_profile):
-            eduFormList.append(EducationForm(instance=edu))
-        
-        # build a list of all different Employment forms from individual Employment entry
-        empFormList = []
-        for emp in EmploymentDetails.objects.filter(parent=user_profile):
-            empFormList.append(EmploymentForm(instance=emp))
-        '''
-        # edu_form = EducationForm(instance=EducationDetails.objects.get_or_create(parent=user_profile)[0])
-        # emp_form = EmploymentForm(instance=EmploymentDetails.objects.get_or_create(parent=user_profile)[0])
 
-
+    return render(request, "mentor/edit_profile.html", locals())
 
 @login_required
 def get_data(request):
