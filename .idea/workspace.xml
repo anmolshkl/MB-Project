@@ -2,59 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Untitled Document" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/bg10.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/bg17.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/bg4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/bg6.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/img/skype-5-8.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/css/owl.carousel.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/css/owl.theme.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/Untitled-2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/geometry16.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/low_poly_background.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/rsz_info3.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/rsz_infographic1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/rsz_infographic6.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/img/rsz_road13.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/static/owl-carousel/js/owl.carousel.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/300561-frederika.jpg" afterPath="$PROJECT_DIR$/static/img/300561-frederika.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/bg11.jpg" afterPath="$PROJECT_DIR$/static/img/bg11.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/bg3.jpg" afterPath="$PROJECT_DIR$/static/img/bg3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/bg4low.jpg" afterPath="$PROJECT_DIR$/static/img/bg4low.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/bg5.jpg" afterPath="$PROJECT_DIR$/static/img/bg5.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/bg7.jpg" afterPath="$PROJECT_DIR$/static/img/bg7.jpg" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/profile_images/11/11.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/profile_images/11/11CRPD.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/resume/Installation.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/bg22.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/bg4low.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/bg5.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/geometry16.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/harvard_university321.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/media/temp/orange-and-purple-polygons-25819-1366x768.jpg" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/media/temp/bg18.jpg" afterPath="$PROJECT_DIR$/media/temp/bg18.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/geometry16.jpg" afterPath="$PROJECT_DIR$/static/img/geometry16.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/template/frontend/assets/img/bg/slide_one.jpg" afterPath="$PROJECT_DIR$/static/template/frontend/assets/img/bg/slide_one.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/ways.png" afterPath="$PROJECT_DIR$/static/img/ways.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/template/frontend/assets/img/work.jpg" afterPath="$PROJECT_DIR$/static/template/frontend/assets/img/work.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/sinch/WEBsampleMentee.js" afterPath="$PROJECT_DIR$/static/sinch/WEBsampleMentee.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/base.html" afterPath="$PROJECT_DIR$/templates/mentee/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentor/base.html" afterPath="$PROJECT_DIR$/templates/mentor/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/template/webarch/assets/js/calender.js" afterPath="$PROJECT_DIR$/static/template/webarch/assets/js/calender.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/morph/component.css" afterPath="$PROJECT_DIR$/static/morph/component.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/admin.py" afterPath="$PROJECT_DIR$/apps/mentor/admin.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/mentee/edit-profile.css" afterPath="$PROJECT_DIR$/static/css/mentee/edit-profile.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/edit_profile.html" afterPath="$PROJECT_DIR$/templates/mentee/edit_profile.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentor/edit_profile.html" afterPath="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/forms.py" afterPath="$PROJECT_DIR$/apps/mentor/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/forms.py" afterPath="$PROJECT_DIR$/apps/user/forms.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/live.html" afterPath="$PROJECT_DIR$/templates/mentee/live.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentor/live.html" afterPath="$PROJECT_DIR$/templates/mentor/live.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/user/loginV3.css" afterPath="$PROJECT_DIR$/static/css/user/loginV3.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/loginV3.html" afterPath="$PROJECT_DIR$/templates/user/loginV3.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" afterPath="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/models.py" afterPath="$PROJECT_DIR$/apps/mentor/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/models.py" afterPath="$PROJECT_DIR$/apps/user/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/requests.html" afterPath="$PROJECT_DIR$/templates/mentee/requests.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/profile-view.html" afterPath="$PROJECT_DIR$/templates/mentee/profile-view.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/mentee/search.css" afterPath="$PROJECT_DIR$/static/css/mentee/search.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/search_indexes.py" afterPath="$PROJECT_DIR$/apps/user/search_indexes.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/search_root.html" afterPath="$PROJECT_DIR$/templates/mentee/search_root.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/select.html" afterPath="$PROJECT_DIR$/templates/user/select.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mentorbuddy/settings.py" afterPath="$PROJECT_DIR$/mentorbuddy/settings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/user/select/select.css" afterPath="$PROJECT_DIR$/static/css/user/select/select.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/sinch/style.css" afterPath="$PROJECT_DIR$/static/sinch/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/template/frontend/assets/css/style.css" afterPath="$PROJECT_DIR$/static/template/frontend/assets/css/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/user/urls.py" afterPath="$PROJECT_DIR$/apps/user/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/urls.py" afterPath="$PROJECT_DIR$/apps/mentor/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentee/views.py" afterPath="$PROJECT_DIR$/apps/mentee/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/views.py" afterPath="$PROJECT_DIR$/apps/mentor/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/sinch/views.py" afterPath="$PROJECT_DIR$/apps/sinch/views.py" />
@@ -92,56 +66,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/user/tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="162">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="search_indexes.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/user/search_indexes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="78" max-vertical-offset="450">
-              <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/mentee/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4987" max-vertical-offset="6156">
-              <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/mentee/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="324">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#42#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/sinch/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.354839" vertical-offset="590" max-vertical-offset="1836">
-              <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#52#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="973" max-vertical-offset="2196">
+              <caret line="69" column="99" selection-start-line="69" selection-start-column="99" selection-end-line="69" selection-end-column="99" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -149,38 +79,8 @@
       <file leaf-file-name="live.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/mentee/live.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.0344827" vertical-offset="710" max-vertical-offset="4536">
-              <caret line="46" column="52" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="component.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/static/morph/component.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33231708" vertical-offset="1403" max-vertical-offset="9000">
-              <caret line="84" column="19" selection-start-line="84" selection-start-column="19" selection-end-line="84" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WEBsampleMentee.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/sinch/WEBsampleMentee.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-117.870964" vertical-offset="162" max-vertical-offset="4644">
-              <caret line="212" column="21" selection-start-line="212" selection-start-column="21" selection-end-line="212" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="live.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/mentor/live.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="113.703705" vertical-offset="4222" max-vertical-offset="4824">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state vertical-scroll-proportion="-1.7241379" vertical-offset="836" max-vertical-offset="4824">
+              <caret line="52" column="88" selection-start-line="52" selection-start-column="88" selection-end-line="52" selection-end-column="88" />
               <folding />
             </state>
           </provider>
@@ -189,8 +89,70 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/sinch/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7524">
-              <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7596">
+              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WEBsampleMentee.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/sinch/WEBsampleMentee.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.83871" vertical-offset="449" max-vertical-offset="5346">
+              <caret line="35" column="33" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="726" max-vertical-offset="1098">
+              <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.33231708" vertical-offset="827" max-vertical-offset="13860">
+              <caret line="52" column="13" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="13" />
+              <folding>
+                <element signature="e#0#53#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mentor-profile-view.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.296296" vertical-offset="7138" max-vertical-offset="9144">
+              <caret line="406" column="130" selection-start-line="406" selection-start-column="130" selection-end-line="406" selection-end-column="130" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="edit_profile.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="13968" max-vertical-offset="14310">
+              <caret line="776" column="44" selection-start-line="776" selection-start-column="44" selection-end-line="776" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="live.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/mentor/live.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="5238">
+              <caret line="90" column="41" selection-start-line="90" selection-start-column="41" selection-end-line="90" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -204,12 +166,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/inputEffects/set1.css" />
-        <option value="$PROJECT_DIR$/apps/sinch/urls.py" />
-        <option value="$PROJECT_DIR$/apps/mentee/forms.py" />
         <option value="$PROJECT_DIR$/apps/mentee/urls.py" />
-        <option value="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
-        <option value="$PROJECT_DIR$/templates/mentee/profile-view.html" />
         <option value="$PROJECT_DIR$/templates/mentee/manage-social-profiles.html" />
         <option value="$PROJECT_DIR$/templates/mentor/manage-social-profiles.html" />
         <option value="$PROJECT_DIR$/templates/user/login.html" />
@@ -221,7 +178,6 @@
         <option value="$PROJECT_DIR$/templates/mentor/profile-view.html" />
         <option value="$PROJECT_DIR$/mentorbuddy/adapters/adapter.py" />
         <option value="$PROJECT_DIR$/apps/mentor/forms.py" />
-        <option value="$PROJECT_DIR$/apps/user/models.py" />
         <option value="$PROJECT_DIR$/static/template/webarch/assets/js/calender.js" />
         <option value="$PROJECT_DIR$/templates/user/contact.html" />
         <option value="$PROJECT_DIR$/static/FullscreenForm/css/demo.css" />
@@ -230,31 +186,37 @@
         <option value="$PROJECT_DIR$/templates/contact.html" />
         <option value="$PROJECT_DIR$/static/css/user/loginV3.css" />
         <option value="$PROJECT_DIR$/templates/mentee/base.html" />
-        <option value="$PROJECT_DIR$/apps/user/views.py" />
-        <option value="$PROJECT_DIR$/apps/mentee/views.py" />
-        <option value="$PROJECT_DIR$/static/css/mentee/search.css" />
-        <option value="$PROJECT_DIR$/templates/mentee/search_root.html" />
         <option value="$PROJECT_DIR$/templates/mentee/edit_profile.html" />
         <option value="$PROJECT_DIR$/static/css/mentee/edit-profile.css" />
-        <option value="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
         <option value="$PROJECT_DIR$/apps/user/forms.py" />
-        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
         <option value="$PROJECT_DIR$/mentorbuddy/celery.py" />
         <option value="$PROJECT_DIR$/apps/background_threads/tasks.py" />
         <option value="$PROJECT_DIR$/static/template/frontend/assets/css/style.css" />
         <option value="$PROJECT_DIR$/templates/user/select.html" />
-        <option value="$PROJECT_DIR$/apps/mentor/models.py" />
         <option value="$PROJECT_DIR$/mentorbuddy/settings.py" />
         <option value="$PROJECT_DIR$/templates/user/loginV3.html" />
         <option value="$PROJECT_DIR$/templates/mentor/base.html" />
+        <option value="$PROJECT_DIR$/static/morph/component.css" />
+        <option value="$PROJECT_DIR$/apps/user/views.py" />
+        <option value="$PROJECT_DIR$/apps/mentor/urls.py" />
+        <option value="$PROJECT_DIR$/templates/mentee/profile-view.html" />
+        <option value="$PROJECT_DIR$/apps/mentee/views.py" />
+        <option value="$PROJECT_DIR$/static/css/user/select/select.css" />
         <option value="$PROJECT_DIR$/apps/user/search_indexes.py" />
+        <option value="$PROJECT_DIR$/templates/mentee/search_root.html" />
+        <option value="$PROJECT_DIR$/static/css/mentee/search.css" />
         <option value="$PROJECT_DIR$/templates/mentee/requests.html" />
+        <option value="$PROJECT_DIR$/templates/mentor/live.html" />
+        <option value="$PROJECT_DIR$/apps/mentor/admin.py" />
+        <option value="$PROJECT_DIR$/apps/mentor/models.py" />
+        <option value="$PROJECT_DIR$/apps/user/models.py" />
+        <option value="$PROJECT_DIR$/templates/mentor/edit_profile.html" />
+        <option value="$PROJECT_DIR$/apps/sinch/views.py" />
         <option value="$PROJECT_DIR$/static/sinch/style.css" />
         <option value="$PROJECT_DIR$/templates/mentee/live.html" />
-        <option value="$PROJECT_DIR$/apps/sinch/views.py" />
         <option value="$PROJECT_DIR$/static/sinch/WEBsampleMentee.js" />
-        <option value="$PROJECT_DIR$/templates/mentor/live.html" />
-        <option value="$PROJECT_DIR$/static/morph/component.css" />
+        <option value="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
+        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
       </list>
     </option>
   </component>
@@ -318,7 +280,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -348,6 +309,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -501,12 +480,31 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="mentor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MB-Project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="mentee" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -890,7 +888,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1301" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -904,7 +902,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21752498" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32786885" sideWeight="0.49961567" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4008942" sideWeight="0.49884704" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4008942" sideWeight="0.49884704" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32488823" sideWeight="0.49961567" order="1" side_tool="false" content_ui="tabs" />
@@ -937,121 +935,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/django/contrib/auth/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.6989248" vertical-offset="3962" max-vertical-offset="8658">
-          <caret line="201" column="21" selection-start-line="201" selection-start-column="21" selection-end-line="201" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/user/loginV3.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="78" max-vertical-offset="11052">
-          <caret line="77" column="1" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/calendar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.444445" vertical-offset="1572" max-vertical-offset="2142">
-          <caret line="112" column="57" selection-start-line="112" selection-start-column="57" selection-end-line="112" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/contact.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.3333335" vertical-offset="108" max-vertical-offset="2160">
-          <caret line="14" column="87" selection-start-line="14" selection-start-column="87" selection-end-line="14" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/FullscreenForm/css/component.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="132" max-vertical-offset="17190">
-          <caret line="26" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4590" max-vertical-offset="9414">
-          <caret line="255" column="4" selection-start-line="255" selection-start-column="4" selection-end-line="255" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/img_edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="846">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/mentor/register.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="9.877438" vertical-offset="0" max-vertical-offset="3996">
-          <caret line="197" column="20" selection-start-line="197" selection-start-column="20" selection-end-line="197" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/mentor/register.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1566">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/register.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="8910">
-          <caret line="18" column="42" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentee/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="882" max-vertical-offset="9684">
-          <caret line="49" column="5" selection-start-line="49" selection-start-column="5" selection-end-line="49" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentee/search_root.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.6296296" vertical-offset="226" max-vertical-offset="666">
-          <caret line="24" column="42" selection-start-line="24" selection-start-column="42" selection-end-line="24" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="372">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/indexOLD.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="372">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/jcrop/border-v.gif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/jcrop/border-h.gif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/jcrop/imgareaselect-default.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43548387" vertical-offset="0" max-vertical-offset="828">
-          <caret line="9" column="31" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/mentee/edit-profile.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3966" max-vertical-offset="4338">
@@ -1063,13 +946,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="4.445783" vertical-offset="1692" max-vertical-offset="8298">
           <caret line="176" column="24" selection-start-line="176" selection-start-column="24" selection-end-line="176" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/mentee/search.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="198">
-          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1088,34 +964,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="14130" max-vertical-offset="14328">
-          <caret line="785" column="27" selection-start-line="785" selection-start-column="27" selection-end-line="785" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/user/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="506" max-vertical-offset="1008">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="44" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="7811" max-vertical-offset="12744">
-          <caret line="460" column="28" selection-start-line="460" selection-start-column="28" selection-end-line="460" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/user/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3617" max-vertical-offset="8532">
-          <caret line="231" column="23" selection-start-line="231" selection-start-column="23" selection-end-line="231" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -1145,20 +997,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/select.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="576" max-vertical-offset="4194">
-          <caret line="32" column="94" selection-start-line="32" selection-start-column="94" selection-end-line="32" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.673947" vertical-offset="270" max-vertical-offset="1026">
-          <caret line="39" column="34" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mentorbuddy/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3613" max-vertical-offset="5634">
@@ -1169,24 +1007,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentor/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15561959" vertical-offset="162" max-vertical-offset="990">
-          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/template/frontend/assets/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.45541403" vertical-offset="596" max-vertical-offset="51480">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/user/loginV3.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59900165" vertical-offset="1440" max-vertical-offset="11304">
-          <caret line="100" column="14" selection-start-line="100" selection-start-column="14" selection-end-line="100" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -1232,22 +1056,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="372">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/user/search_indexes.py">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="78" max-vertical-offset="450">
-          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-          <folding />
+        <state vertical-scroll-proportion="-7.6505375" vertical-offset="12314" max-vertical-offset="86418">
+          <caret line="526" column="0" selection-start-line="526" selection-start-column="0" selection-end-line="526" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/mentee/views.py">
+    <entry file="file://$PROJECT_DIR$/static/morph/component.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4987" max-vertical-offset="6156">
-          <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
+        <state vertical-scroll-proportion="-12.225806" vertical-offset="1133" max-vertical-offset="9000">
+          <caret line="84" column="19" selection-start-line="84" selection-start-column="19" selection-end-line="84" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -1257,66 +1079,276 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="359">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/sinch/style.css">
+    <entry file="file://$PROJECT_DIR$/mentorbuddy/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7524">
-          <caret line="2" column="21" selection-start-line="2" selection-start-column="21" selection-end-line="2" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.33870968" vertical-offset="0" max-vertical-offset="558">
+          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#51#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/django/db/models/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.5967742" vertical-offset="594" max-vertical-offset="1296">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentor/indexOLD.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="252">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="558">
+          <caret line="19" column="59" selection-start-line="19" selection-start-column="59" selection-end-line="19" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="522">
+          <caret line="20" column="79" selection-start-line="20" selection-start-column="79" selection-end-line="20" selection-end-column="79" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/user/select.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.0" vertical-offset="0" max-vertical-offset="4194">
+          <caret line="12" column="81" selection-start-line="12" selection-start-column="81" selection-end-line="12" selection-end-column="81" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentor/live.html">
+    <entry file="file://$PROJECT_DIR$/static/css/user/select/select.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="113.703705" vertical-offset="4222" max-vertical-offset="4824">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3696" max-vertical-offset="4068">
+          <caret line="217" column="0" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/sinch/WEBsampleMentee.js">
+    <entry file="file://$PROJECT_DIR$/templates/user/loginV3.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-117.870964" vertical-offset="162" max-vertical-offset="4644">
-          <caret line="212" column="21" selection-start-line="212" selection-start-column="21" selection-end-line="212" selection-end-column="21" />
+        <state vertical-scroll-proportion="-4.851852" vertical-offset="2173" max-vertical-offset="11304">
+          <caret line="128" column="18" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/haystack/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33147633" vertical-offset="133" max-vertical-offset="2286">
+          <caret line="24" column="6" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/search_indexes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.67741936" vertical-offset="0" max-vertical-offset="468">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/search_root.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.6666665" vertical-offset="162" max-vertical-offset="684">
+          <caret line="16" column="55" selection-start-line="16" selection-start-column="55" selection-end-line="16" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mentee/requests.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.62650603" vertical-offset="1378" max-vertical-offset="1980">
-          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.6204819" vertical-offset="1324" max-vertical-offset="1980">
+          <caret line="85" column="56" selection-start-line="85" selection-start-column="56" selection-end-line="85" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mentee/search.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="288">
+          <caret line="9" column="18" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/profile-view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.0" vertical-offset="162" max-vertical-offset="2502">
+          <caret line="18" column="57" selection-start-line="18" selection-start-column="57" selection-end-line="18" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="558">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#32#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="792">
+          <caret line="21" column="15" selection-start-line="21" selection-start-column="15" selection-end-line="21" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#32#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="726" max-vertical-offset="1098">
+          <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28133705" vertical-offset="997" max-vertical-offset="4500">
+          <caret line="63" column="56" selection-start-line="63" selection-start-column="56" selection-end-line="63" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43010753" vertical-offset="434" max-vertical-offset="990">
+          <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/html5-schema/html5/web-forms.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33147633" vertical-offset="4309" max-vertical-offset="10980">
+          <caret line="246" column="22" selection-start-line="246" selection-start-column="22" selection-end-line="246" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentor/edit_profile.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="13968" max-vertical-offset="14310">
+          <caret line="776" column="44" selection-start-line="776" selection-start-column="44" selection-end-line="776" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentor/live.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="5238">
+          <caret line="90" column="41" selection-start-line="90" selection-start-column="41" selection-end-line="90" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/user/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.2674093" vertical-offset="7471" max-vertical-offset="8532">
+          <caret line="322" column="25" selection-start-line="322" selection-start-column="25" selection-end-line="322" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/sinch/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.354839" vertical-offset="590" max-vertical-offset="1836">
-          <caret line="42" column="20" selection-start-line="42" selection-start-column="20" selection-end-line="42" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="973" max-vertical-offset="2196">
+          <caret line="69" column="99" selection-start-line="69" selection-start-column="99" selection-end-line="69" selection-end-column="99" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/morph/uiMorphingButton_fixed.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.096774" vertical-offset="1007" max-vertical-offset="2808">
+          <caret line="63" column="16" selection-start-line="63" selection-start-column="16" selection-end-line="63" selection-end-column="16" />
           <folding>
-            <element signature="e#0#52#0" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/sinch/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7596">
+          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/mentee/live.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0344827" vertical-offset="710" max-vertical-offset="4536">
-          <caret line="46" column="52" selection-start-line="46" selection-start-column="52" selection-end-line="46" selection-end-column="52" />
+        <state vertical-scroll-proportion="-1.7241379" vertical-offset="836" max-vertical-offset="4824">
+          <caret line="52" column="88" selection-start-line="52" selection-start-column="88" selection-end-line="52" selection-end-column="88" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/morph/component.css">
+    <entry file="file://$PROJECT_DIR$/static/sinch/WEBsampleMentee.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33231708" vertical-offset="1403" max-vertical-offset="9000">
-          <caret line="84" column="19" selection-start-line="84" selection-start-column="19" selection-end-line="84" selection-end-column="19" />
+        <state vertical-scroll-proportion="-5.83871" vertical-offset="449" max-vertical-offset="5346">
+          <caret line="35" column="33" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.296296" vertical-offset="7138" max-vertical-offset="9144">
+          <caret line="406" column="130" selection-start-line="406" selection-start-column="130" selection-end-line="406" selection-end-column="130" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentee/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2506964" vertical-offset="3096" max-vertical-offset="6174">
+          <caret line="183" column="37" selection-start-line="183" selection-start-column="37" selection-end-line="183" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/env/local/lib/python2.7/site-packages/pytz/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="2108" max-vertical-offset="27342">
+          <caret line="124" column="4" selection-start-line="124" selection-start-column="4" selection-end-line="124" selection-end-column="4" />
+          <folding>
+            <marker date="1427390093329" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33231708" vertical-offset="827" max-vertical-offset="13860">
+          <caret line="52" column="13" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

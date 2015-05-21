@@ -359,7 +359,7 @@
             $.ajax({
                 url: "/mentor/checkAvailability/",
                 data: {"date1":date1,"date2":date2,"time1":time1,"time2":time2,"dur1":dur1,"dur2":dur2,"csrfmiddlewaretoken": '{{  csrf_token }}',
-                "mentor_id":{{ mentor_id }} },
+                "mentor_id":{{ mentor_id }},"mentee_id":{{ user.id }} },
                 type: "post",
                 dataType: "json",
                 success: function(data) {
@@ -404,7 +404,7 @@
                             $.ajax({
                                 url: "/mentor/send-request/",
                                 data: { "date":dateTime[0], "time":dateTime[1],"callType": $("#callType").val(), "duration":inputs[1].value,
-                                    "csrfmiddlewaretoken":'{{ csrf_token }}',"mentor_id": {{ mentor_id }} },
+                                    "csrfmiddlewaretoken":'{{ csrf_token }}',"mentor_id": {{ mentor_id }}, "mentee_id": {{ user.id }} },
                                 type: "post",
                                 dataType: "json",
                                 success: function(data) {

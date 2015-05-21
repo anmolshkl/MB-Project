@@ -14,7 +14,8 @@
         <div class="row">
             {% for mentor in mentors %}
                  <div class="col-xs-3 textCenter">
-                     <div class="tiles white">
+                     <div class="tiles white textCenter">
+                        <img src="{{ mentor.picture }}" class="img-circle img-responsive"/>
                          <h3><a href="/mentor/get-profile/{{ mentor.id }}/">{{ mentor.first_name }} {{ mentor.last_name}}</a></h3>
                          {% if mentor.college %}
                          {{ mentor.college }}<br>

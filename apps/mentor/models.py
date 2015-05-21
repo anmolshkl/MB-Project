@@ -48,4 +48,9 @@ class EmploymentDetails(models.Model):
         verbose_name = verbose_name_plural = "Employment Details"
 
 
+class UserActivity(models.Model):
+    mentor = models.OneToOneField(User, editable=False, related_name="activity", primary_key=True)
+    last_seen = models.DateTimeField(blank=False, null=True)
 
+    class Meta:
+        verbose_name_plural = "Activities"

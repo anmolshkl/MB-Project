@@ -32,10 +32,10 @@ class PathAndRename(object):
         if not os.path.exists(newPath):
             os.makedirs(newPath)
 
-        return os.path.join(self.path, instance.user.username+ext)
+        return os.path.join(newPath, instance.user.username+"."+ext)
 
 
-path_and_rename = PathAndRename("/static/resume/")
+path_and_rename = PathAndRename("/resume/")
 
 
 class UserProfile(models.Model):

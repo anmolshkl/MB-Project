@@ -2,61 +2,61 @@
 {% load static %}
 
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
-<link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'sinch/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'flipclock/flipclock.css' %}">
 
-<!-- CUSTOM CSS -->
-<link rel="stylesheet" type="text/css" href="{% static 'css/mentor/base.css' %}">
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/base.css' %}">
 
 {% endblock %}
 
 {% block container_block %}
      <!-- MODAL FOR INCOMING CALL -->
- <div class="modal fade" id="callModal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
+    <div class="modal fade" id="callModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
 
-            <h4 class="modal-title">You have an incoming call...</h4>
-          </div>
+                <h4 class="modal-title">You have an incoming call...</h4>
+              </div>
 
-          <div class="modal-body">
-              <div class="row-fluid">
-                <div class="col-xs-12 textCenter">
-                  <img src="" class="img-responsive img-circle center callerPic"/>
-                  <span class="callerName"><h5></h5></span>
-                </div>
+              <div class="modal-body">
+                  <div class="row-fluid">
+                    <div class="col-xs-12 textCenter">
+                      <img src="" class="img-responsive img-circle center callerPic"/>
+                      <span class="callerName"><h5></h5></span>
+                    </div>
 
-                <div id="call col-xs-12 textCenter well">
-                  <form id="newCall">
-                    <audio id="incoming" autoplay></audio>
-                    <audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
-                    <audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
-                  </form>
-                </div>
+                    <div id="call col-xs-12 textCenter well">
+                      <form id="newCall">
+                        <audio id="incoming" autoplay></audio>
+                        <audio id="ringback" src="{% static 'sinch/ringback.wav' %}" loop></audio>
+                        <audio id="ringtone" src="{% static 'sinch/phone_ring.wav' %}" loop></audio>
+                      </form>
+                    </div>
 
-                <div id="callLog" class="col-xs-12 textCenter well">
-                  <div class="row">
-                      <div class="col-md-8 col-md-offset-2 col-xs-12 callBody">
-                          <video id="incomingVideo" autoplay></video>
-                          <div class="clock center"></div>
+                    <div id="callLog" class="col-xs-12 textCenter well">
+                      <div class="row">
+                          <div class="col-md-8 col-md-offset-2 col-xs-12 callBody">
+                              <video id="incomingVideo" autoplay></video>
+                              <div class="clock center"></div>
+                          </div>
+
                       </div>
+                    </div>
+
+                    <div class="error col-xs-12 textCenter well">
+                    </div>
 
                   </div>
-                </div>
-
-                <div class="error col-xs-12 textCenter well">
-                </div>
-
               </div>
-          </div>
-          <div class="modal-footer">
-            <button id="hangup">Hangup</button>
-            <button id="answer">Answer</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-  </div>
+              <div class="modal-footer">
+                <button id="hangup">Hangup</button>
+                <button id="answer">Answer</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+    </div>
  <!-- /.modal -->
 
 	<div class="top1">
@@ -64,8 +64,10 @@
 	</div>
 {% endblock %}
 {% block scripts %}
-<script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
-<script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="{% static 'flipclock/flipclock.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'sinch/sinch.min.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
  <!-- Initialize Flip Clock -->
 <script type="text/javascript">
@@ -77,6 +79,25 @@
 </script>
 
 <script type="text/javascript">
+    var callEstablished = false;
+
+    /***  PERIODIC AJAX CALLS TO UPDATE LAST SEEN ***/
+    setInterval(function() {
+        // Update last seen only when not in a call -> saves from unnecessary requests to server
+        if(callEstablished == false) {
+            $.ajax({
+                url: '/mentor/update-last-seen/',
+                type: 'get',
+                data: {'id': {{ user.id }}},
+                success: function(data) {
+                    if(data['error'] == true) alert("We are unable to report your last seen.");
+                },
+                failure: function() {
+                    alert("Updating last seen failed");
+                }
+            });
+        }
+    },1000*10);
 
     var global_username = '';
 
@@ -137,6 +158,7 @@
 
       },
       onCallEnded: function(call) {
+          callEstablished = false;
         //Report call stats
         var callDetails = call.getDetails();
           $('audio#ringback').trigger("pause");
@@ -177,6 +199,7 @@
         //Play some groovy tunes
         $('audio#ringtone').prop("currentTime", 0);
         $('audio#ringtone').trigger("play");
+          alert("incoming call");
 
         var userId = incomingCall.fromId;
         userId = userId.substr(4,userId.length-1);

@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailsFormSet, EmploymentDetailsFormSet
-from apps.mentor.models import EducationDetails, EmploymentDetails
+from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity
 from allauth.socialaccount.models import SocialAccount, SocialApp
 # Create your views here.
 from django.conf import settings
@@ -24,8 +24,9 @@ import os
 from django.http import JsonResponse
 
 from apps.user.models import Request
+from apps.mentor.models import UserActivity
 
-from datetime import datetime as dt, timedelta as td, datetime
+from datetime import datetime as dt, timedelta as td, datetime, timedelta
 from pytz import timezone
 import pytz
 
@@ -436,35 +437,28 @@ def get_profile(request, mentorid):
     return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
 
-
 @login_required
 def edit_profile(request):
     user = request.user
     user_profile = user.user_profile
 
     if request.method == 'POST' and request.POST:
-        print "post request received"
         user_form = UserEditForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         edu_formset = EducationDetailsFormSet(request.POST, instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(request.POST, instance=user_profile)
-        print "war"
         if user_form.is_valid() and profile_form.is_valid():
-            print "saving profile"
             if "url" in request.POST:
-                print "saving pic"
-                profile_form.picture = cropAndSave(user, request.POST)
+                user_profile.picture = cropAndSave(user, request.POST)
+                user_profile.save()
 
-            print "1"
             user_form.save()
             profile_form.save()
             emp_formset.save()
             edu_formset.save()
-            print "2"
             return render(request, "mentor/edit_profile.html", locals())
             # return here if different behaviour desired
         else:
-            print "validation error"
             print user_form.errors
             print profile_form.errors
             return render(request, "mentor/edit_profile.html", locals())
@@ -475,6 +469,7 @@ def edit_profile(request):
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
 
     return render(request, "mentor/edit_profile.html", locals())
+
 
 @login_required
 def get_data(request):
@@ -498,7 +493,6 @@ def get_data(request):
         userProfile.country = country
         userProfile.save()
         user.save()
-        print "saved user profile"
 
         # Save Education Data if received
         if 'educations' in extra_data:
@@ -572,19 +566,38 @@ def live(request):
 
 
 # A Utility function to check whether the Mentor is available on a given date and time
-def check_utility(date, time, max_duration, mentor_id):
+def check_utility(request, date, time, max_duration, mentor_id):
+    response = True
+    # Convert date & time in django friendly format
+    date_time = dt.strptime(date + " " + time, '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
+    date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
+
+    tz = timezone(request.user.user_profile.timezone)
+    d_tz = tz.normalize(tz.localize(date_time))
+    d_utc = d_tz.astimezone(pytz.utc)
+
+    requests = Request.objects.filter(mentorId_id=mentor_id,
+                                      dateTime__gte=d_utc - td(minutes=max_duration / 2),
+                                      dateTime__lte=d_utc + td(minutes=max_duration / 2))
+    if requests:
+        response = False
+    return response
+
+
+# A Utility function to check whether the Mentee is available on a given date and time
+def check_mentee_availibility(request, date, time, max_duration, mentee_id):
     response = True
 
     # Convert date & time in django friendly format
     date_time = dt.strptime(date + " " + time, '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
-    # Now we need to make this datetime timezone aware
-    datetime_obj_utc = date_time.replace(tzinfo=timezone('UTC'))
-    # check that no request has been approved within max_duration/2 (eg 15 mins if max_duration=30) of proposed time
 
-    requests = Request.objects.filter(mentorId_id=mentor_id,
-                                      dateTime__gte=datetime_obj_utc - td(minutes=max_duration / 2),
-                                      dateTime__lte=datetime_obj_utc + td(minutes=max_duration / 2))
+    tz = timezone(request.user.user_profile.timezone)
+    d_tz = tz.normalize(tz.localize(date_time))
+    d_utc = d_tz.astimezone(pytz.utc)
+    requests = Request.objects.filter(menteeId_id=mentee_id,
+                                      dateTime__gte=d_utc - td(minutes=max_duration / 2),
+                                      dateTime__lte=d_utc + td(minutes=max_duration / 2))
     if requests:
         response = False
 
@@ -600,14 +613,13 @@ def check_availability(request):
     time2 = request.POST['time2']
     dur2 = request.POST['dur2']
     mentor_id = request.POST['mentor_id']
-    response = {'1': check_utility(date1, time1, 30, mentor_id),
-                '2': check_utility(date2, time2, 30, mentor_id)}
-
+    mentee_id = request.POST['mentee_id']
+    response = {
+        '1': check_utility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request, date1, time1, 30,
+                                                                                      mentee_id),
+        '2': check_utility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30,
+                                                                                      mentee_id)}
     return JsonResponse(response)
-
-
-
-
 
 
 @login_required
@@ -620,15 +632,16 @@ def send_request(request):
         if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' and int(
                 post['callType']) < 4 and int(post['callType']) > 0:
             if 5 <= int(post['duration']) <= 30:
-                if check_utility(post['date'], post['time'], 30, post['mentor_id']):
+                if check_utility(request, post['date'], post['time'], 30,post['mentor_id']) \
+                        and check_mentee_availibility(request, post['date'], post['time'], 30, post['mentee_id']):
                     date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
                         '%Y-%m-%d %H:%M')
                     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
-                    time_zone = pytz.timezone(request.user.user_profile.timezone)
-                    # Now we need to make this datetime timezone aware
-                    datetime_obj_utc = time_zone.localize(date_time)
+                    tz = timezone(request.user.user_profile.timezone)
+                    d_tz = tz.normalize(tz.localize(date_time))
+                    d_utc = d_tz.astimezone(pytz.utc)
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
-                                          dateTime=datetime_obj_utc, duration=post['duration'],
+                                          dateTime=d_utc, duration=post['duration'],
                                           callType=post['callType'])
                     request_obj.save()
                     msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
@@ -655,11 +668,13 @@ def get_requests(request):
     context = RequestContext(request)
     context_dict = {}
     req_objs = Request.objects.filter(mentorId=user.id, is_approved=None, dateTime__gte=datetime.now(pytz.utc))
+    tz = pytz.UTC
     if req_objs:
         req_list = []
         for obj in req_objs:
             mentee = User.objects.get(id=obj.menteeId_id)
-            req_list.append({'request_id': obj.id, 'date': obj.dateTime.date(), 'time': obj.dateTime.time(),
+            d_tz = obj.dateTime.astimezone(timezone(request.user.user_profile.timezone))
+            req_list.append({'request_id': obj.id, 'date': d_tz.date(), 'time': d_tz.time(),
                              'dateTime': obj.dateTime,
                              'duration': obj.duration,
                              'callType': obj.callType, 'req_date': obj.requestDate,
@@ -699,14 +714,14 @@ def get_calendar(request):
     context = RequestContext(request)
     context_dict = {}
     req_objs = Request.objects.filter(mentorId=user.id)
+    tz = pytz.utc
     if req_objs:
         req_list = []
         for obj in req_objs:
             mentee = User.objects.get(id=obj.menteeId_id)
-            date_utc = obj.dateTime
-
-            end = obj.dateTime + td(minutes=obj.duration)
-            req_list.append({'request_id': obj.id, 'startDateTime': obj.dateTime,
+            d_tz = obj.dateTime.astimezone(timezone(request.user.user_profile.timezone))
+            end = d_tz + td(minutes=obj.duration)
+            req_list.append({'request_id': obj.id, 'startDateTime': d_tz,
                              'endDateTime': end,
                              'duration': obj.duration,
                              'status': obj.is_approved,
@@ -715,3 +730,35 @@ def get_calendar(request):
             context_dict['req_list'] = req_list
 
     return render_to_response("mentor/calendar.html", context_dict, context)
+
+
+@login_required
+def update_last_seen(request):
+    if request.GET['id'] and request.GET['id'] is not '':
+        user = User.objects.get(id=int(request.GET['id']))
+        try:
+            activity = UserActivity.objects.get(mentor=user)
+        except ObjectDoesNotExist:
+            activity = UserActivity()
+            activity.mentor = user
+        activity.last_seen = datetime.now(pytz.utc)
+        activity.save()
+        return JsonResponse({'error': False})
+    else:
+        return JsonResponse({'error': True})
+
+
+@login_required
+def check_mentor_status(request):
+    if 'id' in request.GET and request.GET['id'] != '':
+        user = User.objects.get(id=int(request.GET['id']))
+        activity = user.activity
+        status = "offline"
+        error = False
+        if activity.last_seen >= datetime.now(pytz.utc) - timedelta(minutes=2):
+            status = "online"
+    else:
+        error = True
+
+    return JsonResponse({'error': error, 'status': status})
+

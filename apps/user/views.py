@@ -359,21 +359,21 @@ def submit_call_log(request):
                 request_id = post['request_id']
                 utc_est_time = get_utc_time(request, post['est_time'])
                 utc_end_time = get_utc_time(request, post['end_time'])
-                (cl_obj, created) = CallLog.objects.get_or_create(request=request_obj)
+                (call_obj, created) = CallLog.objects.get_or_create(request=request_obj)
                 # if any of the speaker has intentionally disconnected, we need to mark request as fulfilled
                 if post['end_cause'] == 'HUNG_UP':
                     request_obj.is_completed = True
                     request_obj.save()
                 if created:
-                    cl_obj.establishedTime = utc_est_time
-                    cl_obj.endTime = utc_end_time
+                    call_obj.establishedTime = utc_est_time
+                    call_obj.endTime = utc_end_time
                     # Round off secs
-                    cl_obj.duration = int(Decimal(post['duration']))
+                    call_obj.duration = int(Decimal(post['duration']))
                 else:
-                    cl_obj.duration += int(Decimal(post['duration']))
-                    cl_obj.endTime = utc_end_time
-                cl_obj.endCause = post['end_cause']
-                cl_obj.save()
+                    call_obj.duration += int(Decimal(post['duration']))
+                    call_obj.endTime = utc_end_time
+                call_obj.endCause = post['end_cause']
+                call_obj.save()
             else:
                 error = True
                 msg = "Received empty fields"
@@ -395,7 +395,7 @@ def submit_feedback(request):
         post = request.POST
         if 'request_id' in post and 'rating' in post and 'feedback' in post:
             if post['rating'] != '' and post['request_id'] != '':
-                request_obj = Request.objects.get(id=post['request_id'])
+                request_obj = Request.objects.get(id=int(post['request_id']))
                 call_log_obj = request_obj.callLog
                 feedback_obj = Feedback(user=request.user)
                 feedback_obj.call = call_log_obj
@@ -423,7 +423,7 @@ def is_call_valid(request):
         call_obj = None
     valid = True
     if request_obj and call_obj:
-        if call_obj.duration >= 1800 or request_obj.is_completed == True:
+        if call_obj.duration >= 1800 or request_obj.is_completed is True:
             valid = False
 
     return HttpResponse(valid)

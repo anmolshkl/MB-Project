@@ -7,11 +7,13 @@
     </database-info>
     <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
     <schema name="" catalog="bisdb"/>
+    <schema name="" catalog="bkdb"/>
     <schema name="" catalog="information_schema"/>
     <schema name="" catalog="mb_db2"/>
     <schema name="" catalog="mysql"/>
     <schema name="" catalog="performance_schema"/>
     <schema name="" catalog="phpmyadmin"/>
+    <schema name="" catalog="rest"/>
     <schema name="" catalog="test"/>
     <schema name="" catalog="test_mb_db2"/>
     <table name="attr_mapping" schema="" catalog="bisdb" type="TABLE">
@@ -131,6 +133,10 @@
       <exported-key name="fk_orders_customer_id" table="orders" schema="" catalog="bisdb" columns="user_id"/>
       <exported-key name="FK_seller_id" table="sellers" schema="" catalog="bisdb" columns="seller_id"/>
       <index name="email" unique="true" columns="email"/>
+    </table>
+    <table name="test" schema="" catalog="bkdb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
     </table>
     <table name="CHARACTER_SETS" schema="" catalog="information_schema" type="SYSTEM VIEW">
       <column name="CHARACTER_SET_NAME" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -762,11 +768,6 @@
       <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="socialaccount_socialacc_user_id_3fd78aac97693583_fk_auth_user_id" table="socialaccount_socialaccount" schema="" catalog="mb_db2" columns="user_id"/>
-      <exported-key name="user_feedback_user_id_c0180df95145bd5_fk_auth_user_id" table="user_feedback" schema="" catalog="mb_db2" columns="user_id"/>
-      <exported-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="menteeId_id"/>
-      <exported-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" table="user_request" schema="" catalog="mb_db2" columns="mentorId_id"/>
-      <exported-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" table="user_userprofile" schema="" catalog="mb_db2" columns="user_id"/>
-      <exported-key name="user_verificationcodes_user_id_631dbbd4ca7042e4_fk_auth_user_id" table="user_verificationcodes" schema="" catalog="mb_db2" columns="user_id"/>
       <index name="username" unique="true" columns="username"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="mb_db2" type="TABLE">
@@ -846,6 +847,8 @@
       <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" unique="false" columns="parent_id"/>
     </table>
     <table name="mentor_employmentdetails" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -856,6 +859,13 @@
       <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" unique="false" columns="parent_id"/>
+    </table>
+    <table name="mentor_useractivity" schema="" catalog="mb_db2" type="TABLE">
+      <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_seen" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="mentor_id"/>
     </table>
     <table name="socialaccount_socialaccount" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -912,23 +922,19 @@
       <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="endCause" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="request_id"/>
-      <foreign-key name="user_calllog_request_id_1356ed6ef80fc12c_fk_user_request_id" columns="request_id" ref-table="user_request" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" table="user_feedback" schema="" catalog="mb_db2" columns="call_id"/>
     </table>
     <table name="user_feedback" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="rating" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
-      <column name="feedback" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="call_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="rating" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="feedback" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_feedback_user_id_c0180df95145bd5_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" columns="call_id" ref-table="user_calllog" ref-schema="" ref-catalog="mb_db2" ref-columns="request_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="user_feedback_5d26c52f" unique="false" columns="call_id"/>
-      <index name="user_feedback_e8701ad4" unique="false" columns="user_id"/>
     </table>
     <table name="user_request" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
@@ -936,17 +942,11 @@
       <column name="requestDate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="callType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="is_completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
-      <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_request_menteeId_id_2009d11e46b98864_fk_auth_user_id" columns="menteeId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="user_request_mentorId_id_5efe46c427c699cf_fk_auth_user_id" columns="mentorId_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="user_calllog_request_id_1356ed6ef80fc12c_fk_user_request_id" table="user_calllog" schema="" catalog="mb_db2" columns="request_id"/>
-      <index name="user_request_7a6a128b" unique="false" columns="mentorId_id"/>
-      <index name="user_request_fcbb8a09" unique="false" columns="menteeId_id"/>
     </table>
     <table name="user_socialprofiles" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="profile_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
@@ -957,9 +957,8 @@
       <column name="profile_pic_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_pic_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="profile_pic_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_socia_parent_id_996d0db48e667e8_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="parent_id" unique="true" columns="parent_id"/>
     </table>
     <table name="user_userprofile" schema="" catalog="mb_db2" type="TABLE">
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -979,15 +978,14 @@
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="timezone" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="user_id"/>
-      <foreign-key name="user_userprofile_user_id_709b07a161ce89ff_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="user_socia_parent_id_996d0db48e667e8_fk_user_userprofile_user_id" table="user_socialprofiles" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="mentor_ed_parent_id_471fbff6fb657391_fk_user_userprofile_user_id" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
     </table>
     <table name="user_verificationcodes" schema="" catalog="mb_db2" type="TABLE">
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="activation_key" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
       <column name="key_expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="user_id"/>
-      <foreign-key name="user_verificationcodes_user_id_631dbbd4ca7042e4_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="columns_priv" schema="" catalog="mysql" type="SYSTEM TABLE">
       <column name="Host" sqlType="CHAR" precision="60" scale="0" nullable="false" jdbcType="1" def="Jyc="/>
@@ -1530,12 +1528,22 @@
       <column name="config_data" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="username"/>
     </table>
-    <table name="t_user" schema="" catalog="test" type="TABLE">
-      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
-      <column name="email" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
-      <column name="password" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="user_id"/>
+    <table name="Tasks" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="UserId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Tasks_ibfk_1" columns="UserId" ref-table="Users" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
+    <table name="Users" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="Tasks_ibfk_1" table="Tasks" schema="" catalog="test" columns="UserId"/>
     </table>
     <table name="account_emailaddress" schema="" catalog="test_mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

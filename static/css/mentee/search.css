@@ -4,3 +4,8 @@
 .tiles {
     padding: 10px;
 }
+.img-circle {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 auto;
+}

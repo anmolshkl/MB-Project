@@ -214,7 +214,7 @@ def self_profile_view(request):
     provider = None
 
     picture_url = user_profile_object.picture  # set default profile image
-
+    print picture_url
     profile_url = None
 
     if social_profiles_object:
@@ -241,6 +241,7 @@ def self_profile_view(request):
 
         if profile_url is not None:
             context_dict['profile_url'] = profile_url
+
     return render_to_response("mentee/profile-view.html", context_dict, context)
 
 

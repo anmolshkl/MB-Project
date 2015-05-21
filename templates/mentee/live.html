@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block container_title %}
-<h3>Web Call</h3>
+<h3></h3>
 {% endblock %}
 
 {% block container_block %}
@@ -28,12 +28,13 @@
                         <div class="col-sm-3 textCenter">
                             <img src="{{ request.mentor_pic }}" class="img-responsive img-circle center"/>
                             <h4>{{ request.mentor_name }}</h4>
+                            <span class="status"></span>
 
                         </div>
                         <br>
                         <div class="col-sm-4 textCenter description-box ">
                             {{ request.date|date }}<br>
-                            <h2>{{ request.startTime|time }}-{{ request.endTime|time }}</h2>
+                            <h3>{{ request.startTime|time }}-{{ request.endTime|time }}</h3>
                         </div>
 
                         <div class="col-sm-5 well textCenter">
@@ -43,7 +44,18 @@
                                 <input type="hidden" class="callUserName" value="{{ request.mentor_name }}" />
                                 <input type="hidden" class="callType" value="{{ request.callType }}" />
                                 <input type="hidden" class="number" value="{{ request.contact }}" />
-                                <button type="button" class="call-button call">Call</button>
+
+                                {% if request.status == -1 %}
+                                    <span type="button" class="btn btn-danger btn-large">Call Unavailable</span>
+                                    <button type="button" class="call-button call hidden">Call</button>
+                                {% elif request.status == 0 %}
+                                    <span type="button" class="btn btn-danger btn-large">Mentor offline</span>
+                                    <button type="button" class="call-button call hidden">Call</button>
+
+                                {% else %}
+                                    <button type="button" class="call-button call">Call</button>
+                                {% endif %}
+
                                 <div class="morph-content" style="left: 493px; top: 72.234375px;">
                                     <div class="content-style-overlay">
                                         <span class="icon icon-close">Close the overlay</span>
@@ -129,11 +141,15 @@ function limitHandler(e) {
     }
 }
 function limitDeleteHandler(e) {
-    alert("keydown");
+
     if(e.keyCode == 8)  {
-        var value = parseInt($(this).parent().find('.characters').html());
-        if(value > 0 && $(".feedback").html() != '') {
-            $(this).parent().find(".characters").html(value - 1);
+
+        var characters = $(this).parent().find('.characters');
+        var value = parseInt(characters.html());
+        alert(value);
+        alert($(".feedback").html());
+        if(value > 0 && $(".feedback").value != '') {
+            characters.html(value - 1);
         }
     }
 }
@@ -160,7 +176,7 @@ $(".feedback-submit").click(function() {
               }, 500);
           },
           failure: function() {
-
+              alert("error while submitting feedback");
           }
 
         })

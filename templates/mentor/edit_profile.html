@@ -366,10 +366,10 @@
                     {{ profile_form.contact|add_class:"required" }}
 
                     <label for="id_resume">RESUME</label>
-                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" value="{{ profile_form.resume.value }}"/>
                     <div class="fileUpload btn btn-primary">
                         <span>Upload</span>
-                        <input id="id_resume" name="resume" type="file" class="upload" />
+                        <input id="id_resume" name="resume" type="file" class="upload"/>
                     </div>
 
                 </div>
@@ -774,8 +774,7 @@
             var input = $("<input>")
                .attr("type", "hidden")
                .attr("name", "url").val($('#target').attr('src'));
-            $('.form').append($(input));
-
+            $('.tab-form').append($(input));
             $(".modal-close")[0].click();
         });
 

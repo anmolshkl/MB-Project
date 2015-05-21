@@ -1,0 +1,42 @@
+Object { progress: 0, message: "Get authentication token", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.2, message: "Get instance using auth token", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0, message: "Will retrieve new Mic for stream", object: undefined } WEBsampleMentee.js:21
+TypeError: $(...).animateNumbers is not a function core.js:345
+Object { progress: 0, message: "Get authentication token", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.2, message: "Get instance using auth token", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.4, message: "Get MXP configuration", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.6, message: "Create MXP object", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.8, message: "Will start active connection", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0.8, message: "Manually starting active connection", object: undefined } WEBsampleMentee.js:21
+Object { progress: 1, message: "Successfully started SinchClient", object: undefined } WEBsampleMentee.js:21
+"Placing call to: Aruna Shukla" WEBsampleMentee.js:212
+Object { progress: 0, message: "CallUser method called", object: "user3" } WEBsampleMentee.js:21
+Object { progress: 0, message: "Will retrieve cached Mic for stream", object: LocalMediaStream } WEBsampleMentee.js:21
+Object { progress: 0, message: "Call was muted using mute().", object: undefined } WEBsampleMentee.js:21
+Object { progress: 0, message: "Successfully initiated call, waiting for MXP signalling.", object: Object } WEBsampleMentee.js:21
+Object { progress: 0, message: "Firefox special: Configuring the local description to gather ICE candidates.", object: mozRTCSessionDescription } WEBsampleMentee.js:21
+Object { progress: 0, message: "WebRTC: Signaling state change", object: "have-local-offer" } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Preparing ICE candidate for B", object: mozRTCIceCandidate } WEBsampleMentee.js:21
+Object { progress: 0, message: "Call PROGRESSING timeout. Will hangup call.", object: Object } WEBsampleMentee.js:21
+Object { progress: 0, message: "Call HANGUP Received", object: undefined } WEBsampleMentee.js:21
+SinchError: Error executing listener: onCallEnded
+Object { name: "SinchError", domain: 5, code: 6002, response: ReferenceError, message: "Error executing listener: onCallEnded", stack: "SinchError@http://localhost:8000/static/sinch/sinch.min.js:3:28295
+[17]</f.prototype.execListener/<@http://localhost:8000/static/sinch/sinch.min.js:4:9376
+[17]</f.prototype.execListener@http://localhost:8000/static/sinch/sinch.min.js:4:9291
+[17]</f.prototype.mxpHangup@http://localhost:8000/static/sinch/sinch.min.js:4:20070
+[17]</f.prototype.hangup@http://localhost:8000/static/sinch/sinch.min.js:5:451
+[17]</f.prototype.placeCall/<@http://localhost:8000/static/sinch/sinch.min.js:4:24874
+" } sinch.min.js:4
+
+Object { message: "Added meta data to MXP message", object: Object } WEBsampleMentee.js:21
+Object { message: "Identified Encoding Key", object: Object } WEBsampleMentee.js:21
+Object { message: "Split message into frames as needed", object: Object } WEBsampleMentee.js:21
+Object { message: "Identified Tx Channels", object: Object } WEBsampleMentee.js:21
+Object { message: "Transmitting [channel, frame]", object: Array[2] } WEBsampleMentee.js:21

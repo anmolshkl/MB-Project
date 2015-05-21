@@ -2,16 +2,13 @@
 var global_username = '';
 var callType = 1;
 var owner;
-
+var callEstablished = false;
 /*** After successful authentication, show user interface ***/
 
 var showUI = function() {
 	$('div.call').show();
 
 }
-
-
-
 
 /*** Set up sinchClient ***/
 
@@ -24,6 +21,32 @@ sinchClient = new SinchClient({
 		console.log(message);
 	}
 });
+
+/***  PERIODIC AJAX CALLS TO GET LAST SEEN ***/
+    setInterval(function() {
+        // Update last seen only when not in a call -> saves from unnecessary requests to server
+        if(callEstablished == false && $(".calleeId").first().val() != '') {
+            $.ajax({
+                url: '/mentor/check-mentor-status/',
+                type: 'get',
+                data: {'id': $(".calleeId").val().slice(4)}, //ASSUMPTION!!!! ONLY ONE REQUEST CAN BE SEEN BY MENTEE AT A TIME
+                success: function(data) {
+                    if(data['status']=="online") {
+                        $(".btn-danger").hide();
+                        $("button.call").removeClass('hidden');
+                        $(".status").html("online");
+                    } else if(data['status']=="offline"){
+                        $(".status").html("offline");
+                        $(".btn-danger").show();
+                        $("button.call").hide();
+                    }
+                },
+                failure: function() {
+                    alert("Updating last seen failed");
+                }
+        });
+    }
+    },1000*10);
 
 
 /*** Name of session, can be anything. ***/
@@ -58,6 +81,8 @@ var callListeners = {
 	},
 	onCallEstablished: function(call) {
         alert("call established");
+        callEstablished = True;
+
 		$('audio.incoming').attr('src', call.incomingStreamURL);
 		$('audio.ringback').trigger("pause");
 		$('audio.ringtone').trigger("pause");
@@ -74,6 +99,7 @@ var callListeners = {
 		owner.find('.callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
 	},
 	onCallEnded: function(call) {
+        callEstablished = False;
         if(callType == 3) {
             //owner.find('#outgoingVideo').attr('src', '');
 		    owner.find('#incomingVideo').attr('src', '');
@@ -91,13 +117,13 @@ var callListeners = {
 		var callDetails = call.getDetails();
         var est_time = callDetails.establishedTime + "";
         var end_time = callDetails.endedTime + "";
-
+        alert("End cause="+call.getEndCause());
         $.ajax({
             url: "/user/submit-callLog/",
             type: "post",
             data: {'csrfmiddlewaretoken': csrf, 'request_id': owner.parent().find('.request_id').val(),
                     'est_time': est_time.split(" ")[4], 'end_time': end_time.split(" ")[4],
-                    'end_cause': 'TEST'/*call.getEndCause()*/, 'duration': callDetails.duration},
+                    'end_cause': call.getEndCause(), 'duration': callDetails.duration},
             dataType: "json",
             success: function(data) {
                 owner.fadeOut();
@@ -109,14 +135,23 @@ var callListeners = {
                     owner.parent().find('#incomingVideo').remove();
                     //owner.parent().find('#outgoingVideo').remove();
                 }
-                owner.parent().find(".call-title").html("Your feedback is valuable to us!");
-                setInterval(function() {
-                    owner.parent().find(".call-title").fadeIn();
-                    owner.parent().find(".form-feedback").animate({
-                        left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
-                    }, 200);
-                }, 1000);
-                owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
+                if(call.getEndCause() == "HUNG_UP") {
+                    owner.parent().find(".call-title").html("Your feedback is valuable to us!");
+                    setInterval(function() {
+                        owner.parent().find(".call-title").fadeIn();
+                        owner.parent().find(".form-feedback").animate({
+                            left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
+                        }, 200);
+                    }, 1000);
+                    owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
+                } else {
+                    //give a gap of 1sec to let the call log, timer etc fade out
+                    setInterval(function() {
+                        owner.parent().find(".call-title").html("Well, this is embarrassing...");
+                        owner.parent().find(".call-title").fadeIn();
+                        owner.parent().find(".call-title").append("<br><br><button class='btn btn-primary btn-large' onClick='window.location.reload()'><i class='fa fa-rotate-right'></i> Refresh</button>");
+                    },1000);
+                }
             },
             failure: function() {
                 alert("failed to submit call log details");
@@ -148,7 +183,8 @@ var call;
 
 /*** Make a new data call ***/
 
-$('button.call').click(function(event) {
+$('.morph-button').on('click','button.call',function(event) {
+    alert("calling");
 	event.preventDefault();
 
 	if(!$(this).hasClass("incall") && !$(this).hasClass("callwaiting")) {
@@ -161,7 +197,7 @@ $('button.call').click(function(event) {
         });
         owner = $(this);
         $.ajax({
-            url: '/user/call-valid',
+            url: '/user/call-valid/', //Returns weather call is valid or not
             type: 'GET',
             data: {'request_id': owner.parent().find('.request_id').val()},
             success: function(data) {
@@ -200,6 +236,7 @@ $('button.call').click(function(event) {
                 }
                 else {
                     owner.parent().find('.call-overlay-content').html("<h2>Sorry but you have completed this call!</h2>");
+                    setInterval(function(){ location.reload(); },2000);
                 }
             }
         });
@@ -250,3 +287,6 @@ if(location.protocol == 'file:' && navigator.userAgent.toLowerCase().indexOf('ch
 $('button').prop('disabled', false); //Solve Firefox issue, ensure buttons always clickable after load
 
 
+$('.refresh').click(function() {
+    location.reload();
+});
