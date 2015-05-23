@@ -1528,6 +1528,92 @@
       <column name="config_data" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="username"/>
     </table>
+    <table name="Accounts" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="account_type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="account_no" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Accounts_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
+    <table name="Customers" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="phone" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="test" columns="CustomerId"/>
+      <exported-key name="Devices_ibfk_1" table="Devices" schema="" catalog="test" columns="CustomerId"/>
+      <exported-key name="Loans_ibfk_1" table="Loans" schema="" catalog="test" columns="CustomerId"/>
+      <exported-key name="MerchantCustomers_ibfk_2" table="MerchantCustomers" schema="" catalog="test" columns="CustomerId"/>
+      <exported-key name="Messages_ibfk_2" table="Messages" schema="" catalog="test" columns="CustomerId"/>
+      <index name="email" unique="true" columns="email"/>
+      <index name="phone" unique="true" columns="phone"/>
+    </table>
+    <table name="Devices" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="device_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="deivce_name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="md5_hash" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Devices_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+      <exported-key name="Messages_ibfk_1" table="Messages" schema="" catalog="test" columns="DeviceId"/>
+      <index name="device_id" unique="true" columns="device_id"/>
+    </table>
+    <table name="Loans" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="amount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Loans_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+      <foreign-key name="Loans_ibfk_2" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
+    <table name="MerchantCustomers" schema="" catalog="test" type="TABLE">
+      <column name="customer_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="MerchantId,CustomerId"/>
+      <foreign-key name="MerchantCustomers_ibfk_1" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="MerchantCustomers_ibfk_2" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+    </table>
+    <table name="Merchants" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="Loans_ibfk_2" table="Loans" schema="" catalog="test" columns="MerchantId"/>
+      <exported-key name="MerchantCustomers_ibfk_1" table="MerchantCustomers" schema="" catalog="test" columns="MerchantId"/>
+    </table>
+    <table name="Messages" schema="" catalog="test" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="sender_bank" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="balance" sqlType="FLOAT" precision="12" scale="0" nullable="false" jdbcType="7"/>
+      <column name="received_on" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="DeviceId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Messages_ibfk_1" columns="DeviceId" ref-table="Devices" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+      <foreign-key name="Messages_ibfk_2" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="test" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
     <table name="Tasks" schema="" catalog="test" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>

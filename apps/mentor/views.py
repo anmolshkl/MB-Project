@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailsFormSet, EmploymentDetailsFormSet
-from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity
+from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings
 from allauth.socialaccount.models import SocialAccount, SocialApp
 # Create your views here.
 from django.conf import settings
@@ -330,6 +330,13 @@ def get_profile(request, mentorid):
     except EmploymentDetails.DoesNotExist:
         empObjs = None
 
+    # Mentor timings
+    try:
+        timings_obj = Timings.objects.get(parent=user)
+    except ObjectDoesNotExist:
+        timings_obj = None
+
+
     # TODO add personal details after the user model
     # is finalized
     # initialize all to None
@@ -388,12 +395,17 @@ def get_profile(request, mentorid):
     if college:
         context_dict['college'] = college
 
-    provider = None
+    picture_url = user_profile_object.picture
+    if picture_url:
+        context_dict['picture_url'] = picture_url
 
-    picture_url = None
+
+    provider = None
 
     profile_url = None
 
+    '''
+    NO NEED FOR SOCIAL DETAILS
     if social_profiles_object:
 
         if social_profiles_object.profile_pic_url_linkedin:
@@ -418,12 +430,13 @@ def get_profile(request, mentorid):
 
         if profile_url != None:
             context_dict['profile_url'] = profile_url
+    '''
 
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
             edu_list.append({'inst': obj.institution, 'loc': obj.location, 'degree': obj.degree,
-                             'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'coun': obj.country})
+                             'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'country': obj.country})
 
         context_dict['edu_list'] = edu_list
 
@@ -434,6 +447,15 @@ def get_profile(request, mentorid):
                              'from': obj.from_date, 'to': obj.to_date})
 
         context_dict['emp_list'] = emp_list
+
+    if timings_obj:
+        context_dict['weekday_l'] = timings_obj.weekday_l
+        context_dict['weekday_u'] = timings_obj.weekday_u
+        context_dict['weekend_l'] = timings_obj.weekend_l
+        context_dict['weekend_u'] = timings_obj.weekend_u
+
+    context_dict['timezone'] = user_profile_object.timezone
+
     return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
 
@@ -566,7 +588,7 @@ def live(request):
 
 
 # A Utility function to check whether the Mentor is available on a given date and time
-def check_utility(request, date, time, max_duration, mentor_id):
+def check_mentor_availibility(request, date, time, max_duration, mentor_id):
     response = True
     # Convert date & time in django friendly format
     date_time = dt.strptime(date + " " + time, '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
@@ -604,6 +626,25 @@ def check_mentee_availibility(request, date, time, max_duration, mentee_id):
     return response
 
 
+def check_mentee_balance(mentee_id, duration, call_type):
+    available = True
+    credits_obj = User.objects.get(id=int(mentee_id)).credits
+    if call_type == "1":
+        # Web to Web
+        if duration*3 < credits_obj.balance:
+            available = False
+    elif call_type == "2":
+        # Web to phone
+        if duration*6 < credits_obj.balance:
+            available = False
+    elif call_type == "3":
+        # Video
+        if duration*5 < credits_obj.balance:
+            available = False
+
+    return available
+
+
 @login_required
 def check_availability(request):
     date1 = request.POST['date1']
@@ -614,11 +655,10 @@ def check_availability(request):
     dur2 = request.POST['dur2']
     mentor_id = request.POST['mentor_id']
     mentee_id = request.POST['mentee_id']
+    call_type = request.POST['call_type']
     response = {
-        '1': check_utility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request, date1, time1, 30,
-                                                                                      mentee_id),
-        '2': check_utility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30,
-                                                                                      mentee_id)}
+        '1': check_mentor_availibility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request, date1, time1, 30, mentee_id) and check_mentee_balance(mentee_id, dur1, call_type),
+        '2': check_mentor_availibility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30, mentee_id) and check_mentee_balance(mentee_id, dur1, call_type)}
     return JsonResponse(response)
 
 
@@ -629,13 +669,13 @@ def send_request(request):
     error = False
     msg = None
     if 'date' in post and 'time' in post and 'duration' in post and 'mentor_id' in post and 'callType' in post:
-        if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' and int(
-                post['callType']) < 4 and int(post['callType']) > 0:
+        if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' \
+                and 4 > int(post['callType']) > 0:
             if 5 <= int(post['duration']) <= 30:
-                if check_utility(request, post['date'], post['time'], 30,post['mentor_id']) \
-                        and check_mentee_availibility(request, post['date'], post['time'], 30, post['mentee_id']):
-                    date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
-                        '%Y-%m-%d %H:%M')
+                if check_mentor_availibility(request, post['date'], post['time'], 30,post['mentor_id']) \
+                        and check_mentee_availibility(request, post['date'], post['time'], 30, post['mentee_id']) \
+                        and check_mentee_balance(post['mentee_id'], post['duration'], post['call_type']):
+                    date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
                     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
                     tz = timezone(request.user.user_profile.timezone)
                     d_tz = tz.normalize(tz.localize(date_time))

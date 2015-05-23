@@ -167,8 +167,14 @@
                   <div class="col-md-12 tiles white textCenter pad-m">
                     <span><h4>Favored call timings</h4></span>
                       <hr>
-                      <h5>Weekdays: 9pm-10pm(IST)</h5>
-                      <h5>Weekends: 2pm-5pm(IST)</h5>
+                      {% if weekday_u %}
+                          <h5>Weekdays: {{ weekday_l }}-{{ weekday_u }}</h5>
+                          <h5>Weekends: {{ weekend_l }}-{{ weekend_u }}</h5>
+                      {% else %}
+                          Not specified<br>
+                          <b>Please specify your <a href="/mentor/">favored timings</a></b>
+                      {% endif %}
+
                   </div>
                 </div>
                 

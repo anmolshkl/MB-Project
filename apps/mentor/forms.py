@@ -1,6 +1,6 @@
 from django import forms
 from apps.user.models import UserProfile
-from apps.mentor.models import EducationDetails, EmploymentDetails
+from apps.mentor.models import EducationDetails, EmploymentDetails, Timings
 from django.forms import DateField
 from django.forms.models import inlineformset_factory
 
@@ -44,6 +44,7 @@ class UserProfileForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'placeholder': 'Barcelona'}),
             'country': forms.TextInput(attrs={'placeholder': 'Spain'}),
         }
+
 
 
 EducationDetailsFormSet = inlineformset_factory(UserProfile, EducationDetails,

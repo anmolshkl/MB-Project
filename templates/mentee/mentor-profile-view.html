@@ -179,7 +179,7 @@
                                         <h3>{{ item.inst }}</h3>
                                         <hr>
                                         <div class="col-xs-12 ">
-                                            {{ item.loc }},{{ item.coun }}
+                                            {{ item.loc }},{{ item.country }}
                                         </div>
                                         <div class="col-xs-12 ">
                                              {{ item.degree }} in {{ item.branch }}
@@ -209,7 +209,7 @@
                                         <h4>Blog 1</h4>
                                     </div>
                                     <div class="col-xs-12">
-                                        Australian Adventures!
+                                        Coming soon
                                     </div>
                                 </div>
                             </div>
@@ -217,10 +217,10 @@
                             <div class="col-md-12">
                                 <div class="row  pad-s">
                                     <div class="col-xs-12">
-                                        <h4>Blog 2</h4>
+                                        <h4></h4>
                                     </div>
                                     <div class="col-xs-12">
-                                        Let's go to Beer Nation!
+
                                     </div>
                                 </div>
                             </div>
@@ -233,8 +233,13 @@
                   <div class="col-md-12 tiles white textCenter pad-m">
                     <span><h4>Favored call timings</h4></span>
                       <hr>
-                      <h5>Weekdays: 9pm-10pm(IST)</h5>
-                      <h5>Weekends: 2pm-5pm(IST)</h5>
+                      {% if weekday_u %}
+                          <h5>Weekdays: {{ weekday_l }}-{{ weekday_u }}</h5>
+                          <h5>Weekends: {{ weekend_l }}-{{ weekend_u }}</h5>
+                      {% else %}
+                          Not specified<br>
+                          <b>Please select timings according to "{{ timezone }}" timezone</b>
+                      {% endif %}
                   </div>
                 </div>
                 
@@ -358,8 +363,17 @@
             $("#errorDiv h5").html("");
             $.ajax({
                 url: "/mentor/checkAvailability/",
-                data: {"date1":date1,"date2":date2,"time1":time1,"time2":time2,"dur1":dur1,"dur2":dur2,"csrfmiddlewaretoken": '{{  csrf_token }}',
-                "mentor_id":{{ mentor_id }},"mentee_id":{{ user.id }} },
+                data: {"date1":date1,
+                    "date2":date2,
+                    "time1":time1,
+                    "time2":time2,
+                    "dur1":dur1,
+                    "dur2":dur2,
+                    "csrfmiddlewaretoken": '{{  csrf_token }}',
+                    "mentor_id":{{ mentor_id }},
+                    "mentee_id":{{ user.id }},
+                    "call_type": $("#callType").val()
+                },
                 type: "post",
                 dataType: "json",
                 success: function(data) {
@@ -403,8 +417,16 @@
                             var dateTime = inputs[0].value.split(" ");
                             $.ajax({
                                 url: "/mentor/send-request/",
-                                data: { "date":dateTime[0], "time":dateTime[1],"callType": $("#callType").val(), "duration":inputs[1].value,
-                                    "csrfmiddlewaretoken":'{{ csrf_token }}',"mentor_id": {{ mentor_id }}, "mentee_id": {{ user.id }} },
+                                data: {
+                                    "date":dateTime[0],
+                                    "time":dateTime[1],
+                                    "callType": $("#callType").val(),
+                                    "duration":inputs[1].value,
+                                    "csrfmiddlewaretoken":'{{ csrf_token }}',
+                                    "mentor_id": {{ mentor_id }},
+                                    "mentee_id": {{ user.id }},
+                                    "call_type": $("#callType").val()
+                                },
                                 type: "post",
                                 dataType: "json",
                                 success: function(data) {

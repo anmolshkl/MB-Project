@@ -52,5 +52,27 @@ class UserActivity(models.Model):
     mentor = models.OneToOneField(User, editable=False, related_name="activity", primary_key=True)
     last_seen = models.DateTimeField(blank=False, null=True)
 
+    def __unicode__(self):
+        return u'{}'.format(self.mentor)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
     class Meta:
         verbose_name_plural = "Activities"
+
+
+class Timings(models.Model):
+    parent = models.OneToOneField(User, editable=False, related_name="timings", primary_key=True)
+    weekday_l = models.TimeField(blank=False, null=False)
+    weekday_u = models.TimeField(blank=False, null=False)
+    weekend_l = models.TimeField(blank=False, null=False)
+    weekend_u = models.TimeField(blank=False, null=False)
+
+    def __unicode__(self):
+        return u'{}'.format(self.mentor)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
+    class Meta:
+        verbose_name_plural = "Timings"
+

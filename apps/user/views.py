@@ -1,6 +1,7 @@
 from decimal import Decimal
 import hashlib
 import random
+from apps.mentee.models import Credits
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
@@ -131,6 +132,9 @@ def select(request):
                 user_profile.save()
             elif request.POST['choice'] == "mentee":
                 user_profile.is_mentor = False
+                credits_obj = Credits.objects.create()
+                credits_obj.parent = user
+                credits_obj.save()
                 user_profile.save()
             else:
                 error = True
@@ -189,6 +193,8 @@ def register(request):
         country = request.POST['country']
         if fn and ln and email and college and city and country:
             if User.objects.filter(email=email).exists():
+                print "email="
+                print email
                 return JsonResponse({'error': True, 'message': 'User with this email already exists!'})
             else:
                 username = email[0:29]
