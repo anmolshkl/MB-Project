@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Credits(models.Model):
     """Stores employment details of the user"""
 
-    parent = models.OneToOneField(User, related_name="credits", editable=False, primary_key=True)
+    parent = models.OneToOneField(User, related_name="credits", primary_key=True)
     balance = models.FloatField(blank=True, default=5.0)
 
     def __unicode__(self):

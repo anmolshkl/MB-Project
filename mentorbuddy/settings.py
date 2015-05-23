@@ -210,7 +210,7 @@ SOCIALACCOUNT_PROVIDERS = \
           'VERIFIED_EMAIL': False},
 
      'linkedin':
-         {'SCOPE': ['r_emailaddress', 'r_fullprofile'],
+         {'SCOPE': ['r_emailaddress', 'r_basicprofile'],
           'PROFILE_FIELDS': ['id',
                              'first-name',
                              'last-name',

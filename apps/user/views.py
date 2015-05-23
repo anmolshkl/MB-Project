@@ -132,8 +132,7 @@ def select(request):
                 user_profile.save()
             elif request.POST['choice'] == "mentee":
                 user_profile.is_mentor = False
-                credits_obj = Credits.objects.create()
-                credits_obj.parent = user
+                credits_obj = Credits.objects.create(parent=user)
                 credits_obj.save()
                 user_profile.save()
             else:

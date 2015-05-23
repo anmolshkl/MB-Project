@@ -69,11 +69,12 @@
         </style>
     {% endblock %}
  {% block container_title %}
-    <h2>Pending requests</h2>
+    <h2>Your requests</h2>
  {% endblock %}
  {% block container_block %}
      <div class="container-fluid mg-top-l">
         <div class="row">
+            {% if userRequests %}
              {% for reqObj in userRequests %}
                 <div class="col-md-3 mg-left-s well {{ reqObj.is_approved }} textCenter">
                     <img src="{{ reqObj.picture }}" class="img-responsive img-circle center" />
@@ -90,6 +91,11 @@
                     {% endif %}
                 </div>
              {% endfor %}
+        {% else %}
+            <div class="well col-xs-12">
+                You have not made any requests.
+            </div>
+        {% endif %}
         </div>
         <div title="help" class="btn-round" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="<i class='fa fa-minus-circle'>&nbsp;&nbsp;&nbsp;Request Pending</i><br><i class='fa fa-times'>&nbsp;&nbsp;&nbsp;Request Rejected</i><br><i class='fa fa-check'>&nbsp;&nbsp;&nbsp;Request Accepted</i><br>" data-html="true"><i class="fa fa-question"></i></div>
      </div>

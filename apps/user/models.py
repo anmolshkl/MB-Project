@@ -23,6 +23,7 @@ import apps.user.fields
 class PathAndRename(object):
     def __init__(self, sub_path):
         self.path = sub_path
+
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
         # set filename as random string
@@ -32,7 +33,7 @@ class PathAndRename(object):
         if not os.path.exists(newPath):
             os.makedirs(newPath)
 
-        return os.path.join(newPath, instance.user.username+"."+ext)
+        return os.path.join(newPath, instance.user.username + "." + ext)
 
 
 path_and_rename = PathAndRename("/resume/")
@@ -149,13 +150,13 @@ def save_data(sender, **kwargs):
         pass
     if extra_data:
         # Save user's social profile image everytime he logs in/hardcode for facebook
-        userProfile.picture = "http://graph.facebook.com/"+user.socialaccount_set.filter(provider='facebook')[0].uid+"/picture?type=large"
+        userProfile.picture = "http://graph.facebook.com/" + user.socialaccount_set.filter(provider='facebook')[
+            0].uid + "/picture?type=large"
         userProfile.email_verified = True
         userProfile.save()
         socialProfiles.profile_url_facebook = extra_data['link']
         socialProfiles.profile_pic_url_facebook = userProfile.picture
         socialProfiles.save()
-
 
 
 class MentorSearchForm(SearchForm):
@@ -243,4 +244,18 @@ class VerificationCodes(models.Model):
         return self.user.get_full_name()
 
     class Meta:
-        verbose_name_plural=u'VerificationCodes'
+        verbose_name_plural = u'VerificationCodes'
+
+
+class Notification(models.Model):
+    to = models.ForeignKey(User, related_name="notifications", editable=False)
+    frm = models.CharField(User, editable=False, max_length=300)  # from is reserved keyword
+    text = models.TextField(blank=True, max_length=300, null=True)
+    title = models.CharField(blank=True, max_length=500, null=False)
+    dateTime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.to
+
+    class Meta:
+        verbose_name_plural = u'Notifications'

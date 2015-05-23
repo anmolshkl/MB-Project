@@ -587,7 +587,7 @@ def live(request):
     return render_to_response('mentor/live.html', {}, RequestContext(request))
 
 
-# A Utility function to check whether the Mentor is available on a given date and time
+# A Utility function to - whether the Mentor is available on a given date and time
 def check_mentor_availibility(request, date, time, max_duration, mentor_id):
     response = True
     # Convert date & time in django friendly format
@@ -629,19 +629,22 @@ def check_mentee_availibility(request, date, time, max_duration, mentee_id):
 def check_mentee_balance(mentee_id, duration, call_type):
     available = True
     credits_obj = User.objects.get(id=int(mentee_id)).credits
+    print credits_obj.balance
     if call_type == "1":
         # Web to Web
-        if duration*3 < credits_obj.balance:
+        if duration*3 > credits_obj.balance:
             available = False
+            print duration*3
     elif call_type == "2":
         # Web to phone
-        if duration*6 < credits_obj.balance:
+        if duration*6 > credits_obj.balance:
             available = False
     elif call_type == "3":
         # Video
-        if duration*5 < credits_obj.balance:
+        if duration*5 > credits_obj.balance:
             available = False
 
+    print "balance={0}".format(available)
     return available
 
 
@@ -649,16 +652,16 @@ def check_mentee_balance(mentee_id, duration, call_type):
 def check_availability(request):
     date1 = request.POST['date1']
     time1 = request.POST['time1']
-    dur1 = request.POST['dur1']
+    dur1 = int(request.POST['dur1'])
     date2 = request.POST['date2']
     time2 = request.POST['time2']
-    dur2 = request.POST['dur2']
+    dur2 = int(request.POST['dur2'])
     mentor_id = request.POST['mentor_id']
     mentee_id = request.POST['mentee_id']
     call_type = request.POST['call_type']
     response = {
         '1': check_mentor_availibility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request, date1, time1, 30, mentee_id) and check_mentee_balance(mentee_id, dur1, call_type),
-        '2': check_mentor_availibility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30, mentee_id) and check_mentee_balance(mentee_id, dur1, call_type)}
+        '2': check_mentor_availibility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30, mentee_id) and check_mentee_balance(mentee_id, dur2, call_type)}
     return JsonResponse(response)
 
 
@@ -673,8 +676,8 @@ def send_request(request):
                 and 4 > int(post['callType']) > 0:
             if 5 <= int(post['duration']) <= 30:
                 if check_mentor_availibility(request, post['date'], post['time'], 30,post['mentor_id']) \
-                        and check_mentee_availibility(request, post['date'], post['time'], 30, post['mentee_id']) \
-                        and check_mentee_balance(post['mentee_id'], post['duration'], post['call_type']):
+                        and check_mentee_availibility(request, post['date'], post['time'], 30, int(post['mentee_id'])) \
+                        and check_mentee_balance(post['mentee_id'], int(post['duration']), int(post['call_type'])):
                     date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
                     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
                     tz = timezone(request.user.user_profile.timezone)

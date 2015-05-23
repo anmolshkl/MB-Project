@@ -1,5 +1,6 @@
+from apps.mentee.models import Credits
 from django.contrib import admin
-from apps.user.models import Request, CallLog, Feedback, VerificationCodes
+from apps.user.models import Request, CallLog, Feedback, VerificationCodes, Notification
 
 
 class RequestInline(admin.TabularInline):
@@ -23,3 +24,6 @@ admin.site.register(Feedback)
 
 admin.site.register(VerificationCodes)
 
+admin.site.register(Notification)
+
+admin.site.register(Credits)

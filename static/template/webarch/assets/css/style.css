@@ -10,6 +10,10 @@
     color:#333843! important;
 }
 
+.pad-top {
+    padding-top: 10px;
+    padding-right: 22px;
+}
 /* Reset */
 html{
 	font-size: 100%;
