@@ -131,11 +131,29 @@ def select(request):
             if request.POST['choice'] == "mentor":
                 user_profile.is_mentor = True
                 user_profile.save()
+                # create new notification
+                notif_obj = Notification.objects.create(to=user)
+                notif_obj.frm = "admin"
+                notif_obj.text = "We appreciate your effort to help someone treading your path!<br>Go and be a super " \
+                                 "mentor! :)"
+                notif_obj.title = "Hello Mentor!"
+                notif_obj.save()
+                # sameer
+
+
             elif request.POST['choice'] == "mentee":
                 user_profile.is_mentor = False
                 credits_obj = Credits.objects.create(parent=user)
                 credits_obj.save()
                 user_profile.save()
+                # create new notification
+                notif_obj = Notification.objects.create(to=user)
+                notif_obj.frm = "admin"
+                notif_obj.text = "We'll help you get started with your dream of global education"
+                notif_obj.title = "Hello Mentee!"
+                notif_obj.save()
+                # sameer
+
             else:
                 error = True
                 msg = "Not a valid choice!"
@@ -205,7 +223,6 @@ def register(request):
                 profile.user = user
                 profile.save()
 
-                # sameer
 
                 # generate key
 

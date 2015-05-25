@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^mentee/', include('apps.mentee.urls')),
     url(r'^live/', include('apps.sinch.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^search/',include('apps.user.urls')),
+    url(r'^search/', include('apps.user.urls')),
 )
 
 # UNDERNEATH your urlpatterns definition, add the following two lines:

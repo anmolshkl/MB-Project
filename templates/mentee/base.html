@@ -317,33 +317,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="grid simple">
-                                        <div class="grid-title no-border">
-                                          <h4>Profile <span class="semi-bold">progress</span></h4>
-                                          <div class="tools"> <a href="javascript:;" class="collapse"></a>  <a href="javascript:;" class="reload"></a></div>
-                                        </div>
-                                        <div class="grid-body no-border">
-                                          <div class="row-fluid">
-                                              <h3>Complete your <span class="semi-bold">Profile</span></h3>
-
-                                            <p><a href="/mentor/edit-profile">Complete your profile</a> and provide us your past education details so that we can help mentee connect with you better.</p>
-                                            <br>
-                                            {% if user.user_profile.is_approved != True %}
-                                            <div class="alert alert-block alert-error fade in">
-                                              <button type="button" class="close" data-dismiss="alert"></button>
-                                              <h4 class="alert-heading"><i class="icon-warning-sign"></i> Note</h4>
-                                              <p> You need to upload a resume in order to be approved as a mentor.</p>
-                                            </div>
-                                            {% endif %}
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 pad-top">
+                                <div class="col-md-12">
                                     <div class="tiles purple added-margin" style="max-height:345px">
                                         <div class="tiles-body">
                                             <div class="controller">
@@ -804,7 +778,6 @@
          var parent = $(this).parent().parent();
          var element = $(this).parent().find("label");
          if(!$(this).hasClass('done')) {
-             alert(element.attr('for'));
              $.ajax({
                     url: '/user/todo/',
                     type: "post",
@@ -834,6 +807,7 @@
                     success: function(data) {
                         if(data['error']==false) {
                             $(".todoWidget").append('<div class="row-fluid"><div class="checkbox check-success 	"><input value="0" id="'+data['id']+'" class="todo-list" type="checkbox"><label class="" for="'+data['id']+'">'+element.val()+'</label></div></div>');
+                            $("#todoField").val("");
                         }
                     }
                 });

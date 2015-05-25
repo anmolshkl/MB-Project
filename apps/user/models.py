@@ -158,6 +158,16 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_pic_url_facebook = userProfile.picture
         socialProfiles.save()
 
+@receiver([user_signed_up])
+def save_signup_data(sender, **kwargs):
+    user = kwargs.pop('user')
+    # create new notification
+    notif_obj = Notification.objects.create(to=user)
+    notif_obj.frm = "admin"
+    notif_obj.text = "We'll help you get started with your dream of global education"
+    notif_obj.title = "Hello Mentee!"
+    notif_obj.save()
+
 
 class MentorSearchForm(SearchForm):
     def no_query_found(self):

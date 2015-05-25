@@ -7,7 +7,7 @@ from apps.user.forms import UserForm, UserEditForm
 from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.user.models import UserProfile, SocialProfiles, Todo
+from apps.user.models import UserProfile, SocialProfiles, Todo, Notification
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
@@ -741,11 +741,23 @@ def handle_request(request):
             req = Request.objects.get(id=post["request_id"])
             req.is_approved = True
             req.save()
+            # create new notification
+            notif_obj = Notification.objects.create(to=request.user)
+            notif_obj.frm = "admin"
+            notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you ;)".format(request.user.get_full_name())
+            notif_obj.title = "Request approved!"
+            notif_obj.save()
+
         elif post['status'] == '0':
             # disapprove the request
             req = Request.objects.get(id=post["request_id"])
             req.is_approved = False
             req.save()
+            notif_obj = Notification.objects.create(to=request.user)
+            notif_obj.frm = "admin"
+            notif_obj.text = "Your request is not approved by {0}. Please select a different time/date/mentor".format(request.user.get_full_name())
+            notif_obj.title = "Request disapproved!"
+            notif_obj.save()
         else:
             error = True
     else:
