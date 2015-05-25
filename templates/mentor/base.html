@@ -510,7 +510,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12 pad-s">
-							        <div class="widget">
+							        <div class="widget todoWidget">
                                         <div class="widget-title dark">
                                             <div class="pull-left ">
                                             <button class="btn  btn-dark  btn-small" type="button"><i class="fa fa-plus"></i></button>
@@ -523,13 +523,13 @@
                                         </div>
                                         <div class="widget-body">
                                         <div class="col-md-12">
-                                                <input class="form-control dark" id="date" type="text">
-                                              </div>
+                                                <input class="form-control dark" id="todoField" type="text">
+                                        </div>
                                         <br>
                                         <div class="row-fluid">
                                             <div class="checkbox check-success 	">
                                                 <input value="1" id="chk_todo01" class="todo-list" type="checkbox">
-                                                    <label class="" for="chk_todo01">Send email to David, new signups</label>
+                                                <label class="" for="chk_todo01">Send email to David, new signups</label>
                                             </div>
                                         </div>
                                         <div class="row-fluid">
@@ -846,7 +846,6 @@ END CHAT -->
 
     //Simple todolist
      $('.todo-list').click(function () {
-         alert("clicked");
         $(this).parent().children('label').toggleClass('done');
     });
 

@@ -248,14 +248,26 @@ class VerificationCodes(models.Model):
 
 
 class Notification(models.Model):
-    to = models.ForeignKey(User, related_name="notifications", editable=False)
-    frm = models.CharField(User, editable=False, max_length=300)  # from is reserved keyword
+    to = models.ForeignKey(User, related_name="notifications")
+    frm = models.CharField(max_length=300)  # from is reserved keyword
     text = models.TextField(blank=True, max_length=300, null=True)
     title = models.CharField(blank=True, max_length=500, null=False)
     dateTime = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.to
+        return self.to.get_full_name()
 
     class Meta:
         verbose_name_plural = u'Notifications'
+
+
+class Todo(models.Model):
+    parent = models.ForeignKey(User, related_name="tasks")
+    task = models.TextField(blank=True, max_length=300, null=True)
+    dateTime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{0}-{1}".format(self.task, self.parent)
+
+    class Meta:
+        verbose_name_plural = u'Todo List'

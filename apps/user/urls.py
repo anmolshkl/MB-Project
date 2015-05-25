@@ -21,6 +21,7 @@ urlpatterns = patterns('',
                        url(r'^confirm/(?P<ak>.*)/$', views.register_confirm, name='register_confirm'),
                        url(r'^contact/$', TemplateView.as_view(template_name='contact.html'), name='contact'),
                        url(r'^contact/submit/$', views.contact, name='contact'),
-
+                       url(r'^clear-notifications/$', views.clear_notifications, name='clear-notifications'),
+                       url(r'^todo/$', views.handle_todo, name='todo'),
 
                        )

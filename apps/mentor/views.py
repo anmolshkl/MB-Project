@@ -7,7 +7,7 @@ from apps.user.forms import UserForm, UserEditForm
 from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.user.models import UserProfile, SocialProfiles
+from apps.user.models import UserProfile, SocialProfiles, Todo
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
@@ -73,7 +73,10 @@ def index(request):
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
+        todoList = Todo.objects.filter(parent=user)
+        context_dict['todoList'] = todoList
         template = "mentor/index.html"
+
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
 

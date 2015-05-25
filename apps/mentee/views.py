@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 
 #import user profile models
-from apps.user.models import UserProfile, SocialProfiles, Request
+from apps.user.models import UserProfile, SocialProfiles, Request, Todo
 
 #import specific forms
 from apps.user.forms import UserForm, UserEditForm
@@ -70,6 +70,8 @@ def index(request):
         #attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
+        todoList = Todo.objects.filter(parent=user)
+        context_dict['todoList'] = todoList
         template = "mentee/index.html"
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))

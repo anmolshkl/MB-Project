@@ -33,5 +33,8 @@ def profile_progress(mentor_id):
 
 @register.assignment_tag
 def get_notifications(id):
-    return Notification.objects.filter(to=int(id))
+    notifications = Notification.objects.filter(to=int(id))
+    count = notifications.count()
+    notifications.count = count
+    return notifications
 

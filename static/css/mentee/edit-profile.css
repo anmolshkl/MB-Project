@@ -102,7 +102,7 @@ body {
   min-height: 100%;
 }
 .page-content {
-    background-color: rgba(14, 118, 109, 1);
+    background-color: rgba(252,145,58,1.0);
 }
 
 
@@ -155,7 +155,9 @@ body {
     .cbp-mc-form input,
     .cbp-mc-form select,
     .cbp-mc-form textarea {
-        border: 3px solid cadetblue;
+        border: 1px solid black;
+        border-radius: 0px;
+
     }
 
     .cbp-mc-form textarea {
@@ -167,8 +169,8 @@ body {
     .cbp-mc-form label:active + input,
     .cbp-mc-form label:active + textarea {
         outline: none;
-        border: 3px solid #8B8B83;
-        background-color: rgba(68, 253, 199, 0.20);
+        border: 1px solid #8B8B83;
+        background-color: rgba(255, 125, 26, 0.92);
     }
 
     .cbp-mc-form select:focus {
@@ -216,7 +218,7 @@ body {
     }
 
     .cbp-mc-form input.cbp-mc-submit:hover {
-        background: #1478b1;
+        background: #ff5310;
     }
 
     @media screen and (max-width: 70em) {

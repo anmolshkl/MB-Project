@@ -2,6 +2,7 @@ from decimal import Decimal
 import hashlib
 import random
 from apps.mentee.models import Credits
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
@@ -9,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm, Request, CallLog, Feedback, \
-    VerificationCodes
+    VerificationCodes, Notification, Todo
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
@@ -481,5 +482,38 @@ def contact(request):
         msg = "Submit form using a POST method"
 
     return JsonResponse({'error': error, "msg": msg})
+
+
+@login_required
+def clear_notifications(request):
+    error = False
+    if request.GET:
+        try:
+            Notification.objects.filter(to=request.user).delete()
+        except ObjectDoesNotExist:
+            error = True
+    return JsonResponse({"error": error})
+
+
+@login_required
+def handle_todo(request):
+    error = False
+    obj_id = None
+    if request.method == 'POST':
+        if 'delete' in request.POST:
+            Todo.objects.filter(id=int(request.POST['id'])).delete()
+        elif 'add' in request.POST:
+            todo_obj = Todo.objects.create(parent=request.user)
+            todo_obj.task = request.POST['task']
+            todo_obj.save()
+            obj_id = todo_obj.id
+        else:
+            error = True
+    else:
+        error = True
+    return JsonResponse({"error": error, 'id': obj_id})
+
+
+
 
 
