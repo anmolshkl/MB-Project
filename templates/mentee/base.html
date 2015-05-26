@@ -14,10 +14,7 @@
 <!-- BEGIN PLUGIN CSS -->
 <link href="{% static 'template/webarch/assets/plugins/pace/pace-theme-flash.css' %}" rel="stylesheet" type="text/css" media="screen"/>
 <link href="{% static 'template/webarch/assets/plugins/gritter/css/jquery.gritter.css' %}" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="{% static 'template/webarch/assets/plugins/jquery-morris-chart/css/morris.css' %}" type="text/css" media="screen">
 <link href="{% static 'template/webarch/assets/plugins/jquery-slider/css/jquery.sidr.light.css' %}" rel="stylesheet" type="text/css" media="screen"/>
-<link href="{% static 'template/webarch/assets/plugins/bootstrap-select2/select2.css' %}" rel="stylesheet" type="text/css" media="screen"/>
-<link href="{% static 'template/webarch/assets/plugins/boostrap-checkbox/css/bootstrap-checkbox.css' %}" rel="stylesheet" type="text/css" media="screen"/>
 
 <!-- END PLUGIN CSS -->
 
@@ -234,7 +231,7 @@
                     <div class="iconset top-settings-dark "></div>  
                 </a>
                 <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
-                  <li><a href="user-profile.html"> My Account</a>
+                  <li><a href="/mentee/self-profile/"> My Account</a>
                   </li>
                   <li class="divider"></li>                
                   <li><a href="/user/logout/"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
@@ -493,17 +490,6 @@
                     </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 fixed-bottom">
-                            <ul class="social-nav model-2 tiles" style="background-color: rgba(0, 0, 0, 0.3);">
-                              <li><a href="https://twitter.com/vivinantony" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                              <li><a href="https://www.facebook.com/vivinantony" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                              <li><a href="https://plus.google.com/+VivinAntonyJ" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                              <li><a class="linkedin"><i class="fa fa-linkedin"></i></a></li>
-                              <li><a class="pinterest"><i class="fa fa-pinterest"></i></a></li>
-                            </ul>
-                       </div>
-                    </div>
 
                 </div>
             {% endblock %}
@@ -513,235 +499,6 @@
 </div>
 
 
-
-<!-- BEGIN CHAT
-<div id="sidr" class="chat-window-wrapper">
-    <div id="main-chat-wrapper" >
-    <div class="chat-window-wrapper fadeIn" id="chat-users" >
-        <div class="chat-header">   
-        <div class="pull-left">
-            <input type="text" placeholder="search">
-        </div>      
-            <div class="pull-right">
-                <a href="#" class="" ><div class="iconset top-settings-dark "></div> </a>
-            </div>          
-        </div>  
-        <div class="side-widget">
-           <div class="side-widget-title">group chats</div>
-            <div class="side-widget-content">
-             <div id="groups-list">
-                <ul class="groups" >
-                    <li><a href="#"><div class="status-icon green"></div>Office work</a></li>
-                    <li><a href="#"><div class="status-icon green"></div>Personal vibes</a></li>
-                </ul>
-            </div>
-            </div>
-        </div>
-        <div class="side-widget fadeIn">
-           <div class="side-widget-title">favourites</div>
-           <div id="favourites-list">
-            <div class="side-widget-content" >
-                <div class="user-details-wrapper active" data-chat-status="online" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="Jane Smith">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        Jane Smith
-                        </div>
-                        <div class="user-more">
-                        Hello you there?
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        <span class="badge badge-important">3</span>
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon green"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>  
-                <div class="user-details-wrapper" data-chat-status="busy" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="David Nester">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        David Nester
-                        </div>
-                        <div class="user-more">
-                        Busy, Do not disturb
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon red"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>                  
-            </div>
-            </div>
-        </div>
-        <div class="side-widget">
-           <div class="side-widget-title">more friends</div>
-             <div class="side-widget-content" id="friends-list">
-                <div class="user-details-wrapper" data-chat-status="online" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="Jane Smith">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        Jane Smith
-                        </div>
-                        <div class="user-more">
-                        Hello you there?
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon green"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>  
-                <div class="user-details-wrapper" data-chat-status="busy" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="David Nester">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/h.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/h.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/h2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        David Nester
-                        </div>
-                        <div class="user-more">
-                        Busy, Do not disturb
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon red"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>      
-                <div class="user-details-wrapper" data-chat-status="online" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" data-user-name="Jane Smith">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/c.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/c2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        Jane Smith
-                        </div>
-                        <div class="user-more">
-                        Hello you there?
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon green"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>  
-                <div class="user-details-wrapper" data-chat-status="busy" data-chat-user-pic="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-chat-user-pic-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}' %}" data-user-name="David Nester">
-                    <div class="user-profile">
-                        <img src="{% static 'template/webarch/assets/img/profiles/h.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/h.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/h2x.jpg' %}" width="35" height="35">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">
-                        David Nester
-                        </div>
-                        <div class="user-more">
-                        Busy, Do not disturb
-                        </div>
-                    </div>
-                    <div class="user-details-status-wrapper">
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="user-details-count-wrapper">
-                        <div class="status-icon red"></div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>              
-            </div>      
-        </div>
-    </div>
-
-    <div class="chat-window-wrapper fadeIn" id="messages-wrapper" style="display:none">
-    <div class="chat-header">   
-        <div class="pull-left">
-            <input type="text" placeholder="search">
-        </div>      
-            <div class="pull-right">
-                <a href="#" class="" ><div class="iconset top-settings-dark "></div> </a>
-            </div>                  
-        </div>
-    <div class="clearfix"></div>    
-    <div class="chat-messages-header">
-    <div class="status online"></div><span class="semi-bold">Jane Smith(Typing..)</span>
-    <a href="#" class="chat-back"><i class="icon-custom-cross"></i></a>
-    </div>
-    <div class="chat-messages">
-        <div class="sent_time">Yesterday 11:25pm</div>
-        <div class="user-details-wrapper " >
-            <div class="user-profile">
-                <img src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" width="35" height="35">
-            </div>
-            <div class="user-details">
-              <div class="bubble">  
-                    Hello, You there?
-               </div>
-            </div>                  
-            <div class="clearfix"></div>
-           <div class="sent_time off">Yesterday 11:25pm</div>
-        </div>      
-        <div class="user-details-wrapper ">
-            <div class="user-profile">
-                <img src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/d.jpg" data-src-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg" width="35" height="35">
-            </div>
-            <div class="user-details">
-              <div class="bubble">  
-                    How was the meeting?
-               </div>
-            </div>                  
-            <div class="clearfix"></div>
-            <div class="sent_time off">Yesterday 11:25pm</div>
-        </div>
-        <div class="user-details-wrapper ">
-            <div class="user-profile">
-                <img src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}"  alt="" data-src="{% static 'template/webarch/assets/img/profiles/d.jpg' %}" data-src-retina="{% static 'template/webarch/assets/img/profiles/d2x.jpg' %}" width="35" height="35">
-            </div>
-            <div class="user-details">
-              <div class="bubble">  
-                    Let me know when you free
-               </div>
-            </div>                  
-            <div class="clearfix"></div>
-            <div class="sent_time off">Yesterday 11:25pm</div>
-        </div>
-        <div class="sent_time ">Today 11:25pm</div>
-        <div class="user-details-wrapper pull-right">
-            <div class="user-details">
-              <div class="bubble sender">   
-                    Let me know when you free
-               </div>
-            </div>                  
-            <div class="clearfix"></div>
-            <div class="sent_time off">Sent On Tue, 2:45pm</div>
-        </div>      
-    </div>
-    </div>
-    <div class="chat-input-wrapper" style="display:none">
-        <textarea id="chat-message-input" rows="1" placeholder="Type your message"></textarea>
-    </div>
-    <div class="clearfix"></div>
-    </div>
-</div>
- END CHAT -->
 <!-- END CONTAINER --> 
 </div>
 <!-- BEGIN CORE JS FRAMEWORK--> 
@@ -754,19 +511,17 @@
 
 <!-- BEGIN PAGE LEVEL JS --> 
 <script src="{% static 'template/webarch/assets/plugins/pace/pace.min.js' %}" type="text/javascript"></script>  
-<script src="{% static 'template/webarch/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script> 
 <script src="{% static 'template/webarch/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script src="{% static 'template/webarch/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js' %}" type="text/javascript"></script> 
 <script src="{% static 'template/webarch/assets/plugins/jquery-block-ui/jqueryblockui.js' %}" type="text/javascript"></script>
 <script src="{% static 'template/webarch/assets/plugins/jquery-slider/jquery.sidr.min.js' %}" type="text/javascript"></script>
 
-<script src="{% static 'template/webarch/assets/plugins/skycons/skycons.js' %}"></script>
 <!-- END PAGE LEVEL PLUGINS   -->   
 
 <!-- BEGIN CORE TEMPLATE JS -->
 <script src="{% static 'template/webarch/assets/js/core.js' %}" type="text/javascript"></script>
-<script src="{% static 'template/webarch/assets/js/chat.js' %}" type="text/javascript"></script>
-<script src="{% static 'template/webarch/assets/js/demo.js' %}" type="text/javascript"></script>
+<!-- <script src="{% static 'template/webarch/assets/js/chat.js' %}" type="text/javascript"></script>
+<script src="{% static 'template/webarch/assets/js/demo.js' %}" type="text/javascript"></script> -->
 <!-- END CORE TEMPLATE JS -->
 <script>
     $(function () {

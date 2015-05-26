@@ -38,3 +38,4 @@ def get_notifications(id):
     notifications.count = count
     return notifications
 
+

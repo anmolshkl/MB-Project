@@ -42,6 +42,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/user/loginV3.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-social-buttons/bootstrap-social.css' %}">
 
 </head>
 <!-- END HEAD -->
@@ -86,14 +87,16 @@
               </div>
               
               
-              <button type="submit" class="button buttonBlue singUpButton">SIGN UP
+              <button type="submit" class="button buttonBlue singUpButton">
+                  <i class="fa fa-spinner hide fa-pulse"></i>
+                  <span class="signUpText">SIGN UP!</span>
               </button>
-                <span class="black">or  Sign Up using:</span>
-                <div class="icons">
-                  <a href="{% provider_login_url "facebook" method="oauth2" %}" class="fa fa-facebook facebook social-icon"></a>
-                  <a href="{% provider_login_url "linkedin" method="oauth2" %}" class="fa fa-linkedin linkedin social-icon"></a>
-                  <!-- <a target="_blank" href="https://plus.google.com/+CreativepunchNetBlog" class="fa fa-google-plus google-plus social-icon"></a> -->
-                </div>
+                <h5><span class="black">or sign up with:</span></h5>
+                <ul class="social-nav model-2">
+                  <li><a href="{% provider_login_url "facebook" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li><a href="{% provider_login_url "google"  method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li><a href="{% provider_login_url "linkedin"  method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                </ul>
             </form>
               
           </div>
@@ -124,8 +127,14 @@
                   <i class="fa fa-spinner hide fa-pulse"></i>
                   <span class="text">Login</span>
               </button>
-              <span class="help pull-right"><a class="forgotPass">forgot password?</a></span>
-                <br><br>
+              <ul class="social-nav model-2">
+                  <li><a href="{% provider_login_url "facebook" process="login" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li><a href="{% provider_login_url "google" process="login" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li><a href="{% provider_login_url "linkedin" process="login" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+              </ul>
+              <br>
+
+
             </form>
               
           </div>
@@ -176,7 +185,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <span href="{% static '/' %}" class="navbar-brand">Mentor Buddy</span>
+          <span href="{% static '/' %}" class="navbar-brand"><h3 style="color: #000000">Mentor Buddy</h3></span>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right" >
@@ -266,8 +275,8 @@
 							data-endspeed="300"
 							data-endeasing="Power1.easeIn"
 							data-captionhidden="off"
-							style="z-index: 6"><h2 class="text-white custom-font title ">WE'VE DESIGN<br> EVERYTHING JUST FOR YOU</h2>
-
+							style="z-index: 6; text-align: left;"><h2 class="text-white custom-font title ">CATCH YOUR DREAMS!</h2>
+                        <span><h3 style="color: #f5f5f5">Our expert mentors will help you tread the path<br> they took and realize your dreams!</h3></span>
 					</div>
 					<div class="tp-caption sfb slider tp-resizeme slider"
 						data-x="center"
@@ -279,7 +288,7 @@
 						data-endspeed="300"
 						data-endeasing="Power1.easeIn"
 						data-captionhidden="off"
-						style="z-index: 6">	<span><h3>SOME TEXT</h3></span>
+						style="z-index: 6; top: 150px !important; color: #ffffff">
 					</div>
 					
 				</li>
@@ -297,7 +306,7 @@
 							data-endspeed="300"
 							data-endeasing="Power1.easeIn"
 							data-captionhidden="off"
-							style="z-index: 6"><h2 class="text-white custom-font title ">WE'VE DESIGN<br> EVERYTHING JUST FOR YOU</h2>
+							style="z-index: 6"><h2 class="text-white custom-font title ">WE'VE MENTORS FROM ALL OVER THE WORLD!<br> </h2>
 
 					</div>
 					<div class="tp-caption sfb slider tp-resizeme slider"
@@ -310,7 +319,7 @@
 						data-endspeed="300"
 						data-endeasing="Power1.easeIn"
 						data-captionhidden="off"
-						style="z-index: 6">	<a href="#" class="btn btn-danger btn-lg  btn-large m-r-10">BUY IT NOW</a>
+						style="z-index: 6">	<a href="#" class="btn btn-danger btn-lg  btn-large m-r-10">SIGN UP NOW!</a>
 					</div>
 
 				</li>
@@ -478,6 +487,10 @@
                 if(validateForm(form) == 1) {
                     var postData = $(this).serializeArray();
                     var msg='';
+                    var owner = $(this);
+                    $(this).find(".fa-spinner").removeClass('hide');
+                    $(this).find(".signUpText").text('SIGNING YOU UP ...');
+
                     $("signUpButton").addClass('disabled');
                     $.ajax({
                         url: '/user/register/',
@@ -487,6 +500,9 @@
                         success: function(data) {
                             if(data["error"] == true) {
                                 $("#signUpError").html(data['message']);
+                                $("signUpButton").removeClass('disabled');
+                                owner.find(".fa-spinner").addClass('hide');
+                                owner.find(".signUpText").text('SIGN UP!');
                             }
                             else {
 

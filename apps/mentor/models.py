@@ -76,3 +76,21 @@ class Timings(models.Model):
     class Meta:
         verbose_name_plural = "Timings"
 
+
+class Ratings(models.Model):
+    mentor = models.OneToOneField(User, related_name="ratings", primary_key=True)
+    count = models.IntegerField(default=0)
+    average = models.FloatField(default=0)
+    one = models.IntegerField(max_length=1, default=0)
+    two = models.IntegerField(max_length=1, default=0)
+    three = models.IntegerField(max_length=1, default=0)
+    four = models.IntegerField(max_length=1, default=0)
+    five = models.IntegerField(max_length=1, default=0)
+
+    def __unicode__(self):
+        return u'{}'.format(self.mentor)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
+    class Meta:
+        verbose_name_plural = "Ratings"

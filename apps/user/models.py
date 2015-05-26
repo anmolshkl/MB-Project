@@ -158,16 +158,6 @@ def save_data(sender, **kwargs):
         socialProfiles.profile_pic_url_facebook = userProfile.picture
         socialProfiles.save()
 
-@receiver([user_signed_up])
-def save_signup_data(sender, **kwargs):
-    user = kwargs.pop('user')
-    # create new notification
-    notif_obj = Notification.objects.create(to=user)
-    notif_obj.frm = "admin"
-    notif_obj.text = "We'll help you get started with your dream of global education"
-    notif_obj.title = "Hello Mentee!"
-    notif_obj.save()
-
 
 class MentorSearchForm(SearchForm):
     def no_query_found(self):
@@ -233,7 +223,7 @@ class CallLog(models.Model):
 class Feedback(models.Model):
     """"Stores Feedback for every call """""
     user = models.ForeignKey(User, editable=False)
-    call = models.ForeignKey(CallLog, editable=False)
+    call = models.ForeignKey(CallLog, related_name='feedback', editable=False)
     rating = models.FloatField(null=False, default=0.0, blank=False)
     feedback = models.CharField(max_length=512, null=False, blank=True)
 

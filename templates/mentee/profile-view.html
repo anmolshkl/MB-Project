@@ -46,7 +46,7 @@
                                 </div>
                                  <div class="user-mini-description">
                                     <h3 class="text-success semi-bold">
-                                        48
+                                        {{ mentor_count }}
                                     </h3>
                                     <h5>Mentors Connected</h5>
                                 </div>
@@ -58,6 +58,8 @@
                                 <p><i class="fa fa-globe"></i>
                                     {% if city or country %}
                                         from
+                                    {% else %}
+                                        Location not available
                                     {% endif %}
 
                                     {% if city %}
@@ -96,7 +98,7 @@
                     <div class="tiles-body">
                         <h1>Credits</h1><hr>
                         <h2><span class="animate-number">0</span>$</h2>
-                        <button class="btn btn-primary pull-right">Recharge</button>
+                        <a class="btn btn-primary pull-right" href="https://www.instamojo.com/mentorbuddy/find-a-mentor/" rel="im-checkout" data-behavior="link" data-style="light" data-text="Checkout with Instamojo" data-token="8efb0c427df27e3279556b7cb1645434"><i class="fa fa-bolt"></i> Recharge</a>
                         <div style="clear: both;"></div>
                     </div>
                 </div>
@@ -130,5 +132,6 @@
 <script type="text/javascript">
     $(".animate-number").animateNumbers({{ balance }}, false, 1000, "linear");
 </script>
+<script src="https://d2xwmjc4uy2hr5.cloudfront.net/im-embed/im-embed.min.js"></script>
 
 {% endblock %}

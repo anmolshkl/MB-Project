@@ -245,6 +245,7 @@ def self_profile_view(request):
             context_dict['profile_url'] = profile_url
 
     context_dict['balance'] = user.credits.balance
+    context_dict['mentor_count'] = Request.objects.filter(menteeId=user.id, is_completed=True).count()
     return render_to_response("mentee/profile-view.html", context_dict, context)
 
 

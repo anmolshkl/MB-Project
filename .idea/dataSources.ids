@@ -143,17 +143,28 @@
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="Accounts_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
+    <table name="CustomerOtps" schema="" catalog="bkdb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="otp" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="CustomerOtps_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
     <table name="Customers" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
-      <column name="number" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="number" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="active_device_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="bkdb" columns="CustomerId"/>
+      <exported-key name="CustomerOtps_ibfk_1" table="CustomerOtps" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Devices_ibfk_1" table="Devices" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Loans_ibfk_1" table="Loans" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="MerchantCustomers_ibfk_2" table="MerchantCustomers" schema="" catalog="bkdb" columns="CustomerId"/>

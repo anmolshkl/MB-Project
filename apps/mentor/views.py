@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailsFormSet, EmploymentDetailsFormSet
-from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings
+from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings, Ratings
 from allauth.socialaccount.models import SocialAccount, SocialApp
 # Create your views here.
 from django.conf import settings
@@ -293,6 +293,22 @@ def self_profile_view(request):
 
         context_dict['emp_list'] = emp_list
 
+    context_dict['mentee_count'] = Request.objects.filter(mentorId=user.id, is_completed=True).count()
+    rating_obj = {}
+    try:
+        rating_obj = Ratings.objects.get(mentor=user)
+
+    except ObjectDoesNotExist:
+        rating_obj['total'] = 0
+        rating_obj['one'] = 0
+        rating_obj['two'] = 0
+        rating_obj['three'] = 0
+        rating_obj['four'] = 0
+        rating_obj['five'] = 0
+        rating_obj['average'] = 0
+
+    context_dict['ratings'] = rating_obj
+    print rating_obj.count
     return render_to_response("mentor/profile-view.html", context_dict, context)
 
 
@@ -402,10 +418,6 @@ def get_profile(request, mentorid):
     if picture_url:
         context_dict['picture_url'] = picture_url
 
-
-    provider = None
-
-    profile_url = None
 
     '''
     NO NEED FOR SOCIAL DETAILS

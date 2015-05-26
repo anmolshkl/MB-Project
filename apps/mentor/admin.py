@@ -1,7 +1,7 @@
 from apps.mentee.models import Credits
 from django.contrib import admin
 from apps.user.models import UserProfile, SocialProfiles
-from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings
+from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings, Ratings
 from django.contrib.auth.models import User
 
 
@@ -40,3 +40,4 @@ admin.site.register(SocialProfiles)
 admin.site.register(EmploymentDetails)
 admin.site.register(UserActivity)
 admin.site.register(Timings)
+admin.site.register(Ratings)

@@ -44,7 +44,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         top: 0px !important;
     }
     .navbar {
-        z-index: 9999 !important;
+        z-index: 99999 !important;
     }
     .social-nav {
         padding-top: 10px !important;
@@ -196,6 +196,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 </a>    
                 <div id="notification-list" style="display:none">
                     <div style="width:300px">
+                    {% if notifications %}
                         {% for notifObj in notifications %}
                           <div class="notification-messages info">
                                     <div class="message-wrapper">
@@ -211,11 +212,11 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                     </div>
                                     <div class="clearfix"></div>
                           </div>
-                            <div class="pad-s pull-right">
-                            <button class="btn btn-danger btn-small clearNotif">clear all</button>
-                            </div>
                         {% endfor %}
-
+                        <div class="pad-s pull-right">
+                        <button class="btn btn-danger btn-small clearNotif">clear all</button>
+                        </div>
+                    {% endif %}
                         </div>              
                 </div>
                 <div class="profile-pic"> 
@@ -475,11 +476,11 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                                         </div>
                                                         <div class="clearfix"></div>
                                               </div>
-                                                <div class="pad-s pull-right">
-                                                            <button class="btn btn-danger clearNotif btn-small">clear all</button>
-                                                </div>
-                                                <div class="clearfix"></div>
                                             {% endfor %}
+                                            <div class="pad-s pull-right">
+                                                <button class="btn btn-danger clearNotif btn-small">clear all</button>
+                                            </div>
+                                            <div class="clearfix"></div>
 
                                         </div>
                                     </div>
@@ -517,18 +518,6 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                     </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 fixed-bottom">
-                            <ul class="social-nav model-2 tiles" style="background-color: rgba(0, 0, 0, 0.3);">
-                              <li><a href="https://twitter.com/vivinantony" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                              <li><a href="https://www.facebook.com/vivinantony" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                              <li><a href="https://plus.google.com/+VivinAntonyJ" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                              <li><a class="linkedin"><i class="fa fa-linkedin"></i></a></li>
-                              <li><a class="pinterest"><i class="fa fa-pinterest"></i></a></li>
-                            </ul>
-                       </div>
-                    </div>
-
                 </div>
             {% endblock %}
         </div>  
