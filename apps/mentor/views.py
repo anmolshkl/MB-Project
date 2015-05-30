@@ -1,3 +1,4 @@
+from time import strptime
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
 from django.shortcuts import render
@@ -73,10 +74,18 @@ def index(request):
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
-        todoList = Todo.objects.filter(parent=user)
-        context_dict['todoList'] = todoList
-        template = "mentor/index.html"
+        try:
+            todoList = Todo.objects.filter(parent=user)
+            context_dict['todoList'] = todoList
 
+        except ObjectDoesNotExist:
+            pass
+        try:
+            timings = Timings.objects.get(parent=user)
+            context_dict['timings'] = timings
+        except ObjectDoesNotExist:
+            pass
+        template = "mentor/index.html"
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
@@ -308,7 +317,6 @@ def self_profile_view(request):
         rating_obj['average'] = 0
 
     context_dict['ratings'] = rating_obj
-    print rating_obj.count
     return render_to_response("mentor/profile-view.html", context_dict, context)
 
 
@@ -832,3 +840,28 @@ def check_mentor_status(request):
 
     return JsonResponse({'error': error, 'status': status})
 
+@login_required
+def update_timings(request):
+    timings = Timings(parent=request.user)
+    post = request.POST
+    error = False
+    msg = None
+    if request.method == 'POST':
+        if 'weekday_l' in post and 'weekday_u' in post and 'weekend_l' in post and 'weekend_u' in post:
+            try:
+                timings.weekday_l = post['weekday_l']
+                timings.weekday_u = post['weekday_u']
+                timings.weekend_l = post['weekend_l']
+                timings.weekend_u = post['weekend_l']
+                timings.save()
+            except ValueError:
+                error = True
+                msg = "Unsupported time format"
+        else:
+            error = True
+            msg = "Missing time field/s"
+    else:
+        error = True
+        msg = "Not a post request"
+
+    return JsonResponse({'error': error, 'msg': msg})

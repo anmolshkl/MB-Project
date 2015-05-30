@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from datetime import timedelta			#topmost line
 
+
 """
 Django settings for mentorbuddy project.
 
@@ -14,6 +15,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import warnings
+import djcelery
+
+djcelery.setup_loader()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -74,6 +78,8 @@ INSTALLED_APPS = (
     'haystack',
     'whoosh',
     'widget_tweaks',
+    'djcelery',
+    'kombu.transport.django',
     # 'debug_toolbar',
 )
 
@@ -262,12 +268,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 
-#SITE URL 
+#SITE URL
 #SITE_URL = "http://127.0.0.1:8000/"
 SITE_URL = "http://52.5.197.54/"
 
 #Use Time Zones
 USE_TZ = True
+
 
 VISITOR_INFO_GEOIP_DATABASE_PATH = os.path.join(BASE_DIR, 'apps', 'django_visitor_information', 'static',
                                                 'GeoLiteCity.dat')
@@ -297,11 +304,21 @@ warnings.filterwarnings(
 
 DATETIME_INPUT_FORMATS = ['%m-%d-%Y']
 
-####### CELERY SETTINGS ##########
-
-BROKER_URL = 'amqp://guest:guest@localhost//'
+# BROKER_URL = "amqp://anmol:asaf-123@localhost:5672/host1"
+BROKER_URL = 'django://'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = 'UTC'
+
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERYBEAT_SCHEDULE = {
+    "notify-upcoming-calls": {
+        "task": "apps.user.tasks.notify",
+        "schedule": timedelta(seconds=20),
+     }
+}

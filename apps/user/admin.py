@@ -1,6 +1,7 @@
 from apps.mentee.models import Credits
 from django.contrib import admin
 from apps.user.models import Request, CallLog, Feedback, VerificationCodes, Notification
+from kombu.transport.django import models as kombu_models
 
 
 class RequestInline(admin.TabularInline):
@@ -27,3 +28,4 @@ admin.site.register(VerificationCodes)
 admin.site.register(Notification)
 
 admin.site.register(Credits)
+admin.site.register(kombu_models.Message)

@@ -19,6 +19,8 @@ urlpatterns = patterns('',
                        url(r'^checkAvailability/$', views.check_availability, name="check-availability"),
                        url(r'^update-last-seen/$', views.update_last_seen, name="update-last-seen"),
                        url(r'^check-mentor-status/$', views.check_mentor_status, name="update-last-seen"),
+                       url(r'^update-timings/$', views.update_timings, name="update-timings"),
+
 
 
                        )

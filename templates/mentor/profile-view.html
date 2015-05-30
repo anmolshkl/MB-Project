@@ -64,6 +64,7 @@
                                 <h6 class="no-margin">{{ college }}</h6>
                                 <br>
                                 <p><i class="fa fa-globe"></i>
+                                {% if city or country %}
                                     {% if city or country %}
                                         from
                                     {% endif %}
@@ -75,6 +76,9 @@
                                     {% if country %}
                                         {{ country }}
                                     {% endif %}
+                                {% else %}
+                                    Location not available
+                                {% endif %}
 
                                 </p>
 
@@ -121,7 +125,7 @@
                             <span><i class="icon-star"></i></span>
                           </div>
                           <div class="rating-users">
-                            <i class="icon-user"></i> {{ ratings.count }} total
+                            <i class="icon-user"></i> {{ ratings.total }} total
                           </div>
                         </div>
 
@@ -359,11 +363,11 @@
             });
         }
     });
-    var five = 100*{{ ratings.five }}/{{ ratings.count }};
-    var four = 100*{{ ratings.four }}/{{ ratings.count }};
-    var three = 100*{{ ratings.four }}/{{ ratings.count }};
-    var two = 100*{{ ratings.four }}/{{ ratings.count }};
-    var one = 100*{{ ratings.four }}/{{ ratings.count }};
+    var five = 100*{{ ratings.five }}/{{ ratings.total }};
+    var four = 100*{{ ratings.four }}/{{ ratings.total }};
+    var three = 100*{{ ratings.four }}/{{ ratings.total }};
+    var two = 100*{{ ratings.four }}/{{ ratings.total }};
+    var one = 100*{{ ratings.four }}/{{ ratings.total }};
 
     $(document).ready(function() {
       $('.bar span').hide();

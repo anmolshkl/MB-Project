@@ -346,6 +346,7 @@ def root(request):
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!
     results = form.search()
+    print results
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,
