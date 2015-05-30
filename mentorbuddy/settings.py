@@ -304,8 +304,8 @@ warnings.filterwarnings(
 
 DATETIME_INPUT_FORMATS = ['%m-%d-%Y']
 
-# BROKER_URL = "amqp://anmol:asaf-123@localhost:5672/host1"
-BROKER_URL = 'django://'
+BROKER_URL = "amqp://ubuntu:m3ntorbuddy@localhost:5672/host1"
+# BROKER_URL = 'django://'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
@@ -319,6 +319,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 CELERYBEAT_SCHEDULE = {
     "notify-upcoming-calls": {
         "task": "apps.user.tasks.notify",
-        "schedule": timedelta(seconds=20),
+        "schedule": timedelta(minutes=30),
      }
 }
