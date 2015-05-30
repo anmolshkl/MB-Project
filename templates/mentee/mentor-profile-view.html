@@ -193,7 +193,78 @@
                         </div>
                         {%endif%}
                     </div>
-                </div>  
+                </div>
+            <div class="row added-margin">
+                    <div class="container2">
+                      <div class="inner">
+                        <div class="rating">
+                          {% if ratings.total == 0 %}<h3>Unrated</h3>{% else %}<span class="rating-num">{{ ratings.average }}</span>{% endif %}
+                          <div class="rating-stars">
+                            <span><i class="active icon-star"></i></span>
+                            <span><i class="active icon-star"></i></span>
+                            <span><i class="active icon-star"></i></span>
+                            <span><i class="active icon-star"></i></span>
+                            <span><i class="icon-star"></i></span>
+                          </div>
+                          <div class="rating-users">
+                            <i class="icon-user"></i> {{ ratings.total }} total
+                          </div>
+                        </div>
+
+                        <div class="histo">
+                          <div class="five histo-rate">
+                            <span class="histo-star">
+                              <i class="active icon-star"></i> 5           </span>
+                            <span class="bar-block">
+                              <span id="bar-five" class="bar">
+                                <span>{{ ratings.five }}</span>&nbsp;
+                              </span>
+                            </span>
+                          </div>
+
+                          <div class="four histo-rate">
+                            <span class="histo-star">
+                              <i class="active icon-star"></i> 4           </span>
+                            <span class="bar-block">
+                              <span id="bar-four" class="bar">
+                                <span>{{ ratings.four }}</span>&nbsp;
+                              </span>
+                            </span>
+                          </div>
+
+                          <div class="three histo-rate">
+                            <span class="histo-star">
+                              <i class="active icon-star"></i> 3           </span>
+                            <span class="bar-block">
+                              <span id="bar-three" class="bar">
+                                <span>{{ ratings.three }}</span>&nbsp;
+                              </span>
+                            </span>
+                          </div>
+
+                          <div class="two histo-rate">
+                            <span class="histo-star">
+                              <i class="active icon-star"></i> 2           </span>
+                            <span class="bar-block">
+                              <span id="bar-two" class="bar">
+                                <span>{{ ratings.two }}</span>&nbsp;
+                              </span>
+                            </span>
+                          </div>
+
+                          <div class="one histo-rate">
+                            <span class="histo-star">
+                              <i class="active icon-star"></i> 1           </span>
+                            <span class="bar-block">
+                              <span id="bar-one" class="bar">
+                                <span>{{ ratings.one }}</span>&nbsp;
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
             </div>
             
             
@@ -521,5 +592,29 @@
         } );
 
     })();
+    var five = 100*{{ ratings.five }}/{{ ratings.total }};
+    var four = 100*{{ ratings.four }}/{{ ratings.total }};
+    var three = 100*{{ ratings.four }}/{{ ratings.total }};
+    var two = 100*{{ ratings.four }}/{{ ratings.total }};
+    var one = 100*{{ ratings.four }}/{{ ratings.total }};
+
+    $(document).ready(function() {
+      $('.bar span').hide();
+      $('#bar-five').animate({
+         width: five+'%'}, 1000);
+      $('#bar-four').animate({
+         width: four+'%'}, 1000);
+      $('#bar-three').animate({
+         width: three+'%'}, 1000);
+      $('#bar-two').animate({
+         width: two+'%'}, 1000);
+      $('#bar-one').animate({
+         width: one+'%'}, 1000);
+
+      setTimeout(function() {
+        $('.bar span').fadeIn('slow');
+      }, 1000);
+
+    });
 </script>
 {% endblock %}

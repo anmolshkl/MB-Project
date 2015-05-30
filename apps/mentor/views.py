@@ -479,6 +479,21 @@ def get_profile(request, mentorid):
 
     context_dict['timezone'] = user_profile_object.timezone
 
+    rating_obj = {}
+    try:
+        rating_obj = Ratings.objects.get(mentor=user)
+
+    except ObjectDoesNotExist:
+        rating_obj['total'] = 0
+        rating_obj['one'] = 0
+        rating_obj['two'] = 0
+        rating_obj['three'] = 0
+        rating_obj['four'] = 0
+        rating_obj['five'] = 0
+        rating_obj['average'] = 0
+
+    context_dict['ratings'] = rating_obj
+
     return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
 
@@ -830,10 +845,13 @@ def update_last_seen(request):
 def check_mentor_status(request):
     if 'id' in request.GET and request.GET['id'] != '':
         user = User.objects.get(id=int(request.GET['id']))
-        activity = user.activity
+        try:
+            activity = user.activity
+        except ObjectDoesNotExist:
+            activity = None
         status = "offline"
         error = False
-        if activity.last_seen >= datetime.now(pytz.utc) - timedelta(minutes=2):
+        if activity != None and activity.last_seen >= datetime.now(pytz.utc) - timedelta(minutes=2):
             status = "online"
     else:
         error = True
