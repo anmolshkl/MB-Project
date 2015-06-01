@@ -126,7 +126,7 @@
     var sessionName = 'sinchSessionWEB-' + sinchClient.applicationKey;
 
       $.ajax({
-        url: 'http://localhost:8000/live/login/',
+        url: '/live/login/',
         type: 'get',
         dataType: 'json',
         success: function(ticket) {
