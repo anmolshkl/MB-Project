@@ -80,13 +80,11 @@ var callListeners = {
 		$('.callLog').append('<div class="stats">Ringing...</div>');
 	},
 	onCallEstablished: function(call) {
-        alert("call established");
         callEstablished = True;
 
 		$('audio.incoming').attr('src', call.incomingStreamURL);
 		$('audio.ringback').trigger("pause");
 		$('audio.ringtone').trigger("pause");
-        alert(callType);
         if(callType == 3) {
             owner.find('#incomingVideo').show();
             owner.find('#incomingVideo').attr('src', call.incomingStreamURL);
@@ -184,7 +182,6 @@ var call;
 /*** Make a new data call ***/
 
 $('.morph-button').on('click','button.call',function(event) {
-    alert("calling");
 	event.preventDefault();
 
 	if(!$(this).hasClass("incall") && !$(this).hasClass("callwaiting")) {
@@ -247,7 +244,6 @@ $('.morph-button').on('click','button.call',function(event) {
 /*** Hang up a call ***/
 
 $('button.hangup').click(function(event) {
-    alert("hang up");
 	event.preventDefault();
 
 	if($(this).hasClass("incall")) {

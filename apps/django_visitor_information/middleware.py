@@ -22,6 +22,8 @@ import pygeoip
 from django_visitor_information import constants
 from django_visitor_information import settings
 
+from ipware.ip import get_real_ip, get_ip
+
 __all__ = [
     'TimezoneMiddleware',
     'VisitorInformationMiddleware'
@@ -40,8 +42,10 @@ class TimezoneMiddleware(object):
     """
 
     def process_request(self, request):
-        # ip = request.META['REMOTE_ADDR']
-        ip = '14.139.125.71'
+        ip = get_real_ip(request)
+        if ip is None:
+            ip = get_ip(request)
+
         if request.user.is_authenticated():
             profile = request.user.user_profile
             user_timezone = \
@@ -68,6 +72,7 @@ class TimezoneMiddleware(object):
                 return
 
             try:
+                print "user timezone={0}".format(user_timezone)
                 timezone.activate(user_timezone)
             except Exception, e:
                 extra = {'_user': request.user, '_timezone': user_timezone}
@@ -91,7 +96,11 @@ class VisitorInformationMiddleware(object):
         # ip = request.META['REMOTE_ADDR']
 
         # hard code the IP as we are working on localhost
-        ip = '14.139.125.71'
+        print "inside VisitorInformationMddleware"
+        ip = get_real_ip(request)
+        if ip is None:
+            ip = get_ip(request)
+        print ip
         gi = pygeoip.GeoIP(settings.DEFAULT_GEOIP_DATABASE_PATH)
         city = None
         country = None
@@ -121,7 +130,6 @@ class VisitorInformationMiddleware(object):
             'timezone': location_timezone,
             'unit_system': unit_system
         }}
-
         if request.user.is_authenticated() and request.user.user_profile:
             # If user is logged in, add current settings
             profile = request.user.user_profile

@@ -143,6 +143,25 @@
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="Accounts_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
+    <table name="Charges" schema="" catalog="bkdb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="refunded_amount" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3" def="MA=="/>
+      <column name="captured_amount" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3" def="MA=="/>
+      <column name="authorized_amount" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3" def="MA=="/>
+      <column name="customer_paid" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <column name="customer_paid_amount" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="settled_to_merchant" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6" def="MA=="/>
+      <column name="juspay_status" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="juspay_txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_confirmed" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="order_cancelled" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="OrderId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Charges_ibfk_1" columns="OrderId" ref-table="Orders" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
     <table name="CustomerOtps" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="otp" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -158,7 +177,6 @@
       <column name="mobile" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="mobile_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
-      <column name="customer_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="firstname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="lastname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="category" sqlType="ENUM" precision="11" scale="0" nullable="false" jdbcType="1"/>
@@ -174,9 +192,9 @@
       <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="CustomerOtps_ibfk_1" table="CustomerOtps" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Devices_ibfk_1" table="Devices" schema="" catalog="bkdb" columns="CustomerId"/>
-      <exported-key name="Loans_ibfk_1" table="Loans" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="MerchantCustomers_ibfk_1" table="MerchantCustomers" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Messages_ibfk_2" table="Messages" schema="" catalog="bkdb" columns="CustomerId"/>
+      <exported-key name="Orders_ibfk_1" table="Orders" schema="" catalog="bkdb" columns="CustomerId"/>
       <index name="email" unique="true" columns="email"/>
       <index name="mobile" unique="true" columns="mobile"/>
     </table>
@@ -190,32 +208,8 @@
       <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="Devices_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
-      <exported-key name="Loans_ibfk_2" table="Loans" schema="" catalog="bkdb" columns="DeviceId"/>
       <exported-key name="Messages_ibfk_1" table="Messages" schema="" catalog="bkdb" columns="DeviceId"/>
       <index name="device_id" unique="true" columns="device_id"/>
-    </table>
-    <table name="Loans" schema="" catalog="bkdb" type="TABLE">
-      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="amount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="order_cancellation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="cancel_if_not_paid" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
-      <column name="consumption_time" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="preapproved_for_paylater" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
-      <column name="skip_confirmation" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
-      <column name="user_confirmation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="user_cancel_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="post_payment_confirmation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="status" sqlType="ENUM" precision="7" scale="0" nullable="false" jdbcType="1"/>
-      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="DeviceId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="Loans_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
-      <foreign-key name="Loans_ibfk_2" columns="DeviceId" ref-table="Devices" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
-      <foreign-key name="Loans_ibfk_3" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
     <table name="MerchantCustomers" schema="" catalog="bkdb" type="TABLE">
       <column name="customer_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
@@ -231,16 +225,19 @@
     <table name="Merchants" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="api_key" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="balance" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="Customers_ibfk_1" table="Customers" schema="" catalog="bkdb" columns="MerchantId"/>
-      <exported-key name="Loans_ibfk_3" table="Loans" schema="" catalog="bkdb" columns="MerchantId"/>
       <exported-key name="MerchantCustomers_ibfk_2" table="MerchantCustomers" schema="" catalog="bkdb" columns="MerchantId"/>
+      <exported-key name="Orders_ibfk_2" table="Orders" schema="" catalog="bkdb" columns="MerchantId"/>
     </table>
     <table name="Messages" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -254,6 +251,30 @@
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="Messages_ibfk_1" columns="DeviceId" ref-table="Devices" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
       <foreign-key name="Messages_ibfk_2" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
+    <table name="Orders" schema="" catalog="bkdb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="merchant_order_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="status" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="consumption_time" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="cancel_if_not_paid" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="preapproved_for_paylater" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="skip_confirmation" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="approval_token" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_cancel_redirect_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_confirmation_redirect_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_cancellation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="post_payment_notification_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Orders_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+      <foreign-key name="Orders_ibfk_2" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+      <exported-key name="Charges_ibfk_1" table="Charges" schema="" catalog="bkdb" columns="OrderId"/>
     </table>
     <table name="Tasks" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

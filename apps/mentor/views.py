@@ -721,6 +721,8 @@ def send_request(request):
                     tz = timezone(request.user.user_profile.timezone)
                     d_tz = tz.normalize(tz.localize(date_time))
                     d_utc = d_tz.astimezone(pytz.utc)
+                    print tz
+                    print "request time in UTC={0}".format(d_utc)
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
                                           dateTime=d_utc, duration=post['duration'],
                                           callType=post['callType'])

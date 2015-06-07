@@ -221,7 +221,10 @@ def register(request):
 
                 profile = UserProfile(city=city, country=country, college=college)
                 profile.user = user
+                profile.timezone = request.visitor['location']['timezone']
                 profile.save()
+
+
 
 
                 # generate key
@@ -237,7 +240,7 @@ def register(request):
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey " + fn + ", thanks for signing up. To activate your account, click this link within 48 hours" + settings.SITE_URL + "/user/confirm/" + activation_key
+                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: <br>" + settings.SITE_URL + "user/confirm/" + activation_key
                 print "trying to send mail with activation key"
                 send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [email], fail_silently=False)
                 print "mail sent with activation key"

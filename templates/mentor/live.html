@@ -170,7 +170,6 @@
         $('#callModal button').removeClass('callwaiting');
 
           clock.stop();
-          alert(call.getEndCause);
           $('#callLog').html('<h2>Experienced any technical issues?<br><br><button class="btn btn-warning report">REPORT A PROBLEM</button></h2>');
           $('.callerName').hide();
           $('.callerPic').hide();
@@ -199,7 +198,6 @@
         //Play some groovy tunes
         $('audio#ringtone').prop("currentTime", 0);
         $('audio#ringtone').trigger("play");
-          alert("incoming call");
 
         var userId = incomingCall.fromId;
         userId = userId.substr(4,userId.length-1);
