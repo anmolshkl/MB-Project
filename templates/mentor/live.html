@@ -10,8 +10,8 @@
 
 {% endblock %}
 
-{% block container_block %}
-     <!-- MODAL FOR INCOMING CALL -->
+{%  block topLevel %}
+ <!-- MODAL FOR INCOMING CALL -->
     <div class="modal fade" id="callModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -57,7 +57,9 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
     </div>
- <!-- /.modal -->
+    <!-- /.modal -->
+{% endblock %}
+{% block container_block %}
 
 	<div class="top1">
 		<h1>Authentication</h1>

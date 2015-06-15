@@ -198,16 +198,18 @@
                     <div class="container2">
                       <div class="inner">
                         <div class="rating">
-                          {% if ratings.total == 0 %}<h3>Unrated</h3>{% else %}<span class="rating-num">{{ ratings.average }}</span>{% endif %}
+                          {% if ratings.count == 0 %}<h3>Unrated</h3>{% else %}<span class="rating-num">{{ ratings.average }}</span>{% endif %}
                           <div class="rating-stars">
-                            <span><i class="active icon-star"></i></span>
-                            <span><i class="active icon-star"></i></span>
-                            <span><i class="active icon-star"></i></span>
-                            <span><i class="active icon-star"></i></span>
-                            <span><i class="icon-star"></i></span>
+
+                              {% for i in ratings.averageString %}
+                                <span><i class="active icon-star"></i></span>
+                              {% endfor %}
+                              {% for i in ratings.averageString %}
+                                <span><i class="icon-star"></i></span>
+                              {% endfor %}
                           </div>
                           <div class="rating-users">
-                            <i class="icon-user"></i> {{ ratings.total }} total
+                            <i class="icon-user"></i> {{ ratings.count }} total
                           </div>
                         </div>
 
@@ -592,11 +594,11 @@
         } );
 
     })();
-    var five = 100*{{ ratings.five }}/{{ ratings.total }};
-    var four = 100*{{ ratings.four }}/{{ ratings.total }};
-    var three = 100*{{ ratings.four }}/{{ ratings.total }};
-    var two = 100*{{ ratings.four }}/{{ ratings.total }};
-    var one = 100*{{ ratings.four }}/{{ ratings.total }};
+    var five = 100*{{ ratings.five }}/{{ ratings.count }};
+    var four = 100*{{ ratings.four }}/{{ ratings.count }};
+    var three = 100*{{ ratings.four }}/{{ ratings.count }};
+    var two = 100*{{ ratings.four }}/{{ ratings.count }};
+    var one = 100*{{ ratings.four }}/{{ ratings.count }};
 
     $(document).ready(function() {
       $('.bar span').hide();

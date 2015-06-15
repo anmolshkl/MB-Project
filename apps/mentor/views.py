@@ -482,7 +482,8 @@ def get_profile(request, mentorid):
     rating_obj = {}
     try:
         rating_obj = Ratings.objects.get(mentor=user)
-
+        average = int(round(rating_obj.average))
+        rating_obj.averageString = 'x'*average
     except ObjectDoesNotExist:
         rating_obj['total'] = 0
         rating_obj['one'] = 0
@@ -491,6 +492,7 @@ def get_profile(request, mentorid):
         rating_obj['four'] = 0
         rating_obj['five'] = 0
         rating_obj['average'] = 0
+
 
     context_dict['ratings'] = rating_obj
 
@@ -779,7 +781,7 @@ def handle_request(request):
             req.is_approved = True
             req.save()
             # create new notification
-            notif_obj = Notification.objects.create(to=request.user)
+            notif_obj = Notification.objects.create(to=req.menteeId)
             notif_obj.frm = "admin"
             notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you ;)".format(request.user.get_full_name())
             notif_obj.title = "Request approved!"
@@ -790,7 +792,7 @@ def handle_request(request):
             req = Request.objects.get(id=post["request_id"])
             req.is_approved = False
             req.save()
-            notif_obj = Notification.objects.create(to=request.user)
+            notif_obj = Notification.objects.create(to=req.menteeId)
             notif_obj.frm = "admin"
             notif_obj.text = "Your request is not approved by {0}. Please select a different time/date/mentor".format(request.user.get_full_name())
             notif_obj.title = "Request disapproved!"

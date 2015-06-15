@@ -1,14 +1,17 @@
+from datetime import datetime
 from apps.mentor.models import EducationDetails
 from apps.user.models import Request, Notification
 from django import template
 from django.contrib.auth.models import User
+import pytz
 
 register = template.Library()
 
 
 @register.simple_tag
 def request_number(mentor_id):
-    return Request.objects.filter(mentorId_id=mentor_id, is_approved=None).count()
+    return Request.objects.filter(mentorId_id=mentor_id, is_approved=None, dateTime__gt=datetime.utcnow().replace(tzinfo=pytz.utc)
+).count()
 
 
 @register.simple_tag

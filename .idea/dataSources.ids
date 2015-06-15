@@ -9,6 +9,7 @@
     <schema name="" catalog="bisdb"/>
     <schema name="" catalog="bkdb"/>
     <schema name="" catalog="information_schema"/>
+    <schema name="" catalog="jdb"/>
     <schema name="" catalog="mb_db2"/>
     <schema name="" catalog="mysql"/>
     <schema name="" catalog="performance_schema"/>
@@ -186,13 +187,11 @@
       <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="Customers_ibfk_1" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
       <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="CustomerOtps_ibfk_1" table="CustomerOtps" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Devices_ibfk_1" table="Devices" schema="" catalog="bkdb" columns="CustomerId"/>
-      <exported-key name="MerchantCustomers_ibfk_1" table="MerchantCustomers" schema="" catalog="bkdb" columns="CustomerId"/>
+      <exported-key name="MerchantCustomers_ibfk_2" table="MerchantCustomers" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Messages_ibfk_2" table="Messages" schema="" catalog="bkdb" columns="CustomerId"/>
       <exported-key name="Orders_ibfk_1" table="Orders" schema="" catalog="bkdb" columns="CustomerId"/>
       <index name="email" unique="true" columns="email"/>
@@ -216,11 +215,11 @@
       <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
-      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
       <column name="MerchantId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
-      <primary-key name="PRIMARY" columns="CustomerId,MerchantId"/>
-      <foreign-key name="MerchantCustomers_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
-      <foreign-key name="MerchantCustomers_ibfk_2" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <primary-key name="PRIMARY" columns="MerchantId,CustomerId"/>
+      <foreign-key name="MerchantCustomers_ibfk_1" columns="MerchantId" ref-table="Merchants" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="MerchantCustomers_ibfk_2" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="bkdb" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
     </table>
     <table name="Merchants" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -235,8 +234,7 @@
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="Customers_ibfk_1" table="Customers" schema="" catalog="bkdb" columns="MerchantId"/>
-      <exported-key name="MerchantCustomers_ibfk_2" table="MerchantCustomers" schema="" catalog="bkdb" columns="MerchantId"/>
+      <exported-key name="MerchantCustomers_ibfk_1" table="MerchantCustomers" schema="" catalog="bkdb" columns="MerchantId"/>
       <exported-key name="Orders_ibfk_2" table="Orders" schema="" catalog="bkdb" columns="MerchantId"/>
     </table>
     <table name="Messages" schema="" catalog="bkdb" type="TABLE">
@@ -254,7 +252,7 @@
     </table>
     <table name="Orders" schema="" catalog="bkdb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="merchant_order_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_txn_ref" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
       <column name="status" sqlType="ENUM" precision="9" scale="0" nullable="false" jdbcType="1"/>
       <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -262,7 +260,7 @@
       <column name="cancel_if_not_paid" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="preapproved_for_paylater" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="skip_confirmation" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
-      <column name="approval_token" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="approval_token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="user_cancel_redirect_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="user_confirmation_redirect_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="order_cancellation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -852,6 +850,1130 @@
       <column name="SECURITY_TYPE" sqlType="VARCHAR" precision="7" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="CHARACTER_SET_CLIENT" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="COLLATION_CONNECTION" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+    </table>
+    <table name="account" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="balance" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="api_call_limit" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="api" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="threshold" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="bak_txn_card_info" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_isin" sqlType="CHAR" precision="6" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_issuer_bank_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_exp_year" sqlType="CHAR" precision="4" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_exp_month" sqlType="CHAR" precision="2" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_switch_provider" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_hash" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_last_four_digits" sqlType="VARCHAR" precision="4" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name_on_card" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="tci_txnid_idx" unique="false" columns="txn_id"/>
+    </table>
+    <table name="card_info" schema="" catalog="jdb" type="TABLE">
+      <column name="card_isin" sqlType="VARCHAR" precision="6" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_issuer_bank_name" sqlType="VARCHAR" precision="24" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_switch_provider" sqlType="VARCHAR" precision="24" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_sub_type" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_issuer_country" sqlType="VARCHAR" precision="24" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hit" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="card_isin"/>
+      <index name="bin_entry_ci_idx" unique="false" columns="card_isin"/>
+      <index name="bin_entry_cibn_idx" unique="false" columns="card_issuer_bank_name"/>
+    </table>
+    <table name="card_payment" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="auth_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="card_exp_month" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_exp_year" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_security_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="charge_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="payment_group" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="payment_method" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="purchase_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="error_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="chargeback" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="date_resolved" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="dispute_status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="order_reference_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="settlement_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK548CAD9B2422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK548CAD9B37947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK548CAD9B46CD4710" columns="order_reference_id" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK548CAD9B4AB83DE0" columns="settlement_detail_id" ref-table="settlement_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="id" unique="true" columns="id"/>
+      <index name="FK548CAD9B2422901C" unique="false" columns="txn_detail_id"/>
+      <index name="FK548CAD9B37947956" unique="false" columns="merchant_account_id"/>
+      <index name="FK548CAD9B46CD4710" unique="false" columns="order_reference_id"/>
+      <index name="FK548CAD9B4AB83DE0" unique="false" columns="settlement_detail_id"/>
+    </table>
+    <table name="credit_card" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="balance" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_exp_month" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_exp_year" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="security_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="denorm_time" schema="" catalog="jdb" type="TABLE">
+      <column name="last_denorm_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+    </table>
+    <table name="feature" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="enabled" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="disabled_until" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="ga_event" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="session_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bank" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="category" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="label" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="at" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="date_created" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="ga_evt_unique_key" unique="true" columns="session_id,label,at"/>
+    </table>
+    <table name="ga_pageview" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="session_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bank" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="url" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="latency" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="at" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="date_created" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="ga_screenview" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="session_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bank" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="screen" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="at" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="created" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="Q1VSUkVOVF9USU1FU1RBTVA="/>
+      <column name="date_created" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="gateway_bank_emi_support" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="version" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bank" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="gateway_health" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="health" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="gateway_outage" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="end_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="start_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="gateway_payment_method" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="gateway_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="payment_method_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKA880C0951B66DA2F" columns="payment_method_id" ref-table="payment_method" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FKDC4C54ECB6EFB8FB" table="merchant_gateway_payment_method" schema="" catalog="jdb" columns="gateway_payment_method_id"/>
+      <index name="FKA880C0951B66DA2F" unique="false" columns="payment_method_id"/>
+    </table>
+    <table name="gateway_txn_data" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway_data" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="gateway_resp_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="gateway_resp_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="match_status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="prev_order_status" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="prev_txn_status" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="resolved" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK596E8FFA2422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK596E8FFA2422901C" unique="false" columns="txn_detail_id"/>
+    </table>
+    <table name="gateway_txn_status_map" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="gateway_status" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="process_gateway_response" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="godel_global_prefs" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="pref_key" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="pref_value" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="godel_tracker" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKB0DD191C37947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="id" unique="true" columns="id"/>
+      <index name="FKB0DD191C37947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="hdfc_settlement" schema="" catalog="jdb" type="TABLE">
+      <column name="merchant_txn_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_code" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="terminal_number" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="receipt_format" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="batch_number" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="transaction_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="settlement_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="approval_code" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="international_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="domestic_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="hdfc_transaction_id" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="up_value" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_number" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="debitcredit_type" sqlType="VARCHAR" precision="8" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_sequence_number" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hdfc_arn_no" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="bank_fee" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="bank_fee_service_tax" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="bank_fee_edu_cess" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="merchant_txn_id"/>
+    </table>
+    <table name="isin_routes" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="isin" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="preferred_gateway" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="preference_score" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="isin_routes_isin_idx" unique="false" columns="isin"/>
+      <index name="isin_routes_mid_idx" unique="false" columns="merchant_id"/>
+    </table>
+    <table name="issuer_routes" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="issuer" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="preferred_gateway" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="preference_score" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="issuer_routes_issuer_idx" unique="false" columns="issuer"/>
+      <index name="issuer_routes_mid_idx" unique="false" columns="merchant_id"/>
+    </table>
+    <table name="juspay_event" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="event_name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_web_hook_notified" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="class" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="order_reference_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKDC0964BB46CD4710" columns="order_reference_id" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="id" unique="true" columns="id"/>
+      <index name="FKDC0964BB46CD4710" unique="false" columns="order_reference_id"/>
+    </table>
+    <table name="locker_account" schema="" catalog="jdb" type="TABLE">
+      <column name="locker_id" sqlType="VARCHAR" precision="15" scale="0" nullable="false" jdbcType="12"/>
+      <column name="taken" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="locker_id"/>
+    </table>
+    <table name="mail_template" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="template_text" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="template_subject" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="merchant_account" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="bank_account_number" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="credit_balance" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="api_key" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="express_checkout_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="inline_checkout_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="inline_checkout_html" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="alternative_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="contact_person" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="mobile" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="telephone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="website" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icici_key" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="icici_merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icici_second_factor_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="about_business" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="admin_contact_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="city" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="contact_person_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="contact_person_primary" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="contact_person_secondary" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="contact_person_secondary_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="landmark" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="office_line1" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="office_line2" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="office_line3" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="zip" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icici_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="locker_id" sqlType="VARCHAR" precision="15" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_modified" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="axis_merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="secure_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="axis_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="axis_secure_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="axis_access_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="ebs_account_id" sqlType="VARCHAR" precision="12" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ebs_hash" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ebs_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="enable_reauthentication" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="enable_reauthorization" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="enable_recapture" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="enable_sending_last_four_digits" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="return_url" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="domain" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="whitelabel_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="payu_merchant_key" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payu_salt" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payu_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="otp_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="get_card_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="reverse_card_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="reverse_token_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="hdfc_test_mode" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="real_mode_only" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="gateway_decided_by_health_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="gateway_priority" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amex_merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amex_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="must_use_given_order_id_for_txn" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="enable3dsecure_help_mail" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="amex_access_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amex_password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amex_secure_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amex_username" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="paypal_client_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="paypal_secret" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_ivr_merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_ivr_password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_ivr_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="settlement_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="country" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="enable_refunds_in_dashboard" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="hdfc_merchant_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_legal_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_fields_in_settlement_report" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="enable_sending_card_isin" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="ccavenue_account_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ccavenue_secret_key" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ccavenue_verified" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="mobile_version" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="web_version" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="iframe_version" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="enable_order_notification" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="order_notification_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ccavenue_backend_gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="web_hookurl" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payu_test_mode" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="ebs_backend_gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="enable_automatic_retry" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="gateway_priority_logic" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="use_code_for_gateway_priority" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7" def="YicwJw=="/>
+      <column name="enable_save_card_before_auth" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="auto_refund_conflict_transactions" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK47E2B2B67727E594" columns="settlement_account_id" ref-table="settlement_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK548CAD9B37947956" table="chargeback" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FKB0DD191C37947956" table="godel_tracker" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FKDC5BC71AF3B23104" table="merchant_bank_info" schema="" catalog="jdb" columns="merchant_id"/>
+      <exported-key name="FKDC4C54EC37947956" table="merchant_gateway_payment_method" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FK2504736837947956" table="merchant_key" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FKBBBBDA6337947956" table="merchant_mobile_profile" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FK7B8EB7E237947956" table="merchant_user" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FK64C1A5C37947956" table="offer" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FKE326811737947956" table="settlement_account" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FKD2C79C2737947956" table="settlement_detail" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="sd_ma_ref_id" table="settlement_detail" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <exported-key name="FK1456591D37947956" table="subscription" schema="" catalog="jdb" columns="merchant_account_id"/>
+      <index name="FK47E2B2B67727E594" unique="false" columns="settlement_account_id"/>
+    </table>
+    <table name="merchant_bank_info" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="bank_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="secret_key" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mid" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKDC5BC71AF3B23104" columns="merchant_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FKDC5BC71AF3B23104" unique="false" columns="merchant_id"/>
+    </table>
+    <table name="merchant_gateway_account" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="account_details" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="payment_methods" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="merchant_gateway_payment_method" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway_payment_method_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKDC4C54EC37947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FKDC4C54ECB6EFB8FB" columns="gateway_payment_method_id" ref-table="gateway_payment_method" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FKDC4C54EC37947956" unique="false" columns="merchant_account_id"/>
+      <index name="FKDC4C54ECB6EFB8FB" unique="false" columns="gateway_payment_method_id"/>
+    </table>
+    <table name="merchant_iframe_preferences" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="custom_stylesheet" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="return_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="heading_text" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payment_button_label" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_creation_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_logo_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="show_cancel_button" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="dynamic_switching_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="isin_routing_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="issuer_routing_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="mirror_gateway_response" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="save_card_enabled" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="txn_failure_gateway_penality" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="emergency_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="form_show_amount" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="pass_through_mode" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="redirect_mode_only" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="delete_card_on_expiry" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="default_currency" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="can_accept_amex" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_diners" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_discover" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_jcb" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_master" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_rupay" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_visa" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="can_accept_maestro" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="custom_mobile_stylesheet" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="terms_and_conditions_link" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="merchant_id" unique="true" columns="merchant_id"/>
+    </table>
+    <table name="merchant_key" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="api_key" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK2504736837947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK2504736837947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="merchant_mobile_profile" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="custom_style_external_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="custom_style_inline" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="heading_text" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="payment_button_label" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="reference_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="target_version" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKBBBBDA6337947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FKBBBBDA6337947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="merchant_user" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="full_name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK7B8EB7E237947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK7B8EB7E237947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="mpilookup_cache_entry" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="cache_key" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="mpi_response" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="nga" schema="" catalog="jdb" type="TABLE">
+      <column name="session_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="session_start" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="session_end" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payment_instrument" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="auth_method" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password_option_clicked_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="otp_option_clicked_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="otp_received_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="otp_approved_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="state_sequence" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="session_id"/>
+      <index name="ga_authm_idx" unique="false" columns="auth_method"/>
+      <index name="ga_mid_idx" unique="false" columns="merchant_id"/>
+      <index name="ga_pmt_idx" unique="false" columns="payment_instrument"/>
+      <index name="ga_send_idx" unique="false" columns="session_end"/>
+      <index name="ga_sid" unique="false" columns="session_id"/>
+      <index name="ga_sstart_idx" unique="false" columns="session_start"/>
+    </table>
+    <table name="offer" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="offer_logic" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="valid_from" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="valid_to" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK64C1A5C37947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK43E548474796A747" table="txn_offer" schema="" catalog="jdb" columns="offer_id"/>
+      <index name="id" unique="true" columns="id"/>
+      <index name="FK64C1A5C37947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="order_address" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="city" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="country_code_iso" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="first_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="line1" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="line2" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="line3" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="phone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="postal_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK7D1F779AC7415D90" table="order_reference" schema="" catalog="jdb" columns="shipping_address_id"/>
+      <exported-key name="FK7D1F779ADA9706A3" table="order_reference" schema="" catalog="jdb" columns="billing_address_id"/>
+    </table>
+    <table name="order_denorm" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="order_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12"/>
+      <column name="amount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="auth_method" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="user_agent" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="browser" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="mobile" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="card_brand" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_isin" sqlType="VARCHAR" precision="6" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_issuer" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_saved_to_locker" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="express_checkout" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="day_created" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="week_created" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="month_created" sqlType="VARCHAR" precision="8" scale="0" nullable="false" jdbcType="12"/>
+      <column name="gateway" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_latency" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="submit_latency" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="payment_latency" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="total_time_taken" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="gateway_switched" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="num_attempts" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="redirect" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="retry_helped" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="ord_dnm_card_brand_idx" unique="false" columns="card_brand"/>
+      <index name="ord_dnm_card_isin_idx" unique="false" columns="card_isin"/>
+      <index name="ord_dnm_card_issuer_idx" unique="false" columns="card_issuer"/>
+      <index name="ord_dnm_card_type_idx" unique="false" columns="card_type"/>
+      <index name="ord_dnm_day_created_idx" unique="false" columns="day_created"/>
+      <index name="ord_dnm_gateway_idx" unique="false" columns="gateway"/>
+      <index name="ord_dnm_mid_idx" unique="false" columns="merchant_id"/>
+      <index name="ord_dnm_month_created_idx" unique="false" columns="month_created"/>
+      <index name="ord_dnm_num_attempts_idx" unique="false" columns="num_attempts"/>
+      <index name="ord_dnm_payment_latency_idx" unique="false" columns="payment_latency"/>
+      <index name="ord_dnm_redirect_idx" unique="false" columns="redirect"/>
+      <index name="ord_dnm_status_idx" unique="false" columns="status"/>
+      <index name="ord_dnm_submit_latency_idx" unique="false" columns="submit_latency"/>
+      <index name="ord_dnm_week_created_idx" unique="false" columns="week_created"/>
+    </table>
+    <table name="order_event" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="event_name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_web_hook_notified" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="order_reference_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK74D92A6946CD4710" columns="order_reference_id" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="id" unique="true" columns="id"/>
+      <index name="FK74D92A6946CD4710" unique="false" columns="order_reference_id"/>
+    </table>
+    <table name="order_log_entry" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="description" sqlType="VARCHAR" precision="1024" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_id" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FKCCE91D61B27BCAFD" table="order_reference_order_log_entry" schema="" catalog="jdb" columns="order_log_entry_id"/>
+      <index name="ole_dc_idx" unique="false" columns="date_created"/>
+      <index name="ole_oid_idx" unique="false" columns="order_id"/>
+      <index name="ole_tid_idx" unique="false" columns="txn_id"/>
+    </table>
+    <table name="order_metadata" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="browser" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="browser_version" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="order_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="popup_loaded" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="popup_loaded_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="operating_system" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="device" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="mobile" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="om_oid_idx" unique="false" columns="order_id"/>
+    </table>
+    <table name="order_reference" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="currency" sqlType="VARCHAR" precision="8" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_modified" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_id" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="customer_email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="customer_id" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="browser" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="browser_version" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="popup_loaded" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="popup_loaded_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf1" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf10" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf2" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf3" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf4" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf5" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf6" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf7" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf8" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf9" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="udf11" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="return_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="amount_refunded" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8" def="MA=="/>
+      <column name="refunded_entirely" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7" def="YicwJw=="/>
+      <column name="preferred_gateway" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="customer_mobile" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="customer_phone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="item_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="product_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="billing_address_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="shipping_address_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="auto_capture" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK7D1F779AC7415D90" columns="shipping_address_id" ref-table="order_address" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK7D1F779ADA9706A3" columns="billing_address_id" ref-table="order_address" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK548CAD9B46CD4710" table="chargeback" schema="" catalog="jdb" columns="order_reference_id"/>
+      <exported-key name="FKDC0964BB46CD4710" table="juspay_event" schema="" catalog="jdb" columns="order_reference_id"/>
+      <exported-key name="FK74D92A6946CD4710" table="order_event" schema="" catalog="jdb" columns="order_reference_id"/>
+      <exported-key name="FKCCE91D614DF9A419" table="order_reference_order_log_entry" schema="" catalog="jdb" columns="orderId"/>
+      <exported-key name="FK3B42983046CD4710" table="promotions" schema="" catalog="jdb" columns="order_reference_id"/>
+      <exported-key name="FK3B429830DF7EAADC" table="promotions" schema="" catalog="jdb" columns="order_id"/>
+      <index name="FK7D1F779AC7415D90" unique="false" columns="shipping_address_id"/>
+      <index name="FK7D1F779ADA9706A3" unique="false" columns="billing_address_id"/>
+    </table>
+    <table name="order_reference_order_log_entry" schema="" catalog="jdb" type="TABLE">
+      <column name="orderId" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="order_log_entry_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <foreign-key name="FKCCE91D614DF9A419" columns="orderId" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FKCCE91D61B27BCAFD" columns="order_log_entry_id" ref-table="order_log_entry" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FKCCE91D614DF9A419" unique="false" columns="orderId"/>
+      <index name="FKCCE91D61B27BCAFD" unique="false" columns="order_log_entry_id"/>
+    </table>
+    <table name="payer" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mobile_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK1456591DD939C12C" table="subscription" schema="" catalog="jdb" columns="payer_id"/>
+    </table>
+    <table name="payment_gateway_response" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="bank_code" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="response_xml" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icici_resp_code" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icici_resp_message" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="axis_resp_code" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="axis_resp_message" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_resp_code" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="hdfc_resp_message" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="resp_code" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="resp_message" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="payment_method" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FKA880C0951B66DA2F" table="gateway_payment_method" schema="" catalog="jdb" columns="payment_method_id"/>
+      <index name="name" unique="true" columns="name"/>
+    </table>
+    <table name="persistent_logins" schema="" catalog="jdb" type="TABLE">
+      <column name="series" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_used" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="token" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="series"/>
+    </table>
+    <table name="promotions" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="discount_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="last_modified" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="order_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="rules" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="order_reference_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK3B42983046CD4710" columns="order_reference_id" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK3B429830DF7EAADC" columns="order_id" ref-table="order_reference" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK3B42983046CD4710" unique="false" columns="order_reference_id"/>
+      <index name="FK3B429830DF7EAADC" unique="false" columns="order_id"/>
+    </table>
+    <table name="recurring_period" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="amount_currency" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="amount_value" sqlType="DECIMAL" precision="19" scale="2" nullable="false" jdbcType="3"/>
+      <column name="billing_day_of_month" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="billing_day_of_week" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="billing_month_of_year" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="payment_type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="period" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="period_unit" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="refund" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="authorization_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="epg_txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="processed" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="root_reference_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="reference_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="unique_request_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="error_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FKFF700A1120525D4D" table="txn_detail_refund" schema="" catalog="jdb" columns="refund_id"/>
+      <index name="FKC847DF782422901C" unique="false" columns="txn_detail_id"/>
+    </table>
+    <table name="registration_code" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="role" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="authority" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK143BF46A87FBD028" table="user_role" schema="" catalog="jdb" columns="role_id"/>
+      <index name="authority" unique="true" columns="authority"/>
+    </table>
+    <table name="second_factor" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="otp" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="url" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="second_factor_response" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="epg_txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="acs_url" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="mid" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="pareq" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="term_url" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="second_factor_response" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cavv" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="currency" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="eci" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mpi_error_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="purchase_amount" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="response_id" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="shopping_context" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="xid" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="service_configuration" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="settlement_account" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="account" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bank" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="branch" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="ifsc" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKE326811737947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK47E2B2B67727E594" table="merchant_account" schema="" catalog="jdb" columns="settlement_account_id"/>
+      <index name="FKE326811737947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="settlement_detail" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="approval_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_brand" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_sub_type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="gatewayarnvalue" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_batch_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_fee" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="gateway_merchant_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_receipt_format" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_sequence_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_settlement_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway_tax" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="gateway_terminal_number" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_transaction_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gross_transaction_amount" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="juspay_fee" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="juspay_tax" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="merchant_settlement_batch_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_settlement_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="merchant_txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="net_amount_settled_to_merchant" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="net_amount_settled_to_us" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="payment_instrument_type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="settled_to_merchant" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="settlement_currency" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="transaction_currency" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="transaction_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="transaction_type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="merchant_bank_account" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_bank_ifsc" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="merchant_bank_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FKD2C79C272422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FKD2C79C2737947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="sd_ma_ref_id" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="FK548CAD9B4AB83DE0" table="chargeback" schema="" catalog="jdb" columns="settlement_detail_id"/>
+      <index name="FKD2C79C272422901C" unique="false" columns="txn_detail_id"/>
+      <index name="FKD2C79C2737947956" unique="false" columns="merchant_account_id"/>
+    </table>
+    <table name="settlement_process_checkpoint" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="checkpoint" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_updated" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="stored_card" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="card_exp_month" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_exp_year" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name_on_card" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="subscription" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="description" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="end_date" sqlType="TINYBLOB" precision="255" scale="0" nullable="true" jdbcType="-2"/>
+      <column name="first_bill_amount_currency" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="first_bill_amount_value" sqlType="DECIMAL" precision="19" scale="2" nullable="true" jdbcType="3"/>
+      <column name="merchant_account_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="payer_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="payment_instrument_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="plan_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="reference_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="start_date" sqlType="TINYBLOB" precision="255" scale="0" nullable="false" jdbcType="-2"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK1456591D37947956" columns="merchant_account_id" ref-table="merchant_account" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK1456591DB0E1BE5A" columns="plan_id" ref-table="subscription_plan" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK1456591DD939C12C" columns="payer_id" ref-table="payer" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK1456591D37947956" unique="false" columns="merchant_account_id"/>
+      <index name="FK1456591DB0E1BE5A" unique="false" columns="plan_id"/>
+      <index name="FK1456591DD939C12C" unique="false" columns="payer_id"/>
+    </table>
+    <table name="subscription_plan" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK1456591DB0E1BE5A" table="subscription" schema="" catalog="jdb" columns="plan_id"/>
+    </table>
+    <table name="t_card_fingerprint" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hash1" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hash2" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="card_fp_hash1_idx" unique="false" columns="hash1"/>
+      <index name="card_fp_hash2_idx" unique="false" columns="hash2"/>
+      <index name="card_fp_mid_idx" unique="false" columns="merchant_id"/>
+    </table>
+    <table name="temp_card" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="card_info" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK7568349B2422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK7568349B2422901C" unique="false" columns="txn_detail_id"/>
+      <index name="tc_idx_txn_id" unique="false" columns="txn_id"/>
+    </table>
+    <table name="txn_card_info" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="card_isin" sqlType="CHAR" precision="6" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_issuer_bank_name" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_exp_year" sqlType="CHAR" precision="4" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_exp_month" sqlType="CHAR" precision="2" scale="0" nullable="true" jdbcType="1"/>
+      <column name="card_switch_provider" sqlType="VARCHAR" precision="32" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_type" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_hash" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_last_four_digits" sqlType="VARCHAR" precision="4" scale="0" nullable="true" jdbcType="12"/>
+      <column name="name_on_card" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_fingerprint" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_reference_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="payment_method_type" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <column name="payment_method" sqlType="VARCHAR" precision="20" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK418A4CE82422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK418A4CE82422901C" unique="false" columns="txn_detail_id"/>
+      <index name="tci_txnid_idx" unique="false" columns="txn_id"/>
+    </table>
+    <table name="txn_detail" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="error_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="order_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_created" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="last_modified" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="success_response_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="txn_mode" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="add_to_locker" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bank_error_code" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="bank_error_message" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="express_checkout" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="redirect" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="card_isin" sqlType="VARCHAR" precision="6" scale="0" nullable="true" jdbcType="12"/>
+      <column name="card_hash" sqlType="VARCHAR" precision="64" scale="0" nullable="true" jdbcType="12"/>
+      <column name="gateway_payload" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="is_emi" sqlType="BIT" precision="1" scale="0" nullable="true" jdbcType="-7"/>
+      <column name="emi_bank" sqlType="VARCHAR" precision="16" scale="0" nullable="true" jdbcType="12"/>
+      <column name="emi_tenure" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4" def="MA=="/>
+      <column name="hp_user_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK548CAD9B2422901C" table="chargeback" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <exported-key name="FK596E8FFA2422901C" table="gateway_txn_data" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <exported-key name="FKD2C79C272422901C" table="settlement_detail" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <exported-key name="FK7568349B2422901C" table="temp_card" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <exported-key name="FK418A4CE82422901C" table="txn_card_info" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <exported-key name="FKFF700A119F1375E0" table="txn_detail_refund" schema="" catalog="jdb" columns="txn_detail_refunds_id"/>
+      <exported-key name="FK43E548472422901C" table="txn_offer" schema="" catalog="jdb" columns="txn_detail_id"/>
+      <index name="txn_detail_card_isin_idx" unique="false" columns="card_isin"/>
+    </table>
+    <table name="txn_detail_refund" schema="" catalog="jdb" type="TABLE">
+      <column name="txn_detail_refunds_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="refund_id" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <foreign-key name="FKFF700A1120525D4D" columns="refund_id" ref-table="refund" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FKFF700A119F1375E0" columns="txn_detail_refunds_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FKFF700A1120525D4D" unique="false" columns="refund_id"/>
+      <index name="FKFF700A119F1375E0" unique="false" columns="txn_detail_refunds_id"/>
+    </table>
+    <table name="txn_offer" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="discount_amount" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="offer_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="signature" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_detail_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK43E548472422901C" columns="txn_detail_id" ref-table="txn_detail" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK43E548474796A747" columns="offer_id" ref-table="offer" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK43E548472422901C" unique="false" columns="txn_detail_id"/>
+      <index name="FK43E548474796A747" unique="false" columns="offer_id"/>
+    </table>
+    <table name="user" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="account_expired" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="account_locked" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="enabled" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password_expired" sqlType="BIT" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="username" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK143BF46A2D269408" table="user_role" schema="" catalog="jdb" columns="user_id"/>
+      <index name="username" unique="true" columns="username"/>
+    </table>
+    <table name="user_role" schema="" catalog="jdb" type="TABLE">
+      <column name="role_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="user_id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="role_id,user_id"/>
+      <foreign-key name="FK143BF46A2D269408" columns="user_id" ref-table="user" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK143BF46A87FBD028" columns="role_id" ref-table="role" ref-schema="" ref-catalog="jdb" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK143BF46A2D269408" unique="false" columns="user_id"/>
+      <index name="FK143BF46A87FBD028" unique="false" columns="role_id"/>
+    </table>
+    <table name="visa_code" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="passcode" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="visa_verify_attempt" schema="" catalog="jdb" type="TABLE">
+      <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" autoIncrement="true"/>
+      <column name="version" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="card_number" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="input_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="merchant_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="purchase_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="txn_id" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
     </table>
     <table name="account_emailaddress" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

@@ -35,6 +35,7 @@ sinchClient = new SinchClient({
                         $(".btn-danger").hide();
                         $("button.call").removeClass('hidden');
                         $(".status").html("online");
+                        $(".unavailableMsg").hide();
                     } else if(data['status']=="offline"){
                         $(".status").html("offline");
                         $(".btn-danger").show();
