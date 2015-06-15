@@ -485,13 +485,13 @@ def get_profile(request, mentorid):
         average = int(round(rating_obj.average))
         rating_obj.averageString = 'x'*average
     except ObjectDoesNotExist:
-        rating_obj['total'] = 0
-        rating_obj['one'] = 0
-        rating_obj['two'] = 0
-        rating_obj['three'] = 0
-        rating_obj['four'] = 0
-        rating_obj['five'] = 0
-        rating_obj['average'] = 0
+        rating_obj.count = 0
+        rating_obj.one = 0
+        rating_obj.two = 0
+        rating_obj.three = 0
+        rating_obj.four = 0
+        rating_obj.five = 0
+        rating_obj.average = 0
 
 
     context_dict['ratings'] = rating_obj
