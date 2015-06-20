@@ -2,6 +2,10 @@
     margin: 20px;
 
 }
+.add-on {
+    margin-top: 5px;
+}
+
 .hidden {
     visibility: hidden;
     display: block;

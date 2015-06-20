@@ -198,13 +198,13 @@
                     <div class="container2">
                       <div class="inner">
                         <div class="rating">
-                          {% if ratings.count == 0 %}<h3>Unrated</h3>{% else %}<span class="rating-num">{{ ratings.average }}</span>{% endif %}
+                          {% if ratings.count == 0 %}<h3>Unrated</h3>{% else %}<span class="rating-num">{{ ratings.average|floatformat }}</span>{% endif %}
                           <div class="rating-stars">
 
-                              {% for i in ratings.averageString %}
+                              {% for i in ratings.activeStars %}
                                 <span><i class="active icon-star"></i></span>
                               {% endfor %}
-                              {% for i in ratings.averageString %}
+                              {% for i in ratings.inactiveStars %}
                                 <span><i class="icon-star"></i></span>
                               {% endfor %}
                           </div>

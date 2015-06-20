@@ -40,7 +40,7 @@
         top: 0px !important;
     }
     .navbar {
-        z-index: 9999 !important;
+        z-index: 99999 !important;
     }
     .social-nav {
         padding-top: 10px !important;
@@ -188,7 +188,7 @@
      <!-- BEGIN CHAT TOGGLER -->
       <div class="pull-right"> 
         <div class="chat-toggler">  
-                <a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom" title="Popover title" data-content='' data-toggle="dropdown" data-original-title="Notifications">
+                <a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom" title="Notifications" data-content='' data-toggle="dropdown" data-original-title="Notifications">
                     <div class="user-details"> 
                         <div class="username">
                             <span class="badge badge-important">{{ notifications.count }}</span>
@@ -212,13 +212,13 @@
                                         {{ notifObj.dateTime }}
                                         </div>                                      
                                     </div>
-                                    <div class="clearfix"></div>
-                          </div>
-                            <div class="pad-s pull-right">
-                            <button class="btn btn-danger btn-small clearNotif">clear all</button>
-                            </div>
-                        {% endfor %}
 
+                          </div>
+                        {% endfor %}
+                            <div class="pad-s pull-right">
+                                <button class="btn btn-danger btn-small clearNotif">clear all</button>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>              
                 </div>
                 <div class="profile-pic"> 
@@ -448,11 +448,12 @@
                                                         </div>
                                                         <div class="clearfix"></div>
                                               </div>
-                                                <div class="pad-s pull-right">
-                                                            <button class="btn btn-danger clearNotif btn-small">clear all</button>
-                                                </div>
-                                                <div class="clearfix"></div>
+
                                             {% endfor %}
+                                          <div class="pad-s pull-right" style="margin-bottom: 0px">
+                                                <button class="btn btn-danger clearNotif btn-small">clear all</button>
+                                          </div>
+                                          <div class="clearfix"></div>
 
                                         </div>
                                     </div>

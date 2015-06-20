@@ -2,6 +2,7 @@ from decimal import Decimal
 import hashlib
 import random
 from apps.mentee.models import Credits
+from apps.mentor.models import Ratings
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
@@ -428,6 +429,21 @@ def submit_feedback(request):
                 feedback_obj.call = call_log_obj
                 feedback_obj.rating = post['rating']
                 feedback_obj.feedback = post['feedback']
+
+                (rating_obj, created) = Ratings.objects.get_or_create(mentor=request_obj.mentorId)
+                rating_obj.average = (rating_obj.average*rating_obj.count+int(post['rating']))/(rating_obj.count+1)
+                rating_obj.count += 1
+                if post['rating'] == '1':
+                    rating_obj.one += 1
+                elif post['rating'] == '2':
+                    rating_obj.two += 1
+                elif post['rating'] == '3':
+                    rating_obj.three += 1
+                elif post['rating'] == '4':
+                    rating_obj.four += 1
+                elif post['rating'] == '5':
+                    rating_obj.five += 1
+                rating_obj.save()
                 feedback_obj.save()
             else:
                 error = True

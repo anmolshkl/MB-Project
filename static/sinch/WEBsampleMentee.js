@@ -14,9 +14,9 @@ var showUI = function() {
 
 sinchClient = new SinchClient({
 	applicationKey: '7ecce9b0-b11d-48ef-9792-67a0467942d7',
-	capabilities: {calling: true, video: true},
+	capabilities: {calling: true, video: false},
 	startActiveConnection: true, /* NOTE: This is required if application is to receive calls / instant messages. */
-	//Note: For additional loging, please uncomment the three rows below
+	//Note: For additional logging, please uncomment the three rows below
 	onLogMessage: function(message) {
 		console.log(message);
 	}
@@ -25,18 +25,18 @@ sinchClient = new SinchClient({
 /***  PERIODIC AJAX CALLS TO GET LAST SEEN ***/
     setInterval(function() {
         // Update last seen only when not in a call -> saves from unnecessary requests to server
-        if(callEstablished == false && $(".calleeId").first().val() != '') {
+        if(callEstablished === false && $(".calleeId").first().val() !== '') {
             $.ajax({
                 url: '/mentor/check-mentor-status/',
                 type: 'get',
                 data: {'id': $(".calleeId").val().slice(4)}, //ASSUMPTION!!!! ONLY ONE REQUEST CAN BE SEEN BY MENTEE AT A TIME
                 success: function(data) {
-                    if(data['status']=="online") {
+                    if(data.status == "online") {
                         $(".btn-danger").hide();
                         $("button.call").removeClass('hidden');
                         $(".status").html("online");
                         $(".unavailableMsg").hide();
-                    } else if(data['status']=="offline"){
+                    } else if(data.status == "offline"){
                         $(".status").html("offline");
                         $(".btn-danger").show();
                         $("button.call").hide();
@@ -81,7 +81,7 @@ var callListeners = {
 		$('.callLog').append('<div class="stats">Ringing...</div>');
 	},
 	onCallEstablished: function(call) {
-        callEstablished = True;
+        callEstablished = true;
 
 		$('audio.incoming').attr('src', call.incomingStreamURL);
 		$('audio.ringback').trigger("pause");
@@ -98,7 +98,7 @@ var callListeners = {
 		owner.find('.callLog').append('<div class="stats">Answered at: '+(callDetails.establishedTime)+'</div>');
 	},
 	onCallEnded: function(call) {
-        callEstablished = False;
+        callEstablished = false;
         if(callType == 3) {
             //owner.find('#outgoingVideo').attr('src', '');
 		    owner.find('#incomingVideo').attr('src', '');
@@ -142,7 +142,7 @@ var callListeners = {
                             left: $(".form-feedback").parent().width() / 2 - $(".form-feedback").width() / 2 + 20
                         }, 200);
                     }, 1000);
-                    owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data['request_id'] + ' " > ');
+                    owner.parent().find('.form-feedback').append('<input type="hidden" class="request_id" value=" '+ data.request_id + ' " > ');
                 } else {
                     //give a gap of 1sec to let the call log, timer etc fade out
                     setInterval(function() {
@@ -265,7 +265,6 @@ $('button.hangup').click(function(event) {
 /*** Handle errors, report them and re-enable UI ***/
 
 var handleError = function(error) {
-
 	//Show error
 	$('div.error').text(error.message);
 	$('div.error').show();

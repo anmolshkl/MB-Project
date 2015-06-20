@@ -216,7 +216,7 @@ def self_profile_view(request):
     provider = None
 
     picture_url = user_profile_object.picture  # set default profile image
-    print picture_url
+    context_dict['picture_url'] = picture_url
     profile_url = None
 
     if social_profiles_object:
@@ -227,8 +227,8 @@ def self_profile_view(request):
             profile_url = social_profiles_object.profile_url_linkedin
 
             # If there is no pic uploaded, render LinkedIn pic
-            if not user_profile_object.picture:
-                context_dict['pic_url'] = picture_url
+            if picture_url is not None:
+                context_dict['picture_url'] = picture_url
 
         elif social_profiles_object.profile_pic_url_facebook:
             provider = "Facebook"

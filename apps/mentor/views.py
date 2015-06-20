@@ -483,7 +483,9 @@ def get_profile(request, mentorid):
     try:
         rating_obj = Ratings.objects.get(mentor=user)
         average = int(round(rating_obj.average))
-        rating_obj.averageString = 'x'*average
+        rating_obj.activeStars = 'x'*average
+        rating_obj.inactiveStars = 'x'*(5-average)
+
     except ObjectDoesNotExist:
         rating_obj.count = 0
         rating_obj.one = 0
