@@ -594,11 +594,10 @@
         } );
 
     })();
-    var count;
-    if({{ ratings.count }})
-        count = {{ ratings.count }};
-    else
+    var count={{ ratings.count }} || 0;
+    if(count==0) {
         count = 1;
+    }
     var five = 100*{{ ratings.five }}/count;
     var four = 100*{{ ratings.four }}/count;
     var three = 100*{{ ratings.four }}/count;
