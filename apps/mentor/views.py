@@ -487,13 +487,13 @@ def get_profile(request, mentorid):
         rating_obj.inactiveStars = 'x'*(5-average)
 
     except ObjectDoesNotExist:
-        rating_obj.count = 0
-        rating_obj.one = 0
-        rating_obj.two = 0
-        rating_obj.three = 0
-        rating_obj.four = 0
-        rating_obj.five = 0
-        rating_obj.average = 0
+        rating_obj['count'] = 0
+        rating_obj['one'] = 0
+        rating_obj['two'] = 0
+        rating_obj['three'] = 0
+        rating_obj['four'] = 0
+        rating_obj['five'] = 0
+        rating_obj['average'] = 0
 
 
     context_dict['ratings'] = rating_obj

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" afterPath="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/views.py" afterPath="$PROJECT_DIR$/apps/mentor/views.py" />
     </list>
     <ignored path="MB-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="8691" max-vertical-offset="16128">
-              <caret line="483" column="23" selection-start-line="483" selection-start-column="23" selection-end-line="483" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.57014924" vertical-offset="8611" max-vertical-offset="16128">
+              <caret line="489" column="31" selection-start-line="489" selection-start-column="31" selection-end-line="489" selection-end-column="31" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -51,16 +51,16 @@
         <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="1293" max-vertical-offset="1818">
-              <caret line="79" column="6" selection-start-line="79" selection-start-column="6" selection-end-line="79" selection-end-column="6" />
+              <caret line="85" column="34" selection-start-line="85" selection-start-column="34" selection-end-line="85" selection-end-column="34" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mentor-profile-view.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mentor-profile-view.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6570397" vertical-offset="3616" max-vertical-offset="11376">
+            <state vertical-scroll-proportion="-3.137931" vertical-offset="3616" max-vertical-offset="11376">
               <caret line="211" column="40" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
               <folding />
             </state>
@@ -156,8 +156,8 @@
         <option value="$PROJECT_DIR$/templates/mentee/profile-view.html" />
         <option value="$PROJECT_DIR$/apps/mentee/views.py" />
         <option value="$PROJECT_DIR$/mentorbuddy/settings.py" />
-        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
         <option value="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
+        <option value="$PROJECT_DIR$/apps/mentor/views.py" />
       </list>
     </option>
   </component>
@@ -827,6 +827,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="792">
           <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -931,6 +932,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="504">
           <caret line="6" column="62" selection-start-line="6" selection-start-column="62" selection-end-line="6" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#28#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -938,6 +942,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="218" max-vertical-offset="846">
           <caret line="36" column="35" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#40#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1046,6 +1053,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.9711816" vertical-offset="553" max-vertical-offset="900">
           <caret line="12" column="121" selection-start-line="12" selection-start-column="121" selection-end-line="12" selection-end-column="121" />
+          <folding>
+            <element signature="e#0#29#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1061,6 +1071,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15" vertical-offset="0" max-vertical-offset="2592">
           <caret line="3" column="76" selection-start-line="3" selection-start-column="76" selection-end-line="3" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1173,29 +1184,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.137931" vertical-offset="3616" max-vertical-offset="11376">
+          <caret line="211" column="40" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/mentor/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1293" max-vertical-offset="1818">
-          <caret line="79" column="6" selection-start-line="79" selection-start-column="6" selection-end-line="79" selection-end-column="6" />
+          <caret line="85" column="34" selection-start-line="85" selection-start-column="34" selection-end-line="85" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/mentor/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8529" max-vertical-offset="16128">
-          <caret line="483" column="23" selection-start-line="483" selection-start-column="23" selection-end-line="483" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.57014924" vertical-offset="8611" max-vertical-offset="16128">
+          <caret line="489" column="31" selection-start-line="489" selection-start-column="31" selection-end-line="489" selection-end-column="31" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentee/mentor-profile-view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6570397" vertical-offset="3616" max-vertical-offset="11376">
-          <caret line="211" column="40" selection-start-line="211" selection-start-column="40" selection-end-line="211" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
