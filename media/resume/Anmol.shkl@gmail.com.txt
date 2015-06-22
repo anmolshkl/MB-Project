@@ -1,0 +1,25 @@
+PAYU
+
+1. POST https://secure.payu.in/_payment
+
+   	--DATA--
+   	
+   	key:JyyWu4
+	txnid:n8iy-u0yj_2
+	amount:260
+	productinfo:Order #n8iy-u0yj
+	firstname:Anmol
+	lastname:Shukla
+	email:Anmol.shklalfhdfh@gmail.com
+	phone:919970631445
+	surl:https://www.foodpanda.in/payment-gateway/handle-payment/n8iy-u0yj?finished=1
+	furl:https://www.foodpanda.in/payment-gateway/handle-payment/n8iy-u0yj?finished=1
+	curl:https://www.foodpanda.in/payment-gateway/handle-payment/n8iy-u0yj?finished=1
+	offer_key:330e7113a5fdcd526e2aaf0bb507dc24
+	api_version:2
+	user_credentials:JyyWu4:Anmol.shklalfhdfh@gmail.com
+	hash:22ef58aee5e244362425fc2edbd35425a60e7be166f06d1af03c522ff61781cf00610cd23955a05d08bbfb435f384865f3d95cc40b88717e43208270d3f3aac9
+
+	--RESPONSE--
+	PAYU OPTIONS PAGE
+

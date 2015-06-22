@@ -270,7 +270,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 #SITE URL
 #SITE_URL = "http://127.0.0.1:8000/"
-SITE_URL = "http://52.5.197.54/"
+SITE_URL = "http://mentorbuddy.in/"
 
 #Use Time Zones
 USE_TZ = True
