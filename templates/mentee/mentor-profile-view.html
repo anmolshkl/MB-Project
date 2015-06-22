@@ -594,11 +594,12 @@
         } );
 
     })();
-    var five = 100*{{ ratings.five }}/{{ ratings.count }};
-    var four = 100*{{ ratings.four }}/{{ ratings.count }};
-    var three = 100*{{ ratings.four }}/{{ ratings.count }};
-    var two = 100*{{ ratings.four }}/{{ ratings.count }};
-    var one = 100*{{ ratings.four }}/{{ ratings.count }};
+    var count = {{ ratings.count }}==0?1:{{ ratings.count }};
+    var five = 100*{{ ratings.five }}/count;
+    var four = 100*{{ ratings.four }}/count;
+    var three = 100*{{ ratings.four }}/count;
+    var two = 100*{{ ratings.four }}/count;
+    var one = 100*{{ ratings.four }}/count;
 
     $(document).ready(function() {
       $('.bar span').hide();
