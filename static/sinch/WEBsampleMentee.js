@@ -63,7 +63,6 @@ $.ajax({
 			sinchClient.start(ticket, function() {
 				//On success, show the UI
 				showUI();
-
 				//Store session & manage in some way (optional)
 				localStorage[sessionName] = JSON.stringify(sinchClient.getSession());
 			}).fail(handleError);

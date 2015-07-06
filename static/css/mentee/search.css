@@ -3,9 +3,13 @@
 }
 .tiles {
     padding: 10px;
+    border-bottom: 2px solid #0aa699;
 }
 .img-circle {
     max-width: 100px;
     max-height: 100px;
     margin: 0 auto;
+}
+.margin-top-mid {
+	margin-top: 20px;
 }
