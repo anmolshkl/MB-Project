@@ -26,8 +26,8 @@ from PIL import Image
 from django.core.mail import send_mail
 from django.utils import timezone
 from mentorbuddy.settings import SITE_URL
-import pytz, datetime
-
+import pytz,datetime
+from haystack.management.commands import update_index
 
 def sendMail(request):
     send_mail('Its Working', 'Put your Email message here.', 'anmol@mentorbuddy.in', ['Anmol.shkl@gmail.com'],
@@ -245,6 +245,7 @@ def register(request):
                 print "trying to send mail with activation key"
                 send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
                 print "mail sent with activation key"
+                update_index.Command().handle()
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
