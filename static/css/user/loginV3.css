@@ -2,6 +2,10 @@ html, body {
     max-width: 100% !important;
     overflow-x: hidden !important;
 }
+.mainNavBar li a {
+    color: #000000 !important;
+    font-size: 1em !important;
+}
 footer {
     padding: 0px;
 }
@@ -16,12 +20,8 @@ footer {
     text-align: center;
     padding-left: 0px !important;
 }
-.social-nav li {
-  display: inline-block !important;
-}
 .social-nav a {
   display: inline-block !important;
-  float: left !important;
   width: 48px !important;
   height: 48px !important;
   font-size: 20px !important;
@@ -103,7 +103,7 @@ p {
     border-bottom: none;
 }
 .translucent {
-    opacity: 0.5;
+    background-color: rgba(209, 218, 222, 0.51);
 }
 .hide {
     display: none;

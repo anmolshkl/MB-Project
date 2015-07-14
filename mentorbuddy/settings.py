@@ -246,8 +246,10 @@ SOCIALACCOUNT_PROVIDERS = \
 
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.zoho.com'
-EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
-EMAIL_HOST_PASSWORD = '8zryfcgve33k'
+# EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
+# EMAIL_HOST_PASSWORD = '8zryfcgve33k'
+EMAIL_HOST_USER = 'buddy@mentorbuddy.in'
+EMAIL_HOST_PASSWORD = 'abhijeet'
 EMAIL_PORT = 465
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 
@@ -302,7 +304,9 @@ warnings.filterwarnings(
     'error', r"DateTimeField .* received a naive datetime",
     RuntimeWarning, r'django\.db\.models\.fields')
 
-DATETIME_INPUT_FORMATS = ['%m-%d-%Y']
+DATETIME_INPUT_FORMATS = (
+    '%m-%d-%Y'
+)
 
 BROKER_URL = "amqp://ubuntu:m3ntorbuddy@localhost:5672/host1"
 # BROKER_URL = 'django://'

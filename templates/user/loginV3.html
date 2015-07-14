@@ -91,10 +91,10 @@
                   <span class="signUpText">SIGN UP!</span>
               </button>
                 <h5><span class="black">or sign up with:</span></h5>
-                <ul class="social-nav model-2">
-                  <li><a href="{% provider_login_url "facebook" process="connect" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                  <li><a href="{% provider_login_url "google"  process="connect" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="{% provider_login_url "linkedin"  process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                <ul class="social-nav model-2" >
+                  <li style="display:inline-block;"><a href="{% provider_login_url "facebook" process="connect" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "google"  process="connect" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin"  process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
                 </ul>
             </form>
               
@@ -127,9 +127,9 @@
                   <span class="text">Login</span>
               </button>
               <ul class="social-nav model-2">
-                  <li><a href="{% provider_login_url "facebook" process="login" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                  <li><a href="{% provider_login_url "google" process="login" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a href="{% provider_login_url "linkedin" process="login" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "facebook" process="login" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "google" process="login" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin" process="login" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
               </ul>
               <br>
 
@@ -156,15 +156,15 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				  </button>
-				  <a href="{% static 'template/frontend/# ' %}" class="navbar-brand compressed">Mentor Buddy</a>
+				  <a href="" class="navbar-brand compressed">Mentor Buddy</a>
 				</div>
 				<div class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav navbar-right" >
-					<li ><a href="{% static '/template/frontend/index.html' %}">Home</a></li>
-					<li ><a href="{% static '/template/frontend/tour.html' %}" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
-					<li ><a href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a></li>
-					<li><a href="{% static '/template/frontend/pricing.html' %}">Team</a></li>
-					<li ><a href="{% static '/user/' %}">Contact</a></li>
+					<li ><a target="_blank" href="{% static '/template/frontend/index.html' %}">Home</a></li>
+					<li ><a target="_blank" href="{% static '/template/frontend/tour.html' %}" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
+					<li ><a target="_blank" href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a></li>
+					<li><a target="_blank" href="{% static '/template/frontend/pricing.html' %}">Team</a></li>
+					<li ><a target="_blank" href="{% static '/user/' %}">Contact</a></li>
 					
 				  </ul>
 				</div><!--/.nav-collapse -->
@@ -184,15 +184,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <span href="{% static '/' %}" class="navbar-brand"><h3 style="color: #000000">Mentor Buddy</h3></span>
+
         </div>
         <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right" >
-			<li ><a href="#">Home</a></li>
-			<li ><a href="#" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
-			<li ><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
-			<li><a href="#">Team</a></li>
-			<li ><a href="/user/contact/">Contact</a></li>
+          <ul class="nav navbar-nav navbar-right mainNavBar">
+			<li><a href="/" target="_blank">Home</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+			<li><a href="#" target="_blank">Team</a></li>
+			<li><a href="/user/contact/" target="_blank">Contact</a></li>
 			
           </ul>
         </div><!--/.nav-collapse -->
@@ -209,7 +209,7 @@
 					<!-- MAIN IMAGE -->
 
                     <!-- <img src="{% static 'template/frontend/assets/img/bg/slide_one.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat"> -->
-                    <img src="{% static 'img/bg17.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+                    <img src="{% static 'img/Banner3.jpg' %}"   alt="slidebg1"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
 					<!-- LAYERS -->
 					<div class="tp-caption mediumlarge_light_white_center sft tp-resizeme slider"
@@ -235,12 +235,13 @@
 						data-endeasing="Power1.easeIn"
 						data-captionhidden="off"
 						style="z-index: 6;text-align: center" >
-						<div class="well translucent" style="word-break:break-all;"><h4><span class="semi-bold">Mentor Buddy</span> is a place which connects.<br>
+						<div class="well translucent" style="word-break:break-all;color: #000000">
+                            <h4><span class="semi-bold">Mentor Buddy</span> is a place which connects.<br>
                             With over 100+ verified experts from top universities
                             we bring you the complete blend of professionals.
                         </h4>
 						</div>
-                        <h2 style="color: #000000;background: rgba(45, 49, 57, 0.3);max-width: 400px;display: inline-block;margin: 5px auto;"> <i class="fa fa-quote-left"></i>Enabling Global Education<i class="fa fa-quote-right"></i> </h2>
+                        <h2 style="color: #000000;background: rgba(45, 49, 57, 0.3);display: inline-block;margin: 5px auto;">&nbsp;<i class="fa fa-quote-left"></i>Enabling Global Education<i class="fa fa-quote-right"></i>&nbsp;</h2>
                         <br>
                         <a href="#" id="loginButton"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#loginModal">LOGIN</a>
                         <a href="#" id="signUpButton"  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#signUpModal">Sign Up</a>
@@ -259,12 +260,11 @@
 						data-captionhidden="off"
 						style="z-index: 6">
 					</div>
-				</li>					
+				</li>
+                <!--
 				<li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
-					<!-- MAIN IMAGE -->
 					<img src="{% static 'img/bg18.jpg' %}"   alt="slidebg2"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
-					<!-- LAYERS -->
 					<div class="tp-caption mediumlarge_light_white_center sft tp-resizeme slider"
 							data-x="center" data-hoffset="0"
 							data-y="60"
@@ -291,11 +291,14 @@
 					</div>
 					
 				</li>
+				-->
+                
+                <!--
                 <li data-transition="fade" data-slotamount="5" data-masterspeed="700" >
-					<!-- MAIN IMAGE -->
+					MAIN IMAGE
 					<img src="{% static 'img/300561-frederika.jpg' %}"   alt="slidebg2"  data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
 
-					<!-- LAYERS -->
+					LAYERS
 					<div class="tp-caption mediumlarge_light_white_center sft tp-resizeme slider"
 							data-x="center" data-hoffset="0"
 							data-y="60"
@@ -320,8 +323,8 @@
 						data-captionhidden="off"
 						style="z-index: 6">	<a href="#" class="btn btn-danger btn-lg  btn-large m-r-10">SIGN UP NOW!</a>
 					</div>
-
 				</li>
+                -->
 
 				<!-- SLIDE  -->
 			</ul>
@@ -412,31 +415,32 @@
 	<section id="mainFooter">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-6 pad-s">
-					<div class="footerWidget well">
-						<p><a href="http://www.mentorbuddy.in" title="Mentor Buddy, Enabling global eductaion">MentorBuddy</a> is a global platform. We, at MentorBuddy, connect students aspiring to study abroad to connect with their dreams. </p>
-					</div>
+				<div class="col-sm-6 padding-20" style="text-align: center">
+					<span class="footerWidget" style='font-size: 20px;font-family: "Raleway", sans-serif'>
+						<a href="http://www.mentorbuddy.in" title="Mentor Buddy,
+						Enabling global eductaion">MentorBuddy</a> is a global platform.
+                            We at MentorBuddy, help students aspiring to study
+                            abroad to connect with their dreams.
+					</span>
 				</div>
-				<div class="col-sm-3 top-pad">
+				<div class="col-sm-3">
 					<div class="footerWidget">
-
 						<h3>Mentor Buddy</h3>
 						<address>
-                            <p> <i class="fa fa-location-arrow"></i>&nbsp;77 Mass. Ave., E14/E15<br>
-                                Seattle, MA 02139-4307 USA <br>
-                                <i class="fa fa-phone"></i>&nbsp;615.987.1234 <br>
-                                <i class="fa fa-mail"></i>&nbsp;<a href="mailto:admin@mb.in">admin@mb.in</a> </p>
+                            <i class="fa fa-location-arrow"></i>&nbsp;77 Mass. Ave., E14/E15<br>
+                            Seattle, MA 02139-4307 USA <br>
+                            <i class="fa fa-phone"></i>&nbsp;615.987.1234 <br>
+                            <i class="fa fa-mail"></i>&nbsp;<a href="mailto:admin@mb.in">admin@mb.in</a>
 						</address>
 					</div>
 				</div>
-					<div class="col-sm-3 top-pad ">
+					<div class="col-sm-3">
 						<div class="footerWidget">
-							<h3>Follow us, we are social</h3>
+							<h4>Follow us, we are social</h4>
                             <ul class="social-nav model-2">
-                              <li><a href="https://twitter.com/mentor_buddy" class="twitter"><i class="fa fa-twitter"></i></a></li>
-                              <li><a href="https://www.facebook.com/mentorbuddy" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                              <li><a href="https://plus.google.com/101980935667414019691"" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-
+                              <li style="float: left;"><a target="_blank" href="https://twitter.com/mentor_buddy" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                              <li style="float: left;"><a target="_blank" href="https://www.facebook.com/mentorbuddy" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                              <li style="float: left;"><a target="_blank" href="https://plus.google.com/101980935667414019691" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
                             </ul>
 						</div>
 					</div>
@@ -446,10 +450,9 @@
 		<section id="footerRights">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-md-12">
-						<p>Copyright © 2015 <a href="http://www.mmentorbuddy.in" target="blank">Mentor Buddy</a> / All rights reserved.</p>
+					<div class="col-md-12 p-b-10 padding-10" style="text-align: center">
+						Copyright © 2015 <a href="http://www.mentorbuddy.in" target="_blank">Mentor Buddy</a> / All rights reserved.
 					</div>
-
 				</div>
 			</div>
 		</section>
