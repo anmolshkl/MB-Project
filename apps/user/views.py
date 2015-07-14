@@ -243,7 +243,7 @@ def register(request):
                 email_subject = 'Account confirmation'
                 email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: <br>" + settings.SITE_URL + "user/confirm/" + activation_key
                 print "trying to send mail with activation key"
-                send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [email], fail_silently=False)
+                send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
                 print "mail sent with activation key"
                 return JsonResponse({'error': False})
         else:

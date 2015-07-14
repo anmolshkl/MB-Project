@@ -244,14 +244,14 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False}}
 '''
 
-EMAIL_USE_SSL = True
+EMAIL_USE_TLS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       = True
 EMAIL_HOST = 'smtp.zoho.com'
 # EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
 # EMAIL_HOST_PASSWORD = '8zryfcgve33k'
 EMAIL_HOST_USER = 'buddy@mentorbuddy.in'
 EMAIL_HOST_PASSWORD = 'abhijeet'
-EMAIL_PORT = 465
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
