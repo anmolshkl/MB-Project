@@ -59,3 +59,6 @@ docs/_build/
 
 # Merge files
 *.orig
+
+# pycharm files
+.idea/
