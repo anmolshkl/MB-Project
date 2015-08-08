@@ -11,7 +11,7 @@ class UserProfileIndex(indexes.SearchIndex, indexes.Indexable):
     id = indexes.CharField(model_attr='user__id')
     city = indexes.CharField(model_attr='city')
     country = indexes.CharField(model_attr='country')
-    picture = indexes.CharField(model_attr='picture')
+    
 
     # content_auto = indexes.EdgeNgramField(model_attr='city')
 
