@@ -6,10 +6,8 @@ from allauth.account.signals import user_logged_in, user_signed_up
 import datetime
 
 # for upload_to
-from django.utils import timezone
 
 from django.utils.deconstruct import deconstructible
-from mentorbuddy import settings
 import os
 
 from haystack.forms import SearchForm
@@ -29,22 +27,13 @@ class PathAndRename(object):
         # set filename as random string
         filename = '{}.{}'.format(instance.user.username, ext)
         # return the whole path to the file
-        newPath = os.path.join(settings.MEDIA_ROOT, "resume")
-        if not os.path.exists(newPath):
-            os.makedirs(newPath)
-
-        return os.path.join(newPath, instance.user.username + "." + ext)
+        return os.path.join(self.path, filename)
 
 
-path_and_rename = PathAndRename("/resume/")
+path_and_rename = PathAndRename("resume/")
 
 
 class UserProfile(models.Model):
-    @staticmethod
-    def generate_new_filename(instance, filename):
-        f, ext = os.path.splitext(filename)
-        return '%s%s' % (instance.user.username, ext)
-
     """Associates the User with a 'Profile'."""
 
     # Stores username, password, first_name, last_name, email
@@ -90,6 +79,16 @@ class UserProfile(models.Model):
 
     models.signals.post_save.connect(create_user_profile, sender=User)
 
+class VerificationCodes(models.Model):
+    user = models.OneToOneField(User)
+    activation_key = models.CharField(max_length=40, blank=True)
+    key_expires = models.DateTimeField(default=datetime.date.today())
+      
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name_plural=u'VerificationCodes'
 
 class SocialProfiles(models.Model):
     """Stores social profile urls of the user"""
@@ -137,25 +136,9 @@ def save_data(sender, **kwargs):
     if extra_data:
         # Save user's social profile image everytime he logs in/hardcode for LinkedIn
         userProfile.picture = extra_data['picture-url']
-        userProfile.email_verified = True
         userProfile.save()
         socialProfiles.profile_url_linkedin = extra_data['public-profile-url']
         socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
-        socialProfiles.save()
-
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        # Save user's social profile image everytime he logs in/hardcode for facebook
-        userProfile.picture = "http://graph.facebook.com/" + user.socialaccount_set.filter(provider='facebook')[
-            0].uid + "/picture?type=large"
-        userProfile.email_verified = True
-        userProfile.save()
-        socialProfiles.profile_url_facebook = extra_data['link']
-        socialProfiles.profile_pic_url_facebook = userProfile.picture
         socialProfiles.save()
 
 
@@ -187,7 +170,6 @@ class Request(models.Model):
     is_rescheduled = models.BooleanField(default=False)
     requestDate = models.DateField(blank=False, default=datetime.date.today)
     callType = apps.user.fields.IntegerRangeField(min_value=1, max_value=3, default=1)
-    is_completed = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Request"
@@ -205,7 +187,7 @@ class CallLog(models.Model):
     request = models.OneToOneField(Request, related_name="callLog", primary_key=True)
     establishedTime = models.TimeField(blank=False, default=datetime.datetime.now)
     endTime = models.TimeField(blank=False, default=datetime.datetime.now)
-    duration = apps.user.fields.IntegerRangeField(default=0, min_value=5, max_value=30, verbose_name="Duration(sec)")
+    duration = apps.user.fields.IntegerRangeField(min_value=1, max_value=30)
     endCause = models.CharField(max_length=20)
 
     class Meta:
@@ -213,7 +195,7 @@ class CallLog(models.Model):
 
     def __unicode__(self):
         request_name = User.objects.get(id=self.request.menteeId_id).first_name + " to " + User.objects.get(
-            id=self.request.mentorId_id).first_name + " on " + str(self.request.dateTime.date().strftime("%d-%m-%y"))
+            id=self.request.mentorId_id).first_name + " for " + str(self.dateTime.date())
         if request_name:
             return request_name
         else:
@@ -223,51 +205,9 @@ class CallLog(models.Model):
 class Feedback(models.Model):
     """"Stores Feedback for every call """""
     user = models.ForeignKey(User, editable=False)
-    call = models.ForeignKey(CallLog, related_name='feedback', editable=False)
+    call = models.ForeignKey(CallLog, editable=False)
     rating = models.FloatField(null=False, default=0.0, blank=False)
     feedback = models.CharField(max_length=512, null=False, blank=True)
 
     class Meta:
         verbose_name = "Feedback"
-
-    def __unicode__(self):
-        user = self.user.get_full_name()
-        return "from " + user
-
-
-class VerificationCodes(models.Model):
-    user = models.OneToOneField(User, related_name="verification", primary_key=True)
-    activation_key = models.CharField(max_length=40, blank=True)
-    key_expires = models.DateTimeField(auto_now_add=False)
-
-    def __str__(self):
-        return self.user.get_full_name()
-
-    class Meta:
-        verbose_name_plural = u'VerificationCodes'
-
-
-class Notification(models.Model):
-    to = models.ForeignKey(User, related_name="notifications")
-    frm = models.CharField(max_length=300)  # from is reserved keyword
-    text = models.TextField(blank=True, max_length=300, null=True)
-    title = models.CharField(blank=True, max_length=500, null=False)
-    dateTime = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.to.get_full_name()
-
-    class Meta:
-        verbose_name_plural = u'Notifications'
-
-
-class Todo(models.Model):
-    parent = models.ForeignKey(User, related_name="tasks")
-    task = models.TextField(blank=True, max_length=300, null=True)
-    dateTime = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return "{0}-{1}".format(self.task, self.parent)
-
-    class Meta:
-        verbose_name_plural = u'Todo List'

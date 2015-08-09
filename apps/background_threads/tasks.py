@@ -1,10 +1,10 @@
 #from __future__ import absolute_import
-import datetime
-from datetime import timedelta
-
 from apps.user.models import Request
 from django.contrib.auth.models import User
+import datetime
 import celery
+from datetime import timedelta
+from celery import shared_task
 from django.core.mail import send_mail
 
 
@@ -12,7 +12,7 @@ from django.core.mail import send_mail
 #@shared_task
 def mailme():
     print 'periodic_task'
-    f = open('abc.txt', 'a+')
+    f = open('abc.txt','a+')
     f.write('hi there\n') # python will convert \n to os.linesep
     f.close() # you can omit in most cases as the destructor will call if
 
@@ -30,7 +30,7 @@ def mailme():
         mentormailid = m.mentorId
         menteemailid = m.menteeId
         time = m.dateTime
-        menteename = User.objects.get(username=menteemailid)
+        menteename = User.objects.get(username=menteemailid) 
         print mentormailid
         print menteemailid
         print menteename.first_name
@@ -40,12 +40,12 @@ def mailme():
 
         # Send email to mentor with meeting reminder
         email_subject = 'Meeting Reminder'
-        email_body = "Hi, This mail is to remind you that you have a meeting with %s  %s at %s." % (menteename.first_name,menteename.last_name, time)
+        email_body = "Hi, This mail is to remind you that you have a meeting with %s  %s at %s." % (menteename.first_name,menteename.last_name, time)   
 
         print email_body
         print "trying to send mail with reminder"
-        send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [mentormailid], fail_silently=False)
-        print "mail sent"
+        #send_mail(email_subject, email_body, 'admin@mentorbuddy.in',[mentormailid], fail_silently=False)
+        print "mail sent with activation key"
 
 
 
@@ -61,3 +61,9 @@ def remindermail():
     print(mailinglist)
 
 """
+    
+
+    
+
+
+

@@ -1,32 +1,26 @@
-from decimal import Decimal
-import hashlib
-import random
-from apps.mentee.models import Credits
-from apps.mentor.models import Ratings
-from django.core.exceptions import ObjectDoesNotExist
-
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.models import User
-from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm, Request, CallLog, Feedback, \
-    VerificationCodes, Notification, Todo
+from django.contrib.auth.models import *
+from apps.user.models import *
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+import smtplib
+
+import hashlib, datetime, random
+from django.utils import timezone
+
 # new
-# from apps.user.backends import EmailAuthBackend
+#from apps.user.backends import EmailAuthBackend 
 from django.conf import settings
 
 from PIL import Image
 
-# import magic
+#import magic
 # Create your views here.
 from django.core.mail import send_mail
-from django.utils import timezone
-from mentorbuddy.settings import SITE_URL
-import pytz, datetime
 
 
 def sendMail(request):
@@ -48,7 +42,7 @@ def cropAndSave(user, POST):
     try:
         path = POST['url']
         im = Image.open(path)
-        box = (x1, y1, x2, y2)  # (left, upper, right, lower)
+        box = (x1, y1, x2, y2)  #(left, upper, right, lower)
         box = (int(x) for x in box)
         cropped = im.crop(box)
         newPath = os.path.join(settings.MEDIA_ROOT, "profile_images", user.username)
@@ -62,18 +56,18 @@ def cropAndSave(user, POST):
 
 def index(request):
     context_dict = {}
-    template = "user/loginV3.html"  # default template to render
+    template = "user/loginV3.html"  #default template to render
     user = None
     user_profile = None
 
     if request.user.is_authenticated():
         user_profile, created = UserProfile.objects.get_or_create(user=request.user.id)
 
-    # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+    #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
-        # attach required forms to display in the template
+        template = "user/select.html"  #User has to select either Mentor/Mentee,so redirect to select.html
+        #attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
         if user_profile.is_mentor == True:
@@ -85,8 +79,10 @@ def index(request):
 
 
 def user_login(request):
-    error = False
-    msg = None
+    # Like before, obtain the context for the user's request.
+    print "inside user_login view"
+    context = RequestContext(request)
+
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         # Gather the username and password provided by the user.
@@ -98,22 +94,30 @@ def user_login(request):
             # Is the account active? It could have been disabled.
             if user.is_active:
                 # If the account is valid and active, we can log the user in.
+                # We'll send the user back to the userpage.
                 login(request, user)
                 user_profile = UserProfile.objects.get(user=user)
                 (social_profile, created) = SocialProfiles.objects.get_or_create(parent=user_profile)
+                return HttpResponseRedirect("/user/")
+                #return HttpResponseRedirect('/user/')
             else:
-                error = True
-                msg = "Your account is not active. Please contact the admin."
+                # An inactive account was used - no logging in!
+                return HttpResponseRedirect("/user/")
+                #return HttpResponse("Your Mentor Buddy account is disabled.")
         else:
-            error = True
-            msg = "Please check your email/password."
+            # Bad login details were provided. So we can't log the user in.
+            print "Invalid login details: {0}, {1}".format(email, password)
+            #return HttpResponse("Invalid login details supplied.")
+            return render_to_response('user/loginV3.html', {'error': "Invalid Email/Password"},
+                                      context_instance=context)
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GETself.
     else:
-        error = True
-        msg = "Not a POST request."
-    return JsonResponse({"error": error, "msg": msg})
+        # No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        return render_to_response('user/loginV3.html', {}, context_instance=context)
+    return render_to_response('user/loginV3.html', {}, context_instance=context)
 
 
 def select(request):
@@ -127,34 +131,14 @@ def select(request):
         return HttpResponseRedirect('/user/')
 
     if request.method == 'POST':
-        # check whether a request is POST request after submitted choice has come
+        #check whether a request is POST request after submitted choice has come
         if 'choice' in request.POST:
             if request.POST['choice'] == "mentor":
                 user_profile.is_mentor = True
                 user_profile.save()
-                # create new notification
-                notif_obj = Notification.objects.create(to=user)
-                notif_obj.frm = "admin"
-                notif_obj.text = "We appreciate your effort to help someone treading your path!<br>Go and be a super " \
-                                 "mentor! :)"
-                notif_obj.title = "Hello Mentor!"
-                notif_obj.save()
-                # sameer
-
-
             elif request.POST['choice'] == "mentee":
                 user_profile.is_mentor = False
-                credits_obj = Credits.objects.create(parent=user)
-                credits_obj.save()
                 user_profile.save()
-                # create new notification
-                notif_obj = Notification.objects.create(to=user)
-                notif_obj.frm = "admin"
-                notif_obj.text = "We'll help you get started with your dream of global education"
-                notif_obj.title = "Hello Mentee!"
-                notif_obj.save()
-                # sameer
-
             else:
                 error = True
                 msg = "Not a valid choice!"
@@ -175,14 +159,14 @@ def set_password(request):
         return HttpResponseRedirect('/user/')
 
     if request.method == 'POST':
-        # check whether a request is POST request after submitted choice has come
+        #check whether a request is POST request after submitted choice has come
         if 'password' in request.POST and 'confirmPassword' in request.POST:
             if request.POST['password'] == request.POST['confirmPassword'] and request.POST['password'] != '':
                 if len(request.POST['password']) >= 6:
                     user.set_password(request.POST['password'])
                     user.save()
 
-                    # check if it's a new user
+                    #check if it's a new user
                     if user_profile.is_new:
                         user_profile.is_new = False
                         user_profile.save()
@@ -200,9 +184,9 @@ def set_password(request):
 
 
 def register(request):
-    post = request.POST  # for convenience
+    post = request.POST  #for convenience
     msg = None
-    # check if we got all the input fields
+    #check if we got all the input fields
     if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'college' in post and 'city' in post and 'country' in post:
         fn = request.POST['fn']
         ln = request.POST['ln']
@@ -212,51 +196,72 @@ def register(request):
         country = request.POST['country']
         if fn and ln and email and college and city and country:
             if User.objects.filter(email=email).exists():
-                print "email="
-                print email
                 return JsonResponse({'error': True, 'message': 'User with this email already exists!'})
             else:
-                username = email[0:29]
-                user = User(username=username, first_name=fn, last_name=ln, email=email)
+                user = User(username=email, first_name=fn, last_name=ln, email=email)
                 user.save()
 
                 profile = UserProfile(city=city, country=country, college=college)
                 profile.user = user
-                profile.timezone = request.visitor['location']['timezone']
                 profile.save()
 
+                #sameer
 
+                #generate key
 
+                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]            
+                activation_key = hashlib.sha1(salt+email).hexdigest()            
+                key_expires = datetime.datetime.today() + datetime.timedelta(2)
 
-                # generate key
+                #save key
 
-                salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-                activation_key = hashlib.sha1(salt + email).hexdigest()
-                key_expires = datetime.datetime.now(pytz.utc) + datetime.timedelta(days=2)
-
-                # save key
-
-                new_key = VerificationCodes(user=user, activation_key=activation_key, key_expires=key_expires)
+                new_key = VerificationCodes(user=user, activation_key=activation_key,key_expires=key_expires)
                 new_key.save()
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: <br>" + settings.SITE_URL + "user/confirm/" + activation_key
+                email_body = "Hey %s, thanks for signing up. To activate your account, click this link within \
+                48hours http://127.0.0.1:8000/user/confirm/%s" % (fn, activation_key)
+
                 print "trying to send mail with activation key"
-                send_mail(email_subject, email_body, 'anmol@mentorbuddy.in', [email], fail_silently=False)
+                send_mail(email_subject, email_body, 'sameer@mentorbuddy.in',[email], fail_silently=False)
                 print "mail sent with activation key"
+
+
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
+
 
     else:
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
 
 
+def register_confirm(request, activation_key):
+    #check if user is already logged in and if he is redirect him to some other url, e.g. home
+    if request.user.is_authenticated():
+        HttpResponseRedirect('/')
+
+    # check if there is UserProfile which matches the activation key (if not then display 404)
+    user_profile = get_object_or_404(VerificationCodes, activation_key=activation_key)
+
+    #check if the activation key has expired, if it hase then render confirm_expired.html
+    if user_profile.key_expires < timezone.now():       
+        print "the activation key has expired"
+        return redirect('/user/')
+    #if the key hasn't expired save user and set him as active and render some template to confirm activation
+    user = user_profile.user
+    user.is_active = True
+    user.save()
+    print "user email confirmed"
+    login(request,user)
+    return redirect('/user/')
+
+
 def user_logout(request):
     request.session.flush()
     logout(request)
-    return redirect(SITE_URL)
+    return redirect('http://localhost:8000')
 
 
 def save_image(request):
@@ -266,7 +271,7 @@ def save_image(request):
         if request.FILES['uncroppedPic']:
             uploaded_file = request.FILES['uncroppedPic']
             try:
-                # try opening the image,if it fails then its guranteed that its not an Image
+                #try opening the image,if it fails then its guranteed that its not an Image
                 im = Image.open(uploaded_file)
                 if im.format not in ('BMP', 'PNG', 'JPEG'):
                     return HttpResponse("failed")
@@ -301,7 +306,7 @@ def crop_image(request):
             try:
                 path = request.POST['url']
                 im = Image.open(path)
-                box = (x1, y1, x2, y2)  # (left, upper, right, lower)
+                box = (x1, y1, x2, y2)  #(left, upper, right, lower)
                 box = (int(x) for x in box)
                 cropped = im.crop(box)
                 if not user.is_anonymous():
@@ -328,7 +333,7 @@ def crop_image(request):
 
 
 def thank_you(request):
-    # logout user and say thank you :p
+    #logout user and say thank you :p
     request.session.flush()
     logout(request)
     return render_to_response('user/thankYou.html')
@@ -336,6 +341,19 @@ def thank_you(request):
 
 def explore(request):
     return render_to_response('user/explore.html')
+
+
+@login_required
+def get_details(request):
+    user = request.user
+    details = {}
+    userId = request.POST['userId']
+    mentee = User.objects.get(id=userId)
+    userProfile = user.user_profile
+    details["fn"] = mentee.first_name
+    details["ln"] = mentee.last_name
+    details['pic_url'] = userProfile.picture
+    return JsonResponse(details)
 
 
 @login_required
@@ -350,207 +368,10 @@ def root(request):
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!
     results = form.search()
-    print results
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,
     })
 
-
-def get_utc_time(request, time):
-    # first we need to convert this local time to UTC time
-    time_zone = pytz.timezone(request.user.user_profile.timezone)
-    # get naive date
-    date = datetime.datetime.now().date()
-    # get naive time
-    time = datetime.time(int(time.split(":")[0]), int(time.split(":")[1]), int(time.split(":")[2]))
-    date_time = datetime.datetime.combine(date, time)
-    # make time zone aware
-    date_time = time_zone.localize(date_time)
-    # convert to UTC
-    utc_date_time = date_time.astimezone(pytz.utc)
-    # get time
-    return utc_date_time.time()
-
-
-@login_required
-def submit_call_log(request):
-    error = False
-    msg = None
-    request_id = None
-    if request.method == 'POST':
-        post = request.POST
-        if 'request_id' in post and 'end_time' in post and 'est_time' in post and 'end_cause' in post and 'duration' in post:
-            if post['request_id'] != '' and post['end_time'] != '' and post[
-                'end_cause'] != '' and post['duration'] != '' and post['est_time'] != '':
-                request_obj = Request.objects.get(id=post['request_id'])
-                request_id = post['request_id']
-                utc_est_time = get_utc_time(request, post['est_time'])
-                utc_end_time = get_utc_time(request, post['end_time'])
-                (call_obj, created) = CallLog.objects.get_or_create(request=request_obj)
-                # if any of the speaker has intentionally disconnected, we need to mark request as fulfilled
-                if post['end_cause'] == 'HUNG_UP':
-                    request_obj.is_completed = True
-                    request_obj.save()
-                if created:
-                    call_obj.establishedTime = utc_est_time
-                    call_obj.endTime = utc_end_time
-                    # Round off secs
-                    call_obj.duration = int(Decimal(post['duration']))
-                else:
-                    call_obj.duration += int(Decimal(post['duration']))
-                    call_obj.endTime = utc_end_time
-                call_obj.endCause = post['end_cause']
-                call_obj.save()
-            else:
-                error = True
-                msg = "Received empty fields"
-        else:
-            error = True
-            msg = "Missing fields"
-    else:
-        error = True
-        msg = "Not a Post Request"
-
-    return JsonResponse({'error': error, 'msg': msg, 'request_id': request_id})
-
-
-@login_required
-def submit_feedback(request):
-    error = False
-    msg = None
-    if request.method == 'POST':
-        post = request.POST
-        if 'request_id' in post and 'rating' in post and 'feedback' in post:
-            if post['rating'] != '' and post['request_id'] != '':
-                request_obj = Request.objects.get(id=int(post['request_id']))
-                call_log_obj = request_obj.callLog
-                feedback_obj = Feedback(user=request.user)
-                feedback_obj.call = call_log_obj
-                feedback_obj.rating = post['rating']
-                feedback_obj.feedback = post['feedback']
-
-                (rating_obj, created) = Ratings.objects.get_or_create(mentor=request_obj.mentorId)
-                rating_obj.average = (rating_obj.average*rating_obj.count+int(post['rating']))/(rating_obj.count+1)
-                rating_obj.count += 1
-                if post['rating'] == '1':
-                    rating_obj.one += 1
-                elif post['rating'] == '2':
-                    rating_obj.two += 1
-                elif post['rating'] == '3':
-                    rating_obj.three += 1
-                elif post['rating'] == '4':
-                    rating_obj.four += 1
-                elif post['rating'] == '5':
-                    rating_obj.five += 1
-                rating_obj.save()
-                feedback_obj.save()
-            else:
-                error = True
-                msg = "Received empty fields"
-        else:
-            error = True
-            msg = "Missing fields"
-    else:
-        error = True
-        msg = "Not a Post Request"
-
-    return JsonResponse({'error': error, 'msg': msg})
-
-
-def is_call_valid(request):
-    request_obj = Request.objects.get(id=request.GET['request_id'])
-    try:
-        call_obj = CallLog.objects.get(request=request_obj)
-    except CallLog.DoesNotExist:
-        call_obj = None
-    valid = True
-    if request_obj and call_obj:
-        if call_obj.duration >= 1800 or request_obj.is_completed is True:
-            valid = False
-
-    return HttpResponse(valid)
-
-
-def register_confirm(request, ak):
-    # check if user is already logged in and if he is redirect him to some other url, e.g. home
-    if request.user.is_authenticated():
-        HttpResponseRedirect('/')
-
-    # check if there is UserProfile which matches the activation key (if not then display 404)
-    verification_obj = get_object_or_404(VerificationCodes, activation_key=ak)
-    # ver_obj = VerificationCodes.objects.get(activation_key=activation_key)
-    # check if the activation key has expired, if it has then render confirm_expired.html
-
-    print verification_obj.key_expires
-    print timezone.now()
-    if verification_obj.key_expires < timezone.now():
-        print "the activation key has expired"
-        return redirect('/user/')
-    # if the key hasn't expired save user and set him as active and render some template to confirm activation
-    user = verification_obj.user
-    user.is_active = True
-    user.save()
-    print "user email confirmed"
-    # small hack, since we do not call authenticate() on user we need to manually set the backend
-    # which has authenticated it
-    user.backend = 'django.contrib.auth.backends.ModelBackend'
-    login(request, user)
-    return redirect('/user/')
-
-
-def contact(request):
-    error = False
-    msg = None
-    if request.method == "POST":
-        if "name" in request.POST and "email" in request.POST and "query" in request.POST:
-            if request.POST['name'] != '' and request.POST['email'] != '' and request.POST['query'] != '':
-                send_mail("New query from " + request.POST['name'],
-                          request.POST['query'] + "\n - " + request.POST['name'] + "\n" + request.POST['email'],
-                          "anmol@mentorbuddy.in", ["anmol@mentorbuddy.in"], fail_silently=False)
-            else:
-                error = True
-                msg = "Input fields can't be empty!"
-        else:
-            error = True
-            msg = "Missing fields"
-    else:
-        error = True
-        msg = "Submit form using a POST method"
-
-    return JsonResponse({'error': error, "msg": msg})
-
-
-@login_required
-def clear_notifications(request):
-    error = False
-    if request.GET:
-        try:
-            Notification.objects.filter(to=request.user).delete()
-        except ObjectDoesNotExist:
-            error = True
-    return JsonResponse({"error": error})
-
-
-@login_required
-def handle_todo(request):
-    error = False
-    obj_id = None
-    if request.method == 'POST':
-        if 'delete' in request.POST:
-            Todo.objects.filter(id=int(request.POST['id'])).delete()
-        elif 'add' in request.POST:
-            todo_obj = Todo.objects.create(parent=request.user)
-            todo_obj.task = request.POST['task']
-            todo_obj.save()
-            obj_id = todo_obj.id
-        else:
-            error = True
-    else:
-        error = True
-    return JsonResponse({"error": error, 'id': obj_id})
-
-
-
-
-
+#@login_required
+#def check_availability(request):
