@@ -511,7 +511,7 @@ def edit_profile(request):
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         edu_formset = EducationDetailsFormSet(request.POST, instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(request.POST, instance=user_profile)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and edu_formset.is_valid():
             if "url" in request.POST:
                 user_profile.picture = cropAndSave(user, request.POST)
                 user_profile.save()

@@ -8,6 +8,7 @@
     <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
     <schema name="" catalog="bisdb"/>
     <schema name="" catalog="bkdb"/>
+    <schema name="" catalog="echodb"/>
     <schema name="" catalog="information_schema"/>
     <schema name="" catalog="jdb"/>
     <schema name="" catalog="mb_db2"/>
@@ -290,6 +291,57 @@
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="Tasks_ibfk_1" table="Tasks" schema="" catalog="bkdb" columns="UserId"/>
+    </table>
+    <table name="Accounts" schema="" catalog="echodb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="account_type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="account_no" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="balance" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Accounts_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="echodb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
+    </table>
+    <table name="Branches" schema="" catalog="echodb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="IFSC_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+    </table>
+    <table name="Customers" schema="" catalog="echodb" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mobile" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="mobile_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="firstname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lastname" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="age" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="city" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="address" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="echodb" columns="CustomerId"/>
+      <exported-key name="Transactions_ibfk_1" table="Transactions" schema="" catalog="echodb" columns="CustomerId"/>
+      <index name="email" unique="true" columns="email"/>
+      <index name="mobile" unique="true" columns="mobile"/>
+    </table>
+    <table name="Transactions" schema="" catalog="echodb" type="TABLE">
+      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="amount" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
+      <column name="to" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="from" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
+      <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <foreign-key name="Transactions_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="echodb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
     <table name="CHARACTER_SETS" schema="" catalog="information_schema" type="SYSTEM VIEW">
       <column name="CHARACTER_SET_NAME" sqlType="VARCHAR" precision="32" scale="0" nullable="false" jdbcType="12" def="Jyc="/>

@@ -198,7 +198,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
      <!-- BEGIN CHAT TOGGLER -->
       <div class="pull-right"> 
         <div class="chat-toggler">  
-                <a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom" title="Popover title" data-content='' data-toggle="dropdown" data-original-title="Notifications">
+                <a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom" title="Notifications" data-content='' data-toggle="dropdown" data-original-title="Notifications">
                     <div class="user-details"> 
                         <div class="username">
                             <span class="badge badge-important">{{ notifications.count }}</span>
@@ -474,27 +474,28 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                                 NOTIFICATIONS
                                             </div>
                                           <br>
-                                            {% for notifObj in notifications %}
-                                              <div class="notification-messages info">
-                                                        <div class="message-wrapper">
-                                                            <div class="heading">
-                                                                {{ notifObj.title }}
+                                            {% if notifications %}
+                                                {% for notifObj in notifications %}
+                                                  <div class="notification-messages info">
+                                                            <div class="message-wrapper">
+                                                                <div class="heading">
+                                                                    {{ notifObj.title }}
+                                                                </div>
+                                                                <div class="description">
+                                                                    {{ notifObj.text }}
+                                                                </div>
+                                                                <div class="date pull-left">
+                                                                {{ notifObj.dateTime }}
+                                                                </div>
                                                             </div>
-                                                            <div class="description">
-                                                                {{ notifObj.text }}
-                                                            </div>
-                                                            <div class="date pull-left">
-                                                            {{ notifObj.dateTime }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="clearfix"></div>
-                                              </div>
-                                            {% endfor %}
-                                            <div class="pad-s pull-right">
-                                                <button class="btn btn-danger clearNotif btn-small">clear all</button>
-                                            </div>
-                                            <div class="clearfix"></div>
-
+                                                            <div class="clearfix"></div>
+                                                  </div>
+                                                {% endfor %}
+                                                <div class="pad-s pull-right">
+                                                    <button class="btn btn-danger clearNotif btn-small">clear all</button>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -679,8 +680,9 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 if(data['error']==false) {
                     $(".notification-messages").each(function(i, obj) {
                         $(obj).remove();
-                        $(".clearNotif").remove();
                     });
+                    $(".clearNotif").remove();
+                    alert("clearing");
                 }
             }
         });

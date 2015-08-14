@@ -93,7 +93,7 @@
                 <h5><span class="black">or sign up with:</span></h5>
                 <ul class="social-nav model-2" >
                   <li style="display:inline-block;"><a href="{% provider_login_url "facebook" process="connect" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                  <li style="display:inline-block;"><a href="{% provider_login_url "google"  process="connect" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% provider_login_url "google"  method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
                   <li style="display:inline-block;"><a href="{% provider_login_url "linkedin"  process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
                 </ul>
             </form>
@@ -160,12 +160,13 @@
 				</div>
 				<div class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav navbar-right" >
-					<li ><a target="_blank" href="{% static '/template/frontend/index.html' %}">Home</a></li>
-					<li ><a target="_blank" href="{% static '/template/frontend/tour.html' %}" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
-					<li ><a target="_blank" href="#" data-toggle="modal" data-target="#loginModal">LOGIN</a></li>
-					<li><a target="_blank" href="{% static '/template/frontend/pricing.html' %}">Team</a></li>
-					<li ><a target="_blank" href="{% static '/user/' %}">Contact</a></li>
-					
+					<li ><a target="_blank" href="#">Home</a></li>
+					<li ><a target="_blank" data-toggle="modal" data-target="#signUpModal">Sign Up</a></li>
+					<li ><a target="_blank" data-toggle="modal" data-target="#loginModal">LOGIN</a></li>
+					<li><a target="_blank" href="#">Team</a></li>
+					<li ><a target="_blank" href="/user/contact/">Contact</a></li>
+					<li ><a target="_blank" href="/about/">About</a></li>
+
 				  </ul>
 				</div><!--/.nav-collapse -->
 			</div>
@@ -193,6 +194,7 @@
 			<li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
 			<li><a href="#" target="_blank">Team</a></li>
 			<li><a href="/user/contact/" target="_blank">Contact</a></li>
+            <li><a href="/about/" target="_blank">About</a></li>
 			
           </ul>
         </div><!--/.nav-collapse -->

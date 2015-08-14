@@ -127,7 +127,8 @@
 
     .cbp-mc-form label {
         display: block;
-        padding: 40px 5px 5px 2px;
+        padding: 5px 5px 5px 2px;
+        margin-bottom: 5px;
         font-size: 1.1em;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -145,13 +146,14 @@
         color: black;
         display: block;
         width: 100%;
+        margin-bottom: 20px;
         background: transparent;
     }
 
     .cbp-mc-form input,
     .cbp-mc-form select,
     .cbp-mc-form textarea {
-        border: 3px solid #3B3B3B;
+        border: 1px solid #3B3B3B;
     }
 
     .cbp-mc-form textarea {
@@ -163,7 +165,7 @@
     .cbp-mc-form label:active + input,
     .cbp-mc-form label:active + textarea {
         outline: none;
-        border: 3px solid #8B8B83;
+        border: 1x solid #8B8B83;
     }
 
     .cbp-mc-form select:focus {
@@ -339,7 +341,7 @@
                 {% csrf_token %}
                 <div class="cbp-mc-column-2 textCenter">
                     <label for="id_picture">Profile Image</label>
-                    <img src="{{ profile_form.picture.value }}" class="img-circle center edit-pic" />
+                    <img src="{{ profile_form.picture.value }}" class="img-circle edit-pic" />
                     {{ profile_form.picture }}
                     <br><br>
                     <button class="btn btn-primary mg-left-s uploadPic" type="button" data-toggle="modal" data-target="cropModal">Upload new</button>
@@ -387,7 +389,7 @@
             <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
                 {% if edu_formset.total_form_count != 0 %}
                     {% for edu_form in edu_formset %}
-                        <div class="row well education-form">
+                        <div class="row education-form">
                             {{ edu_form.parent }}
                             {{ edu_form.id }}
 

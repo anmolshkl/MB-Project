@@ -195,7 +195,7 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')  # Absolute path to the media d
 
 
 # Login urls
-LOGIN_URL = '/user/login/'
+# LOGIN_URL = '/user/login/'
 LOGOUT_URL = '/user/logout/'
 LOGIN_REDIRECT_URL = '/user/'  #-adapter will provide the login_redirect_url,but adapter doesn't support
 
@@ -233,7 +233,11 @@ SOCIALACCOUNT_PROVIDERS = \
                              'positions',
                              'educations',
                              'publications',
-                             'public-profile-url']}}
+                             'public-profile-url']},
+     'google':
+         {'SCOPE': ['profile', 'email'],
+          'AUTH_PARAMS': {'access_type': 'online'}}
+     }
 '''
 SOCIALACCOUNT_PROVIDERS = \
     {'twitter':
@@ -244,7 +248,6 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False}}
 '''
 
-EMAIL_USE_TLS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       = True
 EMAIL_HOST = 'smtp.zoho.com'
 # EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
 # EMAIL_HOST_PASSWORD = '8zryfcgve33k'
@@ -257,10 +260,10 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"  #later change to mandatory
 ACCOUNT_LOGOUT_REDIRECT_URL = "/user/"
-ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
-SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = True
 # custom adapter to override login behavior and associate different social profiles with same email,with same user
 SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
