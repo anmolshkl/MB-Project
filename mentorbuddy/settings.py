@@ -259,13 +259,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"  #later change to mandatory
-ACCOUNT_LOGOUT_REDIRECT_URL = "/user/"
-ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGOUT_REDIRECT_URL = " /user/"
+# custom adapter to override login behavior and associate different social profiles with same email,with same user
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = True
-# custom adapter to override login behavior and associate different social profiles with same email,with same user
 SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
 
 #Crispy form

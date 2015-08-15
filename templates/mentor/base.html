@@ -138,6 +138,14 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     .center {
         margin-left: 15px;
     }
+    .logoutButton {
+        color: black;
+        font-size: 20px;
+        margin : 5px;
+    }
+    .logoutButton:hover {
+        color: #e50000;
+    }
 </style>
 {% block stylesheets %}
 {% endblock %}
@@ -237,25 +245,12 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 </div>                  
             </div>
          <ul class="nav quick-section ">
-            <li class="quicklinks"> 
-                <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">                      
-                    <div class="iconset top-settings-dark "></div>  
-                </a>
-                <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
-                  <li><a href="user-profile.html"> My Account</a>
-                  </li>
-                  <li><a href="/mentor/calender/">My Calendar</a>
-                  </li>
-                  <li class="divider"></li>                
-                  <li><a href="/user/logout/"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
-               </ul>
-            </li> 
-            <!-- <li class="quicklinks"> <span class="h-seperate"></span></li> ->
+            <a href="/user/logout/"><i class="fa fa-power-off logoutButton"></i></a>
+             <!-- <li class="quicklinks"> <span class="h-seperate"></span></li> ->
             <li class="quicklinks">     
             <!-- <a id="chat-menu-toggle" href="#sidr" class="chat-menu-toggle" ><div class="iconset top-chat-dark "><span class="badge badge-important hide" id="chat-message-count">1</span></div>
             </a> -->
 
-            </li> 
         </ul>
       </div>
        <!-- END CHAT TOGGLER -->

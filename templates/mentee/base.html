@@ -178,7 +178,7 @@
         <ul class="nav quick-section">
             <li class="m-r-10 input-prepend inside search-form no-boarder">
                  <form action="/search/query" method="get" >
-                    <input name="q" type="text" class="no-boarder" data-html='true' data-placement="bottom" data-toggle="popover" data-content="Search for mentors from around the world!<br> Enter a <span class='semi-bold'>college/city/country.</span> to search" placeholder="Search Mentors" style="width: 400px;border: 1px solid black;">
+                    <input name="q" type="text" class="no-boarder" data-html='true' data-placement="bottom" data-toggle="popover" data-content="Search for mentors from around the world!<br> Enter a <span class='semi-bold'>college,city,country</span> to search" placeholder="Search Mentors" style="width: 400px;border: 1px solid black;">
                     <button class="add-on"> <span class="iconset top-search"></span></button>
                   </form>
             </li>
@@ -199,6 +199,7 @@
                 </a>    
                 <div id="notification-list" style="display:none">
                     <div style="width:300px">
+                        {% if notifications %}
                         {% for notifObj in notifications %}
                           <div class="notification-messages info">
                                     <div class="message-wrapper">
@@ -215,28 +216,21 @@
 
                           </div>
                         {% endfor %}
-                            <div class="pad-s pull-right">
-                                <button class="btn btn-danger btn-small clearNotif">clear all</button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>              
+                        <div class="pad-s pull-right">
+                            <button class="btn btn-danger btn-small clearNotif">clear all</button>
+                        </div>
+                        {% endif %}
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
                 <div class="profile-pic"> 
                     <img src="{{ user.user_profile.picture }}"  alt="" data-src="{{ user.user_profile.picture }}" data-src-retina="{{ user.user_profile.picture }}" width="35" height="35" />
                 </div>                  
             </div>
          <ul class="nav quick-section ">
-            <li class="quicklinks"> 
-                <a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">                      
-                    <div class="iconset top-settings-dark "></div>  
-                </a>
-                <ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
-                  <li><a href="/mentee/self-profile/"> My Account</a>
-                  </li>
-                  <li class="divider"></li>                
-                  <li><a href="/user/logout/"><i class="fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
-               </ul>
-            </li> 
+            <li class="quicklinks">
+                <a href="/user/logout/"><i class="fa fa-power-off fa-8x"></i></a>
+            </li>
             <!-- <li class="quicklinks"> <span class="h-seperate"></span></li> ->
             <li class="quicklinks">     
             <!-- <a id="chat-menu-toggle" href="#sidr" class="chat-menu-toggle" ><div class="iconset top-chat-dark "><span class="badge badge-important hide" id="chat-message-count">1</span></div>
@@ -433,6 +427,7 @@
                                                 NOTIFICATIONS
                                             </div>
                                           <br>
+                                            {% if notifications %}
                                             {% for notifObj in notifications %}
                                               <div class="notification-messages info">
                                                         <div class="message-wrapper">
@@ -453,6 +448,7 @@
                                           <div class="pad-s pull-right" style="margin-bottom: 0px">
                                                 <button class="btn btn-danger clearNotif btn-small">clear all</button>
                                           </div>
+                                          {% endif %}
                                           <div class="clearfix"></div>
 
                                         </div>
