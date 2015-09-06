@@ -16,6 +16,7 @@
     <schema name="" catalog="performance_schema"/>
     <schema name="" catalog="phpmyadmin"/>
     <schema name="" catalog="rest"/>
+    <schema name="" catalog="scholfin"/>
     <schema name="" catalog="test_mb_db2"/>
     <table name="attr_mapping" schema="" catalog="bisdb" type="TABLE">
       <column name="aid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>

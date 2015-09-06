@@ -248,13 +248,12 @@ SOCIALACCOUNT_PROVIDERS = \
         'VERIFIED_EMAIL': False}}
 '''
 
-EMAIL_HOST = 'smtp.zoho.com'
-# EMAIL_HOST_USER = 'anmol@mentorbuddy.in'
-# EMAIL_HOST_PASSWORD = '8zryfcgve33k'
-EMAIL_HOST_USER = 'buddy@mentorbuddy.in'
-EMAIL_HOST_PASSWORD = 'abhijeet'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'mentorbuddy'
+EMAIL_HOST_PASSWORD = 'MB4abhijeet'
 EMAIL_PORT = 587
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
