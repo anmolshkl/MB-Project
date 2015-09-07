@@ -254,6 +254,26 @@ def register(request):
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
 
 
+def save_social_profile(backend, user, response, *args, **kwargs):
+    if backend.name == 'facebook':
+        profile_created = False
+        profile, profile_created = UserProfile.objects.get_or_create(user=user)
+        social_profile, social_profile_created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        if profile_created:
+            profile.gender = response.get('gender')
+            profile.link = response.get('link')
+            profile.timezone = response.get('timezone')
+            profile.save()
+        if backend.name == 'facebook':
+            profile_url_facebook = response.get('')
+            profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+
+        if backend.name == "google-oauth2":
+            profile_url_facebook = response.get('')
+            profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+
+
+
 def user_logout(request):
     request.session.flush()
     logout(request)

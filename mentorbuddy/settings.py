@@ -25,6 +25,7 @@ SETTINGS_DIR = os.path.dirname(__file__)
 
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 
+
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
@@ -63,17 +64,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social.apps.django_app.default',
     'apps.mentor',
     'apps.mentee',
     'apps.user',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.linkedin',
-    'allauth.socialaccount.providers.twitter',
-    'allauth.socialaccount.providers.github',
     'crispy_forms',
     'haystack',
     'whoosh',
@@ -84,12 +78,13 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend",
-    # "apps.user.backends.EmailAuthBackend",
+    'social.backends.facebook.FacebookOAuth2',
+    # 'apps.user.customScope.CustomFacebookOAuth2',
+    'social.backends.google.GoogleOAuth2',
+    # 'apps.user.customScope.CustomFacebookOAuth2',
 
+    'social.backends.linkedin.LinkedinOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -100,9 +95,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 
-    "allauth.account.context_processors.account",
-    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -147,14 +142,6 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     },
-    # 'aws_rds': {
-    # 'ENGINE': 'django.db.backends.mysql',
-    # 'NAME': 'vnit_alumni',
-    # 'USER': 'master',
-    # 'PASSWORD': 'A!p_Mast3r',
-    # 'HOST': 'vnit-alumni.cgjesgyaqngr.ap-southeast-1.rds.amazonaws.com',
-    # 'PORT': '3306',
-    # },
 }
 # Django NEEDS a 'default'. Do change the following in production!
 DATABASES['default'] = DATABASES['localhost']
@@ -191,62 +178,11 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')  # Absolute path to the media directory
 
-
-
-
 # Login urls
 # LOGIN_URL = '/user/login/'
 LOGOUT_URL = '/user/logout/'
 LOGIN_REDIRECT_URL = '/user/'  #-adapter will provide the login_redirect_url,but adapter doesn't support
 
-SOCIALACCOUNT_PROVIDERS = \
-    {'google':
-         {'SCOPE': ['profile', 'email'],
-          'AUTH_PARAMS': {'access_type': 'online'}
-          }
-     }
-
-SOCIALACCOUNT_PROVIDERS = \
-    {'facebook':
-         {'SCOPE': ['email', 'public_profile', 'user_birthday', 'user_education_history',
-                    'user_location'],
-          'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-          'METHOD': 'oauth2',
-          'LOCALE_FUNC': lambda request: 'zh_CN',
-          'VERIFIED_EMAIL': False},
-
-     'linkedin':
-         {'SCOPE': ['r_emailaddress', 'r_basicprofile'],
-          'PROFILE_FIELDS': ['id',
-                             'first-name',
-                             'last-name',
-                             'date-of-birth',
-                             'email-address',
-                             'picture-url',
-                             'headline',
-                             'location',
-                             'industry',
-                             'summary',
-                             'languages',
-                             'skills',
-                             'phone-numbers ',
-                             'positions',
-                             'educations',
-                             'publications',
-                             'public-profile-url']},
-     'google':
-         {'SCOPE': ['profile', 'email'],
-          'AUTH_PARAMS': {'access_type': 'online'}}
-     }
-'''
-SOCIALACCOUNT_PROVIDERS = \
-    {'twitter':
-       {'SCOPE': ['email', 'publish_stream','public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'METHOD': 'oauth2',
-        'LOCALE_FUNC': lambda request: 'zh_CN',
-        'VERIFIED_EMAIL': False}}
-'''
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'mentorbuddy'
@@ -255,14 +191,37 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "none"  #later change to mandatory
-ACCOUNT_LOGOUT_REDIRECT_URL = " /user/"
-# custom adapter to override login behavior and associate different social profiles with same email,with same user
-SOCIALACCOUNT_EMAIL_REQUIRED = False
-SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_ADAPTER = 'mentorbuddy.adapters.adapter.SocialLoginAdapter'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+    # 'profiles.pipeline.user_details'
+)
+
+# Python-social-auth settings
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['public_profile', 'user_birthday', 'user_education_history', 'user_location', 'email']
+SOCIAL_AUTH_FACEBOOK_KEY = '713549365387916'
+SOCIAL_AUTH_FACEBOOK_SECRET = '5fd7cd3b9958b979647df997b5b27c8e'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '745226397307-sktc3grus53u160q3icthf5s51ukijke.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Qg4q0dAsipUqAuYa2TOVnMGF'
+
+SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_emailaddress', 'r_basicprofile']
+SOCIAL_AUTH_LINKEDIN_KEY = '75v6ppasybk7zd'
+SOCIAL_AUTH_LINKEDIN_SECRET = 'WJjgPEsGW7NSCVCD'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_URL = '/login/'
+
 
 #Crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

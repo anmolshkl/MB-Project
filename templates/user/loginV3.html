@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 {% load static %}
-{% load socialaccount %}
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -100,9 +99,9 @@
               </button>
                 <h5><span class="black">or sign up with:</span></h5>
                 <ul class="social-nav model-2" >
-                  <li style="display:inline-block;"><a href="{% provider_login_url "facebook" process="connect" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                  <li style="display:inline-block;"><a href="{% provider_login_url "google"  method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin"  process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+
                 </ul>
             </form>
               
@@ -135,9 +134,9 @@
                   <span class="text">Login</span>
               </button>
               <ul class="social-nav model-2">
-                  <li style="display:inline-block;"><a href="{% provider_login_url "facebook" process="connect" method="oauth2" %}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
-                  <li style="display:inline-block;"><a href="{% provider_login_url "google" process="connect" method="oauth2" %}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin" process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+{#                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin" process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>#}
               </ul>
               <br>
 
