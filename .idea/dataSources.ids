@@ -2041,8 +2041,8 @@
       <column name="group_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="auth_group_permission_group_id_689710a9a73b7457_fk_auth_group_id" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="group_id" unique="true" columns="permission_id"/>
       <index name="auth_group_permissions_0e939a4f" unique="false" columns="group_id"/>
       <index name="auth_group_permissions_8373b171" unique="false" columns="permission_id"/>
@@ -2094,8 +2094,8 @@
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="user_id" unique="true" columns="permission_id"/>
       <index name="auth_user_user_permissions_8373b171" unique="false" columns="permission_id"/>
       <index name="auth_user_user_permissions_e8701ad4" unique="false" columns="user_id"/>
@@ -2203,8 +2203,8 @@
       <column name="date_changed" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="interval_id_refs_id_1829f358" columns="interval_id" ref-table="djcelery_intervalschedule" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="crontab_id_refs_id_286da0d1" columns="crontab_id" ref-table="djcelery_crontabschedule" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="interval_id_refs_id_1829f358" columns="interval_id" ref-table="djcelery_intervalschedule" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="name" unique="true" columns="name"/>
       <index name="djcelery_periodictask_7280124f" unique="false" columns="crontab_id"/>
       <index name="djcelery_periodictask_8905f60d" unique="false" columns="interval_id"/>

@@ -255,10 +255,13 @@ def register(request):
 
 
 def save_social_profile(backend, user, response, *args, **kwargs):
+    print 'inside save profile'
+    for key, value in response.iteritems():
+        print key, value
     if backend.name == 'facebook':
         profile_created = False
         profile, profile_created = UserProfile.objects.get_or_create(user=user)
-        social_profile, social_profile_created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        social_profile, social_profile_created = SocialProfiles.objects.get_or_create(parent=profile)
         if profile_created:
             profile.gender = response.get('gender')
             profile.link = response.get('link')

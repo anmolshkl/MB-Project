@@ -29,12 +29,10 @@ git merge -r <branch> : merge the "branch" with the current branch
 *Make sure you have a user named "mentorbuddy" host="localhost" with password "mentorbuddy" with all privileges granted(phpmyadmin->users) 
 *Delete any previous saved version of mb_db2(click mb_db2->operations tab->select 'drop the database')
 *Now open cmd prompt or git bash from project folder and enter "python manage.py syncdb --all"
-*Now go to phpmyadmin->mb_db2->IMPORT tab
-*Select the sql file in the project folder and click on "Go"
-*You're done setting up :)
+
 
 ------------------------
-3.Setting up Social Apps
+3.Setting up Social Apps -- Not required now
 ------------------------
 *import the sql file in the project,in 'mb_db2' database. 
 *When you have imported the sql file included in the project folder,you have basically imported socialapps table consisting of various different Social Apps,their API keys & IDs needed to connect to them.
@@ -47,12 +45,12 @@ git merge -r <branch> : merge the "branch" with the current branch
 
 
 -----
-Done
+This step has been done
 -----
 4.Using skelJS with different DIR Structure? FOLLOW THIS:
 #http://stackoverflow.com/questions/19145031/django-skeljs-static-files-issue-references-to-images-in-css
 
 ----
-Done
+This step has been done
 ----
 Go to skel.mis.js and search for newStyleSheet and change t[Qt]="/static/aerial/" + e
