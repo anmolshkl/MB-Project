@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from datetime import timedelta			#topmost line
+from datetime import timedelta  # topmost line
 
 
 """
@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SETTINGS_DIR = os.path.dirname(__file__)
 
 PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
-
 
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
@@ -181,8 +180,7 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')  # Absolute path to the media d
 # Login urls
 # LOGIN_URL = '/user/login/'
 LOGOUT_URL = '/user/logout/'
-LOGIN_REDIRECT_URL = '/user/'  #-adapter will provide the login_redirect_url,but adapter doesn't support
-
+LOGIN_REDIRECT_URL = '/user/'  # -adapter will provide the login_redirect_url,but adapter doesn't support
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'mentorbuddy'
@@ -216,26 +214,34 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email']
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '745226397307-sktc3grus53u160q3icthf5s51ukijke.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Qg4q0dAsipUqAuYa2TOVnMGF'
 
-SOCIAL_AUTH_LINKEDIN_SCOPE = ['r_emailaddress', 'r_basicprofile']
-SOCIAL_AUTH_LINKEDIN_KEY = '75v6ppasybk7zd'
-SOCIAL_AUTH_LINKEDIN_SECRET = 'WJjgPEsGW7NSCVCD'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '75v6ppasybk7zd'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'WJjgPEsGW7NSCVCD'
+# Add the fields so they will be requested from linkedin.
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address', 'headline', 'industry', 'location', 'summary',
+                                               'picture-url', 'public-profile-url', 'date-of-birth']
+# Arrange to add the fields to UserSocialAuth.extra_data
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
+                                          ('firstName', 'first_name'),
+                                          ('lastName', 'last_name'),
+                                          ('emailAddress', 'email_address'),
+                                          ]
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_URL = '/login/'
 
 
-#Crispy form
+# Crispy form
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
 
-#SITE URL
+# SITE URL
 #SITE_URL = "http://127.0.0.1:8000/"
 SITE_URL = "http://mentorbuddy.in/"
 
 #Use Time Zones
 USE_TZ = True
-
 
 VISITOR_INFO_GEOIP_DATABASE_PATH = os.path.join(BASE_DIR, 'apps', 'django_visitor_information', 'static',
                                                 'GeoLiteCity.dat')
@@ -283,5 +289,5 @@ CELERYBEAT_SCHEDULE = {
     "notify-upcoming-calls": {
         "task": "apps.user.tasks.notify",
         "schedule": timedelta(minutes=30),
-     }
+    }
 }

@@ -8,7 +8,7 @@ from apps.user.forms import UserForm, UserEditForm
 from apps.mentor.forms import UserProfileForm, EducationForm, EmploymentForm
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from apps.user.models import UserProfile, SocialProfiles, Todo, Notification
+from apps.user.models import UserProfile, SocialProfile, Todo, Notification
 from django.contrib.auth.models import User
 from random import choice
 from string import letters
@@ -185,8 +185,8 @@ def self_profile_view(request):
 
     # Social Profile
     try:
-        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
-    except SocialProfiles.DoesNotExist:
+        social_profiles_object = SocialProfile.objects.get(parent=user_profile_object)
+    except SocialProfile.DoesNotExist:
         social_profiles_object = None
 
     # Education Profile
@@ -201,6 +201,10 @@ def self_profile_view(request):
     except EmploymentDetails.DoesNotExist:
         empObjs = None
 
+    try:
+        timingsObj = Timings.objects.get(parent=user)
+    except:
+        timingsObj = None
     # TODO add personal details after the user model
     # is finalized
     # initialize all to None
@@ -256,9 +260,11 @@ def self_profile_view(request):
     if college:
         context_dict['college'] = college
 
-    provider = None
+    picture_url = user_profile_object.picture
+    if picture_url:
+        context_dict['picture_url'] = picture_url
 
-    picture_url = None
+    provider = None
 
     profile_url = None
 
@@ -281,7 +287,7 @@ def self_profile_view(request):
         if provider:
             context_dict['provider'] = provider
 
-        if picture_url != None:
+        if context_dict['picture_url'] is None:
             context_dict['picture_url'] = picture_url
 
         if profile_url != None:
@@ -317,6 +323,14 @@ def self_profile_view(request):
         rating_obj['average'] = 0
 
     context_dict['ratings'] = rating_obj
+
+    # Specify timings too
+    if timingsObj is not None:
+        context_dict['weekday_l'] = timingsObj.weekday_l
+        context_dict['weekday_u'] = timingsObj.weekday_u
+        context_dict['weekend_l'] = timingsObj.weekend_l
+        context_dict['weekend_u'] = timingsObj.weekend_u
+
     return render_to_response("mentor/profile-view.html", context_dict, context)
 
 
@@ -326,11 +340,14 @@ def get_profile(request, mentorid):
     This function returns all the fields
     for viewing mentor's profile
     """
+    print "reached inside"
     context = RequestContext(request)
     context_dict = {}
+    print mentorid
     try:
-        user = User.objects.get(id=mentorid)
+        user = User.objects.get(id=int(mentorid))
     except ObjectDoesNotExist:
+        print "lagi"
         context_dict['error'] = "User doest not exist"
         return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
@@ -341,8 +358,8 @@ def get_profile(request, mentorid):
 
     # Social Profile
     try:
-        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
-    except SocialProfiles.DoesNotExist:
+        social_profiles_object = SocialProfile.objects.get(parent=user_profile_object)
+    except SocialProfile.DoesNotExist:
         social_profiles_object = None
 
     # Education Profile
@@ -363,7 +380,7 @@ def get_profile(request, mentorid):
     except ObjectDoesNotExist:
         timings_obj = None
 
-
+    print "still here"
     # TODO add personal details after the user model
     # is finalized
     # initialize all to None
@@ -386,6 +403,7 @@ def get_profile(request, mentorid):
     gender_options = {'male': "M", 'female': 'F'}
 
     name = user.first_name + " " + user.last_name
+    print "hola"
     context_dict['full_name'] = name
 
     context_dict['mentor_id'] = mentorid
@@ -576,7 +594,7 @@ def get_data(request):
                     edu_profile.to_year = individual_edu['end-date']['year']
                     edu_profile.country = ""
                     edu_profile.save()
-        socialProfile, created = SocialProfiles.objects.get_or_create(parent=userProfile)
+        socialProfile, created = SocialProfile.objects.get_or_create(parent=userProfile)
         # socialProfile = SocialProfiles(parent=userProfile)
         socialProfile.profile_url_linkedin = extra_data['public-profile-url']
         socialProfile.profile_pic_url_linkedin = extra_data['picture-url']
@@ -596,7 +614,7 @@ def manage_social_profiles(request, action=None, provider=None):
         try:
             if SocialAccount.objects.get(user=user, provider=provider):
                 SocialAccount.objects.get(user=user, provider=provider).delete()
-                sp = SocialProfiles.objects.get(parent=user_profile)
+                sp = SocialProfile.objects.get(parent=user_profile)
                 if provider == 'facebook':
                     sp.profile_pic_url_facebook = ""
                     sp.profile_url_facebook = ""

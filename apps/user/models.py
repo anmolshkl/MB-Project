@@ -91,7 +91,7 @@ class UserProfile(models.Model):
     models.signals.post_save.connect(create_user_profile, sender=User)
 
 
-class SocialProfiles(models.Model):
+class SocialProfile(models.Model):
     """Stores social profile urls of the user"""
 
     parent = models.OneToOneField(UserProfile, related_name="social_profiles",
@@ -126,7 +126,7 @@ def save_data(sender, **kwargs):
     '''
     user = kwargs.pop('user')
     userProfile, usrprof_created = UserProfile.objects.get_or_create(user=user)
-    socialProfiles, socprof_created = SocialProfiles.objects.get_or_create(parent=userProfile)
+    socialProfiles, socprof_created = SocialProfile.objects.get_or_create(parent=userProfile)
 
     # try to check whether user has any data provided by LinkedIn
     extra_data = None
@@ -271,3 +271,18 @@ class Todo(models.Model):
 
     class Meta:
         verbose_name_plural = u'Todo List'
+
+
+class Question(models.Model):
+    question = models.TextField(null=False)
+
+    class Meta:
+        verbose_name_plural = "Questions"
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question)
+    answer = models.TextField(null=False, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Answers"

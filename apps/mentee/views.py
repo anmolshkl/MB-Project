@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 
 #import user profile models
-from apps.user.models import UserProfile, SocialProfiles, Request, Todo
+from apps.user.models import UserProfile, SocialProfile, Request, Todo
 
 #import specific forms
 from apps.user.forms import UserForm, UserEditForm
@@ -156,8 +156,8 @@ def self_profile_view(request):
 
     # Social Profile
     try:
-        social_profiles_object = SocialProfiles.objects.get(parent=user_profile_object)
-    except SocialProfiles.DoesNotExist:
+        social_profiles_object = SocialProfile.objects.get(parent=user_profile_object)
+    except SocialProfile.DoesNotExist:
         social_profiles_object = None
 
     # TODO add personal details after the user model
@@ -298,7 +298,7 @@ def manage_social_profiles(request, action=None, provider=None):
         try:
             if SocialAccount.objects.get(user=user, provider=provider):
                 SocialAccount.objects.get(user=user, provider=provider).delete()
-                sp = SocialProfiles.objects.get(parent=user_profile)
+                sp = SocialProfile.objects.get(parent=user_profile)
                 if provider == 'facebook':
                     sp.profile_pic_url_facebook = ""
                     sp.profile_url_facebook = ""

@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response, render, redirect, get_object_or
 from django.contrib.auth import authenticate, login, logout  # ,authenticate
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from apps.user.models import UserProfile, SocialProfiles, MentorSearchForm, Request, CallLog, Feedback, \
+from apps.user.models import UserProfile, SocialProfile, MentorSearchForm, Request, CallLog, Feedback, \
     VerificationCodes, Notification, Todo
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -26,8 +26,9 @@ from PIL import Image
 from django.core.mail import send_mail
 from django.utils import timezone
 from mentorbuddy.settings import SITE_URL
-import pytz,datetime
+import pytz, datetime
 from haystack.management.commands import update_index
+
 
 def sendMail(request):
     send_mail('Its Working', 'Put your Email message here.', 'anmol@mentorbuddy.in', ['Anmol.shkl@gmail.com'],
@@ -100,7 +101,7 @@ def user_login(request):
                 # If the account is valid and active, we can log the user in.
                 login(request, user)
                 user_profile = UserProfile.objects.get(user=user)
-                (social_profile, created) = SocialProfiles.objects.get_or_create(parent=user_profile)
+                (social_profile, created) = SocialProfile.objects.get_or_create(parent=user_profile)
             else:
                 error = True
                 msg = "Your account is not active. Please contact the admin."
@@ -210,30 +211,23 @@ def register(request):
         college = request.POST['college']
         city = request.POST['city']
         country = request.POST['country']
-        if fn and ln and email and college and city and country:
+        contact = request.POST['contact']
+
+        if fn and ln and email and college and city and country and contact:
             if User.objects.filter(email=email).exists():
-                print "email="
-                print email
                 return JsonResponse({'error': True, 'message': 'User with this email already exists!'})
             else:
                 username = email[0:29]
                 user = User(username=username, first_name=fn, last_name=ln, email=email)
                 user.save()
-
-                profile = UserProfile(city=city, country=country, college=college)
+                profile = UserProfile(city=city, country=country, college=college, contact=contact)
                 profile.user = user
                 profile.timezone = request.visitor['location']['timezone']
                 profile.save()
-
-
-
-
                 # generate key
-
                 salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
                 activation_key = hashlib.sha1(salt + email).hexdigest()
                 key_expires = datetime.datetime.now(pytz.utc) + datetime.timedelta(days=2)
-
                 # save key
 
                 new_key = VerificationCodes(user=user, activation_key=activation_key, key_expires=key_expires)
@@ -241,11 +235,9 @@ def register(request):
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: <br>" + settings.SITE_URL + "user/confirm/" + activation_key
-                print "trying to send mail with activation key"
-                send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
-                print "mail sent with activation key"
-                update_index.Command().handle()
+                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + settings.SITE_URL + "user/confirm/" + activation_key
+                # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
+                update_index.Command().handle(remove=True)
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -261,20 +253,26 @@ def save_social_profile(backend, user, response, *args, **kwargs):
     if backend.name == 'facebook':
         profile_created = False
         profile, profile_created = UserProfile.objects.get_or_create(user=user)
-        social_profile, social_profile_created = SocialProfiles.objects.get_or_create(parent=profile)
+        social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
         if profile_created:
             profile.gender = response.get('gender')
             profile.link = response.get('link')
             profile.timezone = response.get('timezone')
             profile.save()
         if backend.name == 'facebook':
-            profile_url_facebook = response.get('')
-            profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+            social_profile.profile_url_facebook = response.get('')
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
 
         if backend.name == "google-oauth2":
-            profile_url_facebook = response.get('')
-            profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+            social_profile.profile_url_facebook = response.get('')
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
 
+        if backend.name == "linkedin-oauth2":
+            profile.about = response.get('summary')
+            profile.country = response.get('location')['country']['code']
+            profile.city = response.get('location')['name']
+            social_profile.profile_url_linkedin = response.get('publicProfileUrl')
+            social_profile.profile_pic_url_linkedin = response.get('pictureUrl')
 
 
 def user_logout(request):
@@ -455,7 +453,8 @@ def submit_feedback(request):
                 feedback_obj.feedback = post['feedback']
 
                 (rating_obj, created) = Ratings.objects.get_or_create(mentor=request_obj.mentorId)
-                rating_obj.average = (rating_obj.average*rating_obj.count+int(post['rating']))/(rating_obj.count+1)
+                rating_obj.average = (rating_obj.average * rating_obj.count + int(post['rating'])) / (
+                    rating_obj.count + 1)
                 rating_obj.count += 1
                 if post['rating'] == '1':
                     rating_obj.one += 1

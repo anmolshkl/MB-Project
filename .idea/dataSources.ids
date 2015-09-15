@@ -12,6 +12,7 @@
     <schema name="" catalog="information_schema"/>
     <schema name="" catalog="jdb"/>
     <schema name="" catalog="mb_db2"/>
+    <schema name="" catalog="mb_db_old"/>
     <schema name="" catalog="mysql"/>
     <schema name="" catalog="performance_schema"/>
     <schema name="" catalog="phpmyadmin"/>
@@ -305,11 +306,15 @@
       <foreign-key name="Accounts_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="echodb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
     <table name="Branches" schema="" catalog="echodb" type="TABLE">
-      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="branch_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="IFSC_code" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="Branches_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="echodb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
     <table name="Customers" schema="" catalog="echodb" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -329,12 +334,14 @@
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="Accounts_ibfk_1" table="Accounts" schema="" catalog="echodb" columns="CustomerId"/>
+      <exported-key name="Branches_ibfk_1" table="Branches" schema="" catalog="echodb" columns="CustomerId"/>
       <exported-key name="Transactions_ibfk_1" table="Transactions" schema="" catalog="echodb" columns="CustomerId"/>
       <index name="email" unique="true" columns="email"/>
       <index name="mobile" unique="true" columns="mobile"/>
     </table>
     <table name="Transactions" schema="" catalog="echodb" type="TABLE">
-      <column name="id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="txnid" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="amount" sqlType="DECIMAL" precision="10" scale="0" nullable="false" jdbcType="3"/>
       <column name="to" sqlType="DECIMAL" precision="10" scale="0" nullable="true" jdbcType="3"/>
@@ -342,6 +349,7 @@
       <column name="createdAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updatedAt" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="CustomerId" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="Transactions_ibfk_1" columns="CustomerId" ref-table="Customers" ref-schema="" ref-catalog="echodb" ref-columns="id" update-rule="0" delete-rule="2" deferrability="2"/>
     </table>
     <table name="CHARACTER_SETS" schema="" catalog="information_schema" type="SYSTEM VIEW">
@@ -2361,6 +2369,14 @@
       <index name="social_auth_usersocialauth_provider_2f763109e2c4a1fb_uniq" unique="true" columns="provider,uid"/>
       <index name="social_auth_usersocialauth_e8701ad4" unique="false" columns="user_id"/>
     </table>
+    <table name="user_answer" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="question_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="answer" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="question_id_refs_id_4ff7cd5d" columns="question_id" ref-table="user_question" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_answer_25110688" unique="false" columns="question_id"/>
+    </table>
     <table name="user_calllog" schema="" catalog="mb_db2" type="TABLE">
       <column name="request_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="establishedTime" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
@@ -2392,6 +2408,12 @@
       <primary-key name="PRIMARY" columns="id"/>
       <index name="user_notification_a87046c8" unique="false" columns="to_id"/>
     </table>
+    <table name="user_question" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="question" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="question_id_refs_id_4ff7cd5d" table="user_answer" schema="" catalog="mb_db2" columns="question_id"/>
+    </table>
     <table name="user_request" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2407,6 +2429,22 @@
       <exported-key name="request_id_refs_id_8400f301" table="user_calllog" schema="" catalog="mb_db2" columns="request_id"/>
       <index name="user_request_957653d5" unique="false" columns="menteeId_id"/>
       <index name="user_request_a53cb0b6" unique="false" columns="mentorId_id"/>
+    </table>
+    <table name="user_socialprofile" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="profile_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="parent_id_refs_user_id_e6e7e586" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="user_socialprofiles" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -2452,9 +2490,491 @@
       <primary-key name="PRIMARY" columns="user_id"/>
       <exported-key name="parent_id_refs_user_id_aa0c1dbd" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
       <exported-key name="parent_id_refs_user_id_4d3beff4" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="parent_id_refs_user_id_e6e7e586" table="user_socialprofile" schema="" catalog="mb_db2" columns="parent_id"/>
       <exported-key name="parent_id_refs_user_id_f9d6c4be" table="user_socialprofiles" schema="" catalog="mb_db2" columns="parent_id"/>
     </table>
     <table name="user_verificationcodes" schema="" catalog="mb_db2" type="TABLE">
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="activation_key" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
+      <column name="key_expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="user_id"/>
+    </table>
+    <table name="account_emailaddress" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="email" sqlType="VARCHAR" precision="75" scale="0" nullable="false" jdbcType="12"/>
+      <column name="verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="primary" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="account_emailaddress_user_id_5c85949e40d9a61d_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="acc_email_address_id_5bcf9f503c32d4d8_fk_account_emailaddress_id" table="account_emailconfirmation" schema="" catalog="mb_db_old" columns="email_address_id"/>
+      <index name="email" unique="true" columns="email"/>
+      <index name="account_emailaddress_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="account_emailconfirmation" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="created" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="sent" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="key" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email_address_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="acc_email_address_id_5bcf9f503c32d4d8_fk_account_emailaddress_id" columns="email_address_id" ref-table="account_emailaddress" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="key" unique="true" columns="key"/>
+      <index name="account_emailconfirmation_6f1edeac" unique="false" columns="email_address_id"/>
+    </table>
+    <table name="auth_group" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="80" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="auth_group_permission_group_id_689710a9a73b7457_fk_auth_group_id" table="auth_group_permissions" schema="" catalog="mb_db_old" columns="group_id"/>
+      <exported-key name="auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id" table="auth_user_groups" schema="" catalog="mb_db_old" columns="group_id"/>
+      <index name="name" unique="true" columns="name"/>
+    </table>
+    <table name="auth_group_permissions" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="group_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_group_permission_group_id_689710a9a73b7457_fk_auth_group_id" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="group_id" unique="true" columns="permission_id"/>
+      <index name="auth_group_permissions_0e939a4f" unique="false" columns="group_id"/>
+      <index name="auth_group_permissions_8373b171" unique="false" columns="permission_id"/>
+    </table>
+    <table name="auth_permission" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="content_type_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="codename" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth__content_type_id_508cf46651277a81_fk_django_content_type_id" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="auth_group__permission_id_1f49ccbbdc69d2fc_fk_auth_permission_id" table="auth_group_permissions" schema="" catalog="mb_db_old" columns="permission_id"/>
+      <exported-key name="auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id" table="auth_user_user_permissions" schema="" catalog="mb_db_old" columns="permission_id"/>
+      <index name="content_type_id" unique="true" columns="codename"/>
+      <index name="auth_permission_417f1b1c" unique="false" columns="content_type_id"/>
+    </table>
+    <table name="auth_user" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="password" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="is_superuser" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="username" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="first_name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="75" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_staff" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_active" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="date_joined" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="account_emailaddress_user_id_5c85949e40d9a61d_fk_auth_user_id" table="account_emailaddress" schema="" catalog="mb_db_old" columns="user_id"/>
+      <exported-key name="auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id" table="auth_user_groups" schema="" catalog="mb_db_old" columns="user_id"/>
+      <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="mb_db_old" columns="user_id"/>
+      <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="mb_db_old" columns="user_id"/>
+      <exported-key name="mentee_credits_parent_id_501461cfab2f8fe3_fk_auth_user_id" table="mentee_credits" schema="" catalog="mb_db_old" columns="parent_id"/>
+      <exported-key name="mentor_ratings_mentor_id_5e831ee3f80222b9_fk_auth_user_id" table="mentor_ratings" schema="" catalog="mb_db_old" columns="mentor_id"/>
+      <exported-key name="mentor_timings_parent_id_212280afeb06f4c5_fk_auth_user_id" table="mentor_timings" schema="" catalog="mb_db_old" columns="parent_id"/>
+      <exported-key name="mentor_useractivity_mentor_id_25b73191a7899b68_fk_auth_user_id" table="mentor_useractivity" schema="" catalog="mb_db_old" columns="mentor_id"/>
+      <exported-key name="socialaccount_socialacc_user_id_3fd78aac97693583_fk_auth_user_id" table="socialaccount_socialaccount" schema="" catalog="mb_db_old" columns="user_id"/>
+      <exported-key name="user_notification_to_id_374ac35d4a4a2bb_fk_auth_user_id" table="user_notification" schema="" catalog="mb_db_old" columns="to_id"/>
+      <exported-key name="user_todo_parent_id_3862b140abf81791_fk_auth_user_id" table="user_todo" schema="" catalog="mb_db_old" columns="parent_id"/>
+      <index name="username" unique="true" columns="username"/>
+    </table>
+    <table name="auth_user_groups" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="group_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_user_groups_group_id_33ac548dcf5f8e37_fk_auth_group_id" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="true" columns="group_id"/>
+      <index name="auth_user_groups_0e939a4f" unique="false" columns="group_id"/>
+      <index name="auth_user_groups_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="auth_user_user_permissions" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="auth_user_u_permission_id_384b62483d7071f0_fk_auth_permission_id" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_id" unique="true" columns="permission_id"/>
+      <index name="auth_user_user_permissions_8373b171" unique="false" columns="permission_id"/>
+      <index name="auth_user_user_permissions_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="celery_taskmeta" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="task_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="status" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="date_done" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="traceback" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="meta" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="task_id" unique="true" columns="task_id"/>
+      <index name="celery_taskmeta_2ff6b945" unique="false" columns="hidden"/>
+    </table>
+    <table name="celery_tasksetmeta" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="taskset_id" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="date_done" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="taskset_id" unique="true" columns="taskset_id"/>
+      <index name="celery_tasksetmeta_2ff6b945" unique="false" columns="hidden"/>
+    </table>
+    <table name="django_admin_log" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="action_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="object_id" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="object_repr" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="action_flag" sqlType="SMALLINT UNSIGNED" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="change_message" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="content_type_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="djang_content_type_id_697914295151027a_fk_django_content_type_id" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="django_admin_log_417f1b1c" unique="false" columns="content_type_id"/>
+      <index name="django_admin_log_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="django_content_type" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="app_label" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="model" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="auth__content_type_id_508cf46651277a81_fk_django_content_type_id" table="auth_permission" schema="" catalog="mb_db_old" columns="content_type_id"/>
+      <exported-key name="djang_content_type_id_697914295151027a_fk_django_content_type_id" table="django_admin_log" schema="" catalog="mb_db_old" columns="content_type_id"/>
+      <index name="django_content_type_app_label_45f3b1d93ec8c61c_uniq" unique="true" columns="app_label,model"/>
+    </table>
+    <table name="django_migrations" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="applied" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="django_session" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="session_key" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
+      <column name="session_data" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="expire_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="session_key"/>
+      <index name="django_session_de54fa62" unique="false" columns="expire_date"/>
+    </table>
+    <table name="django_site" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="domain" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="socialaccount_socialap_site_id_a859406a22be3fe_fk_django_site_id" table="socialaccount_socialapp_sites" schema="" catalog="mb_db_old" columns="site_id"/>
+    </table>
+    <table name="djcelery_crontabschedule" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="minute" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hour" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="day_of_week" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="day_of_month" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="month_of_year" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="crontab_id_refs_id_286da0d1" table="djcelery_periodictask" schema="" catalog="mb_db_old" columns="crontab_id"/>
+    </table>
+    <table name="djcelery_intervalschedule" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="every" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="period" sqlType="VARCHAR" precision="24" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="interval_id_refs_id_1829f358" table="djcelery_periodictask" schema="" catalog="mb_db_old" columns="interval_id"/>
+    </table>
+    <table name="djcelery_periodictask" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="task" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <column name="interval_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="crontab_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="args" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="kwargs" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="queue" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="exchange" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="routing_key" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="last_run_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="total_run_count" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="date_changed" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="crontab_id_refs_id_286da0d1" columns="crontab_id" ref-table="djcelery_crontabschedule" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="interval_id_refs_id_1829f358" columns="interval_id" ref-table="djcelery_intervalschedule" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="name" unique="true" columns="name"/>
+      <index name="djcelery_periodictask_7280124f" unique="false" columns="crontab_id"/>
+      <index name="djcelery_periodictask_8905f60d" unique="false" columns="interval_id"/>
+    </table>
+    <table name="djcelery_periodictasks" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="ident" sqlType="SMALLINT" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="last_update" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="ident"/>
+    </table>
+    <table name="djcelery_taskstate" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="state" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="task_id" sqlType="VARCHAR" precision="36" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="200" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tstamp" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="args" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="kwargs" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="eta" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="expires" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="result" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="traceback" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="runtime" sqlType="DOUBLE" precision="22" scale="0" nullable="true" jdbcType="8"/>
+      <column name="retries" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="worker_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="hidden" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="worker_id_refs_id_6fd8ce95" columns="worker_id" ref-table="djcelery_workerstate" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="task_id" unique="true" columns="task_id"/>
+      <index name="djcelery_taskstate_2ff6b945" unique="false" columns="hidden"/>
+      <index name="djcelery_taskstate_4da47e07" unique="false" columns="name"/>
+      <index name="djcelery_taskstate_5654bf12" unique="false" columns="state"/>
+      <index name="djcelery_taskstate_abaacd02" unique="false" columns="tstamp"/>
+      <index name="djcelery_taskstate_cac6a03d" unique="false" columns="worker_id"/>
+    </table>
+    <table name="djcelery_workerstate" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="hostname" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_heartbeat" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="worker_id_refs_id_6fd8ce95" table="djcelery_taskstate" schema="" catalog="mb_db_old" columns="worker_id"/>
+      <index name="hostname" unique="true" columns="hostname"/>
+      <index name="djcelery_workerstate_11e400ef" unique="false" columns="last_heartbeat"/>
+    </table>
+    <table name="djkombu_message" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="visible" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="sent_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="payload" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="queue_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="queue_id_refs_id_88980102" columns="queue_id" ref-table="djkombu_queue" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="djkombu_message_5907bb86" unique="false" columns="visible"/>
+      <index name="djkombu_message_bc4c5ddc" unique="false" columns="sent_at"/>
+      <index name="djkombu_message_c80a9385" unique="false" columns="queue_id"/>
+    </table>
+    <table name="djkombu_queue" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="200" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="queue_id_refs_id_88980102" table="djkombu_message" schema="" catalog="mb_db_old" columns="queue_id"/>
+      <index name="name" unique="true" columns="name"/>
+    </table>
+    <table name="mentee_credits" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="balance" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <primary-key name="PRIMARY" columns="parent_id"/>
+      <foreign-key name="mentee_credits_parent_id_501461cfab2f8fe3_fk_auth_user_id" columns="parent_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="mentor_educationdetails" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="institution" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="city" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="degree" sqlType="VARCHAR" precision="64" scale="0" nullable="false" jdbcType="12"/>
+      <column name="branch" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="parent_id_refs_user_id_aa0c1dbd" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db_old" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_educationdetails_410d0aac" unique="false" columns="parent_id"/>
+    </table>
+    <table name="mentor_employmentdetails" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="organization" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="location" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="position" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="parent_id_refs_user_id_4d3beff4" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db_old" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_employmentdetails_410d0aac" unique="false" columns="parent_id"/>
+    </table>
+    <table name="mentor_ratings" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="count" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="average" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="one" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="two" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="three" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="four" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="five" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="mentor_id"/>
+      <foreign-key name="mentor_ratings_mentor_id_5e831ee3f80222b9_fk_auth_user_id" columns="mentor_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="mentor_timings" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="weekday_l" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <column name="weekday_u" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <column name="weekend_l" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <column name="weekend_u" sqlType="VARCHAR" precision="5" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="parent_id"/>
+      <foreign-key name="mentor_timings_parent_id_212280afeb06f4c5_fk_auth_user_id" columns="parent_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="mentor_useractivity" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="last_seen" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="mentor_id"/>
+      <foreign-key name="mentor_useractivity_mentor_id_25b73191a7899b68_fk_auth_user_id" columns="mentor_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="socialaccount_socialaccount" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="provider" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="uid" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="date_joined" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="extra_data" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="socialaccount_socialacc_user_id_3fd78aac97693583_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="so_account_id_3fc809e243dd8c0a_fk_socialaccount_socialaccount_id" table="socialaccount_socialtoken" schema="" catalog="mb_db_old" columns="account_id"/>
+      <index name="socialaccount_socialaccount_provider_36eec1734f431f56_uniq" unique="true" columns="provider,uid"/>
+      <index name="socialaccount_socialaccount_e8701ad4" unique="false" columns="user_id"/>
+    </table>
+    <table name="socialaccount_socialapp" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="provider" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
+      <column name="client_id" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="secret" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <column name="key" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="soci_socialapp_id_7b02380b6127b1b8_fk_socialaccount_socialapp_id" table="socialaccount_socialapp_sites" schema="" catalog="mb_db_old" columns="socialapp_id"/>
+      <exported-key name="socialaccou_app_id_2125549785bd662_fk_socialaccount_socialapp_id" table="socialaccount_socialtoken" schema="" catalog="mb_db_old" columns="app_id"/>
+    </table>
+    <table name="socialaccount_socialapp_sites" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="socialapp_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="site_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="socialaccount_socialap_site_id_a859406a22be3fe_fk_django_site_id" columns="site_id" ref-table="django_site" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="soci_socialapp_id_7b02380b6127b1b8_fk_socialaccount_socialapp_id" columns="socialapp_id" ref-table="socialaccount_socialapp" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="socialapp_id" unique="true" columns="site_id"/>
+      <index name="socialaccount_socialapp_sites_9365d6e7" unique="false" columns="site_id"/>
+      <index name="socialaccount_socialapp_sites_fe95b0a0" unique="false" columns="socialapp_id"/>
+    </table>
+    <table name="socialaccount_socialtoken" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="token" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="token_secret" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="expires_at" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="account_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="app_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="socialaccou_app_id_2125549785bd662_fk_socialaccount_socialapp_id" columns="app_id" ref-table="socialaccount_socialapp" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="so_account_id_3fc809e243dd8c0a_fk_socialaccount_socialaccount_id" columns="account_id" ref-table="socialaccount_socialaccount" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="socialaccount_socialtoken_app_id_697928748c2e1968_uniq" unique="true" columns="app_id,account_id"/>
+      <index name="socialaccount_socialtoken_8a089c2a" unique="false" columns="account_id"/>
+      <index name="socialaccount_socialtoken_f382adfe" unique="false" columns="app_id"/>
+    </table>
+    <table name="user_calllog" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="request_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="establishedTime" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
+      <column name="endTime" sqlType="TIME" precision="8" scale="0" nullable="false" jdbcType="92"/>
+      <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="endCause" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="request_id"/>
+      <foreign-key name="request_id_refs_id_8400f301" columns="request_id" ref-table="user_request" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" table="user_feedback" schema="" catalog="mb_db_old" columns="call_id"/>
+    </table>
+    <table name="user_feedback" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="call_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="rating" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
+      <column name="feedback" sqlType="VARCHAR" precision="512" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="user_feedbac_call_id_424eba095838cd6a_fk_user_calllog_request_id" columns="call_id" ref-table="user_calllog" ref-schema="" ref-catalog="mb_db_old" ref-columns="request_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_feedback_6340c63c" unique="false" columns="user_id"/>
+      <index name="user_feedback_66bcc7d8" unique="false" columns="call_id"/>
+    </table>
+    <table name="user_notification" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="frm" sqlType="VARCHAR" precision="300" scale="0" nullable="false" jdbcType="12"/>
+      <column name="text" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="title" sqlType="VARCHAR" precision="500" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="to_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="user_notification_to_id_374ac35d4a4a2bb_fk_auth_user_id" columns="to_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_notification_f4b39993" unique="false" columns="to_id"/>
+    </table>
+    <table name="user_request" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="menteeId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="mentorId_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="duration" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="is_rescheduled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="requestDate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="callType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="is_completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="request_id_refs_id_8400f301" table="user_calllog" schema="" catalog="mb_db_old" columns="request_id"/>
+      <index name="user_request_957653d5" unique="false" columns="menteeId_id"/>
+      <index name="user_request_a53cb0b6" unique="false" columns="mentorId_id"/>
+    </table>
+    <table name="user_socialprofiles" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="profile_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="profile_pic_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="parent_id_refs_user_id_f9d6c4be" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db_old" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="user_todo" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="task" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="dateTime" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="user_todo_parent_id_3862b140abf81791_fk_auth_user_id" columns="parent_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db_old" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="user_todo_6be37982" unique="false" columns="parent_id"/>
+    </table>
+    <table name="user_userprofile" schema="" catalog="mb_db_old" type="TABLE">
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="gender" sqlType="VARCHAR" precision="1" scale="0" nullable="false" jdbcType="12"/>
+      <column name="date_of_birth" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="contact" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="college" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="city" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="state" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="about" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="resume" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
+      <column name="picture" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
+      <column name="is_mentor" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_new" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="timezone" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="user_id"/>
+      <exported-key name="parent_id_refs_user_id_aa0c1dbd" table="mentor_educationdetails" schema="" catalog="mb_db_old" columns="parent_id"/>
+      <exported-key name="parent_id_refs_user_id_4d3beff4" table="mentor_employmentdetails" schema="" catalog="mb_db_old" columns="parent_id"/>
+      <exported-key name="parent_id_refs_user_id_f9d6c4be" table="user_socialprofiles" schema="" catalog="mb_db_old" columns="parent_id"/>
+    </table>
+    <table name="user_verificationcodes" schema="" catalog="mb_db_old" type="TABLE">
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="activation_key" sqlType="VARCHAR" precision="40" scale="0" nullable="false" jdbcType="12"/>
       <column name="key_expires" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>

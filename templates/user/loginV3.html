@@ -78,6 +78,7 @@
                 <input type="email" name="email" id="email"><span class="highlight"></span><span class="bar"></span>
                 <label>Email</label>
               </div>
+
               <div class="group">
                 <input type="text" name="college" id="college"><span class="highlight"></span><span class="bar"></span>
                 <label>College/University</label>
@@ -91,7 +92,11 @@
                 <input type="text" name="country" id="country"><span class="highlight"></span><span class="bar"></span>
                 <label>Country</label>
               </div>
-              
+
+              <div class="group" style="width: 100%">
+                <input type="text" name="contact" id="contact"><span class="highlight"></span><span class="bar"></span>
+                <label>Contact</label>
+              </div>
               
               <button type="submit" class="button buttonBlue singUpButton">
                   <i class="fa fa-spinner hide fa-pulse"></i>
@@ -101,7 +106,7 @@
                 <ul class="social-nav model-2" >
                     <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
                     <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
-
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'linkedin-oauth2' %}?next={{ request.path }}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
             </form>
               
@@ -136,6 +141,8 @@
               <ul class="social-nav model-2">
                   <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" class="facebook"> <i class="fa fa-facebook"></i></a></li>
                   <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'linkedin-oauth2' %}?next={{ request.path }}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+
 {#                  <li style="display:inline-block;"><a href="{% provider_login_url "linkedin" process="connect" method="oauth2" %}" class="linkedin" ><i class="fa fa-linkedin"></i></a></li>#}
               </ul>
               <br>
