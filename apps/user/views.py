@@ -27,7 +27,9 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from mentorbuddy.settings import SITE_URL
 import pytz, datetime
-from haystack.management.commands import update_index
+from haystack.management.commands import rebuild_index
+from django.core import management
+from haystack import connections
 
 
 def sendMail(request):
@@ -237,7 +239,12 @@ def register(request):
                 email_subject = 'Account confirmation'
                 email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + settings.SITE_URL + "user/confirm/" + activation_key
                 # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
-                update_index.Command().handle(remove=True)
+
+                # rebuild_index.Command().handle(interactive=False)
+                backend = connections['default'].get_backend()
+                backend.setup_complete = False
+                backend.existing_mapping = None
+                management.call_command('rebuild_index', interactive=False, verbosity=1)
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -372,7 +379,6 @@ def root(request):
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!
     results = form.search()
-    print results
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,

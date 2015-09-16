@@ -344,8 +344,12 @@ def get_profile(request, mentorid):
     context = RequestContext(request)
     context_dict = {}
     print mentorid
+    userList = User.objects.all()
+    for u in userList:
+        print u.id
     try:
-        user = User.objects.get(id=int(mentorid))
+        user = User.objects.get(id=mentorid)
+
     except ObjectDoesNotExist:
         print "lagi"
         context_dict['error'] = "User doest not exist"
