@@ -14,7 +14,9 @@ urlpatterns = patterns('',
                        url(r'^live/', include('apps.sinch.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('apps.user.urls')),
-                       url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about')
+                       url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
+                       url(r'^sedna/$', TemplateView.as_view(template_name='user/sedna.html'), name='about')
+
                        )
 
 # UNDERNEATH your urlpatterns definition, add the following two lines:

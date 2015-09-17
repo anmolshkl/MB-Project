@@ -30,7 +30,8 @@
 <link href="{% static 'template/webarch/assets/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
 <link href="{% static 'template/webarch/assets/css/custom-icon-set.css' %}" rel="stylesheet" type="text/css"/>
 <!-- END CSS TEMPLATE -->
-<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-sweetalert/sweet-alert.css' %}">
+{#<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-sweetalert/sweet-alert.css' %}">#}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-sweetalert/sweetalert2.css' %}">
 <style type="text/css">
     .modal {
         z-index: 99999;
@@ -529,7 +530,8 @@
 <!-- <script src="{% static 'template/webarch/assets/js/chat.js' %}" type="text/javascript"></script>
 <script src="{% static 'template/webarch/assets/js/demo.js' %}" type="text/javascript"></script> -->
 <!-- END CORE TEMPLATE JS -->
-<script src="{% static 'bootstrap-sweetalert/sweet-alert.min.js' %}" type="text/javascript"></script>
+{#<script src="{% static 'bootstrap-sweetalert/sweet-alert.min.js' %}" type="text/javascript"></script>#}
+<script src="{% static 'bootstrap-sweetalert/sweetalert2.min.js' %}" type="text/javascript"></script>
 <script>
     $(function () {
       $('[data-toggle="popover"]').popover();
@@ -579,14 +581,14 @@
 
     $(".notification-messages").click(function() {
         var element = $(this);
-        var title = element.find(".heading").html().trim();
+        var title = element.find(".heading").text().trim();
         var type = (title == "Request approved!")?("success"):("none");
-        var body = element.find(".description").html().trim();
+        var body = element.find(".description").text().trim();
         swal({
                 title: title,
-                html: true,
-                text: body,
-                confirmButtonColor: "#AEDEF4",
+                html: body,
+                showConfirmButton: false,
+                showCancelButton: false,
                 type: type
         });
     });
