@@ -3,6 +3,7 @@ from apps.mentor.models import EducationDetails
 from apps.user.models import Request, Notification
 from django import template
 from django.contrib.auth.models import User
+from django.template.defaultfilters import stringfilter
 import pytz
 
 register = template.Library()
@@ -41,4 +42,9 @@ def get_notifications(id):
     notifications.count = count
     return notifications
 
-
+@register.filter
+@stringfilter
+def filter_resume_name(name, arg):
+    print arg
+    name = str(arg).split("/").pop()
+    return name

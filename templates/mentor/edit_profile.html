@@ -1,6 +1,7 @@
 {% extends 'mentor/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load request_tags %}
 {% block stylesheets %}
     <style>
     .imgareaselect-border1 {
@@ -368,7 +369,7 @@
                     {{ profile_form.contact|add_class:"required" }}
 
                     <label for="id_resume">RESUME</label>
-                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" value="{{ profile_form.resume.value }}"/>
+                    <input id="uploadFile" placeholder="Choose File" disabled="disabled" value="{{ resume|filter_resume_name:profile_form.resume.value }}"/>
                     <div class="fileUpload btn btn-primary">
                         <span>Upload</span>
                         <input id="id_resume" name="resume" type="file" class="upload"/>

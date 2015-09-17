@@ -23,5 +23,5 @@ urlpatterns = patterns('',
                        url(r'^contact/submit/$', views.contact, name='contact'),
                        url(r'^clear-notifications/$', views.clear_notifications, name='clear-notifications'),
                        url(r'^todo/$', views.handle_todo, name='todo'),
-
+                       url(r'^rebuild-index/$', views.rebuild_index, name='rebuild_index'),
                        )

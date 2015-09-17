@@ -74,9 +74,9 @@ class UserProfile(models.Model):
         return self.user.get_full_name()
 
     def __unicode__(self):
-        full_name = self.user.get_full_name()
-        if full_name:
-            return full_name
+        email = self.user.email
+        if email:
+            return email
         else:
             return self.user.username
 

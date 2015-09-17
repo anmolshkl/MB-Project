@@ -99,15 +99,21 @@
             </div>
 
             <div class="button-group">
-                <button class="flatButton scheduleSelect" value="1">Web-to-Web Call</button>
-                <button class="flatButton scheduleSelect disabled" value="2">Web-to-Phone Call</button>
-                <button class="flatButton scheduleSelect disabled" value="3">Video Call</button>
+                <div class="scheduleSelect" value="1">
+                    <i class="fa fa-laptop fa-5x"></i>
+                    <span class="call-label"><h5>Web-to-Web Call</h5></span>
+                </div>
+{#                <div class="scheduleSelect disabled" value="2">#}
+{#                    <i class="fa fa-phone fa-5x"></i>#}
+{#                    <span class="call-label"><h5>Web-to-Phone Call</h5></span>#}
+{#                </div>#}
+                <div class="scheduleSelect disabled" value="3">
+                    <i class="fa fa-video-camera fa-5x"></i>
+                    <span class="call-label"><h5>Video Call</h5></span>
+                </div>
             </div>
+          </div>
 
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-          </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

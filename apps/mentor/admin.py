@@ -26,14 +26,19 @@ class UserActivityInline(admin.TabularInline):
 
 
 
+@admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    search_fields = ['city']
-    list_filter = ['city']
+    def fullname(self,object):
+        return object.user.get_full_name()
+
+    fullname.admin_order_field = 'user'
+    fullname.short_description = "Full Name"
+
+    search_fields = ['city', 'country']
+    list_filter = ['city', 'country', 'is_mentor']
+    list_display = ('user', 'fullname', 'is_mentor')
     inlines = [EducationInline, SocialInline, EmploymentInline]
 
-
-
-admin.site.register(UserProfile, UserProfileAdmin)
 
 admin.site.register(EducationDetails)
 admin.site.register(SocialProfile)

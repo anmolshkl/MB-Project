@@ -7,12 +7,12 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout  # ,authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from apps.user.models import UserProfile, SocialProfile, MentorSearchForm, Request, CallLog, Feedback, \
     VerificationCodes, Notification, Todo
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
 
 # new
@@ -26,10 +26,11 @@ from PIL import Image
 from django.core.mail import send_mail
 from django.utils import timezone
 from mentorbuddy.settings import SITE_URL
-import pytz, datetime
+import pytz,datetime
 from haystack.management.commands import rebuild_index
 from django.core import management
 from haystack import connections
+from StringIO import StringIO
 
 
 def sendMail(request):
@@ -189,6 +190,12 @@ def set_password(request):
                     if user_profile.is_new:
                         user_profile.is_new = False
                         user_profile.save()
+
+                    # rebuild_index.Command().handle(interactive=False)
+                    backend = connections['default'].get_backend()
+                    backend.setup_complete = False
+                    backend.existing_mapping = None
+                    management.call_command('rebuild_index', interactive=False, verbosity=1)
                 else:
                     error = True
                     msg = "Password should be atleast 6 characters long."
@@ -240,11 +247,6 @@ def register(request):
                 email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + settings.SITE_URL + "user/confirm/" + activation_key
                 # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
 
-                # rebuild_index.Command().handle(interactive=False)
-                backend = connections['default'].get_backend()
-                backend.setup_complete = False
-                backend.existing_mapping = None
-                management.call_command('rebuild_index', interactive=False, verbosity=1)
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -257,29 +259,45 @@ def save_social_profile(backend, user, response, *args, **kwargs):
     print 'inside save profile'
     for key, value in response.iteritems():
         print key, value
+
+    profile_created = False
+    profile, profile_created = UserProfile.objects.get_or_create(user=user)
+    social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
+    if profile_created:
+        profile.gender = response.get('gender')
+        profile.link = response.get('link')
+        profile.timezone = response.get('timezone')
+        profile.save()
     if backend.name == 'facebook':
-        profile_created = False
-        profile, profile_created = UserProfile.objects.get_or_create(user=user)
-        social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
-        if profile_created:
-            profile.gender = response.get('gender')
-            profile.link = response.get('link')
-            profile.timezone = response.get('timezone')
-            profile.save()
-        if backend.name == 'facebook':
-            social_profile.profile_url_facebook = response.get('')
-            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+        print "logged in with facebook"
+        social_profile.profile_url_facebook = response.get('link')
+        social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+        social_profile.save()
+        profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
+        if response.get('gender') == 'male':
+            profile.gender = 'M'
+        else:
+            profile.gender = 'F'
+        location = response.get('location')
+        profile.city = str(location).split(',')[0].strip()
+        profile.country = str(location).split(',')[1].strip()
+        profile.save()
 
-        if backend.name == "google-oauth2":
-            social_profile.profile_url_facebook = response.get('')
-            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+    if backend.name == "google-oauth2":
+        print "logged in with google"
+        social_profile.profile_url_google = response.get('url')
+        social_profile.profile_pic_url_google = response.get('image')['url']
+        social_profile.save()
 
-        if backend.name == "linkedin-oauth2":
-            profile.about = response.get('summary')
-            profile.country = response.get('location')['country']['code']
-            profile.city = response.get('location')['name']
-            social_profile.profile_url_linkedin = response.get('publicProfileUrl')
-            social_profile.profile_pic_url_linkedin = response.get('pictureUrl')
+    if backend.name == "linkedin-oauth2":
+        print "logged in with linkedin"
+        profile.about = response.get('summary')
+        profile.country = response.get('location')['country']['code']
+        profile.city = response.get('location')['name']
+        social_profile.profile_url_linkedin = response.get('publicProfileUrl')
+        social_profile.profile_pic_url_linkedin = response.get('pictureUrl')
+        profile.save()
+        social_profile.save()
 
 
 def user_logout(request):
@@ -580,6 +598,13 @@ def handle_todo(request):
     return JsonResponse({"error": error, 'id': obj_id})
 
 
-
+def rebuild_index(request):
+    content = StringIO()
+    # rebuild_index.Command().handle(interactive=False)
+    backend = connections['default'].get_backend()
+    backend.setup_complete = False
+    backend.existing_mapping = None
+    management.call_command('rebuild_index', interactive=False, verbosity=1, stdout=content)
+    return HttpResponse("Successfully indexed profiles")
 
 

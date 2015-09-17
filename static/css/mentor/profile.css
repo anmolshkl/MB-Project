@@ -223,3 +223,28 @@ div .ptiles:hover {
 .content {
 	padding-top: 10px !important;
 }
+
+.button-group {
+    text-align: center;
+}
+.scheduleSelect {
+    border: 1px solid white;
+    background-color: #ffffff;
+    margin: 10px 10px 10px auto;
+    width: 30%;
+    text-align: center;
+    display: inline-block;
+    border-radius: 4px;
+    height: 150px;
+    padding-top: 20px;
+    cursor: pointer;
+}
+.scheduleSelect:hover {
+    background-color: rgba(62, 255, 16, 0.29);
+    color: black;
+    cursor: pointer;
+}
+.call-label {
+    display: block;
+    color: #000000;
+}
