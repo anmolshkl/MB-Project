@@ -23,263 +23,10 @@
     <link rel="stylesheet" href="{% static 'sedna/css/etline-font.css' %}">
     <link rel="stylesheet" href="{% static 'sedna/bower_components/animate.css/animate.min.css' %}">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'sedna/css/custom.css' %}">
     <script src="{% static 'sedna/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
-    <style>
-        .translucent {
-            background-color: rgba(209, 218, 222, 0.51);
-        }
-        .hide {
-            display: none;
-            visibility: hidden;
-        }
-        #signUpError,#loginError {
-            margin-bottom: 25px;
-        }
-        .loginForm .group {
-            width: 100%;
-        }
-        .modal-content {
-            border: 0px !important;
-            background-color: transparent !important;
-            box-shadow: none !important;
-
-        }
-        .modal-title, .modal-body{
-            text-align: center;
-        }
-
-        /* Sign Up form */
-        .signUpForm {
-            width: 90%;
-            margin: 0 auto;
-            padding: 2em 2em 1em 2em;
-            background: #fafafa;
-            border: 1px solid #ebebeb;
-            box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
-        }
-
-        .signUpForm .group {
-            position: relative;
-            margin-bottom: 45px;
-            width: 50%;
-            float: left;
-            padding-right: 5%;
-        }
-
-        .signUpForm input {
-            font-size: 18px;
-            padding: 10px 10px 10px 5px;
-            -webkit-appearance: none;
-            display: block;
-            background: #fafafa;
-            color: #636363;
-            width: 100%;
-            border: none;
-            border-radius: 0;
-            border-bottom: 1px solid #757575;
-        }
-
-        .signUpForm input:focus { outline: none; }
 
 
-        /* Label */
-
-        .signUpForm label {
-            color: #999;
-            font-size: 18px;
-            font-weight: normal;
-            position: absolute;
-            pointer-events: none;
-            left: 5px;
-            top: 10px;
-            transition: all 0.2s ease;
-        }
-
-
-        /* active */
-
-        .signUpForm input:focus ~ label,.signUpForm input.used ~ label {
-            top: -20px;
-          transform: scale(.75); left: -2px;
-            /* font-size: 14px; */
-            color: #4a89dc;
-        }
-
-
-        /* Underline */
-
-        .bar {
-            position: relative;
-            display: block;
-            width: 100%;
-        }
-
-        .bar:before, .bar:after {
-            content: '';
-            height: 2px;
-            width: 0;
-            bottom: 1px;
-            position: absolute;
-            background: #4a89dc;
-            transition: all 0.2s ease;
-        }
-
-        .bar:before { left: 50%; }
-
-        .bar:after { right: 50%; }
-
-
-        /* active */
-
-        .signUpForm input:focus ~ .bar:before,.signUpForm input:focus ~ .bar:after { width: 50%; }
-
-
-        /* Highlight */
-
-        .highlight {
-            position: absolute;
-            height: 60%;
-            width: 100px;
-            top: 25%;
-            left: 0;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-
-        /* active */
-
-        .signUpForm input:focus ~ .highlight {
-            animation: inputHighlighter 0.3s ease;
-        }
-
-
-        /* Animations */
-
-        @keyframes inputHighlighter {
-            from { background: #4a89dc; }
-            to 	{ width: 0; background: transparent; }
-        }
-
-        /* Login form */
-        #loginModal .modal-body{
-            background: none;
-        }
-        .loginForm {
-            width: 70%;
-            margin: 0 auto;
-            padding: 3em 2em 1em 2em;
-            background: #fafafa;
-            border: 1px solid #ebebeb;
-            box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
-        }
-
-        .loginForm .group {
-            position: relative;
-            margin-bottom: 45px;
-            width: 100%;
-            float: left;
-            padding-right: 5%;
-        }
-
-        .loginForm input {
-            font-size: 18px;
-            padding: 10px 10px 10px 5px;
-            -webkit-appearance: none;
-            display: block;
-            background: #fafafa;
-            color: #636363;
-            width: 100%;
-            border: none;
-            border-radius: 0;
-            border-bottom: 1px solid #757575;
-        }
-
-        .loginForm input:focus { outline: none; }
-
-
-        /* Label */
-
-        .loginForm label {
-            color: #999;
-            font-size: 18px;
-            font-weight: normal;
-            position: absolute;
-            pointer-events: none;
-            left: 5px;
-            top: 10px;
-            transition: all 0.2s ease;
-        }
-
-
-        /* active */
-
-        .loginForm input:focus ~ label,.loginForm input.used ~ label {
-            top: -20px;
-          transform: scale(.75); left: -2px;
-            /* font-size: 14px; */
-            color: #4a89dc;
-        }
-
-
-        /* Underline */
-
-        .bar {
-            position: relative;
-            display: block;
-            width: 100%;
-        }
-
-        .bar:before, .bar:after {
-            content: '';
-            height: 2px;
-            width: 0;
-            bottom: 1px;
-            position: absolute;
-            background: #4a89dc;
-            transition: all 0.2s ease;
-        }
-
-        .bar:before { left: 50%; }
-
-        .bar:after { right: 50%; }
-
-
-        /* active */
-
-        .loginForm input:focus ~ .bar:before,.loginForm input:focus ~ .bar:after { width: 50%; }
-
-
-        /* Highlight */
-
-        .highlight {
-            position: absolute;
-            height: 60%;
-            width: 100px;
-            top: 25%;
-            left: 0;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-
-        /* active */
-
-        .loginForm input:focus ~ .highlight {
-            animation: inputHighlighter 0.3s ease;
-        }
-
-
-        /* Animations */
-
-        @keyframes inputHighlighter {
-            from { background: #4a89dc; }
-            to 	{ width: 0; background: transparent; }
-        }
-
-
-
-    </style>
 </head>
 <body id="top">
     <!--[if lt IE 8]>
@@ -290,9 +37,6 @@
     <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
           <div class="modal-body">
             <form class="signUpForm" method="POST" action="/user/register/" autocomplete="off">
                 {% csrf_token %}
@@ -312,9 +56,15 @@
               </div>
 
               <div class="group">
-                <input type="text" name="college" id="college"><span class="highlight"></span><span class="bar"></span>
-                <label>College/University</label>
+                <input type="text" name="company" id="company"><span class="highlight"></span><span class="bar"></span>
+                <label>Organization</label>
               </div>
+              <div class="group">
+                <input type="text" name="position" id="position"><span class="highlight"></span><span class="bar"></span>
+                <label>Position</label>
+              </div>
+
+
               <div class="group">
                 <input type="text" name="city" id="city"><span class="highlight"></span><span class="bar"></span>
                 <label>City</label>
@@ -325,7 +75,7 @@
                 <label>Country</label>
               </div>
 
-              <div class="group" style="width: 100%">
+              <div class="group">
                 <input type="text" name="contact" id="contact"><span class="highlight"></span><span class="bar"></span>
                 <label>Contact</label>
               </div>
@@ -388,7 +138,6 @@
         <section class="navigation">
             <header>
                 <div class="header-content">
-                    <div class="logo"><a href="#"><img src="{% static 'sedna/img/sedna-logo.png' %}" alt="Sedna logo"></a></div>
                     <div class="header-nav">
                         <nav>
                             <ul class="primary-nav">
@@ -398,8 +147,8 @@
                                 <li><a href="#download">Download</a></li>
                             </ul>
                             <ul class="member-actions">
-                                <li><a class="login" data-toggle="modal" data-target="#loginModal">Log in</a></li>
-                                <li><a class="btn-white btn-small" data-toggle="modal" data-target="#signUpModal">Sign up</a></li>
+                                <li><a class="login btn-login" data-toggle="modal" data-target="#loginModal">Log in</a></li>
+                                <li><a class="btn-white btn-small btn-signup" data-toggle="modal" data-target="#signUpModal">Sign up</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -413,43 +162,53 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="hero-content text-center">
-                        <h1>Connect, Get Advised, Succeed!</h1>
+{#                        <img class="img-responsive logo" src="{% static 'img/logo1.png' %}" alt="Sedna logo">#}
+                        <h1>Connect, <span style="color: rgb(255, 82, 116)" class="word2">Get Mentored</span>, Succeed!</h1>
                         <p class="intro">MentorBuddy is a platform that connects entrepreneurs with top advisors & industry experts to conduct market research, get strategic business advice, or learn a specialized skill to help them grow their business.</p>
-                        <a href="#" class="btn btn-fill btn-large btn-margin-right">Download</a> <a href="#" class="btn btn-accent btn-large">Learn more</a>
+                        <a href="#intro" class="btn btn-accent btn-large">Learn more</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="down-arrow floating-arrow"><a href="#"><i class="fa fa-angle-down"></i></a></div>
     </section>
-    <section class="intro section-padding">
+    <section class="intro section-padding" id="intro">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 intro-feature">
+                <div class="col-md-3 intro-feature">
                     <div class="intro-icon">
                         <span data-icon="&#xe033;" class="icon"></span>
                     </div>
                     <div class="intro-content">
-                        <h5>Easily Customised</h5>
-                        <p>Easily customise Sedna to suit your start up, portfolio or product. Take advantage of the layered Sketch file and bring your product to life.</p>
+                        <h5>Explore</h5>
+                        <p>Search from a curated list of experts across various domains.</p>
                     </div>
                 </div>
-                <div class="col-md-4 intro-feature">
+                <div class="col-md-3 intro-feature">
                     <div class="intro-icon">
                         <span data-icon="&#xe030;" class="icon"></span>
                     </div>
                     <div class="intro-content">
-                        <h5>Modern Design</h5>
-                        <p>Designed with modern trends and techniques in mind, Sedna will help your product stand out in an already saturated market.</p>
+                        <h5>Select</h5>
+                        <p>Select an expert best suited for your startup, stage and problem.</p>
                     </div>
                 </div>
-                <div class="col-md-4 intro-feature">
+                <div class="col-md-3 intro-feature">
+                    <div class="intro-icon">
+                        <i class="fa fa-phone fa-3x" style="color: rgb(255, 82, 116);"></i>
+                    </div>
+                    <div class="intro-content last">
+                        <h5>Call</h5>
+                        <p>Schedule a call by giving them the background of your problem.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 intro-feature">
                     <div class="intro-icon">
                         <span data-icon="&#xe046;" class="icon"></span>
                     </div>
                     <div class="intro-content last">
-                        <h5>Responsive Development</h5>
-                        <p>Built using the latest web technologies like html5, css3, and jQuery, rest assured Sedna will look smashing on every device under the sun.</p>
+                        <h5>Solve</h5>
+                        <p>Find solutions to your problems on the call and implement them.</p>
                     </div>
                 </div>
             </div>
@@ -639,5 +398,137 @@
     <script src="{% static 'sedna/js/jquery.flexslider-min.js' %}"></script>
     <script src="{% static 'sedna/bower_components/classie/classie.js' %}"></script>
     <script src="{% static 'sedna/bower_components/jquery-waypoints/lib/jquery.waypoints.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".word2").effect("bounce",{direction: 'up', times: 1},1000)
+        })
+        function validateForm(form) {
+            var valid = 1;
+            var formElements = form.elements;
+            for(var i = 0; i < formElements.length; i++) {
+
+                if(formElements[i].value == '' && formElements[i].type != "submit") {
+                    $("#"+formElements[i].id).css({'border-bottom':"1px solid red"});
+                    valid *= 0;
+                }
+            }
+            return valid;
+        }
+
+        $(document).ready(function() {
+            $('.signUpForm').submit(function(e) {
+                e.preventDefault();
+                var form = document.getElementsByClassName('signUpForm')[0];
+                if(validateForm(form) == 1) {
+                    var postData = $(this).serializeArray();
+                    var msg='';
+                    var owner = $(this);
+                    $(this).find(".fa-spinner").removeClass('hide');
+                    $(this).find(".signUpText").text('SIGNING YOU UP ...');
+
+                    $("signUpButton").addClass('disabled');
+                    $.ajax({
+                        url: '/user/register/',
+                        type: 'POST',
+                        data: postData,
+                        dataType: 'json',
+                        success: function(data) {
+                            if(data["error"] == true) {
+                                $("#signUpError").html(data['message']);
+                                $("signUpButton").removeClass('disabled');
+                                owner.find(".fa-spinner").addClass('hide');
+                                owner.find(".signUpText").text('SIGN UP!');
+                            }
+                            else {
+
+                                msg = "<div class='black tiles white'><i class='fa fa-envelope fa-3x'></i><br>You're just one step away!<br>We have sent you a verification email. Check for the same!<div> ";
+                                $("#signUpModal .modal-header").css({"background-color": "white"});
+                                $("#signUpModal .modal-content").css({"background-color": "white"});
+                                $("#signUpModal .modal-body").css({"background-color": "white"});
+                                $('.signUpForm').fadeOut();
+                                $('#signUpModal .modal-body').html(msg);
+                            }
+                        },
+                        error: function(data) {
+                            alert("Oops! ajax error");
+                        }
+                    });
+                }
+                else {
+                    $("#signUpError").html("Please check all the input fields");
+                }
+            });
+            $(".loginForm").submit(function(event) {
+                event.preventDefault();
+                var form = document.getElementsByClassName('loginForm')[0];
+                if(validateForm(form) == 1) {
+                    $(".loginButton").addClass("disabled");
+                    $(".loginButton .text").html("Logging you in...")
+                    $(".loginButton i").removeClass("hide");
+                    var postData = $(this).serializeArray();
+                    $.ajax({
+                        url: '/user/login/',
+                        type: 'POST',
+                        data: postData,
+                        dataType: 'json',
+                        success: function(data) {
+                            if(data["error"] == true) {
+                                $("#loginError").html(data['msg']);
+                                $(".loginButton .text").html("Login");
+                                $(".loginButton i").addClass("hide");
+                            }
+                            else {
+                                location.reload();
+                            }
+                        },
+                            error: function(data) {
+                                $("#loginError").html("Ajax error! please reload");
+                                $(".loginButton .text").html("Login");
+                                $(".loginButton i").addClass("hide");
+                        }
+                    });
+                }
+                else {
+                    $("#loginError").html("All fields are required")
+                }
+
+
+            });
+        });
+    <!-- Sign Up Form -->
+        $(window, document, undefined).ready(function() {
+          $('input').blur(function() {
+            var $this = $(this);
+            if ($this.val())
+              $this.addClass('used');
+            else
+              $this.removeClass('used');
+          });
+
+          var $ripples = $('.ripples');
+
+          $ripples.on('click.Ripples', function(e) {
+
+            var $this = $(this);
+            var $offset = $this.parent().offset();
+            var $circle = $this.find('.ripplesCircle');
+
+            var x = e.pageX - $offset.left;
+            var y = e.pageY - $offset.top;
+
+            $circle.css({
+              top: y + 'px',
+              left: x + 'px'
+            });
+
+            $this.addClass('is-active');
+
+          });
+
+          $ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function(e) {
+            $(this).removeClass('is-active');
+          });
+        });
+    </script>
 </body>
 </html>

@@ -283,6 +283,6 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question)
     answer = models.TextField(null=False, blank=True)
-
+    mentor = models.ForeignKey(User, related_name='answer', null=False)
     class Meta:
         verbose_name_plural = "Answers"
