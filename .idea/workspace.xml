@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/sedna/css/custom.css" afterPath="$PROJECT_DIR$/static/sedna/css/custom.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/sedna.html" afterPath="$PROJECT_DIR$/templates/user/sedna.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/sedna/css/styles.css" afterPath="$PROJECT_DIR$/static/sedna/css/styles.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/mentor/views.py" afterPath="$PROJECT_DIR$/apps/mentor/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MB-Project.iws" />
@@ -39,8 +37,8 @@
       <file leaf-file-name="sedna.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/user/sedna.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="377" column="7" selection-start-line="377" selection-start-column="7" selection-end-line="377" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.6426513">
+              <caret line="438" column="68" selection-start-line="438" selection-start-column="68" selection-end-line="438" selection-end-column="68" />
               <folding>
                 <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
@@ -1112,7 +1110,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="490" column="73" selection-start-line="490" selection-start-column="65" selection-end-line="490" selection-end-column="73" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1169,8 +1167,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/user/sedna.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="377" column="7" selection-start-line="377" selection-start-column="7" selection-end-line="377" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.6426513">
+          <caret line="438" column="68" selection-start-line="438" selection-start-column="68" selection-end-line="438" selection-end-column="68" />
           <folding>
             <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
