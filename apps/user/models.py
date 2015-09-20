@@ -65,6 +65,7 @@ class UserProfile(models.Model):
     resume = models.FileField(upload_to=path_and_rename, null=True, blank=True)
     picture = models.CharField(max_length=256, default='/static/img/no-profile-pic.jpg')  # Contains URL
     is_mentor = models.BooleanField(default=False)
+    is_bmentor = models.BooleanField(default=False)
     is_new = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
     email_verified = models.BooleanField(default=False)

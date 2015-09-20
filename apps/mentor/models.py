@@ -95,3 +95,41 @@ class Ratings(models.Model):
     class Meta:
         verbose_name_plural = "Ratings"
 
+class Business_categories(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=35, blank=False, null=False)
+
+    def __unicode__(self):
+        return u'{}'.format(self.id,self.name)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
+    class Meta:
+        verbose_name_plural = "Business Categories"
+
+class Business_subcategories(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=35, blank=False, null=False)
+    category = models.ForeignKey(Business_categories, editable=False)
+
+    def __unicode__(self):
+        return u'{}'.format(self.id,self.name)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
+    class Meta:
+        verbose_name_plural = "Business Subcategories"
+
+class Business_Mentor_Tags(models.Model):
+    mentor = models.ForeignKey(UserProfile, limit_choices_to={'is_bmentor': True})
+    subcategory = models.ForeignKey(Business_subcategories)
+
+    def __unicode__(self):
+        return u'{}'.format(self.mentor,self.subcategory)
+        # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
+        # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
+
+    class Meta:
+        verbose_name_plural = "Business Mentor Tags"
+
+
