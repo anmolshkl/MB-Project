@@ -439,10 +439,10 @@ Intro
   font-weight: bold; }
 
 .intro-icon {
-  display: inline-block;
+  display: block;
   vertical-align: top;
   padding: 6px 0 0 0;
-  margin-right: 20px;
+  margin: 0 auto;
   width: 40px; }
 
 .intro-content {
@@ -786,7 +786,7 @@ footer {
     right: 0;
     width: 40%;
     height: 100%;
-    padding: 142px 0 0 70px; }
+    padding: 50px 0 0 70px; }
     footer .social-share p {
       color: #fff;
       text-transform: uppercase;
@@ -819,7 +819,7 @@ footer {
     footer .social-share a i {
       margin-top: 20px; }
   footer .footer-links {
-    margin: 120px 0 120px 0; }
+    margin: 50px 0 50px 0; }
 
 /* ==========================================================================
 Icon font (http://www.elegantthemes.com/blog/freebie-of-the-week/free-line-style-icons)
@@ -1196,6 +1196,3 @@ you can use the generic selector below, but it's slower:
     animation-name: bounce;
 }
 
-.icon {
-  margin-left: 25%;
-}
