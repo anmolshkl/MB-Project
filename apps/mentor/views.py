@@ -295,7 +295,7 @@ def self_profile_view(request):
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
-            edu_list.append({'inst': obj.institution, 'loc': obj.location, 'degree': obj.degree,
+            edu_list.append({'inst': obj.institution, 'city': obj.city,'state': obj.state, 'country': obj.country, 'degree': obj.degree,
                              'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'coun': obj.country})
 
         context_dict['edu_list'] = edu_list
@@ -304,7 +304,7 @@ def self_profile_view(request):
         emp_list = []
         for obj in empObjs:
             emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
-                             'from': obj.from_date, 'to': obj.to_date})
+                             'from': obj.from_year, 'to': obj.to_year})
 
         context_dict['emp_list'] = emp_list
 
@@ -533,7 +533,7 @@ def edit_profile(request):
         profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         edu_formset = EducationDetailsFormSet(request.POST, instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(request.POST, instance=user_profile)
-        if user_form.is_valid() and profile_form.is_valid() and edu_formset.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and edu_formset.is_valid() and emp_formset.is_valid():
             if "url" in request.POST:
                 user_profile.picture = cropAndSave(user, request.POST)
                 user_profile.save()

@@ -245,7 +245,7 @@ def register(request):
                 # Send email with activation key
                 email_subject = 'Account confirmation'
                 email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + settings.SITE_URL + "user/confirm/" + activation_key
-                # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=False)
+                send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=True)
 
                 return JsonResponse({'error': False})
         else:
@@ -554,7 +554,7 @@ def contact(request):
             if request.POST['name'] != '' and request.POST['email'] != '' and request.POST['query'] != '':
                 send_mail("New query from " + request.POST['name'],
                           request.POST['query'] + "\n - " + request.POST['name'] + "\n" + request.POST['email'],
-                          "anmol@mentorbuddy.in", ["anmol@mentorbuddy.in"], fail_silently=False)
+                          "buddy@mentorbuddy.in", ["buddy@mentorbuddy.in"], fail_silently=True)
             else:
                 error = True
                 msg = "Input fields can't be empty!"
