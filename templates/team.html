@@ -1,0 +1,151 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Abbout us-MB</title>
+		<meta name="description" content="About Mentor Buddy" />
+		<meta name="keywords" content="about, mentor buddy" />
+		<meta name="author" content="MB" />
+		<script src="{% static 'FullscreenForm/js/modernizr.custom.js' %}"></script>
+        <style>
+            @import url(http://fonts.googleapis.com/css?family=Raleway:400,700);
+
+            *, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
+            .clearfix:before, .clearfix:after { content: ''; display: table; }
+            .clearfix:after { clear: both; }
+
+            html, body, .container {
+                height: 100%;
+            }
+
+            body {
+                background: url("/static/img/bg2.jpg");
+                background-size: cover;
+                padding: 50px;
+                color: #fff;
+                font-weight: 400;
+                font-size: 1em;
+                font-family: 'Raleway', Arial, sans-serif;
+                overflow: hidden;
+                overflow-y: scroll;
+                min-height: 590px;
+                font-size: 1em !important;
+            }
+            p {
+                font-size: 20px;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="container">
+
+			<div class="fs-form-wrap" id="fs-form-wrap">
+				<div class="fs-title">
+					<!--span style="font-size: 40px;color: black;text-decoration: underline">MentorBuddy</span><-->
+				</div>
+				<form id="contactForm" class="fs-form fs-form-full" autocomplete="off" method="POST" action="/user/contact/submit/">
+                    {%  csrf_token %}
+											
+							
+							
+							<label class="fs-field-label fs-anim-upper" for="q1">
+							<font size="7"> <b>What is MentorBuddy ? </b></font>							
+							</label>							
+							<br>
+							<p>MentorBuddy is a peer networking platform which helps students navigate global
+							education. It eases the process of information exchange and facilitates end user assistance and helps simplify the process through which people communicate. We 
+							deliver real information from real people to an audience which is keen to give a kick start to their careers through global education.</p>
+							<br> <br>
+
+							<label class="fs-field-label fs-anim-upper" for="q1">
+							<font size="7"> <b>Vision </b></font>							
+							</label>
+							<br>
+							<p>MentorBuddy aims to be the central hub for a student anywhere in the world
+							who wishes to be a part of the global education migration movement.</p>
+							<br> <br>
+
+													
+							<label class="fs-field-label fs-anim-upper" for="q1">
+							<font size="7"> <b>Mission </b></font>							
+							</label>
+							<br>
+							<p>We facilitate the communication of aspirants with the grass root level
+							information about the place they wish to gain their next education from. MB reduces the struggle of a student to find best education globally through a simplistic and direct approach.</p>
+							<br> <br>
+
+							
+							<label class="fs-field-label fs-anim-upper" for="q1">
+							<font size="7"> <b>Idea </b></font>							
+							</label>
+							<br> <br>
+                            <p>The idea rose from the highly cluttered space of foreign studies. The space is highly unorganized and lacks decent information sharing space. Using our platform the student gets an in-depth knowledge and assistance from mentors who are been-there-done-that kind. The current system provides these students with assistance that can beeasily found on the internet. Giving them no real value for money. Also the mentors whoare basically students in a US/Europe/Canada/Australia university are paid for theirservice, which lessens the financial burden over them. Thus benefiting both sides equally.</p>
+                            <br>
+						
+					
+                   
+                </form><!-- /fs-form -->
+			</div><!-- /fs-form-wrap -->
+
+
+		</div><!-- /container -->
+
+        <div class="modal"><!-- Place at bottom of page --></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="{% static 'FullscreenForm/js/classie.js' %}"></script>
+		<script src="{% static 'FullscreenForm/js/selectFx.js' %}"></script>
+		<script src="{% static 'FullscreenForm/js/fullscreenForm.js' %}"></script>
+		<script>
+            $body = $("body");
+            $(document).on({
+                ajaxStart: function() { $body.addClass("loading");    },
+                 ajaxStop: function() { $body.removeClass("loading"); }
+            });
+			(function() {
+				var formWrap = document.getElementById( 'fs-form-wrap' );
+
+				[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {
+					new SelectFx( el, {
+						stickyPlaceholder: false,
+						onChange: function(val){
+							document.querySelector('span.cs-placeholder').style.backgroundColor = val;
+						}
+					});
+				} );
+
+				new FForm( formWrap, {
+					onReview : function() {
+						classie.add( document.body, 'overview' ); // for demo purposes only
+					}
+				} );
+			})();
+            $(".fs-submit").click(function(e) {
+                var data = $("#contactForm").serializeArray();
+                $.ajax({
+                    url: "/user/contact/submit/",
+                    type: "POST",
+                    data: data,
+                    dataType: "json",
+                    success: function(data) {
+                        if(data['error'] == false) {
+                            $("#fs-form-wrap").html("<div class='thankYou'> <h1>Thank you! We'll get back to you</h1><br><a href='/' class='btn btn-info btn-large'>Go back</a></div>");
+                        }
+                        else {
+                            alert(data['msg']);
+                        }
+                    },
+                    failure: function() {
+                        alert("failed");
+                        if(data['error'] == false) {
+                            $("#fs-form-wrap").html("<h1>Some error occurred.<br>Please try again</h1>");
+                        }
+                    }
+                });
+            });
+		</script>
+	</body>
+</html>
