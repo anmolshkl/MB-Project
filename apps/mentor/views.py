@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from random import choice
 from string import letters
 from apps.mentor.forms import EducationDetailsFormSet, EmploymentDetailsFormSet
-from apps.mentor.models import EducationDetails, EmploymentDetails, UserActivity, Timings, Ratings
+from apps.mentor.models import *
 from allauth.socialaccount.models import SocialAccount, SocialApp
 # Create your views here.
 from django.conf import settings
@@ -554,6 +554,22 @@ def edit_profile(request):
         edu_formset = EducationDetailsFormSet(instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
 
+
+    context = RequestContext(request)
+    context_dict = {}
+
+    categories = Business_categories.objects.all()
+
+    dict_index = 0;
+    for cat in categories:
+        subcat_list = []
+        print cat.name
+        subcategories = Business_subcategories.objects.filter(category_id=cat.id)
+        print subcategories
+        subcat_list.append({'category_id':cat.id, 'category_name':cat.name,'subcategories':subcategories})
+        context_dict[dict_index] = subcat_list
+        dict_index = dict_index +1
+
     return render(request, "mentor/edit_profile.html", locals())
 
 
@@ -909,3 +925,26 @@ def update_timings(request):
         msg = "Not a post request"
 
     return JsonResponse({'error': error, 'msg': msg})
+
+@login_required
+def update_tags(request):
+
+    context = RequestContext(request)
+    context_dict = {}
+
+    categories = Business_categories.objects.all()
+
+    dict_index = 0;
+    for cat in categories:
+        subcat_list = []
+        print cat.name
+        subcategories = Business_subcategories.objects.filter(category_id=cat.id)
+        print subcategories
+        subcat_list.append({'category_id':cat.id, 'category_name':cat.name,'subcategories':subcategories})
+        context_dict[dict_index] = subcat_list
+        dict_index = dict_index +1
+        
+    
+
+
+    return render_to_response("mentor/update_tags.html",{'categories':categories,'context_dict':context_dict,'context':context})
