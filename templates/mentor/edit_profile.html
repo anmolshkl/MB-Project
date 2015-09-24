@@ -334,6 +334,7 @@
             <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Personal</a></li>
             <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Education</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employment</a></li>
+            <li role="presentation"><a href="#update-tags" aria-controls="settings" role="tab" data-toggle="tab">Tags</a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -387,6 +388,32 @@
                     {{ profile_form.about }}
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="update-tags">
+              
+            <div class="category_div" id="category_div"> <b> CATEGORIES </b>
+            <select name="category" class="required-entry" id="category" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
+                <option value="">select category</option>
+                {% for cat in categories %}
+                        <option value= "{{  cat.name }}"> {{ cat.name }} </option>
+                        {% endfor %}
+                
+                
+            </select>
+        </div>
+        <div class="sub_category_div" id="sub_category_div">  <b>SUBCATEGORIES</b>
+            <script type="text/javascript" language="JavaScript">
+                document.write('<select name="subcategory" id="subcategory"><option value="">select subcategory</option></select>')
+            </script>
+            <noscript>
+                <select name="subcategory" id="subcategory" >
+                    <option value="">select subcategory</option>
+                </select>
+            </noscript>
+        </div>
+
+
+            </div>
+            
             <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
                 {% if edu_formset.total_form_count != 0 %}
                     {% for edu_form in edu_formset %}
@@ -795,4 +822,33 @@
         });
 
     </script>
+<script language="javascript" type="text/javascript">
+            function dynamicdropdown(listindex)
+            {
+                document.getElementById("subcategory").length = 0;
+                switch (listindex)
+                {   
+                    {% for key,value in context_dict.items %}
+
+                    {% for list in value %}
+                    
+                    case "{{ list.category_name }}" :
+
+                        document.getElementById("subcategory").options[0]=new Option("Please select framework","");
+
+                        {% for subcat in list.subcategories %}
+                        
+                        document.getElementById("subcategory").options[{{ forloop.counter  }}]=new Option( "{{ subcat.name }}", "{{ subcat.id }}");
+
+                        {% endfor %}
+                        break;
+                    {% endfor %}
+
+                    {% endfor %}
+                    
+                }
+                return true;
+            }
+       </script>
+
 {%  endblock %}

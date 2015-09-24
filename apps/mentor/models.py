@@ -113,7 +113,7 @@ class Business_subcategories(models.Model):
     category = models.ForeignKey(Business_categories, editable=False)
 
     def __unicode__(self):
-        return u'{}'.format(self.id,self.name)
+        return u'{}'.format(self.id,self.name,self.category)
         # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
         # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
 
