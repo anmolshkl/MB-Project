@@ -1,5 +1,5 @@
 from datetime import datetime
-from apps.mentor.models import EducationDetails
+from apps.mentor.models import EducationDetails, Business_categories, Business_subcategories
 from apps.user.models import Request, Notification
 from django import template
 from django.contrib.auth.models import User
@@ -48,3 +48,21 @@ def filter_resume_name(name, arg):
     print arg
     name = str(arg).split("/").pop()
     return name
+
+@register.assignment_tag
+def get_categories():
+    context_dict = {}
+    ret_obj = {}
+    categories = Business_categories.objects.all()
+    dict_index = 0;
+
+    for cat in categories:
+        subcat_list = []
+        subcategories = Business_subcategories.objects.filter(category_id=cat.id)
+        subcat_list.append({'category_id': cat.id, 'category_name': cat.name, 'subcategories': subcategories})
+        context_dict[dict_index] = subcat_list
+        dict_index = dict_index +1
+
+    ret_obj['context_dict'] = context_dict
+    ret_obj['categories'] = categories
+    return ret_obj
