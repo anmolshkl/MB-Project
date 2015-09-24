@@ -12,7 +12,7 @@ from apps.user.models import UserProfile
 class EducationDetails(models.Model):
     """Stores educational details of the user"""
 
-    parent = models.ForeignKey(UserProfile, editable=False)
+    parent = models.ForeignKey(UserProfile,related_name='education_details', editable=False)
     institution = models.CharField(max_length=128, blank=True)
     city = models.CharField(max_length=128, blank=True)
     state = models.CharField(max_length=128, blank=True, null=True)

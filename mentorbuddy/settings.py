@@ -100,16 +100,27 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',    # This must be first on the list
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.django_visitor_information.middleware.TimezoneMiddleware',
     'apps.django_visitor_information.middleware.VisitorInformationMiddleware',
-
 )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '/var/run/redis/redis.sock',
+    },
+}
+
+# write session information to the database and only load it from the cache by using:
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 
 SITE_ID = 1
 
@@ -195,7 +206,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_uid',
     'social.pipeline.social_auth.auth_allowed',
     'social.pipeline.social_auth.social_user',
-    'social.pipeline.user.get_username',
+    # 'social.pipeline.user.get_username',
+    'apps.user.utils.get_username',
     'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.create_user',
     'social.pipeline.social_auth.associate_user',
@@ -204,6 +216,7 @@ SOCIAL_AUTH_PIPELINE = (
     'apps.user.views.save_social_profile'
     # 'profiles.pipeline.user_details'
 )
+FIELDS_STORED_IN_SESSION = ['expert']
 
 # Python-social-auth settings
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['public_profile', 'user_birthday', 'user_education_history', 'user_location', 'email']

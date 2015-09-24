@@ -117,49 +117,6 @@ class SocialProfile(models.Model):
         verbose_name = verbose_name_plural = "Social Profiles"
 
 
-# Create your models here.@receiver ([user_signed_up, user_logged_in], sender=User)
-@receiver([user_signed_up, user_logged_in])
-def save_data(sender, **kwargs):
-    ''' 
-    things to do:
-                1.create social profile for the user and populate it 
-                2.let the adapter do its work of returning different login urls->dont need this now
-    '''
-    user = kwargs.pop('user')
-    userProfile, usrprof_created = UserProfile.objects.get_or_create(user=user)
-    socialProfiles, socprof_created = SocialProfile.objects.get_or_create(parent=userProfile)
-
-    # try to check whether user has any data provided by LinkedIn
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='linkedin')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        # Save user's social profile image everytime he logs in/hardcode for LinkedIn
-        userProfile.picture = extra_data['picture-url']
-        userProfile.email_verified = True
-        userProfile.save()
-        socialProfiles.profile_url_linkedin = extra_data['public-profile-url']
-        socialProfiles.profile_pic_url_linkedin = extra_data['picture-url']
-        socialProfiles.save()
-
-    extra_data = None
-    try:
-        extra_data = user.socialaccount_set.filter(provider='facebook')[0].extra_data
-    except:
-        pass
-    if extra_data:
-        # Save user's social profile image everytime he logs in/hardcode for facebook
-        userProfile.picture = "http://graph.facebook.com/" + user.socialaccount_set.filter(provider='facebook')[
-            0].uid + "/picture?type=large"
-        userProfile.email_verified = True
-        userProfile.save()
-        socialProfiles.profile_url_facebook = extra_data['link']
-        socialProfiles.profile_pic_url_facebook = userProfile.picture
-        socialProfiles.save()
-
-
 class MentorSearchForm(SearchForm):
     def no_query_found(self):
         return self.searchqueryset.all()
@@ -189,7 +146,7 @@ class Request(models.Model):
     requestDate = models.DateField(blank=False, default=datetime.date.today)
     callType = apps.user.fields.IntegerRangeField(min_value=1, max_value=3, default=1)
     is_completed = models.BooleanField(default=False)
-
+    message = models.TextField(blank=True, null=True)
     class Meta:
         verbose_name = "Request"
 

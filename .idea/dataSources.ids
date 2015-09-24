@@ -2280,6 +2280,31 @@
       <column name="balance" sqlType="DOUBLE" precision="22" scale="0" nullable="false" jdbcType="8"/>
       <primary-key name="PRIMARY" columns="parent_id"/>
     </table>
+    <table name="mentor_business_categories" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="category_id_refs_id_86200d28" table="mentor_business_subcategories" schema="" catalog="mb_db2" columns="category_id"/>
+    </table>
+    <table name="mentor_business_mentor_tags" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="subcategory_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="mentor_id_refs_user_id_197abe93" columns="mentor_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="subcategory_id_refs_id_ddf40de3" columns="subcategory_id" ref-table="mentor_business_subcategories" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="mentor_business_mentor_tags_6fdebf92" unique="false" columns="mentor_id"/>
+      <index name="mentor_business_mentor_tags_790ef9fb" unique="false" columns="subcategory_id"/>
+    </table>
+    <table name="mentor_business_subcategories" schema="" catalog="mb_db2" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12"/>
+      <column name="category_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="category_id_refs_id_86200d28" columns="category_id" ref-table="mentor_business_categories" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="subcategory_id_refs_id_ddf40de3" table="mentor_business_mentor_tags" schema="" catalog="mb_db2" columns="subcategory_id"/>
+      <index name="mentor_business_subcategories_6f33f001" unique="false" columns="category_id"/>
+    </table>
     <table name="mentor_educationdetails" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2373,9 +2398,11 @@
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="question_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="answer" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="question_id_refs_id_4ff7cd5d" columns="question_id" ref-table="user_question" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="user_answer_25110688" unique="false" columns="question_id"/>
+      <index name="user_answer_6fdebf92" unique="false" columns="mentor_id"/>
     </table>
     <table name="user_calllog" schema="" catalog="mb_db2" type="TABLE">
       <column name="request_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2446,22 +2473,6 @@
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="parent_id_refs_user_id_e6e7e586" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
-    <table name="user_socialprofiles" schema="" catalog="mb_db2" type="TABLE">
-      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="profile_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_pic_url_facebook" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_pic_url_linkedin" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_pic_url_google" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_pic_url_github" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <column name="profile_pic_url_twitter" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="parent_id_refs_user_id_f9d6c4be" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
-    </table>
     <table name="user_todo" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="parent_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -2483,15 +2494,16 @@
       <column name="resume" sqlType="VARCHAR" precision="100" scale="0" nullable="true" jdbcType="12"/>
       <column name="picture" sqlType="VARCHAR" precision="256" scale="0" nullable="false" jdbcType="12"/>
       <column name="is_mentor" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="is_bmentor" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="is_new" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="is_approved" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="timezone" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="user_id"/>
+      <exported-key name="mentor_id_refs_user_id_197abe93" table="mentor_business_mentor_tags" schema="" catalog="mb_db2" columns="mentor_id"/>
       <exported-key name="parent_id_refs_user_id_aa0c1dbd" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
       <exported-key name="parent_id_refs_user_id_4d3beff4" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
       <exported-key name="parent_id_refs_user_id_e6e7e586" table="user_socialprofile" schema="" catalog="mb_db2" columns="parent_id"/>
-      <exported-key name="parent_id_refs_user_id_f9d6c4be" table="user_socialprofiles" schema="" catalog="mb_db2" columns="parent_id"/>
     </table>
     <table name="user_verificationcodes" schema="" catalog="mb_db2" type="TABLE">
       <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>

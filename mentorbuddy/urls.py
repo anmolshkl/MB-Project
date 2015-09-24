@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from django.contrib import admin
 from django.views.generic import TemplateView
-
+import apps
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,7 +15,7 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('apps.user.urls')),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-                       url(r'^sedna/$', TemplateView.as_view(template_name='user/sedna.html'), name='about')
+                       url(r'^sedna/$', apps.user.views.bmentor_index, name='sedna')
 
                        )
 

@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Complete your registeration!</title>
+
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <style>
+
+        a {
+            outline: none;
+            color: #dd3e62;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #1e1a1b;
+        }
+
+         a:focus {
+            outline: none;
+         }
+
+        html,body {
+            background: url({% static 'img/footer_lodyas.png' %});
+            font-family: Lato;
+        }
+        .formDiv {
+            margin: 50px auto;
+            background-color: white;
+            max-width: 550px;
+            width: 80%;
+            display: block;
+            text-align: center;
+            padding: 20px 50px 20px 50px;
+
+
+        }
+        .choice {
+            width: 49%;
+            display: inline-block;
+            border: 1px solid lightgrey;
+            cursor: pointer;
+            margin: 10px 0px 30px 0px;
+            height: 50px;
+            line-height: 50px;
+            -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .choice img {
+            max-width: 100px;
+            max-height: 130px;
+        }
+        .choice:hover {
+            border-color: rgba(30, 70, 144, 0.7);
+            background-color: rgba(30, 70, 144, 0.1);
+        }
+        .selected {
+            background-color: rgba(30, 70, 144, 0.1);
+        }
+        .form {
+            margin-top: 30px;
+        }
+
+         .group {
+            position: relative;
+            margin-bottom: 45px;
+            width: 100%;
+            float: left;
+        }
+
+         input {
+            font-size: 18px;
+            padding: 10px 10px 10px 5px;
+            -webkit-appearance: none;
+            display: block;
+            background: #fafafa;
+            color: #636363;
+            width: 100%;
+            border: none;
+            border-radius: 0;
+            border-bottom: 1px solid #757575;
+        }
+
+         input:focus { outline: none; }
+
+
+        /* Label */
+
+         label {
+            color: #999;
+            font-size: 18px;
+            font-weight: normal;
+            position: absolute;
+            pointer-events: none;
+            left: 5px;
+            top: 10px;
+            transition: all 0.2s ease;
+        }
+
+
+        /* active */
+
+         input:focus ~ label, input.used ~ label {
+            top: -20px;
+          transform: scale(.75); left: -2px;
+            /* font-size: 14px; */
+            color: #4a89dc;
+        }
+
+
+        /* Underline */
+
+        .bar {
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+
+        .bar:before, .bar:after {
+            content: '';
+            height: 2px;
+            width: 0;
+            bottom: 1px;
+            position: absolute;
+            background: #4a89dc;
+            transition: all 0.2s ease;
+        }
+
+        .bar:before { left: 50%; }
+
+        .bar:after { right: 50%; }
+
+
+        /* active */
+
+         input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
+
+
+        /* Highlight */
+
+        .highlight {
+            position: absolute;
+            height: 60%;
+            width: 100px;
+            top: 25%;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+
+        /* active */
+
+         input:focus ~ .highlight {
+            animation: inputHighlighter 0.3s ease;
+        }
+
+
+        /* Animations */
+
+        @keyframes inputHighlighter {
+            from { background: #4a89dc; }
+            to 	{ width: 0; background: transparent; }
+        }
+        /* Button */
+        .button {
+          display: inline-block;
+          position: relative;
+          width: 120px;
+          height: 32px;
+          line-height: 32px;
+          border-radius: 2px;
+          font-size: 0.9em;
+          background-color: #fff;
+          color: #646464;
+            cursor: pointer;
+        }
+
+        .button > paper-ripple {
+          border-radius: 2px;
+          overflow: hidden;
+        }
+        .button.blue {
+          background-color: #4285f4;
+          color: #fff;
+        }
+        .button.raised {
+            transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.2s;
+            -webkit-transition-delay: 0.2s;
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        }
+
+        .button.raised:active {
+          box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+          transition-delay: 0s;
+            -webkit-transition-delay: 0s;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="formDiv">
+        <h3>Hey {{ user.first_name }}! You're just one step away!</h3>
+        {% if from == 'expert-page' %}
+            <form name="expertForm" class="expertForm form" method="POST" action="/user/selectV2/expert-page/">
+                {% csrf_token %}
+
+                You're here as a:<br>
+                <div class="choice mentor">
+                    Mentor
+                </div>
+                <div class="choice mentee">
+                    Mentee
+                </div>
+                <input type="hidden" value="" name="user_type" class="user_type">
+                <div class="group">
+                    <input type="password" class="" id="pass1" name="pass1" placeholder="enter password" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="group">
+                    <input type="password" class="" id="pass2" name="pass2" placeholder="confirm password" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="group">
+                    <input type="text" class="" id="contact" name="contact" placeholder="Contact: +919970631xxx" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="error">
+                    <p style="color: red;">{{ error }}</p>
+                </div>
+                <div class="button raised blue submit">
+                  <div class="center" fit>SUBMIT</div>
+                  <paper-ripple fit></paper-ripple>
+                </div>
+            </form>
+        {% else %}
+            <form name="eduForm" class="eduForm form" method="POST" action="/user/selectV2/edu-page/">
+                {% csrf_token %}
+
+                You're here as a:<br>
+                <div class="choice mentor" style="height: 150px;padding-top:10px;">
+
+                    <img src="{% static 'img/mentor.png' %}" style="position: relative;">
+                    <p>Mentor</p>
+
+                </div>
+                <div class="choice mentee" style="height: 150px;padding-top:10px;">
+                    <img src="{% static 'img/mentee.png' %}" style="position: relative;">
+                    <p>Mentee</p>
+                </div>
+
+                <input type="hidden" value="" name="user_type" class="user_type">
+
+                <div class="group" style="width: 49%;margin-right: 2%">
+                    <input type="password" class="" id="pass1" name="pass1" placeholder="enter password" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="group" style="width: 49%">
+                    <input type="password" class="" id="pass2" name="pass2" placeholder="confirm password" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="group">
+                    <input type="text" class="" id="contact" name="contact" placeholder="Contact: +919970631xxx" required>
+                    <span class="highlight"></span><span class="bar"></span>
+                </div>
+                <div class="error">
+                    <p style="color: red;">{{ error }}</p>
+                </div>
+                <div class="button raised blue submit">
+                  <div class="center" fit>SUBMIT</div>
+                  <paper-ripple fit></paper-ripple>
+                </div>
+
+            </form>
+        {% endif %}
+
+    </div>
+    <script src="{% static 'jquery/jquery-2.1.3.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+           $(".submit").click(function(e) {
+                if($(".user_type").val() == "" || $("#pass1").val() == "" || $("#pass2").val() == "" ||
+                        $("#pass1").val() != $("#pass2").val() || $("#contact").val() == "") {
+                    $(".error p").text("Please check all the input fields.");
+
+                } else {
+                    if($("#pass1").val().length < 6) {
+                        $(".error p").text("Password has to be atleast 6 characters long.");
+                    } else {
+                        $("form").submit();
+                    }
+
+                }
+           });
+           $(".choice").click(function(e) {
+              if($(this).text().trim() == 'Mentor') {
+                  $(".user_type").val("mentor");
+                  $(this).addClass("selected");
+                  $(".mentee").removeClass("selected");
+              } else {
+                  $(this).addClass("selected");
+                  $(".mentor").removeClass("selected");
+                  $(".user_type").val("mentee");
+              }
+           });
+
+        });
+    </script>
+</body>
+</html>

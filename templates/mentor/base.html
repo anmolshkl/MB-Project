@@ -329,22 +329,27 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                           <div class="tools"> <a href="javascript:;" class="collapse"></a>  <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
                                         </div>
                                         <div class="grid-body no-border">
-                                          <div class="row-fluid">
-                                              <h3>Complete your <span class="semi-bold">Profile</span></h3>
-                                              <div class="progress progress-striped active ">
-                                                <div data-percentage="0%" style="width: {% profile_progress user.id %}%;" class="progress-bar progress-bar-danger">
+                                            <div class="row-fluid">
+                                                <h3>Complete your <span class="semi-bold">Profile</span></h3>
+                                                <div class="progress progress-striped active ">
+                                                    <div data-percentage="0%" style="width: {% profile_progress user.id %}%;" class="progress-bar progress-bar-danger">
+                                                    </div>
                                                 </div>
-                                              </div>
-                                            <p><a href="/mentor/edit-profile">Complete your profile</a> and provide us your past education details so that we can help mentee connect with you better.</p>
-                                            <br>
-                                            {% if user.user_profile.is_approved != True %}
-                                            <div class="alert alert-block alert-error fade in">
-                                              <button type="button" class="close" data-dismiss="alert"></button>
-                                              <h4 class="alert-heading"><i class="icon-warning-sign"></i> Note</h4>
-                                              <p> You need to upload a resume in order to be approved as a mentor.</p>
+                                                <p>
+                                                    {% autoescape off %}
+                                                    {{ completion_msg }}
+                                                    {% endautoescape %}
+                                                br={{ user.user_profile.resume }}
+                                                </p>
+                                                <br>
+                                                {% if user.user_profile.is_mentor == True and user.user_profile.is_bmentor == False and  user.user_profile.resume == '' %}
+                                                <div class="alert alert-block alert-error fade in">
+                                                    <button type="button" class="close" data-dismiss="alert"></button>
+                                                    <h4 class="alert-heading"><i class="icon-warning-sign"></i> Note</h4>
+                                                    <p>You need to upload a resume in order to be approved as a mentor.</p>
+                                                </div>
+                                                {% endif %}
                                             </div>
-                                            {% endif %}
-                                          </div>
                                         </div>
                                       </div>
                                 </div>

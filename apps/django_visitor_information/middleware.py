@@ -96,11 +96,9 @@ class VisitorInformationMiddleware(object):
         # ip = request.META['REMOTE_ADDR']
 
         # hard code the IP as we are working on localhost
-        print "inside VisitorInformationMddleware"
         ip = get_real_ip(request)
         if ip is None:
             ip = get_ip(request)
-        print ip
         gi = pygeoip.GeoIP(settings.DEFAULT_GEOIP_DATABASE_PATH)
         city = None
         country = None

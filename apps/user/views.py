@@ -31,7 +31,7 @@ from haystack.management.commands import rebuild_index
 from django.core import management
 from haystack import connections
 from StringIO import StringIO
-
+from django.core.cache import cache
 
 def sendMail(request):
     send_mail('Its Working', 'Put your Email message here.', 'anmol@mentorbuddy.in', ['Anmol.shkl@gmail.com'],
@@ -97,6 +97,7 @@ def user_login(request):
         # This information is obtained from the login form.
         email = request.POST['loginEmail']
         password = request.POST['loginPassword']
+
         user = authenticate(username=email, password=password)
         if user:
             # Is the account active? It could have been disabled.
@@ -253,51 +254,6 @@ def register(request):
 
     else:
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
-
-
-def save_social_profile(backend, user, response, *args, **kwargs):
-    print 'inside save profile'
-    for key, value in response.iteritems():
-        print key, value
-
-    profile_created = False
-    profile, profile_created = UserProfile.objects.get_or_create(user=user)
-    social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
-    if profile_created:
-        profile.gender = response.get('gender')
-        profile.link = response.get('link')
-        profile.timezone = response.get('timezone')
-        profile.save()
-    if backend.name == 'facebook':
-        print "logged in with facebook"
-        social_profile.profile_url_facebook = response.get('link')
-        social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
-        social_profile.save()
-        profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
-        if response.get('gender') == 'male':
-            profile.gender = 'M'
-        else:
-            profile.gender = 'F'
-        location = response.get('location')
-        profile.city = str(location).split(',')[0].strip()
-        profile.country = str(location).split(',')[1].strip()
-        profile.save()
-
-    if backend.name == "google-oauth2":
-        print "logged in with google"
-        social_profile.profile_url_google = response.get('url')
-        social_profile.profile_pic_url_google = response.get('image')['url']
-        social_profile.save()
-
-    if backend.name == "linkedin-oauth2":
-        print "logged in with linkedin"
-        profile.about = response.get('summary')
-        profile.country = response.get('location')['country']['code']
-        profile.city = response.get('location')['name']
-        social_profile.profile_url_linkedin = response.get('publicProfileUrl')
-        social_profile.profile_pic_url_linkedin = response.get('pictureUrl')
-        profile.save()
-        social_profile.save()
 
 
 def user_logout(request):
@@ -606,5 +562,140 @@ def rebuild_index(request):
     backend.existing_mapping = None
     management.call_command('rebuild_index', interactive=False, verbosity=1, stdout=content)
     return HttpResponse("Successfully indexed profiles")
+
+
+# Python-social-auth pipeline function that is called after entire social sing up is completed
+def save_social_profile(strategy, backend, user, response,request, *args, **kwargs):
+    print 'inside save profile'
+    for key, value in response.iteritems():
+        print key, value
+
+    profile_created = False
+
+    # set in cache which site type user landed on
+    expert = strategy.session_get('expert')
+    cache.set(user.email, expert)
+
+    profile, profile_created = UserProfile.objects.get_or_create(user=user)
+
+    social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
+    if backend.name == 'facebook':
+        print "logged in with facebook"
+        if social_profile.profile_pic_url_facebook == "":
+            social_profile.profile_url_facebook = response.get('link')
+        if social_profile.profile_pic_url_facebook == "":
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+        social_profile.save()
+        profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
+        if response.get('gender') == 'male':
+            profile.gender = 'M'
+        else:
+            profile.gender = 'F'
+        location = response.get('location')['name']
+        if profile.city == "":
+            profile.city = str(location).split(',')[0].strip()
+        if profile.country == "":
+            profile.country = str(location).split(',')[1].strip()
+        profile.save()
+
+    if backend.name == "google-oauth2":
+        print "logged in with google"
+        if social_profile.profile_url_google == "":
+            social_profile.profile_url_google = response.get('url')
+        if social_profile.profile_pic_url_google == "":
+            social_profile.profile_pic_url_google = response.get('image')['url']
+        social_profile.save()
+
+    if backend.name == "linkedin-oauth2":
+        print "logged in with linkedin"
+        if profile.about == "":
+            profile.about = response.get('summary')
+        if profile.country == "":
+            profile.country = response.get('location')['country']['code']
+        if profile.city == "":
+            profile.city = response.get('location')['name']
+        if social_profile.profile_url_linkedin == "":
+            social_profile.profile_url_linkedin = response.get('publicProfileUrl')
+        if social_profile.profile_pic_url_linkedin == "":
+            social_profile.profile_pic_url_linkedin = response.get('pictureUrl')
+        profile.save()
+        social_profile.save()
+
+
+# this view serves the default landing page for business mentor aka SEDNA template
+def bmentor_index(request):
+    context_dict = {}
+    template = "user/sedna.html"  # default template to render
+    user = None
+    user_profile = None
+
+    if request.user.is_authenticated():
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user.id)
+
+    # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
+    if user_profile and user_profile.is_new:
+        context_dict['selected'] = None
+        context_dict['type'] = "business_mentor"
+        template = "user/selectV2.html"  # User has to select either Mentor/Mentee,so redirect to select.html
+        # attach required forms to display in the template
+
+    if user_profile and not user_profile.is_new:
+        if user_profile.is_mentor == True:
+            return HttpResponseRedirect("/mentor/")
+        else:
+            return HttpResponseRedirect("/mentee/")
+
+    return render_to_response(template, context_dict, context_instance=RequestContext(request))
+
+@login_required
+def selectV2(request, from_page):
+    user = request.user
+    # expert = cache.get(user.email)
+    if user.is_authenticated():
+        if request.method == 'GET':
+            if user.user_profile.is_new == True:
+                return render_to_response("user/selectV2.html", {'from': from_page}, context_instance=RequestContext(request))
+            else:
+                return redirect('/user/')
+        elif request.method == "POST":
+            POST = request.POST
+            if 'user_type' in POST and 'pass1' in POST and 'pass2' in POST and 'contact' in POST:
+                if POST['user_type'] != "" and POST['pass1'] != '' and POST['pass2'] != '' and POST['contact'] != '' and POST['pass1'] == POST['pass2']:
+                    if from_page == 'expert-page':
+                        user.set_password(POST['pass1'])
+                        user.save()
+                        profile = user.user_profile
+                        if POST['user_type'] == 'mentor':
+                            profile.is_mentor = True
+                            profile.is_bmentor = True
+                        else:
+                            profile.is_mentor = False
+                            profile.is_bmentor = True
+                        profile.contact = POST['contact']
+                        profile.is_new = False
+                        profile.save()
+                    elif from_page == 'edu-page':
+                        user.set_password(POST['pass1'])
+                        user.save()
+                        profile = user.user_profile
+                        if POST['user_type'] == 'mentor':
+                            profile.is_mentor = True
+                            profile.is_bmentor = False
+                        else:
+                            profile.is_mentor = False
+                            profile.is_bmentor = False
+                        profile.contact = POST['contact']
+                        profile.is_new = False
+                        profile.save()
+                    else:
+                        print "404"
+
+                    # reached here? No problem then, redirect to user page
+                    return redirect('/user/')
+                else:
+                    error = "Fields cannot be empty"
+            else:
+                error = "Missing Fields"
+            return render_to_response("user/selectV2.html", {'from': from_page, 'error': error}, context_instance=RequestContext(request))
 
 

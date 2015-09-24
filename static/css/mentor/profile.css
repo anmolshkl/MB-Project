@@ -248,3 +248,40 @@ div .ptiles:hover {
     display: block;
     color: #000000;
 }
+
+/* Button */
+.button {
+    font-family: Lato;
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    height: 32px;
+    border-radius: 2px;
+    font-size: 13px;
+    padding-top: 5px !important;
+    background-color: #fff;
+    color: #646464;
+    cursor: pointer;
+    text-align: center;
+}
+.button > paper-ripple {
+  border-radius: 2px;
+  overflow: hidden;
+}
+.button.blue {
+  background-color: #4285f4;
+  color: #fff;
+}
+.button.raised {
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.2s;
+    -webkit-transition-delay: 0.2s;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.button.raised:active {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  transition-delay: 0s;
+    -webkit-transition-delay: 0s;
+}

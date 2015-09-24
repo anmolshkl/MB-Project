@@ -87,6 +87,19 @@ def index(request):
             pass
         template = "mentor/index.html"
 
+    if user_profile.is_mentor is True and user_profile.is_bmentor is False:
+        context_dict['completion_msg'] = '<a href="/mentor/edit-profile">Complete your profile</a>' \
+                                         ' and provide us your past education details so that we can ' \
+                                         'help mentee connect with you better.'
+    elif user_profile.is_mentor is True and user_profile.is_bmentor is True:
+        context_dict['completion_msg'] = '<a href="/mentor/edit-profile">Complete your profile</a>' \
+                                         ' and provide your comapany/employment details so that we can ' \
+                                         'help mentee connect with you better. You can also add your skills' \
+                                         ', update information about yourself.'
+    else:
+        context_dict['completion_msg'] = '<a href="/mentor/edit-profile">Complete your profile</a>' \
+                                         ' and update your information.'
+
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
 
@@ -295,7 +308,8 @@ def self_profile_view(request):
     if eduObjs:
         edu_list = []
         for obj in eduObjs:
-            edu_list.append({'inst': obj.institution, 'city': obj.city,'state': obj.state, 'country': obj.country, 'degree': obj.degree,
+            edu_list.append({'inst': obj.institution, 'city': obj.city, 'state': obj.state, 'country': obj.country,
+                             'degree': obj.degree,
                              'branch': obj.branch, 'from': obj.from_year, 'to': obj.to_year, 'coun': obj.country})
 
         context_dict['edu_list'] = edu_list
@@ -448,7 +462,6 @@ def get_profile(request, mentorid):
     if picture_url:
         context_dict['picture_url'] = picture_url
 
-
     '''
     NO NEED FOR SOCIAL DETAILS
     if social_profiles_object:
@@ -505,8 +518,8 @@ def get_profile(request, mentorid):
     try:
         rating_obj = Ratings.objects.get(mentor=user)
         average = int(round(rating_obj.average))
-        rating_obj.activeStars = 'x'*average
-        rating_obj.inactiveStars = 'x'*(5-average)
+        rating_obj.activeStars = 'x' * average
+        rating_obj.inactiveStars = 'x' * (5 - average)
 
     except ObjectDoesNotExist:
         rating_obj['count'] = 0
@@ -516,7 +529,6 @@ def get_profile(request, mentorid):
         rating_obj['four'] = 0
         rating_obj['five'] = 0
         rating_obj['average'] = 0
-
 
     context_dict['ratings'] = rating_obj
 
@@ -694,16 +706,16 @@ def check_mentee_balance(mentee_id, duration, call_type):
     print credits_obj.balance
     if call_type == "1":
         # Web to Web
-        if duration*3 > credits_obj.balance:
+        if duration * 3 > credits_obj.balance:
             available = False
-            print duration*3
+            print duration * 3
     elif call_type == "2":
         # Web to phone
-        if duration*6 > credits_obj.balance:
+        if duration * 6 > credits_obj.balance:
             available = False
     elif call_type == "3":
         # Video
-        if duration*5 > credits_obj.balance:
+        if duration * 5 > credits_obj.balance:
             available = False
 
     print "balance={0}".format(available)
@@ -722,8 +734,16 @@ def check_availability(request):
     mentee_id = request.POST['mentee_id']
     call_type = request.POST['call_type']
     response = {
-        '1': check_mentor_availibility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request, date1, time1, 30, mentee_id) and check_mentee_balance(mentee_id, dur1, call_type),
-        '2': check_mentor_availibility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request, date2, time2, 30, mentee_id) and check_mentee_balance(mentee_id, dur2, call_type)}
+        '1': check_mentor_availibility(request, date1, time1, 30, mentor_id) and check_mentee_availibility(request,
+                                                                                                           date1, time1,
+                                                                                                           30,
+                                                                                                           mentee_id) and check_mentee_balance(
+            mentee_id, dur1, call_type),
+        '2': check_mentor_availibility(request, date2, time2, 30, mentor_id) and check_mentee_availibility(request,
+                                                                                                           date2, time2,
+                                                                                                           30,
+                                                                                                           mentee_id) and check_mentee_balance(
+            mentee_id, dur2, call_type)}
     return JsonResponse(response)
 
 
@@ -737,10 +757,11 @@ def send_request(request):
         if post['date'] != '' and post['time'] != '' and post['duration'] != '' and post['mentor_id'] != '' \
                 and 4 > int(post['callType']) > 0:
             if 5 <= int(post['duration']) <= 30:
-                if check_mentor_availibility(request, post['date'], post['time'], 30,post['mentor_id']) \
+                if check_mentor_availibility(request, post['date'], post['time'], 30, post['mentor_id']) \
                         and check_mentee_availibility(request, post['date'], post['time'], 30, int(post['mentee_id'])) \
                         and check_mentee_balance(post['mentee_id'], int(post['duration']), int(post['call_type'])):
-                    date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime('%Y-%m-%d %H:%M')
+                    date_time = dt.strptime(post['date'] + " " + post['time'], '%d/%m/%Y %H:%M').strftime(
+                        '%Y-%m-%d %H:%M')
                     date_time = dt.strptime(date_time, '%Y-%m-%d %H:%M')
                     tz = timezone(request.user.user_profile.timezone)
                     d_tz = tz.normalize(tz.localize(date_time))
@@ -749,9 +770,9 @@ def send_request(request):
                     print "request time in UTC={0}".format(d_utc)
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
                                           dateTime=d_utc, duration=post['duration'],
-                                          callType=post['callType'])
+                                          callType=post['callType'],message=post['message'])
                     request_obj.save()
-                    msg = "Request Successfully sent! We'll notify you once mentor accepts your request."
+                    msg = "We'll notify you once mentor accepts your request."
                 else:
                     error = True
                     msg = 'Sorry! The mentor is unavailable during this time.<br>Please select another time & date.'
@@ -785,7 +806,9 @@ def get_requests(request):
                              'dateTime': obj.dateTime,
                              'duration': obj.duration,
                              'callType': obj.callType, 'req_date': obj.requestDate,
-                             "mentee_name": mentee.get_full_name(), "country": mentee.user_profile.country})
+                             "mentee_name": mentee.get_full_name(),
+                             "country": mentee.user_profile.country,
+                             "message": obj.message})
             context_dict['req_list'] = req_list
 
     return render_to_response("mentor/requests.html", context_dict, context)
@@ -805,7 +828,8 @@ def handle_request(request):
             # create new notification
             notif_obj = Notification.objects.create(to=req.menteeId)
             notif_obj.frm = "admin"
-            notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you ;)".format(request.user.get_full_name())
+            notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you ;)".format(
+                request.user.get_full_name())
             notif_obj.title = "Request approved!"
             notif_obj.save()
 
@@ -816,7 +840,8 @@ def handle_request(request):
             req.save()
             notif_obj = Notification.objects.create(to=req.menteeId)
             notif_obj.frm = "admin"
-            notif_obj.text = "Your request is not approved by {0}. Please select a different time/date/mentor".format(request.user.get_full_name())
+            notif_obj.text = "Your request is not approved by {0}. Please select a different time/date/mentor".format(
+                request.user.get_full_name())
             notif_obj.title = "Request disapproved!"
             notif_obj.save()
         else:
@@ -883,6 +908,7 @@ def check_mentor_status(request):
         error = True
 
     return JsonResponse({'error': error, 'status': status})
+
 
 @login_required
 def update_timings(request):

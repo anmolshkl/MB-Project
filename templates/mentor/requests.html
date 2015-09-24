@@ -31,16 +31,45 @@
         .errorDiv {
             color: rgba(255, 0, 0, 0.8);
         }
+     h2 {
+            position: relative;
+            //margin-top: 20px;
+        }
+
+          h2.one {
+            margin-top: 0;
+          }
+
+          h2.one:before {
+            content: "";
+            display: block;
+            border-top: solid 1px black;
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            top: 50%;
+            z-index: 1;
+          }
+
+        h2.one span {
+            background: rgb(229, 233, 236);
+            padding: 0 20px;
+            position: relative;
+            z-index: 5;
+        }
     </style>
     {% endblock %}
 </head>
 <body>
     {% block container_title %}
-        <h1>Your Requests!</h1>
+
     {% endblock %}
 
     {% block container_block %}
         <div class="row">
+                <h2 class="one" style="margin: 5px;margin-bottom: 20px;text-align: center">
+                    <span style=""><i>Your Requests</i></span>
+                </h2>
             <div class="col-xs-12 errorDiv well" style="display: none">
                 Some error occurred. Please try again or refresh the page.
             </div>
@@ -62,6 +91,8 @@
                             {% endif %}
                             </b>
                             Date Requested: {{ request.req_date }}
+                            <br>
+                            <i>Message</i>: {{ request.message }}
                         </div>
                         <div class="pull-right textCenter">
                             <a href="#" class="fa fa-times-circle fa-4x reject"></a>

@@ -4,6 +4,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/profile.css' %}" />
+<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
     <style>
         .statusSign {
@@ -35,7 +36,20 @@
         .green-bg {
             background-color: rgba(74,201,72,0.7);
         }
-
+        .modal {
+            top: 50px !important;
+        }
+    .well {
+        margin-bottom: 10px !important;
+    }
+    .message_to_mentor {
+        width: 100%;
+        height: 100%;
+    }
+    .steps li {
+        padding-left: 0px;
+        line-height: 15px;
+    }
     </style>
     <link rel="stylesheet" type="text/css" href="{% static 'button/button.css' %}" />
 	<script src="{% static 'button/snap.svg-min.js' %}"></script>
@@ -52,70 +66,81 @@
 <div class="container-fluid">
     <!-- Schedule Modal -->
     <div class="modal fade" id="scheduleModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">How would you like to connect?</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div id="scheduleDiv">
-                    <div class="row well pd-s mg-s">
-                        <ul class="txt-m">
-                            <li id="step1"><h4>Select upto 2 dates and a time.</h4></li>
-                            <li id="step2"><h4>Check availability.</h4></li>
-                            <li id="step3"><h4>Select an available date & time.</h4></li>
-                            <span id="errorDiv" ><h5 class="error"></h5></span>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row pd-s">
-                            <div class="col-xs-12 well textCenter" id="timeBox1">
-                                <input id="date1" type="text" class="mg-s highlight-blue" placeholder="Enter Date & Time">
-                                <input type="text" class="highlight-blue" id="dur1" placeholder="Duration: eg 15 min"/>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">How would you like to connect?</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div id="scheduleDiv">
+                            <div class="row pd-s mg-s">
+                                <div class="well col-xs-12" style="padding: 5px;">
+                                    <ul class="txt-m steps">
+                                        <li id="step1"><h4>Select upto 2 dates and a time.</h4></li>
+                                        <li id="step2"><h4>Check availability.</h4></li>
+                                        <li id="step3"><h4>Select an available date & time.</h4></li>
+                                        <span id="errorDiv" ><h5 class="error"></h5></span>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row mg-s">
+                                <div class="col-md-6">
+                                    <div class="row pd-s">
+                                        <div class="col-xs-12 well textCenter" id="timeBox1">
+                                            <input id="date1" type="text" class="mg-s highlight-blue" placeholder="Enter Date & Time">
+                                            <input type="text" class="highlight-blue" id="dur1" placeholder="Est Duration: eg: 15(in min)"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row pd-s">
+                                        <div class="col-xs-12 well textCenter" id="timeBox2">
+                                            <input id="date2" type="text" placeholder="Enter Date & Time" class="mg-s highlight-blue" />
+                                            <input type="text" class="highlight-blue" id="dur2" placeholder="Est Duration: eg: 15(in min)"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row pd-s mg-s">
+                                <div class="col-xs-12 textCenter" style="padding: 0px;">
+                                    <textarea class="message_to_mentor" placeholder="Message to {{ full_name }}" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row textCenter">
+                                <button class="checkButton checkAv button--fill button--effect-2">
+                                    <span class="morph-shape" data-morph-active="M282.5,62.5c0,27.891-8.648,51.994-36.5,50.5c-24.049-1.29-44.75-8-96-8c-56.75,0-71.952,6.71-96,8c-27.851,1.494-36.5-22.609-36.5-50.5l0,0C17.5,34.609,26.215,9.572,54,12c23.973,2.095,39.75,7,96,7c51.502,0,72.01-5.125,96-7C273.807,9.827,282.5,34.609,282.5,62.5L282.5,62.5z">
+                                        <svg width="100%" height="100%" viewBox="0 0 300 125" preserveAspectRatio="none">
+                                            <path d="M286.5,62.5C286.5,90.39099999999999,273.891,113,246,113C201.75,113,201.25,113,150,113C93.25,113,93.5,113,54,113C26.109,113,13.5,90.39099999999999,13.5,62.5C13.5,62.5,13.5,62.5,13.5,62.5C13.5,34.609,26.109,12,54,12C93.5,12,93.75,12,150,12C201.502,12,201.5,12,246,12C273.891,12,286.5,34.609,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5"></path>
+                                            <desc>Check Availability</desc><defs></defs></svg>
+                                    </span>
+                                    <span class="button__text">Check Availability</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row pd-s">
-                            <div class="col-xs-12 well textCenter" id="timeBox2">
-                                <input id="date2" type="text" placeholder="Enter Date & Time" class="mg-s highlight-blue" />
-                                <input type="text" class="highlight-blue" id="dur2" placeholder="Duration: eg 15 min"/>
-                            </div>
+                    <div class="button-group">
+                        <div class="scheduleSelect">
+                            <input type="hidden" value="1">
+                            <i class="fa fa-laptop fa-5x"></i>
+                            <span class="call-label"><h5>Web-to-Web Call</h5></span>
+                        </div>
+        {#                <div class="scheduleSelect disabled" value="2">#}
+
+{#                            <input type="hidden" value="1">#}
+        {#                    <i class="fa fa-phone fa-5x"></i>#}
+        {#                    <span class="call-label"><h5>Web-to-Phone Call</h5></span>#}
+        {#                </div>#}
+                        <div class="scheduleSelect" value="3">
+                            <input type="hidden" value="3">
+                            <i class="fa fa-video-camera fa-5x"></i>
+                            <span class="call-label"><h5>Video Call</h5></span>
                         </div>
                     </div>
-                    <div class="row textCenter">
-                    <button class="checkButton checkAv button--fill button--effect-2">
-                        <span class="morph-shape" data-morph-active="M282.5,62.5c0,27.891-8.648,51.994-36.5,50.5c-24.049-1.29-44.75-8-96-8c-56.75,0-71.952,6.71-96,8c-27.851,1.494-36.5-22.609-36.5-50.5l0,0C17.5,34.609,26.215,9.572,54,12c23.973,2.095,39.75,7,96,7c51.502,0,72.01-5.125,96-7C273.807,9.827,282.5,34.609,282.5,62.5L282.5,62.5z">
-                            <svg width="100%" height="100%" viewBox="0 0 300 125" preserveAspectRatio="none">
-                                <path d="M286.5,62.5C286.5,90.39099999999999,273.891,113,246,113C201.75,113,201.25,113,150,113C93.25,113,93.5,113,54,113C26.109,113,13.5,90.39099999999999,13.5,62.5C13.5,62.5,13.5,62.5,13.5,62.5C13.5,34.609,26.109,12,54,12C93.5,12,93.75,12,150,12C201.502,12,201.5,12,246,12C273.891,12,286.5,34.609,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5C286.5,62.5,286.5,62.5,286.5,62.5"></path>
-                            <desc>Check Availability</desc><defs></defs></svg>
-                        </span>
-                        <span class="button__text">Check Availability</span>
-                    </button>
-                    </div>
                 </div>
-            </div>
-
-            <div class="button-group">
-                <div class="scheduleSelect" value="1">
-                    <i class="fa fa-laptop fa-5x"></i>
-                    <span class="call-label"><h5>Web-to-Web Call</h5></span>
-                </div>
-{#                <div class="scheduleSelect disabled" value="2">#}
-{#                    <i class="fa fa-phone fa-5x"></i>#}
-{#                    <span class="call-label"><h5>Web-to-Phone Call</h5></span>#}
-{#                </div>#}
-                <div class="scheduleSelect disabled" value="3">
-                    <i class="fa fa-video-camera fa-5x"></i>
-                    <span class="call-label"><h5>Video Call</h5></span>
-                </div>
-            </div>
-          </div>
-
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
     <div style="margin-top:100px;" class="clearfix"></div>
@@ -126,7 +151,7 @@
                         <div class="overlayer bottom-right">
                             <div class="overlayer-wrapper">
                                     <div class="padding-10 hidden-xs">                                  
-                                        <button type="button" class="btn btn-primary btn-small disabled "><i class="fa fa-check"></i>&nbsp;&nbsp;Following</button>
+                                        <button type="button" class="btn btn-primary btn-small disabled "><i class="fa "></i>&nbsp;&nbsp;Follow</button>
                                     </div>
                             </div>
                         </div>
@@ -153,7 +178,9 @@
                             </div>
                             <div class="col-md-5 user-description-box col-sm-5">
                                 <h4 class="semi-bold no-margin">{{ full_name }}</h4>
-                                <h6 class="no-margin">{{ college }}</h6>
+                                {% if college %}
+                                    <h6 class="no-margin">{{ college }}</h6>
+                                {% endif %}
                                 <br>
                                 <p><i class="fa fa-globe"></i>
                                     {% if city or country %}
@@ -161,18 +188,22 @@
                                     {% endif %}
 
                                     {% if city %}
-                                        {{ city }},
+                                        {{ city }}
                                     {% endif %}
 
                                     {% if country %}
-                                        {{ country }}
+                                        - {{ country }}
                                     {% endif %}
 
                                 </p>
 
                             </div>
                             <div class="col-md-3 col-sm-3 pd-l">
-                                <button class="btn center" data-toggle="modal" data-target="#scheduleModal">Connect</button>
+                                <div class="button raised blue submit" data-toggle="modal" data-target="#scheduleModal">
+                                  <div class="center">Connect</div>
+                                  <paper-ripple></paper-ripple>
+                                </div>
+
                             </div>
                         </div>
 
@@ -371,9 +402,9 @@
         setTimeout( function() {
             $("#scheduleDiv").show();
             $("#backToSelect").show();
-        }, 00);
+        }, 0);
 
-        $("#scheduleDiv").append('<input type="hidden" name="callType" id="callType" value="'+ $(this).val()+'" />');
+        $("#scheduleDiv").append('<input type="hidden" name="callType" id="callType" value="'+ $(this).find('input').val()+'" />');
     });
 
     $('#date1').datetimepicker({
@@ -393,9 +424,8 @@
             $(this).removeClass("fieldError");
         }
     });
-
-    $(".checkAv").click(function() {
-        var date1,date2,res,time1,time2,dur1,dur2;
+    var date1,date2,res,time1,time2,dur1,dur2;
+    function validate() {
         date1 = $("#date1").val();
         date2 = $("#date2").val();
         res = date1.split(" ");
@@ -437,6 +467,10 @@
             error = true;
             $("#errorDiv h5").html("Duration has to be between 5-30(min)");
         }
+        return error;
+    }
+    $(".checkAv").click(function() {
+        var error = validate();
         if(error==false) {
             $("#errorDiv h5").html("");
             $.ajax({
@@ -490,34 +524,40 @@
                     }
                     $(".clickable").click(function(event) {
                         if(event.target.tagName.toUpperCase() != 'INPUT') {
-                            $(this).addClass("green-bg")
+                            $(this).addClass("green-bg");
                             var inputs = $(this).children("input");
                             var dateTime = inputs[0].value.split(" ");
-                            $.ajax({
-                                url: "/mentor/send-request/",
-                                data: {
-                                    "date":dateTime[0],
-                                    "time":dateTime[1],
-                                    "callType": $("#callType").val(),
-                                    "duration":inputs[1].value,
-                                    "csrfmiddlewaretoken":'{{ csrf_token }}',
-                                    "mentor_id": {{ mentor_id }},
-                                    "mentee_id": {{ user.id }},
-                                    "call_type": $("#callType").val()
-                                },
-                                type: "post",
-                                dataType: "json",
-                                success: function(data) {
-                                    if(data['error'] == false) {
-                                        $("#scheduleDiv").html(data['msg']);
-                                        $("#scheduleDiv").addClass("textCenter");
+                            var error = validate();
+                            if(error == false) {
+                                $.ajax({
+                                    url: "/mentor/send-request/",
+                                    data: {
+                                        "date": dateTime[0],
+                                        "time": dateTime[1],
+                                        "callType": $("#callType").val(),
+                                        "duration": inputs[1].value,
+                                        "csrfmiddlewaretoken": '{{ csrf_token }}',
+                                        "mentor_id": {{ mentor_id }},
+                                        "mentee_id": {{ user.id }},
+                                        "call_type": $("#callType").val(),
+                                        "message": document.getElementsByClassName('message_to_mentor')[0].value
+                                    },
+                                    type: "post",
+                                    dataType: "json",
+                                    success: function (data) {
+                                        if (data['error'] == false) {
+                                            $("#scheduleDiv").html("<i class='fa fa-thumbs-o-up fa-3x'></i>"+"<h4>"+data['msg']+"</h4>");
+                                            $("#scheduleDiv").css({paddingLeft: "25px",paddingRight:"25px"});
+                                            $("#scheduleDiv").addClass("textCenter");
+                                            $(".modal-title").text("Request Sent!");
+                                        }
+                                        else {
+                                            $("#errorDiv").html(data["msg"]);
+                                        }
                                     }
-                                    else {
-                                        $("#errorDiv").html(data["msg"]);
-                                    }
-                                }
 
-                            });
+                                });
+                            }
 
                         }
 
