@@ -383,8 +383,13 @@ def root(request):
     results = form.search()
     # WARNING: This is a hack, please fix later
     for mentor in results:
-        mentor.position = EmploymentDetails.objects.get(parent=mentor.id).position
-        mentor.organization = EmploymentDetails.objects.get(parent=mentor.id).organization
+        try:
+	    emp_obj = EmploymentDetails.objects.get(parent=mentor.id)
+        except ObjectDoesNotExist:
+            emp_obj = None
+        if emp_obj != None:
+            mentor.position = EmploymentDetails.objects.get(parent=mentor.id).position
+            mentor.organization = EmploymentDetails.objects.get(parent=mentor.id).organization
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,
