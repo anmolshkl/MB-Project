@@ -2,7 +2,7 @@ from decimal import Decimal
 import hashlib
 import random
 from apps.mentee.models import Credits
-from apps.mentor.models import Ratings, Business_Mentor_Tags, Business_subcategories
+from apps.mentor.models import Ratings, Business_Mentor_Tags, Business_subcategories, EmploymentDetails
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
@@ -69,14 +69,14 @@ def index(request):
     template = "user/loginV3.html"  # default template to render
     user = None
     user_profile = None
-
+    print request.GET
     if request.user.is_authenticated():
         user_profile, created = UserProfile.objects.get_or_create(user=request.user.id)
 
     # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
+        template = "user/selectV2.html"  # User has to select either Mentor/Mentee,so redirect to select.html
         # attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
@@ -124,7 +124,7 @@ def user_login(request):
 def select(request):
     error = False
     msg = None
-    template = "user/select.html"
+    template = "user/selectV2.html"
     user = request.user
     user_profile = user.user_profile
 
@@ -173,7 +173,7 @@ def select(request):
 def set_password(request):
     error = False
     msg = None
-    template = "user/select.html"
+    template = "user/selectV2.html"
     user = request.user
     user_profile = user.user_profile
     if not UserProfile.objects.get(user=request.user).is_new:
@@ -350,9 +350,10 @@ def root(request):
     """
 
     search_query = request.GET.get('q', '')
-    subcategory = request.GET.get('subcategory', '')
+    subcategory = request.GET.get('subcategory', None)
+    print subcategory
     results = []
-    if subcategory != '':
+    if subcategory != None:
         mentor_tags = Business_Mentor_Tags.objects.filter(subcategory=subcategory)
         for obj in mentor_tags:
             mentor_profile = obj.mentor.user_profile
@@ -370,17 +371,20 @@ def root(request):
                             'organization': emp_obj.organization
                             })
 
-    return render(request, 'mentee/search_root.html', {
-        'search_query': search_query,
-        'mentors': results,
-        'subcategory': Business_subcategories.objects.get(id=int(subcategory)).name,
-    })
-
+        return render(request, 'mentee/search_root.html', {
+            'search_query': search_query,
+            'mentors': results,
+            'subcategory': Business_subcategories.objects.get(id=int(subcategory)).name,
+        })
     # otherwise continues as it is search by name query
     # we retrieve the query to display it in the template
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!
     results = form.search()
+    # WARNING: This is a hack, please fix later
+    for mentor in results:
+        mentor.position = EmploymentDetails.objects.get(parent=mentor.id).position
+        mentor.organization = EmploymentDetails.objects.get(parent=mentor.id).organization
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,
@@ -600,10 +604,6 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
 
     profile_created = False
 
-    # set in cache which site type user landed on
-    expert = strategy.session_get('expert')
-    cache.set(user.email, expert)
-
     profile, profile_created = UserProfile.objects.get_or_create(user=user)
 
     social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
@@ -624,6 +624,8 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
             profile.city = str(location).split(',')[0].strip()
         if profile.country == "":
             profile.country = str(location).split(',')[1].strip()
+        if profile.picture == '/static/img/no-profile-pic.jpg':
+            profile.picture = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
         profile.save()
 
     if backend.name == "google-oauth2":
@@ -675,10 +677,14 @@ def bmentor_index(request):
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
+
 @login_required
 def selectV2(request, from_page):
+    print 'inside selectV2'
     user = request.user
     # expert = cache.get(user.email)
+    print from_page
+
     if user.is_authenticated():
         if request.method == 'GET':
             if user.user_profile.is_new == True:

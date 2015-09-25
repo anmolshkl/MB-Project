@@ -362,11 +362,15 @@
             });
         }
     });
-    var five = 100*{{ ratings.five }}/{{ ratings.total }};
-    var four = 100*{{ ratings.four }}/{{ ratings.total }};
-    var three = 100*{{ ratings.four }}/{{ ratings.total }};
-    var two = 100*{{ ratings.four }}/{{ ratings.total }};
-    var one = 100*{{ ratings.four }}/{{ ratings.total }};
+    var count={{ ratings.count }} || 0;
+    if(count==0) {
+        count = 1;
+    }
+    var five = 100*{{ ratings.five }}/count;
+    var four = 100*{{ ratings.four }}/count;
+    var three = 100*{{ ratings.four }}/count;
+    var two = 100*{{ ratings.four }}/count;
+    var one = 100*{{ ratings.four }}/count;
 
     $(document).ready(function() {
       $('.bar span').hide();
@@ -384,6 +388,7 @@
       setTimeout(function() {
         $('.bar span').fadeIn('slow');
       }, 1000);
+
 
     });
 </script>

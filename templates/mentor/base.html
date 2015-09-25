@@ -339,7 +339,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                                     {% autoescape off %}
                                                     {{ completion_msg }}
                                                     {% endautoescape %}
-                                                br={{ user.user_profile.resume }}
+                                                {{ user.user_profile.resume }}
                                                 </p>
                                                 <br>
                                                 {% if user.user_profile.is_mentor == True and user.user_profile.is_bmentor == False and  user.user_profile.resume == '' %}

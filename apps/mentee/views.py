@@ -67,7 +67,7 @@ def index(request):
     #Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  #User has to select either Mentor/Mentee,so redirect to select.html
+        template = "user/selectV2.html"  #User has to select either Mentor/Mentee,so redirect to select.html
         #attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:

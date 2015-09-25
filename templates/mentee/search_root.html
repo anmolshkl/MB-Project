@@ -9,7 +9,7 @@
 {% endblock %}
 {% block container_block %}
 
-    {% if 'subcategory' not in mentor %}
+    {% if subcategory == None %}
         <div class="tiles info">Your query "{{ search_query }}" has returned {{ mentors.count }} result{{ mentors|pluralize }}</div>
     {% else %}
         <div class="tiles info">Mentors in category - {{ subcategory }}</div>
@@ -30,8 +30,13 @@
                                  College not specified<br>
                              {% endif %}
                          {% else %}
-                             {{ mentor.position }} at {{ mentor.organization }}
-                             <br>
+                             {% if mentor.position != None %}
+                                {{ mentor.position }}
+                             {% endif %}
+                             {%  if mentor.organization != None %}
+                                 at {{ mentor.organization }}
+                                 <br>
+                             {% endif %}
                          {% endif %}
                          {{ mentor.city }},
                          {{ mentor.country }}

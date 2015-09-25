@@ -50,7 +50,7 @@
       </div>
 
 {% endblock %}
-{% block container_title %}<h1 style="color: black">Edit Profile</h1> <span class="formError" style="font-size: 15px;color: darkred;">Please enter the required fields.</span><hr>{% endblock %}
+{% block container_title %}<h1 style="color: black">Edit Profile</h1> <span class="formError" style="font-size: 15px;color: darkred;display: none;visibility: hidden">Please enter the required fields.</span><hr>{% endblock %}
 
 {% block container_block %}
 
@@ -129,7 +129,7 @@
             $(".required").each(function (i, obj) {
                 if ($(this).val().trim() == '') {
                     valid *= 0;
-                    $(this).css({"border": "3px solid white"});
+                    $(this).css({"border": "1px solid red"});
                 }
             });
             return valid;
@@ -146,7 +146,8 @@
         });
 
         function submit() {
-            if(validate() == 1) {
+            var valid = validate();
+            if(valid == 1) {
                 $.ajax({
                     url: "/mentee/edit-profile/",
                     type: "post",
@@ -169,6 +170,13 @@
                 $(".formError").html("Please enter the required fields.");
                 $(".formError").css({"color": "darkred"});
                 $(".formError").show();
+                swal({
+                    title: "Oops",
+                    html: "Please enter all the required fields",
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    type: 'error'
+                 });
             }
         }
 

@@ -31,7 +31,6 @@ class EducationDetails(models.Model):
 
 class EmploymentDetails(models.Model):
     """Stores employment details of the user"""
-
     parent = models.ForeignKey(UserProfile, related_name='employment_details', blank=False)
     organization = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
@@ -100,7 +99,7 @@ class Business_categories(models.Model):
     name = models.CharField(max_length=35, blank=False, null=False)
 
     def __unicode__(self):
-        return u'{}'.format(self.id,self.name)
+        return u'{0}'.format(self.name)
         # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
         # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
 
@@ -110,10 +109,10 @@ class Business_categories(models.Model):
 class Business_subcategories(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=35, blank=False, null=False)
-    category = models.ForeignKey(Business_categories, editable=False)
+    category = models.ForeignKey(Business_categories)
 
     def __unicode__(self):
-        return u'{}'.format(self.id,self.name,self.category)
+        return u'{0} under {1}'.format(self.name, self.category)
         # return u'{2} in {1} of {0} from {3} to {4}'.format(self.organization,
         # self.department, self.designation, self.from_date, "present" if not self.to_date else self.to_date)
 
