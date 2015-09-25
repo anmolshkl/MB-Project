@@ -12,7 +12,7 @@ from apps.user.models import UserProfile
 class EducationDetails(models.Model):
     """Stores educational details of the user"""
 
-    parent = models.ForeignKey(UserProfile,related_name='education_details', editable=False)
+    parent = models.ForeignKey(UserProfile, related_name='education_details', editable=False)
     institution = models.CharField(max_length=128, blank=True)
     city = models.CharField(max_length=128, blank=True)
     state = models.CharField(max_length=128, blank=True, null=True)
@@ -32,7 +32,7 @@ class EducationDetails(models.Model):
 class EmploymentDetails(models.Model):
     """Stores employment details of the user"""
 
-    parent = models.ForeignKey(UserProfile, editable=False)
+    parent = models.ForeignKey(UserProfile, related_name='employment_details', blank=False)
     organization = models.CharField(max_length=128, blank=True)
     location = models.CharField(max_length=128, blank=True)
     position = models.CharField(max_length=256, blank=True)
@@ -121,7 +121,7 @@ class Business_subcategories(models.Model):
         verbose_name_plural = "Business Subcategories"
 
 class Business_Mentor_Tags(models.Model):
-    mentor = models.ForeignKey(UserProfile, limit_choices_to={'is_bmentor': True})
+    mentor = models.ForeignKey(User, limit_choices_to={'is_bmentor': True})
     subcategory = models.ForeignKey(Business_subcategories)
 
     def __unicode__(self):

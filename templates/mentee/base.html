@@ -556,9 +556,6 @@
 <script>
 
     $(document).ready(function() {
-        $(".cat-search-button").click(function() {
-            $('<form action="/search/query/"></form>').appendTo('body').submit();
-        });
         $(".search-button").click(function() {
             var categories = '<select id="cat"><option value="Business">Business</option>' +
                     '<option value="saab">Saab</option>' +
@@ -571,7 +568,7 @@
                     '<option value="mercedes">Mercedes</option>' +
                     '<option value="audi">Audi</option>' +
                     '</select>';
-            var html = "<h3>Search with name</h3> <form method='GET' action='/search/query/'>{% csrf_token %}<input type='text' class='name-search' " +
+            var html = "<h3>Search with name</h3> <form method='GET' action='/search/query/'>{% csrf_token %}<input type='text' name='q' class='name-search' " +
                     "placeholder='press enter to search' required></form>"+"<br>or<h3>Search by category</h3>" + categories +
                                     subCategories+"<button class='btn btn-primary cat-search-button' style='margin-top:20px;'>Search</button> "+"<br><br><br>";
              swal({
@@ -580,6 +577,10 @@
                 showConfirmButton: false,
                 showCancelButton: false
              });
+            $(".cat-search-button").click(function() {
+                $('<form action="/search/query/"><select name="subcategory"><option value="3">Subcat 3</option></form>').appendTo('body').submit();
+            });
+
         });
     });
     $(function () {

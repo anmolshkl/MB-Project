@@ -2452,6 +2452,7 @@
       <column name="requestDate" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="callType" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="is_completed" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="message" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="request_id_refs_id_8400f301" table="user_calllog" schema="" catalog="mb_db2" columns="request_id"/>
       <index name="user_request_957653d5" unique="false" columns="menteeId_id"/>

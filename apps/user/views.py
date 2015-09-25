@@ -2,7 +2,7 @@ from decimal import Decimal
 import hashlib
 import random
 from apps.mentee.models import Credits
-from apps.mentor.models import Ratings
+from apps.mentor.models import Ratings, Business_Mentor_Tags, Business_subcategories
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
@@ -341,6 +341,8 @@ def explore(request):
     return render_to_response('user/explore.html')
 
 
+
+
 @login_required
 def root(request):
     """
@@ -348,7 +350,33 @@ def root(request):
     """
 
     search_query = request.GET.get('q', '')
+    subcategory = request.GET.get('subcategory', '')
+    results = []
+    if subcategory != '':
+        mentor_tags = Business_Mentor_Tags.objects.filter(subcategory=subcategory)
+        for obj in mentor_tags:
+            mentor_profile = obj.mentor.user_profile
+            mentor = obj.mentor
+            emp_obj = mentor_profile.employment_details.all()[:1].get()
+            results.append({'first_name': mentor.first_name,
+                            'last_name': mentor.last_name,
+                            'picture': mentor_profile.picture,
+                            'id': mentor.id,
+                            'college': mentor_profile.college,
+                            'city': mentor_profile.city,
+                            'country': mentor_profile.country,
+                            'type': 'expert',
+                            'position': emp_obj.position,
+                            'organization': emp_obj.organization
+                            })
 
+    return render(request, 'mentee/search_root.html', {
+        'search_query': search_query,
+        'mentors': results,
+        'subcategory': Business_subcategories.objects.get(id=int(subcategory)).name,
+    })
+
+    # otherwise continues as it is search by name query
     # we retrieve the query to display it in the template
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!

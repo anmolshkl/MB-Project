@@ -9,18 +9,29 @@
 {% endblock %}
 {% block container_block %}
 
-    <div class="tiles info">Your query "{{ search_query }}" has returned {{ mentors.count }} result{{ mentors|pluralize }}</div>
+    {% if 'subcategory' not in mentor %}
+        <div class="tiles info">Your query "{{ search_query }}" has returned {{ mentors.count }} result{{ mentors|pluralize }}</div>
+    {% else %}
+        <div class="tiles info">Mentors in category - {{ subcategory }}</div>
+    {% endif %}
+
     <div class="pad-bottom-50">
         <div class="row">
             {% for mentor in mentors %}
                  <div class="col-md-4 textCenter margin-top-mid">
                      <div class="tiles white textCenter">
-                        <img src="{{ mentor.picture }}" class="img-circle img-responsive"/>
+                         <img src="{{ mentor.picture }}" class="img-circle img-responsive"/>
                          <h3><a href="/mentor/get-profile/{{ mentor.id }}/">{{ mentor.first_name }} {{ mentor.last_name}}</a></h3>
-                         {% if mentor.college %}
-                         {{ mentor.college }}<br>
+                         {% if 'type' not in mentor %}
+                             {% if mentor.college %}
+                                 {{ mentor.college }}
+                                 <br>
+                             {% else %}
+                                 College not specified<br>
+                             {% endif %}
                          {% else %}
-                         College not specified<br>
+                             {{ mentor.position }} at {{ mentor.organization }}
+                             <br>
                          {% endif %}
                          {{ mentor.city }},
                          {{ mentor.country }}
