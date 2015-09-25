@@ -601,11 +601,14 @@
             });
         };
         $(".search-button").click(function() {
+            {% if user.user_profile.is_bmentor == True %}
+                var catDiv ="<br>or<h3>Search by category</h3>"+ $(".category-selection-div").html() + "<button class='btn btn-primary cat-search-button' style='margin-top:20px;'>Search</button> ";
+            {% else %}
+                var catDiv = "";
+            {% endif %}
             var html = "<h3>Search with name</h3> <form method='GET' action='/search/query/'>{% csrf_token %}<input type='text' name='q' class='name-search' " +
-                    "placeholder='press enter to search' required></form>"+"<br>or<h3>Search by category</h3>"
-                    +$(".category-selection-div").html()
-                    +"<button class='btn btn-primary cat-search-button' style='margin-top:20px;'>Search</button> "
-                    +"<br><br><br>";
+                    "placeholder='press enter to search' required></form>"
+                    +catDiv+"<br><br><br>";
             $(".category-selection-div").remove();
             swal({
                 title: "Search Mentors",
@@ -622,7 +625,6 @@
             $(".cat-search-button").click(function() {
                 var selectedOption = $("select[name=secondLevelParts]").find(":selected");
                 var id = selectedOption.attr('id');
-                alert(selectedOption.val());
                 $('<form action="/search/query/"><select name="subcategory"><option value="'+id+'">Subcat 3</option></form>').appendTo('body').submit();
             });
 

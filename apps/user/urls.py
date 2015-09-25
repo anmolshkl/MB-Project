@@ -3,7 +3,7 @@ from apps.user import views
 from django.views.generic import TemplateView
 
 urlpatterns = patterns('',
-                       url(r'^$', views.index, name='index'),
+                       url(r'^$', views.bmentor_index, name='index'),
                        url(r'^call-valid/$', views.is_call_valid, name='call validity check'),
                        url(r'^clear-notifications/$', views.clear_notifications, name='clear-notifications'),
                        url(r'^confirm/(?P<ak>.*)/$', views.register_confirm, name='register_confirm'),
