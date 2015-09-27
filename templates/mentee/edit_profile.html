@@ -83,7 +83,7 @@
 
 
         {{ profile_form.date_of_birth.label_tag }}
-        {{ profile_form.date_of_birth }}
+        {{ profile_form.date_of_birth|add_class:"required" }}
 
 
         {{ profile_form.contact.label_tag }}
@@ -95,7 +95,7 @@
         {{ profile_form.college|add_class:"required" }}
 
         {{ profile_form.city.label_tag }}
-        {{ profile_form.city }}
+        {{ profile_form.city|add_class:"required" }}
 
         {{ profile_form.state.label_tag }}
         {{ profile_form.state }}
@@ -135,7 +135,7 @@
             return valid;
         }
         $('#id_date_of_birth').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'mm/dd/yyyy'
         });
         $(".form").submit(function(e) {
             e.preventDefault();

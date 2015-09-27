@@ -261,12 +261,13 @@ def edit_profile(request):
         user_form = UserEditForm(request.POST, instance=user)
         profile_form = UserProfileForm(request.POST, instance=user_profile)
         if user_form.is_valid():
-            user_profile = user_form.save()
+            user_profile = user_form.save(commit=False)
             user_profile.save()
+            profile_form.is_valid()
+            print profile_form
             if profile_form.is_valid():
-                profile = profile_form.save()
+                profile = profile_form.save(commit=False)
                 if "url" in request.POST:
-                    print "saving profile pic"
                     profile.picture = cropAndSave(user, request.POST)
                 # return here if different behaviour desired
                 profile.save()

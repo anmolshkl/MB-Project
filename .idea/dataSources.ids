@@ -2083,6 +2083,7 @@
       <exported-key name="auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id" table="auth_user_groups" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="mb_db2" columns="user_id"/>
       <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="mb_db2" columns="user_id"/>
+      <exported-key name="mentor_business_mento_mentor_id_659c95ccfa9d10e8_fk_auth_user_id" table="mentor_business_mentor_tags" schema="" catalog="mb_db2" columns="mentor_id"/>
       <exported-key name="social_auth_usersociala_user_id_193b2d80880502b2_fk_auth_user_id" table="social_auth_usersocialauth" schema="" catalog="mb_db2" columns="user_id"/>
       <index name="username" unique="true" columns="username"/>
     </table>
@@ -2284,14 +2285,14 @@
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="category_id_refs_id_86200d28" table="mentor_business_subcategories" schema="" catalog="mb_db2" columns="category_id"/>
+      <exported-key name="me_category_id_2f6b06c8350f344c_fk_mentor_business_categories_id" table="mentor_business_subcategories" schema="" catalog="mb_db2" columns="category_id"/>
     </table>
     <table name="mentor_business_mentor_tags" schema="" catalog="mb_db2" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="mentor_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="subcategory_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="mentor_id_refs_user_id_197abe93" columns="mentor_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="mentor_business_mento_mentor_id_659c95ccfa9d10e8_fk_auth_user_id" columns="mentor_id" ref-table="auth_user" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="subcategory_id_refs_id_ddf40de3" columns="subcategory_id" ref-table="mentor_business_subcategories" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="mentor_business_mentor_tags_6fdebf92" unique="false" columns="mentor_id"/>
       <index name="mentor_business_mentor_tags_790ef9fb" unique="false" columns="subcategory_id"/>
@@ -2301,7 +2302,7 @@
       <column name="name" sqlType="VARCHAR" precision="35" scale="0" nullable="false" jdbcType="12"/>
       <column name="category_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="category_id_refs_id_86200d28" columns="category_id" ref-table="mentor_business_categories" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="me_category_id_2f6b06c8350f344c_fk_mentor_business_categories_id" columns="category_id" ref-table="mentor_business_categories" ref-schema="" ref-catalog="mb_db2" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="subcategory_id_refs_id_ddf40de3" table="mentor_business_mentor_tags" schema="" catalog="mb_db2" columns="subcategory_id"/>
       <index name="mentor_business_subcategories_6f33f001" unique="false" columns="category_id"/>
     </table>
@@ -2329,7 +2330,7 @@
       <column name="from_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="to_year" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="parent_id_refs_user_id_4d3beff4" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" columns="parent_id" ref-table="user_userprofile" ref-schema="" ref-catalog="mb_db2" ref-columns="user_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="mentor_employmentdetails_410d0aac" unique="false" columns="parent_id"/>
     </table>
     <table name="mentor_ratings" schema="" catalog="mb_db2" type="TABLE">
@@ -2501,9 +2502,8 @@
       <column name="email_verified" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <column name="timezone" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="user_id"/>
-      <exported-key name="mentor_id_refs_user_id_197abe93" table="mentor_business_mentor_tags" schema="" catalog="mb_db2" columns="mentor_id"/>
       <exported-key name="parent_id_refs_user_id_aa0c1dbd" table="mentor_educationdetails" schema="" catalog="mb_db2" columns="parent_id"/>
-      <exported-key name="parent_id_refs_user_id_4d3beff4" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
+      <exported-key name="mentor_em_parent_id_57ad4d270521b6ae_fk_user_userprofile_user_id" table="mentor_employmentdetails" schema="" catalog="mb_db2" columns="parent_id"/>
       <exported-key name="parent_id_refs_user_id_e6e7e586" table="user_socialprofile" schema="" catalog="mb_db2" columns="parent_id"/>
     </table>
     <table name="user_verificationcodes" schema="" catalog="mb_db2" type="TABLE">

@@ -207,7 +207,7 @@ class VerificationCodes(models.Model):
 
 class Notification(models.Model):
     to = models.ForeignKey(User, related_name="notifications")
-    frm = models.CharField(max_length=300)  # from is reserved keyword
+    frm = models.CharField(max_length=300, null=True, blank=True)  # from is reserved keyword
     text = models.TextField(blank=True, max_length=300, null=True)
     title = models.CharField(blank=True, max_length=500, null=False)
     dateTime = models.DateTimeField(auto_now_add=True)

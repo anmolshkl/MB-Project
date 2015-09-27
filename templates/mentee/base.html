@@ -679,15 +679,24 @@
     $(".notification-messages").click(function() {
         var element = $(this);
         var title = element.find(".heading").text().trim();
-        var type = (title == "Request approved!")?("success"):("none");
+        var type_var = (title == "Request approved!")?("success"):("none");
         var body = element.find(".description").text().trim();
-        swal({
+        if(title == "Request approved!") {
+            swal({
                 title: title,
                 html: body,
                 showConfirmButton: false,
                 showCancelButton: false,
-                type: type
-        });
+                type: 'success'
+            });
+        } else {
+            swal({
+                title: title,
+                html: body,
+                showConfirmButton: false,
+                showCancelButton: false
+            });
+        }
     });
     $(".clearNotif").click(function() {
         $.ajax({

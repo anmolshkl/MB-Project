@@ -14,6 +14,7 @@ from apps.user.models import UserProfile, SocialProfile, MentorSearchForm, Reque
     VerificationCodes, Notification, Todo
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
+from django.http import Http404
 
 # new
 # from apps.user.backends import EmailAuthBackend
@@ -614,11 +615,11 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
     social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
     if backend.name == 'facebook':
         print "logged in with facebook"
-        if social_profile.profile_pic_url_facebook == "":
+        if social_profile.profile_url_facebook == "":
             social_profile.profile_url_facebook = response.get('link')
         if social_profile.profile_pic_url_facebook == "":
-            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
-        social_profile.save()
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
+
         profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
         if response.get('gender') == 'male':
             profile.gender = 'M'
@@ -629,17 +630,32 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
             profile.city = str(location).split(',')[0].strip()
         if profile.country == "":
             profile.country = str(location).split(',')[1].strip()
-        if profile.picture == '/static/img/no-profile-pic.jpg':
+        if profile.picture == '/static/img/no-profile-pic.jpg' or profile.picture == '':
+            print 'assigning pic'
             profile.picture = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
+
         profile.save()
+        social_profile.save()
+
 
     if backend.name == "google-oauth2":
         print "logged in with google"
         if social_profile.profile_url_google == "":
             social_profile.profile_url_google = response.get('url')
         if social_profile.profile_pic_url_google == "":
-            social_profile.profile_pic_url_google = response.get('image')['url']
+            social_profile.profile_pic_url_google = response.get('image')['url'].split('?')[0]
+
+        if profile.picture == '/static/img/no-profile-pic.jpg' or profile.picture == '':
+            print 'assigning pic'
+            profile.picture = str(response.get('image')['url']).split('?')[0]
+        if response.get('gender') == 'male':
+            profile.gender = 'M'
+        else:
+            profile.gender = 'F'
+
+        profile.save()
         social_profile.save()
+
 
     if backend.name == "linkedin-oauth2":
         print "logged in with linkedin"
@@ -700,6 +716,8 @@ def selectV2(request, from_page):
             POST = request.POST
             if 'user_type' in POST and 'pass1' in POST and 'pass2' in POST and 'contact' in POST:
                 if POST['user_type'] != "" and POST['pass1'] != '' and POST['pass2'] != '' and POST['contact'] != '' and POST['pass1'] == POST['pass2']:
+                    # common code for expert and education goes here
+
                     if from_page == 'expert-page':
                         user.set_password(POST['pass1'])
                         user.save()
@@ -707,9 +725,15 @@ def selectV2(request, from_page):
                         if POST['user_type'] == 'mentor':
                             profile.is_mentor = True
                             profile.is_bmentor = True
+                            msg = "Welcome to MentorBuddy! We wish you the best to be a super Mentor!"
+                            msg_title = "Hello Mentor"
                         else:
                             profile.is_mentor = False
                             profile.is_bmentor = True
+                            msg = "Welcome to MentorBuddy! We wish you the best in your quest to solve your problems!"
+                            msg_title = "Hello Mentee"
+                            balance = Credits.objects.create(parent=user)
+                            balance.save()
                         profile.contact = POST['contact']
                         profile.is_new = False
                         profile.save()
@@ -720,16 +744,26 @@ def selectV2(request, from_page):
                         if POST['user_type'] == 'mentor':
                             profile.is_mentor = True
                             profile.is_bmentor = False
+                            msg = "Welcome to MentorBuddy! We wish you the best to be a super Mentor!"
+                            msg_title = "Hola Mentor"
                         else:
                             profile.is_mentor = False
                             profile.is_bmentor = False
+                            msg = "Welcome to MentorBuddy! We wish you the best in your pursuit of your dreams!" \
+                                  "In case of any problem, you only need to ping us!"
+                            msg_title = "Hola Mentee"
+                            balance = Credits.objects.create(parent=user)
+                            balance.save()
                         profile.contact = POST['contact']
                         profile.is_new = False
                         profile.save()
                     else:
                         print "404"
+                        raise Http404
 
-                    # reached here? No problem then, redirect to user page
+                    # reached here? No problem then, create notification & redirect to user page
+                    notif_obj = Notification.objects.create(to=user, text=msg, title=msg_title)
+                    notif_obj.save()
                     return redirect('/user/')
                 else:
                     error = "Fields cannot be empty"
