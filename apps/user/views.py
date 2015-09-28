@@ -578,9 +578,9 @@ def handle_todo(request):
     error = False
     obj_id = None
     if request.method == 'POST':
-        if 'delete' in request.POST:
+        if 'delete' in request.POST and 'id' in request.POST:
             Todo.objects.filter(id=int(request.POST['id'])).delete()
-        elif 'add' in request.POST:
+        elif 'add' in request.POST and 'task' in request.POST:
             todo_obj = Todo.objects.create(parent=request.user)
             todo_obj.task = request.POST['task']
             todo_obj.save()

@@ -363,17 +363,16 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                             </div>
                                             <h3 class="text-white ">
                                                 <br><br>
-                                                <span class="semi-bold">Blogs</span><br>
-                                                Coming Soon!
+                                                What's next from <span class="semi-bold">MentorBuddy</span>
                                             </h3>
-                                            <div class="blog-post-controls-wrapper">
-                                                <div class="blog-post-control">
-                                                    <a class="text-white" href="#"><i class="icon-heart"></i> 1k</a>
-                                                </div>
-                                                <div class="blog-post-control">
-                                                    <a class="text-white" href="#"><i class="icon-comment"></i> 1584</a>
-                                                </div>
-                                            </div>
+{#                                            <div class="blog-post-controls-wrapper">#}
+{#                                                <div class="blog-post-control">#}
+{#                                                    <a class="text-white" href="#"><i class="icon-heart"></i> 1k</a>#}
+{#                                                </div>#}
+{#                                                <div class="blog-post-control">#}
+{#                                                    <a class="text-white" href="#"><i class="icon-comment"></i> 1584</a>#}
+{#                                                </div>#}
+{#                                            </div>#}
                                             <br>
                                         </div>
                                     </div>
@@ -381,9 +380,25 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                         <div class="tiles-body">
                                              <div class="row">
                                                 <div class="user-comment-wrapper col-mid-12">
-                                                    <h3>A place where the mentors share their own experiences.</h3><br>
-                                                    <a href="https://medium.com/@MentorBuddy/" class="btn btn-primary">Take me there!</a>
-                                                <div class="clearfix"></div>
+                                                    <h5><i class="fa fa-pencil-square-o"></i>&nbsp;
+                                                        <span class="semi-bold">Blogs</span></h5>
+                                                    <h4>A place where the mentors share their own experiences.</h4>
+                                                    <hr>
+                                                    <h5>
+                                                        <i class="fa fa-question-circle"></i>&nbsp;
+                                                        <span class="semi-bold">FAQs from Mentors</span>
+                                                    </h5>
+                                                    <h4>Get to know all the FAQs especially created by the mentors.</h4>
+                                                    <hr>
+                                                    <h5>
+                                                        <i class="fa fa-phone-square"></i>&nbsp;
+                                                        <span class="semi-bold">Advanced call features</span></h5>
+                                                    <h4>We are constantly evolving and looking to provide you added features
+                                                        in our next release.</h4>
+                                                    <hr>
+
+
+                                                    <div class="clearfix"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -396,7 +411,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                 <div class="col-xs-12">
                                     <div class="grid simple">
                                           <div class="grid-title no-border">
-                                              <h4>Latest from <span class="semi-bold">MB</span></h4>
+                                              <h4>Welcome to <span class="semi-bold">MentorBuddy</span></h4>
                                               <div class="tools"> <a href="javascript:;" class="collapse"></a>  <a href="javascript:;" class="reload"></a>  </div>
                                           </div>
                                           <div class="grid-body no-border">
@@ -404,55 +419,65 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                               <div class="color-bands purple"></div>
                                               <div class="color-bands red"></div>
                                               <div class="color-bands blue"></div>
-                                              <br>
+
                                               <div class="row-fluid">
-                                                  <h4>Welcome to <span class="semi-bold">MentorBuddy</span></h4>
+                                                  <h4>How to <span class="semi-bold">get started?</span></h4>
                                                   <div class="panel-group" id="accordion" data-toggle="collapse">
                                                       <div class="panel panel-default">
-                                                        <div class="panel-heading collapsed">
-                                                          <h4 class="panel-title">
-                                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                                                Flexible
-                                                            </a>
-                                                          </h4>
-                                                        </div>
-                                                        <div style="height: 0px;" id="collapseOne" class="panel-collapse collapse">
-                                                          <div class="panel-body">
-                                                             Click headers to expand/collapse content that is broken into logical sections, much like tabs. Optionally, toggle sections open/closed on mouseover.
+                                                          <div class="panel-heading collapsed">
+                                                              <h4 class="panel-title">
+                                                                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                                      Update your Profile & Skills
+                                                                  </a>
+                                                              </h4>
                                                           </div>
-                                                        </div>
+                                                          <div style="height: 0px;" id="collapseOne" class="panel-collapse collapse">
+                                                              <div class="panel-body" style="padding-left: 0px;">
+                                                                  <ol>
+                                                                      <li><h5>Click on the <span class="semi-bold">'Edit Profile'</span> page.</h5></li>
+                                                                      {% if user.user_profile.is_bmentor == True %}
+                                                                          <li><h5>Update your <span class="semi-bold">employment details</span> and <span class="semi-bold">skills</span> by adding tags suitable to your profile.</h5></li>
+                                                                      {% else %}
+                                                                          <li><h5>Update your <span class="semi-bold">education details</span> as mentees can search on college/university basis.</h5></li>
+                                                                      {% endif %}
+                                                                  </ol>
+                                                              </div>
+                                                          </div>
                                                       </div>
-                                                      <div class="panel panel-default">
-                                                        <div class="panel-heading collapsed">
-                                                          <h4 class="panel-title">
-                                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                                              Typography Variables
-                                                            </a>
-                                                          </h4>
-                                                        </div>
-                                                        <div style="height: 0px;" id="collapseTwo" class="panel-collapse collapse">
-                                                          <div class="panel-body">
-                                                              <h1 class="light">go explore the <span class="semi-bold">world</span></h1>
-                                                              <h4>small things in life matters the most</h4>
-                                                              <h2>Big Heading <span class="semi-bold">Body</span>, <i>Variations</i> </h2>
-                                                              <h4><span class="semi-bold">Open Me</span>, Light , <span class="semi-bold">Bold</span> , <i>Everything</i></h4>
-                                                              <p> is the art and technique of arranging type in order to make language visible. The arrangement of type involves the selection of typefaces, point size, line length, leading (line spacing), adjusting the spaces between groups of letters (tracking) </p>
-                                                              <p>and adjusting the Case space between pairs of letters (kerning). Type design is a closely related craft, which some consider distinct and others a part of typography</p>
 
+                                                      <div class="panel panel-default">
+                                                          <div class="panel-heading collapsed">
+                                                              <h4 class="panel-title">
+                                                                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                                      Approve a Request!
+                                                                  </a>
+                                                              </h4>
                                                           </div>
-                                                        </div>
+                                                          <div style="height: 0px;" id="collapseTwo" class="panel-collapse collapse">
+                                                              <div class="panel-body">
+                                                                  <ol>
+                                                                      <li><h5>Go to <span class="semi-bold">Requests</span> page and see all your pending requests.</h5></li>
+                                                                      <li><h5>You can Approve/Reject them, we are also working on a 'reschedule' feature :)</h5></li>
+                                                                      <li><h5>You can also have a detailed view of your schedule on <span class="semi-bold">Calendar</span> page.</h5></li>
+                                                                  </ol>
+                                                              </div>
+                                                          </div>
                                                       </div>
+
                                                       <div class="panel panel-default">
                                                         <div class="panel-heading collapsed">
                                                           <h4 class="panel-title">
                                                             <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                                             Easy Edit
+                                                             Go Live!
                                                             </a>
                                                           </h4>
                                                         </div>
                                                         <div id="collapseThree" class="panel-collapse collapse">
                                                           <div class="panel-body">
-                                                             Click headers to expand/collapse content that is broken into logical sections, much like tabs. Optionally, toggle sections open/closed on mouseover.
+                                                             <h5>Successfully scheduled a call? <br>We'll duly remind you <span class="semi-bold">30 mins</span> before the scheduled time.
+                                                                 You only need to open <span class="semi-bold">"Go Live"</span> page after that and wait for the mentee to call you.
+                                                                 <br> <span class="semi-bold">PS:</span> Meanwhile you can continue on another tab
+                                                             </h5>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -504,9 +529,6 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                                 <div class="col-md-12 pad-top2 pad-right">
                                      <div class="widget">
                                         <div class="widget-title dark">
-                                            <div class="pull-left ">
-                                            <button class="btn  btn-dark  btn-small" type="button"><i class="fa fa-plus"></i></button>
-                                            </div>
                                             Todo list
                                             <div class="controller">
                                                 <a href="javascript:;" class="reload"></a>
@@ -532,7 +554,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                             <div class="row pad-top2">
                                 <div class="col-md-12">
                                     <div class="timings white tiles pad-top2 pad-s">
-                                        <h3>Your favored call timings:</h3>
+                                        <h3>Your favored call timings:</h3> (in {{ user.user_profile.timezone }})
                                         <div class="row">
                                             <div class="col-xs-3">
                                                 <h5>Weekdays:</h5>
@@ -612,26 +634,24 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       $('[data-toggle="popover"]').popover();
     });
     //Simple todolist
-     $('.todo-list').click(function () {
-         $(this).parent().children('label').toggleClass('done');
-         var parent = $(this).parent().parent();
-         var element = $(this).parent().find("label");
+     $('.checkbox').click(function () {
+         $(this).find('label').toggleClass('done');
+         var input = $(this).find('input');
+         var label = $(this).find('label');
          if(!$(this).hasClass('done')) {
              $.ajax({
                     url: '/user/todo/',
                     type: "post",
                     dataType: "json",
-                    data: {'csrfmiddlewaretoken': '{{ csrf_token }}',"task": element.val(),"id": element.attr('for'),'delete': true},
+                    data: {'csrfmiddlewaretoken': '{{ csrf_token }}',"id": input.attr('id'),'delete': true},
                     success: function(data) {
                         if(data['error']==false) {
-                            parent.remove();
+                            $(this).remove();
+
                         }
                     }
              });
-            $(this).parent().parent().remove();
-
          }
-
     });
     $("#todoField").bind("keypress",function(event) {
         var element = $(this);
