@@ -27,12 +27,13 @@ from PIL import Image
 from django.core.mail import send_mail
 from django.utils import timezone
 from mentorbuddy.settings import SITE_URL
-import pytz,datetime
+import pytz, datetime
 from haystack.management.commands import rebuild_index
 from django.core import management
 from haystack import connections
 from StringIO import StringIO
 from django.core.cache import cache
+
 
 def sendMail(request):
     send_mail('Its Working', 'Put your Email message here.', 'anmol@mentorbuddy.in', ['Anmol.shkl@gmail.com'],
@@ -214,26 +215,46 @@ def set_password(request):
 def register(request):
     post = request.POST  # for convenience
     msg = None
+    for_education = True
     # check if we got all the input fields
-    if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'college' in post and 'city' in post and 'country' in post:
+    if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'city' in post and 'country' in post:
         fn = request.POST['fn']
         ln = request.POST['ln']
         email = request.POST['email']
-        college = request.POST['college']
+        if 'college' in request.POST:
+            college = request.POST['college']
+        else:
+            college = None
+        if 'company' in request.POST:
+            for_education = False
+            company = request.POST['company']
+        else:
+            company = None
+        if 'position' in request.POST:
+            position = request.POST['position']
+        else:
+            position = None
         city = request.POST['city']
         country = request.POST['country']
         contact = request.POST['contact']
 
-        if fn and ln and email and college and city and country and contact:
+        if fn and ln and email and city and country and contact and (college or (position and company)):
             if User.objects.filter(email=email).exists():
                 return JsonResponse({'error': True, 'message': 'User with this email already exists!'})
             else:
                 username = email[0:29]
                 user = User(username=username, first_name=fn, last_name=ln, email=email)
                 user.save()
-                profile = UserProfile(city=city, country=country, college=college, contact=contact)
+                profile = UserProfile(city=city, country=country, contact=contact)
                 profile.user = user
                 profile.timezone = request.visitor['location']['timezone']
+                if college is not None:
+                    profile.college = college
+                elif position is not None and company is not None:
+                    emp_obj = EmploymentDetails.objects.create(parent=profile)
+                    emp_obj.position = position
+                    emp_obj.organization = company
+                    emp_obj.save()
                 profile.save()
                 # generate key
                 salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
@@ -246,7 +267,11 @@ def register(request):
 
                 # Send email with activation key
                 email_subject = 'Account confirmation'
-                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + settings.SITE_URL + "user/confirm/" + activation_key
+                if for_education is True:
+                    url = settings.SITE_URL + "user/confirm/" + activation_key + "/?for_education=true"
+                else:
+                    url = settings.SITE_URL + "user/confirm/" + activation_key + "/?for_education=false"
+                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + url
                 send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=True)
 
                 return JsonResponse({'error': False})
@@ -254,6 +279,7 @@ def register(request):
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
 
     else:
+        print post
         return JsonResponse({'error': True, 'message': 'not all fields were received'})
 
 
@@ -342,8 +368,6 @@ def explore(request):
     return render_to_response('user/explore.html')
 
 
-
-
 @login_required
 def root(request):
     """
@@ -385,7 +409,7 @@ def root(request):
     # WARNING: This is a hack, please fix later
     for mentor in results:
         try:
-	    emp_obj = EmploymentDetails.objects.get(parent=mentor.id)
+            emp_obj = EmploymentDetails.objects.get(parent=mentor.id)
         except ObjectDoesNotExist:
             emp_obj = None
         if emp_obj != None:
@@ -537,7 +561,12 @@ def register_confirm(request, ak):
     # which has authenticated it
     user.backend = 'django.contrib.auth.backends.ModelBackend'
     login(request, user)
-    return redirect('/user/')
+    from_page = 'edu-page'
+    if request.GET['for_education'] == 'false':
+        from_page = 'expert-page'
+
+    return render_to_response("user/selectV2.html", {'from': from_page},
+                              context_instance=RequestContext(request))
 
 
 def contact(request):
@@ -603,7 +632,7 @@ def rebuild_index(request):
 
 
 # Python-social-auth pipeline function that is called after entire social sing up is completed
-def save_social_profile(strategy, backend, user, response,request, *args, **kwargs):
+def save_social_profile(strategy, backend, user, response, request, *args, **kwargs):
     print 'inside save profile'
     for key, value in response.iteritems():
         print key, value
@@ -618,7 +647,8 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
         if social_profile.profile_url_facebook == "":
             social_profile.profile_url_facebook = response.get('link')
         if social_profile.profile_pic_url_facebook == "":
-            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture?type=large'.format(
+                response['id'])
 
         profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
         if response.get('gender') == 'male':
@@ -637,7 +667,6 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
         profile.save()
         social_profile.save()
 
-
     if backend.name == "google-oauth2":
         print "logged in with google"
         if social_profile.profile_url_google == "":
@@ -655,7 +684,6 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
 
         profile.save()
         social_profile.save()
-
 
     if backend.name == "linkedin-oauth2":
         print "logged in with linkedin"
@@ -709,13 +737,15 @@ def selectV2(request, from_page):
     if user.is_authenticated():
         if request.method == 'GET':
             if user.user_profile.is_new == True:
-                return render_to_response("user/selectV2.html", {'from': from_page}, context_instance=RequestContext(request))
+                return render_to_response("user/selectV2.html", {'from': from_page},
+                                          context_instance=RequestContext(request))
             else:
                 return redirect('/user/')
         elif request.method == "POST":
             POST = request.POST
             if 'user_type' in POST and 'pass1' in POST and 'pass2' in POST and 'contact' in POST:
-                if POST['user_type'] != "" and POST['pass1'] != '' and POST['pass2'] != '' and POST['contact'] != '' and POST['pass1'] == POST['pass2']:
+                if POST['user_type'] != "" and POST['pass1'] != '' and POST['pass2'] != '' and POST['contact'] != '' and \
+                                POST['pass1'] == POST['pass2']:
                     # common code for expert and education goes here
 
                     if from_page == 'expert-page':
@@ -764,11 +794,16 @@ def selectV2(request, from_page):
                     # reached here? No problem then, create notification & redirect to user page
                     notif_obj = Notification.objects.create(to=user, text=msg, title=msg_title)
                     notif_obj.save()
+                    # rebuild the search index
+                    backend = connections['default'].get_backend()
+                    backend.setup_complete = False
+                    backend.existing_mapping = None
+                    management.call_command('rebuild_index', interactive=False, verbosity=1)
+
                     return redirect('/user/')
                 else:
                     error = "Fields cannot be empty"
             else:
                 error = "Missing Fields"
-            return render_to_response("user/selectV2.html", {'from': from_page, 'error': error}, context_instance=RequestContext(request))
-
-
+            return render_to_response("user/selectV2.html", {'from': from_page, 'error': error},
+                                      context_instance=RequestContext(request))

@@ -33,7 +33,7 @@ class EmploymentDetails(models.Model):
     """Stores employment details of the user"""
     parent = models.ForeignKey(UserProfile, related_name='employment_details', blank=False)
     organization = models.CharField(max_length=128, blank=True)
-    location = models.CharField(max_length=128, blank=True)
+    location = models.CharField(max_length=128, blank=True, null=True)
     position = models.CharField(max_length=256, blank=True)
     from_year = models.IntegerField(blank=True, null=True)
     to_year = models.IntegerField(blank=True, null=True)
