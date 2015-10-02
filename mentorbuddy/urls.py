@@ -15,7 +15,7 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^search/', include('apps.user.urls')),
                        url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-                       url(r'^sedna/$', apps.user.views.bmentor_index, name='sedna')
+                       url(r'^sedna/$', apps.user.views.bmentor_index, name='sedna'),           
 
                        )
 
