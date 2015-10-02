@@ -86,7 +86,7 @@
               </button>
                 <h5><span class="black">or sign up with:</span></h5>
                 <ul class="social-nav model-2" >
-                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}??next=/user/selectV2/expert-page/" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next=/user/selectV2/expert-page/" class="facebook"> <i class="fa fa-facebook"></i></a></li>
                     <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next=/user/selectV2/expert-page/" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
                     <li style="display:inline-block;"><a href="{% url 'social:begin' 'linkedin-oauth2' %}?next=/user/selectV2/expert-page/" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                 </ul>
@@ -143,9 +143,11 @@
                             <ul class="primary-nav">
                                 <li><a href="#what">What we do</a></li>
                                 <li><a href="#how">How it Works</a></li>
-                                <li><a href="#blog">Team</a></li>
+                                <li><a target="_blank" href="/user/team/">Team</a></li>
                                 <li><a href="#about">About Us</a></li>
                                 <li><a href="#download">Contact</a></li>
+                                <li><a target="_blank" href="/edu"><span style="border: 0.2em solid rgb(255,82,116);border-radius: 2em; padding: 5px;">MB Education</span></a></li>
+
                             </ul>
                             <ul class="member-actions">
                                 <li><a class="login btn-login" data-toggle="modal" data-target="#loginModal">Log in</a></li>
@@ -424,7 +426,7 @@
                         <ul class="footer-group">
                             <li><a href="#what">What we do</a></li>
                             <li><a href="#how">How it works</a></li>
-                            <li><a href="#team">Team</a></li>
+                            <li><a href="/user/team/">Team</a></li>
                             <li><a href="#terms">Terms</a></li>
                             <li><a href="#about">About Us</a></li>
                         </ul>

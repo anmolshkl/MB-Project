@@ -70,7 +70,7 @@ def index(request):
     # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
+        template = "user/selectV2.html"  # User has to select either Mentor/Mentee,so redirect to select.html
     if user_profile and not user_profile.is_new:
         if 'pic_url' in request.session:
             context_dict['pic_url'] = request.session['pic_url']
@@ -93,7 +93,7 @@ def index(request):
                                          'help mentee connect with you better.'
     elif user_profile.is_mentor is True and user_profile.is_bmentor is True:
         context_dict['completion_msg'] = '<a href="/mentor/edit-profile">Complete your profile</a>' \
-                                         ' and provide your comapany/employment details so that we can ' \
+                                         ' and provide your company/employment details so that we can ' \
                                          'help mentee connect with you better. You can also add your skills' \
                                          ', update information about yourself.'
     else:
@@ -326,15 +326,21 @@ def self_profile_view(request):
     rating_obj = {}
     try:
         rating_obj = Ratings.objects.get(mentor=user)
+        average = int(round(rating_obj.average))
+        rating_obj.activeStars = 'x' * average
+        rating_obj.inactiveStars = 'x' * (5 - average)
 
     except ObjectDoesNotExist:
-        rating_obj['total'] = 0
+        rating_obj['count'] = 0
         rating_obj['one'] = 0
         rating_obj['two'] = 0
         rating_obj['three'] = 0
         rating_obj['four'] = 0
         rating_obj['five'] = 0
         rating_obj['average'] = 0
+
+    context_dict['ratings'] = rating_obj
+
 
     context_dict['ratings'] = rating_obj
 
@@ -365,14 +371,11 @@ def get_profile(request, mentorid):
         user = User.objects.get(id=mentorid)
 
     except ObjectDoesNotExist:
-        print "lagi"
         context_dict['error'] = "User doest not exist"
         return render_to_response("mentee/mentor-profile-view.html", context_dict, context)
 
     user_profile_object = UserProfile.objects.get(user=user)
 
-    if user_profile_object.is_new:
-        return HttpResponseRedirect('user/select.html')
 
     # Social Profile
     try:

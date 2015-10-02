@@ -2,5 +2,7 @@
 {{ object.city }}
 {{ object.user.first_name }}
 {{ object.user.last_name }}
-{{object.user.full_name }}
+{{ object.user.full_name }}
 {{ object.country }}
+{{ object.employment_details.position }}
+{{ object.employment_details.organization }}

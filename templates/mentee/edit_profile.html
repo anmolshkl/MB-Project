@@ -50,7 +50,7 @@
       </div>
 
 {% endblock %}
-{% block container_title %}<h1 style="color: black">Edit Profile</h1> <span class="formError" style="font-size: 15px;color: darkred;">Please enter the required fields.</span><hr>{% endblock %}
+{% block container_title %}<h1 style="color: black">Edit Profile</h1> <span class="formError" style="font-size: 15px;color: darkred;display: none;visibility: hidden">Please enter the required fields.</span><hr>{% endblock %}
 
 {% block container_block %}
 
@@ -83,7 +83,7 @@
 
 
         {{ profile_form.date_of_birth.label_tag }}
-        {{ profile_form.date_of_birth }}
+        {{ profile_form.date_of_birth|add_class:"required" }}
 
 
         {{ profile_form.contact.label_tag }}
@@ -95,7 +95,7 @@
         {{ profile_form.college|add_class:"required" }}
 
         {{ profile_form.city.label_tag }}
-        {{ profile_form.city }}
+        {{ profile_form.city|add_class:"required" }}
 
         {{ profile_form.state.label_tag }}
         {{ profile_form.state }}
@@ -111,12 +111,9 @@
 
 {% endblock %}
 {%  block scripts %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script src="{% static 'datepicker/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>
 <script type="text/javascript" src="{% static 'js/jcrop/jquery.imgareaselect.pack.js' %}"></script>
-
-    <script>
+<script>
         $body = $("body");
         $(document).on({
             ajaxStart: function() { $body.addClass("loading");    },
@@ -129,13 +126,13 @@
             $(".required").each(function (i, obj) {
                 if ($(this).val().trim() == '') {
                     valid *= 0;
-                    $(this).css({"border": "3px solid white"});
+                    $(this).css({"border": "1px solid red"});
                 }
             });
             return valid;
         }
         $('#id_date_of_birth').datepicker({
-            format: 'mm-dd-yyyy'
+            format: 'mm/dd/yyyy'
         });
         $(".form").submit(function(e) {
             e.preventDefault();
@@ -146,7 +143,8 @@
         });
 
         function submit() {
-            if(validate() == 1) {
+            var valid = validate();
+            if(valid == 1) {
                 $.ajax({
                     url: "/mentee/edit-profile/",
                     type: "post",
@@ -169,6 +167,13 @@
                 $(".formError").html("Please enter the required fields.");
                 $(".formError").css({"color": "darkred"});
                 $(".formError").show();
+                swal({
+                    title: "Oops",
+                    html: "Please enter all the required fields",
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    type: 'error'
+                 });
             }
         }
 

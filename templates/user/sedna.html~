@@ -1,0 +1,604 @@
+{% load static %}
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MentorBuddy</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="{% static '' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-32x32.png' %}" sizes="32x32" />
+    <link rel="icon" type="image/png" href="{% static 'img/favicon-16x16.png' %}" sizes="16x16" />
+    <link rel="stylesheet" href="{% static 'sedna/css/normalize.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/jquery.fancybox.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/flexslider.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/queries.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/etline-font.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/bower_components/animate.css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sedna/css/custom.css' %}">
+    <script src="{% static 'sedna/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
+
+
+</head>
+<body id="top">
+    <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<!-- SIGN UP Modal -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form class="signUpForm" method="POST" action="/user/register/" autocomplete="off">
+                {% csrf_token %}
+              <div id="signUpError">
+              </div>
+              <div class="group">
+                <input type="text" name="fn" id="fn"><span class="highlight"></span><span class="bar"></span>
+                <label>First Name</label>
+              </div>
+              <div class="group">
+                <input type="text" name="ln" id="ln"><span class="highlight"></span><span class="bar"></span>
+                <label>Last Name</label>
+              </div>
+              <div class="group">
+                <input type="email" name="email" id="email"><span class="highlight"></span><span class="bar"></span>
+                <label>Email</label>
+              </div>
+
+              <div class="group">
+                <input type="text" name="company" id="company"><span class="highlight"></span><span class="bar"></span>
+                <label>Organization</label>
+              </div>
+              <div class="group">
+                <input type="text" name="position" id="position"><span class="highlight"></span><span class="bar"></span>
+                <label>Position</label>
+              </div>
+
+
+              <div class="group">
+                <input type="text" name="city" id="city"><span class="highlight"></span><span class="bar"></span>
+                <label>City</label>
+              </div>
+              
+              <div class="group">
+                <input type="text" name="country" id="country"><span class="highlight"></span><span class="bar"></span>
+                <label>Country</label>
+              </div>
+
+              <div class="group">
+                <input type="text" name="contact" id="contact"><span class="highlight"></span><span class="bar"></span>
+                <label>Contact</label>
+              </div>
+              
+              <button type="submit" class="button buttonBlue singUpButton">
+                  <i class="fa fa-spinner hide fa-pulse"></i>
+                  <span class="signUpText">SIGN UP!</span>
+              </button>
+                <h5><span class="black">or sign up with:</span></h5>
+                <ul class="social-nav model-2" >
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}??next=/user/selectV2/expert-page/" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next=/user/selectV2/expert-page/" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                    <li style="display:inline-block;"><a href="{% url 'social:begin' 'linkedin-oauth2' %}?next=/user/selectV2/expert-page/" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                </ul>
+            </form>
+              
+          </div>
+         
+        </div>
+      </div>
+    </div>
+<!-- End of Sign up Modal -->
+
+<!-- Login Modal -->
+    <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myLoginLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+            <form class="loginForm" method="POST" action="/user/login/" autocomplete="off">
+                {% csrf_token %}
+              <div id="loginError" class="black">
+              </div>
+              <div class="group">
+                <input type="email" name="loginEmail" id="loginEmail"><span class="highlight"></span><span class="bar"></span>
+                <label>Email</label>
+              </div>
+              <div class="group">
+                <input type="password" name="loginPassword" id="loginPassword"><span class="highlight"></span><span class="bar"></span>
+                <label>Password</label>
+              </div>
+              <button type="submit" class="button buttonBlue loginButton">
+                  <i class="fa fa-spinner hide fa-pulse"></i>
+                  <span class="text">Login</span>
+              </button>
+              <ul class="social-nav model-2">
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'facebook' %}?next=/user/selectV2/expert-page/" class="facebook"> <i class="fa fa-facebook"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'google-oauth2' %}?next=/user/selectV2/expert-page/" class="google-plus"><i class="fa fa-google-plus"></i></a></li>
+                  <li style="display:inline-block;"><a href="{% url 'social:begin' 'linkedin-oauth2' %}?next=/user/selectV2/expert-page/" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+              </ul>
+              <br>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End of login Modal -->
+
+    <section class="hero">
+        <section class="navigation">
+            <header>
+                <div class="header-content">
+                    <div class="header-nav">
+                        <nav>
+                            <ul class="primary-nav">
+                                <li><a href="#what">What we do</a></li>
+                                <li><a href="#how">How it Works</a></li>
+                                <li><a href="/user/team/">Team</a></li>
+                                <li><a href="#about">About Us</a></li>
+                                <li><a href="#download">Contact</a></li>
+                            </ul>
+                            <ul class="member-actions">
+                                <li><a class="login btn-login" data-toggle="modal" data-target="#loginModal">Log in</a></li>
+                                <li><a class="btn-white btn-small btn-signup" data-toggle="modal" data-target="#signUpModal">Sign up</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="navicon">
+                        <a class="nav-toggle" href="#"><span></span></a>
+                    </div>
+                </div>
+            </header>
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="hero-content text-center">
+{#                        <img class="img-responsive logo" src="{% static 'img/logo1.png' %}" alt="Sedna logo">#}
+                        <h1>Connect, <span style="color: rgb(255, 82, 116)" class="word2">Get Mentored</span>, Succeed!</h1>
+                        <p class="intro">MentorBuddy is a platform that connects entrepreneurs with top advisors & industry experts to conduct market research, get strategic business advice, or learn a specialized skill to help them grow their business.</p>
+                        <a href="#intro" class="btn btn-accent btn-large">Learn more</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="down-arrow floating-arrow"><a href="#"><i class="fa fa-angle-down"></i></a></div>
+    </section>
+    <section class="intro section-padding" id="intro">
+        <div class="container">
+            <div class="row" style="text-align: center">
+                <div class="col-md-3 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe033;" class="icon"></span>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Explore</h5>
+                        <p>Search from a curated list of experts across various domains.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe030;" class="icon"></span>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Select</h5>
+                        <p>Select an expert best suited for your startup, stage and problem.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 intro-feature">
+                    <div class="intro-icon">
+                        <span class="fa fa-phone fa-3x" style="color: rgb(255, 82, 116);"></span>
+                    </div>
+                    <div class="intro-content last">
+                        <h5>Call</h5>
+                        <p>Schedule a call by giving them the background of your problem.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 intro-feature">
+                    <div class="intro-icon">
+                        <span data-icon="&#xe046;" class="icon"></span>
+                    </div>
+                    <div class="intro-content last">
+                        <h5>Solve</h5>
+                        <p>Find solutions to your problems on the call and implement them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="features section-padding" id="what">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-7">
+                    <div class="feature-list">
+                        <h3>On demand, expert advice!</h3>
+                        <p>Get advice from the best brains in the market to grow your business.</p>
+                        <ul class="features-stack">
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe00e;" class="icon"></span>
+
+                                </div>
+                                <div class="feature-content">
+                                    <h5>Connect & Grow</h5>
+                                    <p>That’s why we created MB — to help you easily connect with the best experts from
+                                        around the world when you need them most.</p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe037;" class="icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <h5>Discover</h5>
+                                    <p><i style="font-weight: 400">Funding, Technology, Marketing, Sales, Design</i>-  Search through our vast
+                                        network of MB Experts from huge array of categories
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="feature-item">
+                                <div class="feature-icon">
+                                    <span data-icon="&#xe03c;" class="icon"></span>
+                                </div>
+                                <div class="feature-content">
+                                    <h5>Clean reusable code</h5>
+                                    <p>Download and re-use the Sedna open source code for any other project you like.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="device-showcase">
+            <div class="devices">
+                <div class="ipad-wrap wp1"></div>
+                <div class="iphone-wrap wp2"></div>
+            </div>
+        </div>
+        <div class="responsive-feature-img"><img src="{% static 'sedna/img/devices.png' %}" alt="responsive devices"></div>
+    </section>
+    <section class="features-extra section-padding" id="how">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" style="text-align: center">
+                    <h2 class="one" style="margin: 5px;">
+                        <span style=""><i>How it Works</i></span>
+                    </h2>
+                </div>
+            </div>
+            <div class="row fixed-width-70 center mg-top-extra">
+                <div class="col-sm-6">
+                    <img src="{% static 'img/feature-request.png' %}" class='center'>
+                </div>
+                <div class="col-sm-6">
+                    <h3>Find a Domain Expert!</h3>
+                    <p>Browse or search our community of experts to find the right one for you. We have experts from
+                    wide areas including Business, Sales & Funding, Product & Design, Technology, Skills & Management,
+                     Industries - who have made it big in their fields.</p>
+                </div>
+            </div>
+            <div class="row fixed-width-70 center mg-top">
+                <div class="col-sm-8">
+                    <h3>Schedule a Call!</h3>
+                    <p>We provide 3 different ways to connect to an Expert, using web call, video call or phone call.
+                        Select a date and time that works best for your schedule and specify a reason for the call.
+                        The expert has 72 hours to respond, or the request will expire.</p>
+                </div>
+                <div class="col-sm-4">
+                    <img src="{% static 'img/feature-call.png' %}">
+                </div>
+            </div>
+            <div class="row fixed-width-70 center mg-top">
+                <div class="col-sm-6">
+                    <img src="{% static 'img/feature-pay.png' %}">
+                </div>
+                <div class="col-sm-6">
+                    <h3>Connect, Talk!</h3>
+                    <p>Go to the 'Live' page to make a call to the expert.After the call, you’ll be charged
+                        according to our per-minute rate, and they get paid.
+                        You can then leave a rating and review for the expert.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="hero-strip section-padding">
+        <div class="container">
+            <div class="col-md-12 text-center">
+                <h2>
+                    Sign up today with <span class="sketch">MentorBuddy <i class="version">TM</i></span> & get credits
+                    worth 5$.
+                </h2>
+                <p>Offer for a limited time period for first 100 customers.</p>
+                <a data-toggle="modal" data-target="#signUpModal" class="btn btn-ghost btn-accent btn-large">Signup now!</a>
+                <div class="logo-placeholder floating-logo">
+                    <img src="{% static 'img/mentor1.png' %}" alt="MentorBuddy Logo" style="max-width: 200px;max-height: 200px">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="blog-intro section-padding" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3><u>About Us</u></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12 leftcol">
+                    <h5>MentorBuddy Experts</h5>
+                    <p>
+                        MentorBuddy Experts is a platform to deliver on demand business expertise. No dream should die
+                        young and to fulfill this dream, we connect aspiring entrepreneurs with domain experts.
+                    </p>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12 rightcol">
+                    <h5>MentorBuddy Education</h5>
+                    <p>MentorBuddy Education is a peer networking platform which helps students navigate global education.
+                        It eases the process of information exchange and facilitates end user assistance and helps
+                        simplify the process through which people communicate. We deliver real information from real
+                        people to an audience which is keen to give a kick start to their careers through global
+                        education.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--
+    <section class="testimonial-slider section-padding text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flexslider">
+                        <ul class="slides">
+                            <li>
+                                <div class="avatar"><img src="img/avatar.jpg" alt="Sedna Testimonial Avatar"></div>
+                                <h2>"Lorem ipsum dolor sit amet, nullam lucia nisi."</h2>
+                                <p class="author">Peter Finlan, Product Designer.</p>
+                            </li>
+                            <li>
+                                <div class="avatar"><img src="img/mani.jpg" alt="Sedna Testimonial Avatar"></div>
+                                <h2>"Nunc vel maximus purus. Nullam ac urna ornare."</h2>
+                                <p class="author">Manoela Ilic, Founder @ Codrops.</p>
+                            </li>
+                            <li>
+                                <div class="avatar"><img src="img/130.jpg" alt="Sedna Testimonial Avatar"></div>
+                                <h2>"Nullam ac urna ornare, ultrices nisl ut, lacinia nisi."</h2>
+                                <p class="author">Blaz Robar, Pixel Guru</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+    <section class="sign-up section-padding text-center" id="download">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h3>Feedback? Shoot it to us!</h3>
+                    <p>We are always eager to hear it from you</p>
+                    <form class="signup-form" action="/user/contact/submit/" method="POST" role="form">
+                        {% csrf_token %}
+                        <div class="form-input-group">
+                            <i class="fa fa-envelope"></i><input type="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-input-group">
+                            <i class="fa fa-lock"></i><input type="text" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-input-group">
+                            <textarea class="" name="query" style="width: 100%;height: 100%;border: solid 1px #E6E9EA;" placeholder="Enter your Feedback/Query" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-fill sign-up-btn">SUBMIT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="to-top">
+        <div class="container">
+            <div class="row">
+                <div class="to-top-wrap">
+                    <a href="#top" class="top"><i class="fa fa-angle-up"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="footer-links">
+                        <ul class="footer-group">
+                            <li><a href="#what">What we do</a></li>
+                            <li><a href="#how">How it works</a></li>
+                            <li><a href="/user/team/">Team</a></li>
+                            <li><a href="#terms">Terms</a></li>
+                            <li><a href="#about">About Us</a></li>
+                        </ul>
+                        <p>Copyright © 2015 <a href="#">MentorBuddy</a><br>
+                        <a href="">Licence</a> | Crafted with <span class="fa fa-heart pulse2"></span> by <a href="http://www.github.com/anmolshkl">Anmol Shukla</a>.</p>
+                    </div>
+                </div>
+                <div class="social-share">
+                    <p>Follow us, we're social!</p>
+                    <a href="https://twitter.com/mentor_buddy" class="twitter-share"><i class="fa fa-twitter"></i></a>
+                    <a href="https://plus.google.com/101980935667414019691" class="twitter-share" style="background-color: #db4437" ><i class="fa fa-google-plus"></i></a>
+                    <a href="https://www.facebook.com/mentorbuddy" class="facebook-share"><i class="fa fa-facebook"></i></a>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="{% static 'jquery/jquery-2.1.3.min.js' %}"></script>
+    <script>window.jQuery || document.write('<script src="{% static 'jquery/jquery-2.1.3.min.js' %}"><\/script>')</script>
+    <script src="{% static 'sedna/bower_components/retina.js/retina.js' %}"></script>
+    <script src="{% static 'sedna/js/jquery.fancybox.pack.js' %}"></script>
+    <script src="{% static 'sedna/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'sedna/js/scripts.js' %}"></script>
+    <script src="{% static 'sedna/js/jquery.flexslider-min.js' %}"></script>
+    <script src="{% static 'sedna/bower_components/classie/classie.js' %}"></script>
+    <script src="{% static 'sedna/bower_components/jquery-waypoints/jquery.waypoints.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".word2").addClass("animated bounce");
+            $(".signup-form").submit(function(e) {
+                var form = $('.signup-form').serializeArray();
+                e.preventDefault();
+                 $.ajax({
+                     url: '/user/contact/submit/',
+                     data: form,
+                     type: 'POST',
+                     success: function (data) {
+                         if(data['error'] == false) {
+                             $(".sign-up").html("<h3>Thank You!</h3><h4>We'll get back to you soon!</h4><span style='font-size: 40px;color: rgb(255,82,116);' data-icon='&#xe05b;' class='icon'></span>");
+                         } else {
+                             alert(data['msg']);
+                         }
+                     },
+                     cache: false
+                 });
+            })
+        });
+        function validateForm(form) {
+            var valid = 1;
+            var formElements = form.elements;
+            for(var i = 0; i < formElements.length; i++) {
+
+                if(formElements[i].value == '' && formElements[i].type != "submit") {
+                    $("#"+formElements[i].id).css({'border-bottom':"1px solid red"});
+                    valid *= 0;
+                }
+            }
+            return valid;
+        }
+
+        $(document).ready(function() {
+            $('.signUpForm').submit(function(e) {
+                e.preventDefault();
+                var form = document.getElementsByClassName('signUpForm')[0];
+                if(validateForm(form) == 1) {
+                    var postData = $(this).serializeArray();
+                    var msg='';
+                    var owner = $(this);
+                    $(this).find(".fa-spinner").removeClass('hide');
+                    $(this).find(".signUpText").text('SIGNING YOU UP ...');
+
+                    $("signUpButton").addClass('disabled');
+                    $.ajax({
+                        url: '/user/register/',
+                        type: 'POST',
+                        data: postData,
+                        dataType: 'json',
+                        success: function(data) {
+                            if(data["error"] == true) {
+                                $("#signUpError").html(data['message']);
+                                $("signUpButton").removeClass('disabled');
+                                owner.find(".fa-spinner").addClass('hide');
+                                owner.find(".signUpText").text('SIGN UP!');
+                            }
+                            else {
+
+                                msg = "<div class='black tiles white'><i class='fa fa-envelope fa-3x'></i><br>You're just one step away!<br>We have sent you a verification email. Check for the same!<div> ";
+                                $("#signUpModal .modal-header").css({"background-color": "white"});
+                                $("#signUpModal .modal-content").css({"background-color": "white"});
+                                $("#signUpModal .modal-body").css({"background-color": "white"});
+                                $('.signUpForm').fadeOut();
+                                $('#signUpModal .modal-body').html(msg);
+                            }
+                        },
+                        error: function(data) {
+                            alert("Oops! ajax error");
+                        }
+                    });
+                }
+                else {
+                    $("#signUpError").html("Please check all the input fields");
+                }
+            });
+            $(".loginForm").submit(function(event) {
+                event.preventDefault();
+                var form = document.getElementsByClassName('loginForm')[0];
+                if(validateForm(form) == 1) {
+                    $(".loginButton").addClass("disabled");
+                    $(".loginButton .text").html("Logging you in...")
+                    $(".loginButton i").removeClass("hide");
+                    var postData = $(this).serializeArray();
+                    $.ajax({
+                        url: '/user/login/',
+                        type: 'POST',
+                        data: postData,
+                        dataType: 'json',
+                        success: function(data) {
+                            if(data["error"] == true) {
+                                $("#loginError").html(data['msg']);
+                                $(".loginButton .text").html("Login");
+                                $(".loginButton i").addClass("hide");
+                            }
+                            else {
+                                location.reload();
+                            }
+                        },
+                            error: function(data) {
+                                $("#loginError").html("Ajax error! please reload");
+                                $(".loginButton .text").html("Login");
+                                $(".loginButton i").addClass("hide");
+                        }
+                    });
+                }
+                else {
+                    $("#loginError").html("All fields are required")
+                }
+
+
+            });
+        });
+    <!-- Sign Up Form -->
+        $(window, document, undefined).ready(function() {
+          $('input').blur(function() {
+            var $this = $(this);
+            if ($this.val())
+              $this.addClass('used');
+            else
+              $this.removeClass('used');
+          });
+
+          var $ripples = $('.ripples');
+
+          $ripples.on('click.Ripples', function(e) {
+
+            var $this = $(this);
+            var $offset = $this.parent().offset();
+            var $circle = $this.find('.ripplesCircle');
+
+            var x = e.pageX - $offset.left;
+            var y = e.pageY - $offset.top;
+
+            $circle.css({
+              top: y + 'px',
+              left: x + 'px'
+            });
+
+            $this.addClass('is-active');
+
+          });
+
+          $ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function(e) {
+            $(this).removeClass('is-active');
+          });
+        });
+    </script>
+</body>
+</html>

@@ -2,7 +2,7 @@ from decimal import Decimal
 import hashlib
 import random
 from apps.mentee.models import Credits
-from apps.mentor.models import Ratings
+from apps.mentor.models import Ratings, Business_Mentor_Tags, Business_subcategories, EmploymentDetails
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.template import RequestContext
@@ -14,6 +14,7 @@ from apps.user.models import UserProfile, SocialProfile, MentorSearchForm, Reque
     VerificationCodes, Notification, Todo
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
+from django.http import Http404
 
 # new
 # from apps.user.backends import EmailAuthBackend
@@ -69,14 +70,14 @@ def index(request):
     template = "user/loginV3.html"  # default template to render
     user = None
     user_profile = None
-
+    print request.GET
     if request.user.is_authenticated():
         user_profile, created = UserProfile.objects.get_or_create(user=request.user.id)
 
     # Check whether the user is new,if yes then he needs to select btw Mentor-Mentee
     if user_profile and user_profile.is_new:
         context_dict['selected'] = None
-        template = "user/select.html"  # User has to select either Mentor/Mentee,so redirect to select.html
+        template = "user/selectV2.html"  # User has to select either Mentor/Mentee,so redirect to select.html
         # attach required forms to display in the template
 
     if user_profile and not user_profile.is_new:
@@ -124,7 +125,7 @@ def user_login(request):
 def select(request):
     error = False
     msg = None
-    template = "user/select.html"
+    template = "user/selectV2.html"
     user = request.user
     user_profile = user.user_profile
 
@@ -173,7 +174,7 @@ def select(request):
 def set_password(request):
     error = False
     msg = None
-    template = "user/select.html"
+    template = "user/selectV2.html"
     user = request.user
     user_profile = user.user_profile
     if not UserProfile.objects.get(user=request.user).is_new:
@@ -341,6 +342,8 @@ def explore(request):
     return render_to_response('user/explore.html')
 
 
+
+
 @login_required
 def root(request):
     """
@@ -348,11 +351,46 @@ def root(request):
     """
 
     search_query = request.GET.get('q', '')
+    subcategory = request.GET.get('subcategory', None)
+    print subcategory
+    results = []
+    if subcategory != None:
+        mentor_tags = Business_Mentor_Tags.objects.filter(subcategory=subcategory)
+        for obj in mentor_tags:
+            mentor_profile = obj.mentor.user_profile
+            mentor = obj.mentor
+            emp_obj = mentor_profile.employment_details.all()[:1].get()
+            results.append({'first_name': mentor.first_name,
+                            'last_name': mentor.last_name,
+                            'picture': mentor_profile.picture,
+                            'id': mentor.id,
+                            'college': mentor_profile.college,
+                            'city': mentor_profile.city,
+                            'country': mentor_profile.country,
+                            'type': 'expert',
+                            'position': emp_obj.position,
+                            'organization': emp_obj.organization
+                            })
 
+        return render(request, 'mentee/search_root.html', {
+            'search_query': search_query,
+            'mentors': results,
+            'subcategory': Business_subcategories.objects.get(id=int(subcategory)).name,
+        })
+    # otherwise continues as it is search by name query
     # we retrieve the query to display it in the template
     form = MentorSearchForm(request.GET)
     # we call the search method from the MentorSearchForm. Haystack do the work!
     results = form.search()
+    # WARNING: This is a hack, please fix later
+    for mentor in results:
+        try:
+	    emp_obj = EmploymentDetails.objects.get(parent=mentor.id)
+        except ObjectDoesNotExist:
+            emp_obj = None
+        if emp_obj != None:
+            mentor.position = EmploymentDetails.objects.get(parent=mentor.id).position
+            mentor.organization = EmploymentDetails.objects.get(parent=mentor.id).organization
     return render(request, 'mentee/search_root.html', {
         'search_query': search_query,
         'mentors': results,
@@ -540,9 +578,9 @@ def handle_todo(request):
     error = False
     obj_id = None
     if request.method == 'POST':
-        if 'delete' in request.POST:
+        if 'delete' in request.POST and 'id' in request.POST:
             Todo.objects.filter(id=int(request.POST['id'])).delete()
-        elif 'add' in request.POST:
+        elif 'add' in request.POST and 'task' in request.POST:
             todo_obj = Todo.objects.create(parent=request.user)
             todo_obj.task = request.POST['task']
             todo_obj.save()
@@ -572,20 +610,16 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
 
     profile_created = False
 
-    # set in cache which site type user landed on
-    expert = strategy.session_get('expert')
-    cache.set(user.email, expert)
-
     profile, profile_created = UserProfile.objects.get_or_create(user=user)
 
     social_profile, social_profile_created = SocialProfile.objects.get_or_create(parent=profile)
     if backend.name == 'facebook':
         print "logged in with facebook"
-        if social_profile.profile_pic_url_facebook == "":
+        if social_profile.profile_url_facebook == "":
             social_profile.profile_url_facebook = response.get('link')
         if social_profile.profile_pic_url_facebook == "":
-            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
-        social_profile.save()
+            social_profile.profile_pic_url_facebook = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
+
         profile.date_of_birth = datetime.datetime.strptime(response.get('birthday'), '%m/%d/%Y').strftime('%Y-%m-%d')
         if response.get('gender') == 'male':
             profile.gender = 'M'
@@ -596,15 +630,32 @@ def save_social_profile(strategy, backend, user, response,request, *args, **kwar
             profile.city = str(location).split(',')[0].strip()
         if profile.country == "":
             profile.country = str(location).split(',')[1].strip()
+        if profile.picture == '/static/img/no-profile-pic.jpg' or profile.picture == '':
+            print 'assigning pic'
+            profile.picture = 'http://graph.facebook.com/{0}/picture?type=large'.format(response['id'])
+
         profile.save()
+        social_profile.save()
+
 
     if backend.name == "google-oauth2":
         print "logged in with google"
         if social_profile.profile_url_google == "":
             social_profile.profile_url_google = response.get('url')
         if social_profile.profile_pic_url_google == "":
-            social_profile.profile_pic_url_google = response.get('image')['url']
+            social_profile.profile_pic_url_google = response.get('image')['url'].split('?')[0]
+
+        if profile.picture == '/static/img/no-profile-pic.jpg' or profile.picture == '':
+            print 'assigning pic'
+            profile.picture = str(response.get('image')['url']).split('?')[0]
+        if response.get('gender') == 'male':
+            profile.gender = 'M'
+        else:
+            profile.gender = 'F'
+
+        profile.save()
         social_profile.save()
+
 
     if backend.name == "linkedin-oauth2":
         print "logged in with linkedin"
@@ -647,10 +698,14 @@ def bmentor_index(request):
 
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
 
+
 @login_required
 def selectV2(request, from_page):
+    print 'inside selectV2'
     user = request.user
     # expert = cache.get(user.email)
+    print from_page
+
     if user.is_authenticated():
         if request.method == 'GET':
             if user.user_profile.is_new == True:
@@ -661,6 +716,8 @@ def selectV2(request, from_page):
             POST = request.POST
             if 'user_type' in POST and 'pass1' in POST and 'pass2' in POST and 'contact' in POST:
                 if POST['user_type'] != "" and POST['pass1'] != '' and POST['pass2'] != '' and POST['contact'] != '' and POST['pass1'] == POST['pass2']:
+                    # common code for expert and education goes here
+
                     if from_page == 'expert-page':
                         user.set_password(POST['pass1'])
                         user.save()
@@ -668,9 +725,15 @@ def selectV2(request, from_page):
                         if POST['user_type'] == 'mentor':
                             profile.is_mentor = True
                             profile.is_bmentor = True
+                            msg = "Welcome to MentorBuddy! We wish you the best to be a super Mentor!"
+                            msg_title = "Hello Mentor"
                         else:
                             profile.is_mentor = False
                             profile.is_bmentor = True
+                            msg = "Welcome to MentorBuddy! We wish you the best in your quest to solve your problems!"
+                            msg_title = "Hello Mentee"
+                            balance = Credits.objects.create(parent=user)
+                            balance.save()
                         profile.contact = POST['contact']
                         profile.is_new = False
                         profile.save()
@@ -681,16 +744,26 @@ def selectV2(request, from_page):
                         if POST['user_type'] == 'mentor':
                             profile.is_mentor = True
                             profile.is_bmentor = False
+                            msg = "Welcome to MentorBuddy! We wish you the best to be a super Mentor!"
+                            msg_title = "Hola Mentor"
                         else:
                             profile.is_mentor = False
                             profile.is_bmentor = False
+                            msg = "Welcome to MentorBuddy! We wish you the best in your pursuit of your dreams!" \
+                                  "In case of any problem, you only need to ping us!"
+                            msg_title = "Hola Mentee"
+                            balance = Credits.objects.create(parent=user)
+                            balance.save()
                         profile.contact = POST['contact']
                         profile.is_new = False
                         profile.save()
                     else:
                         print "404"
+                        raise Http404
 
-                    # reached here? No problem then, redirect to user page
+                    # reached here? No problem then, create notification & redirect to user page
+                    notif_obj = Notification.objects.create(to=user, text=msg, title=msg_title)
+                    notif_obj.save()
                     return redirect('/user/')
                 else:
                     error = "Fields cannot be empty"

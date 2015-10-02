@@ -4,7 +4,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/mentor/profile.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}"/ >
+<link rel="stylesheet" type="text/css" href="{% static 'datetimepicker/jquery.datetimepicker.css' %}" />
 {% endblock %}
 
 {% block container_title %}
@@ -12,39 +12,33 @@
 {% endblock %}
 
 {% block container_block %}
+    <div class="container-fluid">
+        <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+        <div id="portlet-config" class="modal hide">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button"></button>
+                <h3>Widget Settings</h3>
+            </div>
+            <div class="modal-body"> Widget settings form goes here </div>
+        </div>
 
-
-
-<div class="container-fluid"> 
-    <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-    <div id="portlet-config" class="modal hide">
-      <div class="modal-header">
-        <button data-dismiss="modal" class="close" type="button"></button>
-        <h3>Widget Settings</h3>
-      </div>
-      <div class="modal-body"> Widget settings form goes here </div>
-    </div>
-
-
-    <div style="margin-top:100px;" class="clearfix"></div>
+        <div style="margin-top:100px;" class="clearfix"></div>
         <div class="row no-padding">
             <div class="col-md-6 no-margin margin-left-3">
                 <div class="row no-padding">
-                    <div class="tiles green cover-pic-wrapper">                     
+                    <div class="tiles green cover-pic-wrapper">
                         <div class="overlayer bottom-right">
-
                         </div>
                         <!-- <img src="{%static 'template/webarch/assets/img/cover_pic.png' %}" alt="Cover Pic"> -->
                         <img src="{%static 'img/bg7.jpg' %}" alt="">
                     </div>
                     <div class="col-xs-12 white">
-            
                         <div class="row tiles pd-l white">
                             <div class="col-md-3 col-sm-3 " >
                                 <div class="user-profile-pic">  
                                     <img width="69" height="69" data-src-retina="{{ picture_url }}" data-src="{{ picture_url }}" src="{{ picture_url }}" alt="">
                                 </div>
-                                 <div class="user-mini-description">
+                                <div class="user-mini-description">
                                     <h3 class="text-success semi-bold">
                                         {{ mentor_count }}
                                     </h3>
@@ -56,73 +50,55 @@
                                 <h6 class="no-margin">{{ college }}</h6>
                                 <br>
                                 <p><i class="fa fa-globe"></i>
-                                    {% if city or country %}
-                                        from
-                                    {% else %}
-                                        Location not available
-                                    {% endif %}
-
-                                    {% if city %}
-                                        {{ city }},
-                                    {% endif %}
-
-                                    {% if country %}
-                                        {{ country }}
-                                    {% endif %}
-
-                                </p>
-
+                                    {% if city or country %}from{% else %}Location not available{% endif %}
+                                    {% if city %}{{ city }},{% endif %}
+                                    {% if country %}{{ country }}{% endif %}</p>
                             </div>
                         </div>
-                    <br>
-                                        <div class="row">
-                    {% if about %}
-                    <div class="col-xs-12 white tiles pd-s mg-top-s textCenter bg-purple">
-                        <h3 class="txt-white">About</h3>
+                        <br>
+                        <div class="row">
+                            {% if about %}
+                                <div class="col-xs-12 white tiles pd-s mg-top-s textCenter bg-purple">
+                                    <h3 class="txt-white">About</h3>
+                                </div>
+                                <div class="col-xs-12 white tiles pd-xl mg-top-s textCenter">
+                                    {{ about }}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-xs-12 white tiles pd-xl mg-top-s textCenter">
-                          {{ about }}
-                    </div>
-                    {% endif %}
                 </div>
-
-
-                    </div>
-                </div>  
             </div>
-            
-            
+
             <div class="col-md-5 margin-left-3">
                 <div class="row">
                     <div class="tiles white col-md-12  no-padding">
-                    <div class="tiles-body">
-                        <h1>Credits</h1><hr>
-                        <h2><span class="animate-number">0</span>$</h2>
-                        <a class="btn btn-primary pull-right" href="https://www.instamojo.com/mentorbuddy/find-a-mentor/" rel="im-checkout" data-behavior="link" data-style="light" data-text="Checkout with Instamojo" data-token="8efb0c427df27e3279556b7cb1645434"><i class="fa fa-bolt"></i> Recharge</a>
-                        <div style="clear: both;"></div>
+                        <div class="tiles-body">
+                            <h1>Credits</h1><hr>
+                            <h2><span class="animate-number">0</span>$</h2>
+                            <a class="btn btn-primary pull-right" href="https://www.instamojo.com/mentorbuddy/find-a-mentor/" rel="im-checkout" data-behavior="link" data-style="light" data-text="Checkout with Instamojo" data-token="8efb0c427df27e3279556b7cb1645434"><i class="fa fa-bolt"></i> Recharge</a>
+                            <div style="clear: both;"></div>
+                        </div>
                     </div>
                 </div>
-                </div>
-            <br>
-                <div class="row">
-                  <div class="col-md-12 tiles white textCenter pad-m">
-                    <span><h4>Mentors you are following<span>
-                      <hr>
-                    {% if mentors %}
-                      {% for mentor in mentors %}
-
-                      {% endfor %}
-                    {% else %}
-                        None
-                    {% endif %}
-                  </div>
-                </div>
-
                 <br>
-            </div>    
+                <div class="row">
+                    <div class="col-md-12 tiles white textCenter pad-m">
+                        <h4><span>Mentors you are following</span></h4>
+                        <hr>
+                        {% if mentors %}
+                            {% for mentor in mentors %}
+
+                            {% endfor %}
+                        {% else %}
+                            None
+                        {% endif %}
+                    </div>
+                </div>
+                <br>
             </div>
         </div>
-  </div>
+    </div>
 <!-- END CONTAINER -->
 {% endblock %}
 
@@ -132,6 +108,4 @@
 <script type="text/javascript">
     $(".animate-number").animateNumbers({{ balance }}, false, 1000, "linear");
 </script>
-<script src="https://d2xwmjc4uy2hr5.cloudfront.net/im-embed/im-embed.min.js"></script>
-
 {% endblock %}
