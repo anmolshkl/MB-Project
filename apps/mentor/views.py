@@ -975,3 +975,61 @@ def update_tags(request):
 
 
     return render_to_response("mentor/update_tags.html",{'categories':categories,'context_dict':context_dict,'context':context})
+
+@login_required
+def save_tags(request):
+
+    user = request.user
+    user_profile = user.user_profile
+    user_id = user.id
+    b_id = user_profile.is_bmentor
+
+    post = request.POST
+
+    if request.method == 'POST' and request.POST:
+        if 'subcategory_id' in post:
+
+            bmentor_profile = UserProfile.objects.get(user_id=user_id)
+            bmentor_profile.is_bmentor = 1
+            bmentor_profile.save()
+
+            subcat = Business_subcategories.objects.get(id=post['subcategory_id'])           
+            
+
+            mapping = Business_Mentor_Tags.objects.create(mentor=user_profile,subcategory=subcat)
+            mapping.save()
+
+    print "in savetags view"
+
+    return HttpResponseRedirect("/mentor/")
+
+@login_required
+def get_tags(request):
+
+    user = request.user
+    user_profile = user.user_profile
+    subcat_tag_list = Business_Mentor_Tags.objects.filter(mentor = user_profile)
+    
+
+    context = RequestContext(request)
+    context_dict = {}    
+
+    dict_index = 0;
+    for  tag in subcat_tag_list:
+        cat_subcat_list = []
+
+        #subcat = Business_subcategories.objects.get(id=subcat_id)
+
+        subcat_name = tag.subcategory.name
+
+        cat_name = Business_subcategories.objects.get(id=tag.subcategory.id).category.name
+
+        
+        
+        cat_subcat_list.append({'category':cat_name,'subcategory':subcat_name})
+        context_dict[dict_index] = cat_subcat_list
+        dict_index = dict_index +1
+
+
+    print context_dict
+    return HttpResponseRedirect("/mentor/")

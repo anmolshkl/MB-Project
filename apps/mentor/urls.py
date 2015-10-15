@@ -21,7 +21,7 @@ urlpatterns = patterns('',
                        url(r'^check-mentor-status/$', views.check_mentor_status, name="update-last-seen"),
                        url(r'^update-timings/$', views.update_timings, name="update-timings"),
                        url(r'^update-tags/$', views.update_tags, name="update-tags"),
-
-
+                       url(r'^save-tags/$', views.save_tags, name='save-tags'),
+                       url(r'^get-tags/$', views.get_tags, name='get-tags')
 
                        )

@@ -411,6 +411,10 @@
             </noscript>
         </div>
 
+             
+                        
+                        <a id="update_tags" name="resume" type="submit" class=" btn btn-primary">Save</a>
+                    
 
             </div>
             
@@ -635,6 +639,30 @@
 
 
         });
+
+    $('#update_tags').click(function(e) {
+            
+                console.log('sup');
+
+                var subcatid = document.getElementById("subcategory").value;
+                console.log(subcatid);
+
+                $.ajax({
+                    url: '/mentor/save-tags/',
+                    type: 'post',
+                    dataType: "json",
+                    data: {'csrfmiddlewaretoken': "{{ csrf_token }}",'subcategory_id': subcatid},
+                    success: function() {
+                        location.reload();
+                    },
+                    failure: function() {
+                        alert("failed");
+                    }
+                });
+            
+        });
+    
+
     </script>
     <script>
         /* http://stackoverflow.com/questions/501719/dynamically-adding-a-form-to-a-django-formset-with-ajax */
@@ -834,7 +862,7 @@
                     
                     case "{{ list.category_name }}" :
 
-                        document.getElementById("subcategory").options[0]=new Option("Please select framework","");
+                        document.getElementById("subcategory").options[0]=new Option("select subcategory","");
 
                         {% for subcat in list.subcategories %}
                         
