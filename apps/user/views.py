@@ -792,7 +792,7 @@ def selectV2(request, from_page):
                         raise Http404
 
                     # reached here? No problem then, create notification & redirect to user page
-                    notif_obj = Notification.objects.create(to=user, text=msg, title=msg_title)
+                    notif_obj = Notification.objects.create(to=user,frm="admin", text=msg, title=msg_title)
                     notif_obj.save()
                     # rebuild the search index
                     backend = connections['default'].get_backend()
