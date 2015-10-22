@@ -4,6 +4,7 @@ import random
 from apps.mentee.models import Credits
 from apps.mentor.models import Ratings, Business_Mentor_Tags, Business_subcategories, EmploymentDetails
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail.message import EmailMultiAlternatives
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response, render, redirect, get_object_or_404
@@ -26,6 +27,7 @@ from PIL import Image
 # Create your views here.
 from django.core.mail import send_mail
 from django.utils import timezone
+from django.utils.html import strip_tags
 from mentorbuddy.settings import SITE_URL
 import pytz, datetime
 from haystack.management.commands import rebuild_index
@@ -215,6 +217,7 @@ def set_password(request):
 def register(request):
     post = request.POST  # for convenience
     msg = None
+    print 'anmol'
     for_education = True
     # check if we got all the input fields
     if request.method == 'POST' and 'fn' in post and 'ln' in post and 'email' in post and 'city' in post and 'country' in post:
@@ -266,14 +269,18 @@ def register(request):
                 new_key.save()
 
                 # Send email with activation key
-                email_subject = 'Account confirmation'
+                email_subject = 'Please Confirm your MB Account'
                 if for_education is True:
                     url = settings.SITE_URL + "user/confirm/" + activation_key + "/?for_education=true"
                 else:
                     url = settings.SITE_URL + "user/confirm/" + activation_key + "/?for_education=false"
-                email_body = "Hey " + fn + ", thanks for signing up.<br> To activate your account, click this link within 48 hours: " + url
-                send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=True)
+                email_body = "Hey " + fn + "!<br><br> Welcome to mentorbuddy,<br> To activate your account, click this link within 48 hours: " + url + "<br><br> Regards,<br>MentorBuddy Team"
+                # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=True)
 
+                text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
+                msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [email])
+                msg.attach_alternative(email_body, "text/html")
+                msg.send()
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -792,7 +799,7 @@ def selectV2(request, from_page):
                         raise Http404
 
                     # reached here? No problem then, create notification & redirect to user page
-                    notif_obj = Notification.objects.create(to=user,frm="admin", text=msg, title=msg_title)
+                    notif_obj = Notification.objects.create(to=user, frm="admin", text=msg, title=msg_title)
                     notif_obj.save()
                     # rebuild the search index
                     backend = connections['default'].get_backend()
