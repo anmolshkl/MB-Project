@@ -252,12 +252,63 @@
         opacity: 0;
         filter: alpha(opacity=0);
     }
+    .tag-anchor {
+        color: white;
+        text-decoration:none;
+        padding: 10px;
+        margin-right: -10px;
+    }
+    .tag-button {
+        position: relative;
+        border: 0;
+        outline: 0;
+        height: 40px;
+        margin-right: 20px;
+        text-transform: lowercase;
+        color: white;
+        background-color: #2b3038;
+        -webkit-transition: background 0.25s ease;
+        transition: background 0.25s ease;
+    }
+    .tag-button:before {
+      position: absolute;
+      content: "";
+      right: -20px;
+      width: 20px;
+      height: 20px;
+      top: 0;
+      background: #2b3038;
+      -webkit-transition: background 0.25s ease;
+              transition: background 0.25s ease;
+    }
+    .tag-button:after {
+      position: absolute;
+      content: "";
+      right: -20px;
+      width: 0px;
+      height: 0px;
+      bottom: 0;
+      border-bottom: 20px solid transparent;
+      border-left: 20px solid #2b3038;
+      -webkit-transition: border 0.25s ease;
+              transition: border 0.25s ease;
+    }
+    .tag-button a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .tag-button:hover, button:hover:before {
+      background: #796e65;
+    }
+    .tag-button:hover:after {
+      border-left: 20px solid #796e65;
+    }
+
     </style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/jcrop/imgareaselect-default.css' %}" />
+<link href="{% static 'datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
 {%  endblock %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/jcrop/imgareaselect-default.css' %}" />
-
-<link href="{% static 'datepicker/css/datepicker.css' %}" rel="stylesheet" type="text/css" />
 {% block container_title %}{% endblock %}
 
 {% block container_block %}
@@ -334,7 +385,7 @@
             <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Personal</a></li>
             <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Education</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Employment</a></li>
-            <li role="presentation"><a href="#update-tags" aria-controls="settings" role="tab" data-toggle="tab">Tags</a></li>
+            <li role="presentation"><a href="#update-tags" aria-controls="settings" role="tab" data-toggle="tab">Skills</a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -389,33 +440,40 @@
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="update-tags">
-              
-            <div class="category_div" id="category_div"> <b> CATEGORIES </b>
-            <select name="category" class="required-entry" id="category" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
-                <option value="">select category</option>
-                {% for cat in categories %}
-                        <option value= "{{  cat.name }}"> {{ cat.name }} </option>
+                <h4>Your Skills</h4>
+                <div class="col-xs-12">
+                    {% if tags != None %}
+                        {% for tag in tags %}
+                            <button type="button" class='tag-button'><a class="tag-anchor">{{ tag.subcategory.name }}</a></button>
+
                         {% endfor %}
-                
-                
-            </select>
-        </div>
-        <div class="sub_category_div" id="sub_category_div">  <b>SUBCATEGORIES</b>
-            <script type="text/javascript" language="JavaScript">
-                document.write('<select name="subcategory" id="subcategory"><option value="">select subcategory</option></select>')
-            </script>
-            <noscript>
-                <select name="subcategory" id="subcategory" >
-                    <option value="">select subcategory</option>
-                </select>
-            </noscript>
-        </div>
-
-             
-                        
-                        <a id="update_tags" name="resume" type="submit" class=" btn btn-primary">Save</a>
-                    
-
+                    {% else %}
+                        Please add skills
+                    {% endif %}
+                </div>
+            <br>
+                <h4>Add Skills</h4>
+                <div class="category_div col-sm-7" id="category_div">
+                    <b>CATEGORIES</b>
+                    <select name="category" class="required-entry" id="category" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);">
+                        <option value="">select category</option>
+                        {% for cat in categories %}
+                            <option value= "{{  cat.name }}"> {{ cat.name }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="sub_category_div col-sm-7" id="sub_category_div">
+                    <b>SUBCATEGORIES</b>
+                    <script type="text/javascript" language="JavaScript">
+                        document.write('<select name="subcategory" id="subcategory"><option value="">select subcategory</option></select>')
+                    </script>
+                    <noscript>
+                        <select name="subcategory" id="subcategory" >
+                            <option value="">select subcategory</option>
+                        </select>
+                    </noscript>
+                    <a id="update_tags" type="submit" class="btn btn-primary ">Add</a>
+                </div>
             </div>
             
             <div role="tabpanel" class="tab-pane fade cbp-mc-form" id="messages">
@@ -641,26 +699,49 @@
         });
 
     $('#update_tags').click(function(e) {
-            
-                console.log('sup');
-
-                var subcatid = document.getElementById("subcategory").value;
-                console.log(subcatid);
-
-                $.ajax({
-                    url: '/mentor/save-tags/',
-                    type: 'post',
-                    dataType: "json",
-                    data: {'csrfmiddlewaretoken': "{{ csrf_token }}",'subcategory_id': subcatid},
-                    success: function() {
-                        location.reload();
-                    },
-                    failure: function() {
-                        alert("failed");
+        console.log('sup');
+        var subcatid = document.getElementById("subcategory").value;
+        console.log(subcatid);
+        if(subcatid != '' && isNaN(parseInt(subcatid)) == false) {
+            $.ajax({
+                url: '/mentor/save-tags/',
+                type: 'post',
+                dataType: "json",
+                data: {'csrfmiddlewaretoken': "{{ csrf_token }}", 'subcategory_id': subcatid},
+                success: function (data) {
+                    if (data['error'] == true) {
+                        swal({
+                            title: "Error!",
+                            html: true,
+                            text: "Tag already exists",
+                            type: "error",
+                            confirmButtonColor: "#AEDEF4"
+                        });
+                    } else {
+                        swal({
+                            title: "Saved!",
+                            html: true,
+                            text: "Yours skills have been updated!",
+                            type: "success"
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
                     }
-                });
-            
-        });
+                },
+                failure: function () {
+                    alert("failed");
+                }
+            });
+        } else {
+            swal({
+                title: "Error!",
+                html: true,
+                text: "Please Select a Subcategory!",
+                type: "error"
+            });
+        }
+    });
     
 
     </script>

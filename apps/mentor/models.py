@@ -120,7 +120,7 @@ class Business_subcategories(models.Model):
         verbose_name_plural = "Business Subcategories"
 
 class Business_Mentor_Tags(models.Model):
-    mentor = models.ForeignKey(User, limit_choices_to={'is_bmentor': True})
+    mentor = models.ForeignKey(UserProfile, limit_choices_to={'is_bmentor': True})
     subcategory = models.ForeignKey(Business_subcategories)
 
     def __unicode__(self):
@@ -130,5 +130,6 @@ class Business_Mentor_Tags(models.Model):
 
     class Meta:
         verbose_name_plural = "Business Mentor Tags"
+        unique_together = (('mentor', 'subcategory'),)
 
 

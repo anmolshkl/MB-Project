@@ -583,6 +583,8 @@ def edit_profile(request):
         context_dict[dict_index] = subcat_list
         dict_index = dict_index +1
 
+    tags = Business_Mentor_Tags.objects.filter(mentor=user_profile)
+
     return render(request, "mentor/edit_profile.html", locals())
 
 
@@ -994,10 +996,13 @@ def save_tags(request):
             bmentor_profile.save()
 
             subcat = Business_subcategories.objects.get(id=post['subcategory_id'])           
-            
 
-            mapping = Business_Mentor_Tags.objects.create(mentor=user_profile,subcategory=subcat)
+            try:
+                mapping = Business_Mentor_Tags.objects.create(mentor=user_profile, subcategory=subcat)
+            except Exception:
+                return JsonResponse({'error': True, 'msg': 'Tag already exists'})
             mapping.save()
+            return JsonResponse({'error': False, 'msg': 'Tag saved'})
 
     print "in savetags view"
 
