@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/img/EDITED2feature-request.png" afterPath="$PROJECT_DIR$/static/img/EDITED2feature-request.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/sedna.html" afterPath="$PROJECT_DIR$/templates/user/sedna.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/user/team.html" afterPath="$PROJECT_DIR$/templates/user/team.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MB-Project.iws" />
@@ -50,9 +48,11 @@
       <file leaf-file-name="sedna.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/user/sedna.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42857143">
-              <caret line="269" column="62" selection-start-line="269" selection-start-column="62" selection-end-line="269" selection-end-column="62" />
+            <state vertical-scroll-proportion="0.69107145">
+              <caret line="256" column="78" selection-start-line="256" selection-start-column="78" selection-end-line="256" selection-end-column="84" />
               <folding>
+                <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#img#0;n#div#0;n#div#1;n#div#0;n#section#3;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
@@ -1183,9 +1183,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/user/sedna.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42857143">
-          <caret line="269" column="62" selection-start-line="269" selection-start-column="62" selection-end-line="269" selection-end-column="62" />
+        <state vertical-scroll-proportion="0.69107145">
+          <caret line="256" column="78" selection-start-line="256" selection-start-column="78" selection-end-line="256" selection-end-column="84" />
           <folding>
+            <element signature="n#div#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#img#0;n#div#0;n#div#1;n#div#0;n#section#3;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
