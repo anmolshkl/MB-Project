@@ -791,7 +791,14 @@ def send_request(request):
                                           dateTime=d_utc, duration=post['duration'],
                                           callType=post['callType'],message=post['message'])
                     request_obj.save()
-                    msg = "We'll notify you once mentor accepts your request."
+                    
+                    # Send notification email to MENTOR
+                    email_subject = 'New request from {0}'.format(user.get_full_name)
+                    email_body = "Hello Mentor,<br><br>You have a new request from {0}, kindly respond to it within 48 hours.<br><br>Regards,<br>MB Team".format(user.get_full_name)
+                    text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
+                    msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
+                    msg.attach_alternative(email_body, "text/html")
+                    msg.send()
                 else:
                     error = True
                     msg = 'Sorry! The mentor is unavailable during this time.<br>Please select another time & date.'
@@ -851,6 +858,14 @@ def handle_request(request):
                 request.user.get_full_name())
             notif_obj.title = "Request approved!"
             notif_obj.save()
+
+            # Send notification email to mentee
+            email_subject = 'Request approved by {0}'.format(user.get_full_name)
+            email_body = "Greetings Mentee!<br><br>Your requests has been approved by {0}, kindly make yourself available at {1}. In case you forget, we'll still remind you 15 mins before the call :)<br><br>Regards,<br>MB Team".format(user.get_full_name,req.dateTime)
+            text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
+            msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
+            msg.attach_alternative(email_body, "text/html")
+            msg.send()
 
         elif post['status'] == '0':
             # disapprove the request
