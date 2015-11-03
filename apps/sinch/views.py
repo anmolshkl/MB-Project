@@ -35,7 +35,7 @@ def index(request):
     template = None
     print "retrieving requests"
 
-    if user_profile.is_mentor:
+    if user_profile.is_mentor == True:
         # Update the user last seen, which essentially makes mentor ONLINE
         try:
             activity = UserActivity.objects.get(mentor=user)
@@ -48,8 +48,8 @@ def index(request):
             user.save()
         template = "mentor/live.html"
     else:
-        now = datetime.now(pytz.timezone('utc'))
-        min_dt = now - td(minutes=200)
+        now = datetime.now(pytz.timezone(user_profile.timezone))
+        min_dt = now - td(minutes=15)
         max_dt = now + td(minutes=15)
         req_objs = Request.objects.filter(menteeId_id=request.user.id, is_approved=True,
                                           dateTime__startswith=now.date())
@@ -57,13 +57,15 @@ def index(request):
             req_list = []
             print req_objs
             for obj in req_objs:
-                print obj.dateTime
-                print min_dt
-                print max_dt
+                print "obj.dateTime={0}".format(obj.dateTime)
+                print "min_dt={0}".format(min_dt)
+                print "max_dt={0}".format(max_dt)
+                print "obj.dateTime.time()={0}".format(obj.dateTime.time())
                 if obj.dateTime.date() == now.date() and min_dt.time() <= obj.dateTime.time() <= max_dt.time() \
                         and obj.is_completed == False:
                     mentor = User.objects.get(id=obj.mentorId_id)
                     status = 1
+                    print obj
                     # We are adopting a POLLING technique on mentor's page and it's client's task to update last seen
                     # every 5 minutes
                     try:

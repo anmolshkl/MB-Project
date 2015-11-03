@@ -209,7 +209,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 <a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom" title="Notifications" data-content='' data-toggle="dropdown" data-original-title="Notifications">
                     <div class="user-details"> 
                         <div class="username">
-                            <span class="badge badge-important">{{ notifications.count }}</span>
+                            <span class="badge badge-important notification_count">{{ notifications.count }}</span>
                             {{ user.first_name }}                                    
                         </div>                      
                     </div> 
@@ -282,7 +282,7 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
    <!-- BEGIN SIDEBAR MENU -->  
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>    
-      <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-disable pull-right">{{ notifications.count }}</span></a> </li>
+      <li class="start active "> <a href="/user/"> <i class="icon-custom-home"></i> <span class="title">Home</span> <span class="selected"></span> <span class="badge badge-disable notification_count pull-right">{{ notifications.count }}</span></a> </li>
       <li class=""> <a href="/mentor/self-profile/"> <i class="fa fa-user"></i> <span class="title">Profile</span></a></li>
       <li class=""> <a href="/mentor/edit-profile/"> <i class="fa fa-user"></i> <span class="title">Edit Profile</span></a></li>
       
@@ -706,7 +706,8 @@ initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                         $(obj).remove();
                     });
                     $(".clearNotif").remove();
-                    alert("clearing");
+                    $(".notification_count").val(0);
+
                 }
             }
         });

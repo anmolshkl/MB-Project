@@ -1,5 +1,6 @@
 from time import strptime
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import EmailMultiAlternatives
 from django.forms import model_to_dict
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -19,6 +20,7 @@ from allauth.socialaccount.models import SocialAccount, SocialApp
 from django.conf import settings
 
 from PIL import Image
+from django.utils.html import strip_tags
 
 import os
 
@@ -341,7 +343,6 @@ def self_profile_view(request):
 
     context_dict['ratings'] = rating_obj
 
-
     context_dict['ratings'] = rating_obj
 
     # Specify timings too
@@ -505,7 +506,7 @@ def get_profile(request, mentorid):
         emp_list = []
         for obj in empObjs:
             emp_list.append({'org': obj.organization, 'loc': obj.location, 'pos': obj.position,
-                             'from': obj.from_date, 'to': obj.to_date})
+                             'from': obj.from_year, 'to': obj.to_year})
 
         context_dict['emp_list'] = emp_list
 
@@ -569,7 +570,6 @@ def edit_profile(request):
         edu_formset = EducationDetailsFormSet(instance=user_profile)
         emp_formset = EmploymentDetailsFormSet(instance=user_profile)
 
-
     context = RequestContext(request)
     context_dict = {}
 
@@ -581,7 +581,7 @@ def edit_profile(request):
         subcategories = Business_subcategories.objects.filter(category_id=cat.id)
         subcat_list.append({'category_id': cat.id, 'category_name': cat.name, 'subcategories': subcategories})
         context_dict[dict_index] = subcat_list
-        dict_index = dict_index +1
+        dict_index = dict_index + 1
 
     tags = Business_Mentor_Tags.objects.filter(mentor=user_profile)
 
@@ -789,16 +789,19 @@ def send_request(request):
                     print "request time in UTC={0}".format(d_utc)
                     request_obj = Request(menteeId_id=request.user.id, mentorId_id=post['mentor_id'],
                                           dateTime=d_utc, duration=post['duration'],
-                                          callType=post['callType'],message=post['message'])
+                                          callType=post['callType'], message=post['message'])
                     request_obj.save()
-                    
+
                     # Send notification email to MENTOR
-                    email_subject = 'New request from {0}'.format(user.get_full_name)
-                    email_body = "Hello Mentor,<br><br>You have a new request from {0}, kindly respond to it within 48 hours.<br><br>Regards,<br>MB Team".format(user.get_full_name)
+                    email_subject = 'New request from {0}'.format(request.user.get_full_name())
+                    email_body = "Hello Mentor,<br><br>You have a new request from {0}, kindly respond to it " \
+                                 "within 48 hours.<br><br>Regards,<br>MB Team".format(request.user.get_full_name())
                     text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
-                    msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
-                    msg.attach_alternative(email_body, "text/html")
-                    msg.send()
+                    email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in',
+                                                 [request.user.email])
+                    email.attach_alternative(email_body, "text/html")
+                    # email.send()
+                    msg = "Request has been successfully sent! We'll notify you once the mentor responds to it."
                 else:
                     error = True
                     msg = 'Sorry! The mentor is unavailable during this time.<br>Please select another time & date.'
@@ -854,18 +857,20 @@ def handle_request(request):
             # create new notification
             notif_obj = Notification.objects.create(to=req.menteeId)
             notif_obj.frm = "admin"
-            notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you ;)".format(
-                request.user.get_full_name())
+            notif_obj.text = "Your request has been approved by {0}. Please put a reminder but we'll still remind you " \
+                             ";)".format(request.user.get_full_name())
             notif_obj.title = "Request approved!"
             notif_obj.save()
 
             # Send notification email to mentee
-            email_subject = 'Request approved by {0}'.format(user.get_full_name)
-            email_body = "Greetings Mentee!<br><br>Your requests has been approved by {0}, kindly make yourself available at {1}. In case you forget, we'll still remind you 15 mins before the call :)<br><br>Regards,<br>MB Team".format(user.get_full_name,req.dateTime)
+            email_subject = 'Request approved by {0}'.format(request.user.get_full_name)
+            email_body = "Greetings Mentee!<br><br>Your requests has been approved by {0}, kindly make yourself " \
+                         "available at {1}. In case you forget, we'll still remind you 15 mins before the call :)" \
+                         "<br><br>Regards,<br>MB Team".format(request.user.get_full_name, req.dateTime)
             text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
-            msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
-            msg.attach_alternative(email_body, "text/html")
-            msg.send()
+            email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
+            email.attach_alternative(email_body, "text/html")
+            # email.send()
 
         elif post['status'] == '0':
             # disapprove the request
@@ -970,9 +975,9 @@ def update_timings(request):
 
     return JsonResponse({'error': error, 'msg': msg})
 
+
 @login_required
 def update_tags(request):
-
     context = RequestContext(request)
     context_dict = {}
 
@@ -984,18 +989,16 @@ def update_tags(request):
         print cat.name
         subcategories = Business_subcategories.objects.filter(category_id=cat.id)
         print subcategories
-        subcat_list.append({'category_id':cat.id, 'category_name':cat.name,'subcategories':subcategories})
+        subcat_list.append({'category_id': cat.id, 'category_name': cat.name, 'subcategories': subcategories})
         context_dict[dict_index] = subcat_list
-        dict_index = dict_index +1
-        
-    
+        dict_index = dict_index + 1
 
+    return render_to_response("mentor/update_tags.html",
+                              {'categories': categories, 'context_dict': context_dict, 'context': context})
 
-    return render_to_response("mentor/update_tags.html",{'categories':categories,'context_dict':context_dict,'context':context})
 
 @login_required
 def save_tags(request):
-
     user = request.user
     user_profile = user.user_profile
     user_id = user.id
@@ -1010,7 +1013,7 @@ def save_tags(request):
             bmentor_profile.is_bmentor = 1
             bmentor_profile.save()
 
-            subcat = Business_subcategories.objects.get(id=post['subcategory_id'])           
+            subcat = Business_subcategories.objects.get(id=post['subcategory_id'])
 
             try:
                 mapping = Business_Mentor_Tags.objects.create(mentor=user_profile, subcategory=subcat)
@@ -1023,33 +1026,29 @@ def save_tags(request):
 
     return HttpResponseRedirect("/mentor/")
 
+
 @login_required
 def get_tags(request):
-
     user = request.user
     user_profile = user.user_profile
-    subcat_tag_list = Business_Mentor_Tags.objects.filter(mentor = user_profile)
-    
+    subcat_tag_list = Business_Mentor_Tags.objects.filter(mentor=user_profile)
 
     context = RequestContext(request)
-    context_dict = {}    
+    context_dict = {}
 
     dict_index = 0;
-    for  tag in subcat_tag_list:
+    for tag in subcat_tag_list:
         cat_subcat_list = []
 
-        #subcat = Business_subcategories.objects.get(id=subcat_id)
+        # subcat = Business_subcategories.objects.get(id=subcat_id)
 
         subcat_name = tag.subcategory.name
 
         cat_name = Business_subcategories.objects.get(id=tag.subcategory.id).category.name
 
-        
-        
-        cat_subcat_list.append({'category':cat_name,'subcategory':subcat_name})
+        cat_subcat_list.append({'category': cat_name, 'subcategory': subcat_name})
         context_dict[dict_index] = cat_subcat_list
-        dict_index = dict_index +1
-
+        dict_index = dict_index + 1
 
     print context_dict
     return HttpResponseRedirect("/mentor/")

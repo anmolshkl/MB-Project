@@ -524,11 +524,11 @@
                     }
                     $(".clickable").click(function(event) {
                         if(event.target.tagName.toUpperCase() != 'INPUT') {
-                            $(this).addClass("green-bg");
                             var inputs = $(this).children("input");
                             var dateTime = inputs[0].value.split(" ");
                             var error = validate();
-                            if(error == false) {
+                            var message = document.getElementsByClassName('message_to_mentor')[0].value;
+                            if(error == false && message != '') {
                                 $.ajax({
                                     url: "/mentor/send-request/",
                                     data: {
@@ -540,12 +540,13 @@
                                         "mentor_id": {{ mentor_id }},
                                         "mentee_id": {{ user.id }},
                                         "call_type": $("#callType").val(),
-                                        "message": document.getElementsByClassName('message_to_mentor')[0].value
+                                        "message": message
                                     },
                                     type: "post",
                                     dataType: "json",
                                     success: function (data) {
                                         if (data['error'] == false) {
+                                            $(this).addClass("green-bg");
                                             $("#scheduleDiv").html("<i class='fa fa-thumbs-o-up fa-3x'></i>"+"<h4>"+data['msg']+"</h4>");
                                             $("#scheduleDiv").css({paddingLeft: "25px",paddingRight:"25px"});
                                             $("#scheduleDiv").addClass("textCenter");
@@ -557,6 +558,8 @@
                                     }
 
                                 });
+                            } else {
+                                $("#errorDiv").html("Please check your input");
                             }
 
                         }

@@ -280,7 +280,7 @@ def register(request):
                 text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
                 msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [email])
                 msg.attach_alternative(email_body, "text/html")
-                msg.send()
+                # msg.send()
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})
@@ -388,8 +388,8 @@ def root(request):
     if subcategory != None:
         mentor_tags = Business_Mentor_Tags.objects.filter(subcategory=subcategory)
         for obj in mentor_tags:
-            mentor_profile = obj.mentor.user_profile
-            mentor = obj.mentor
+            mentor_profile = obj.mentor
+            mentor = obj.mentor.user
             emp_obj = mentor_profile.employment_details.all()[:1].get()
             results.append({'first_name': mentor.first_name,
                             'last_name': mentor.last_name,

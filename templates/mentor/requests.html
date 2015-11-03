@@ -78,7 +78,8 @@
                     <div class="col-xs-12 well">
                         <div class="pull-left">
                             <input type="hidden" class="request_id" value="{{ request.request_id }}"> </input>
-                            <h3>{{ request.mentee_name }}, {{ request.country }}</h3><hr>
+                            <h3>{{ request.mentee_name }}, {{ request.country }}</h3>
+                            <hr>
                             <h5><b>{{ request.dateTime|date }}</b></h5>
                             <h5>{{ request.dateTime|time }}</h5>
                             Call Type:<b>
@@ -92,7 +93,7 @@
                             </b>
                             Date Requested: {{ request.req_date }}
                             <br>
-                            <i>Message</i>: {{ request.message }}
+                            Message from Mentee: <i>{{ request.message }}</i>
                         </div>
                         <div class="pull-right textCenter">
                             <a href="#" class="fa fa-times-circle fa-4x reject"></a>
