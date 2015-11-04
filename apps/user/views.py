@@ -390,7 +390,7 @@ def root(request):
         for obj in mentor_tags:
             mentor_profile = obj.mentor
             mentor = obj.mentor.user
-            if mentor_profile.employment_details != None:
+            if mentor_profile.employment_details is not None:
                 emp_obj = mentor_profile.employment_details.all()[:1].get()
             else:
                 emp_obj = None
