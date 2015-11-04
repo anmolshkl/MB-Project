@@ -599,7 +599,7 @@
                 var catDiv = "";
             {% endif %}
             if(html == '') {
-                html = "<h3>Search with name</h3> <form method='GET' action='/search/query/'>{% csrf_token %}<input style='width:80%;' type='text' name='q' class='name-search' " +
+                html = "<h3>Search with name or location</h3> <form method='GET' action='/search/query/'>{% csrf_token %}<input style='width:80%;' type='text' name='q' class='name-search' " +
                     "placeholder='press enter to search' required></form>"
                     +catDiv+"<br><br><br>";
                 $("#category-selection-div").remove();

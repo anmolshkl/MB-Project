@@ -30,12 +30,14 @@
                                  College not specified<br>
                              {% endif %}
                          {% else %}
-                             {% if mentor.position != None %}
-                                {{ mentor.position }}
-                             {% endif %}
-                             {%  if mentor.organization != None %}
-                                 at {{ mentor.organization }}
-                                 <br>
+                             {% if mentor.emp != None %}
+                                 {% if mentor.emp.position != None %}
+                                    {{ mentor.emp.position }}
+                                 {% endif %}
+                                 {%  if mentor.emp.organization != None %}
+                                     at {{ mentor.emp.organization }}
+                                     <br>
+                                 {% endif %}
                              {% endif %}
                          {% endif %}
                          {{ mentor.city }},

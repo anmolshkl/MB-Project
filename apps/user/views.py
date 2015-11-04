@@ -390,7 +390,10 @@ def root(request):
         for obj in mentor_tags:
             mentor_profile = obj.mentor
             mentor = obj.mentor.user
-            emp_obj = mentor_profile.employment_details.all()[:1].get()
+            if mentor_profile.employment_details != None:
+                emp_obj = mentor_profile.employment_details.all()[:1].get()
+            else:
+                emp_obj = None
             results.append({'first_name': mentor.first_name,
                             'last_name': mentor.last_name,
                             'picture': mentor_profile.picture,
@@ -399,8 +402,7 @@ def root(request):
                             'city': mentor_profile.city,
                             'country': mentor_profile.country,
                             'type': 'expert',
-                            'position': emp_obj.position,
-                            'organization': emp_obj.organization
+                            'emp': emp_obj
                             })
 
         return render(request, 'mentee/search_root.html', {
