@@ -390,9 +390,9 @@ def root(request):
         for obj in mentor_tags:
             mentor_profile = obj.mentor
             mentor = obj.mentor.user
-            if mentor_profile.employment_details is not None:
-                emp_obj = mentor_profile.employment_details.all()[:1].get()
-            else:
+            try:
+                emp_obj = mentor_profile.employment_details.all()[:1].get() 
+            except EmploymentDetails.DoesNotExist:
                 emp_obj = None
             results.append({'first_name': mentor.first_name,
                             'last_name': mentor.last_name,
