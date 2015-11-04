@@ -278,9 +278,9 @@ def register(request):
                 # send_mail(email_subject, email_body, 'buddy@mentorbuddy.in', [email], fail_silently=True)
 
                 text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
-                msg = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [email])
-                msg.attach_alternative(email_body, "text/html")
-                # msg.send()
+                email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [email])
+                email.attach_alternative(email_body, "text/html")
+                email.send()
                 return JsonResponse({'error': False})
         else:
             return JsonResponse({'error': True, 'message': 'empty input field/s'})

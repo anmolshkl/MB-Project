@@ -800,7 +800,7 @@ def send_request(request):
                     email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in',
                                                  [request.user.email])
                     email.attach_alternative(email_body, "text/html")
-                    # email.send()
+                    email.send()
                     msg = "Request has been successfully sent! We'll notify you once the mentor responds to it."
                 else:
                     error = True
@@ -870,7 +870,7 @@ def handle_request(request):
             text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
             email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
             email.attach_alternative(email_body, "text/html")
-            # email.send()
+            email.send()
 
         elif post['status'] == '0':
             # disapprove the request
