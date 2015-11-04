@@ -309,7 +309,7 @@ def requests(request):
     contextDic = {}
     request_list = []
     u = datetime.utcnow()
-    u = u.replace(tzinfo=pytz.utc)
+    u = u.replace(tzinfo=pytz.user.)
     userRequests = Request.objects.filter(menteeId=user.id, dateTime__gte=u).order_by('dateTime')
     for reqObj in userRequests:
         obj = {}

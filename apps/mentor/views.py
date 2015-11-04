@@ -793,12 +793,14 @@ def send_request(request):
                     request_obj.save()
 
                     # Send notification email to MENTOR
+                    mentor_name = request_obj.mentorId.get_full_name()
+                    mentor_email = request_obj.mentorId.email
                     email_subject = 'New request from {0}'.format(request.user.get_full_name())
                     email_body = "Hello Mentor,<br><br>You have a new request from {0}, kindly respond to it " \
-                                 "within 48 hours.<br><br>Regards,<br>MB Team".format(request.user.get_full_name())
+                                 "within 48 hours.<br><br>Regards,<br>MB Team".format(mentor_name)
                     text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
                     email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in',
-                                                 [request.user.email])
+                                                 [mentor_email])
                     email.attach_alternative(email_body, "text/html")
                     email.send()
                     msg = "Request has been successfully sent! We'll notify you once the mentor responds to it."
