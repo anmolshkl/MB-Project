@@ -795,6 +795,8 @@ def send_request(request):
                     # Send notification email to MENTOR
                     mentor_name = request_obj.mentorId.get_full_name()
                     mentor_email = request_obj.mentorId.email
+                    print mentor_name
+                    print mentor_email
                     email_subject = 'New request from {0}'.format(request.user.get_full_name())
                     email_body = "Hello Mentor,<br><br>You have a new request from {0}, kindly respond to it " \
                                  "within 48 hours.<br><br>Regards,<br>MB Team".format(mentor_name)
@@ -865,12 +867,14 @@ def handle_request(request):
             notif_obj.save()
 
             # Send notification email to mentee
-            email_subject = 'Request approved by {0}'.format(request.user.get_full_name)
+            mentee_name = req.menteeId.get_full_name()
+            mentee_email =req.menteeId.email
+            email_subject = 'Request approved by {0}'.format(request.user.get_full_name())
             email_body = "Greetings Mentee!<br><br>Your requests has been approved by {0}, kindly make yourself " \
-                         "available at {1}. In case you forget, we'll still remind you 15 mins before the call :)" \
-                         "<br><br>Regards,<br>MB Team".format(request.user.get_full_name, req.dateTime)
+                         "available on {1} GMT. In case you forget, we'll still remind you 15 mins before the call :)" \
+                         "<br><br>Regards,<br>MB Team".format(mentee_name, req.dateTime)
             text_content = strip_tags(email_body)  # this strips the html, so people will have the text as well.
-            email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [request.user.email])
+            email = EmailMultiAlternatives(email_subject, text_content, 'buddy@mentorbuddy.in', [mentee_email])
             email.attach_alternative(email_body, "text/html")
             email.send()
 
@@ -889,8 +893,7 @@ def handle_request(request):
             error = True
     else:
         error = True
-    response["error"] = error
-    return JsonResponse(response)
+    return JsonResponse({"error":error})
 
 
 @login_required
