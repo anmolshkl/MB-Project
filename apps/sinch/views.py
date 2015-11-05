@@ -48,7 +48,7 @@ def index(request):
             user.save()
         template = "mentor/live.html"
     else:
-        now = datetime.now(pytz.timezone(user_profile.timezone))
+        now = datetime.now(pytz.utc)
         min_dt = now - td(minutes=15)
         max_dt = now + td(minutes=15)
         req_objs = Request.objects.filter(menteeId_id=request.user.id, is_approved=True,
