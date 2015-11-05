@@ -147,7 +147,6 @@ function limitDeleteHandler(e) {
 
         var characters = $(this).parent().find('.characters');
         var value = parseInt(characters.html());
-        alert(value);
         alert($(".feedback").html());
         if(value > 0 && $(".feedback").value != '') {
             characters.html(value - 1);

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0387dd34-70d5-4f3f-9c2c-d401d5ea94df" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apps/sinch/views.py" afterPath="$PROJECT_DIR$/apps/sinch/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/mentee/live.html" afterPath="$PROJECT_DIR$/templates/mentee/live.html" />
     </list>
     <ignored path="MB-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,14 +106,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/sinch/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.57798165">
+            <state vertical-scroll-proportion="0.0">
               <caret line="50" column="35" selection-start-line="50" selection-start-column="35" selection-end-line="50" selection-end-column="35" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="live.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/mentee/live.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.64792174">
+              <caret line="149" column="13" selection-start-line="149" selection-start-column="13" selection-end-line="149" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -187,7 +197,6 @@
         <option value="$PROJECT_DIR$/templates/user/sedna.html" />
         <option value="$PROJECT_DIR$/templates/mentee/mentor-profile-view.html" />
         <option value="$PROJECT_DIR$/templates/mentor/requests.html" />
-        <option value="$PROJECT_DIR$/templates/mentee/live.html" />
         <option value="$PROJECT_DIR$/templates/mentee/base.html" />
         <option value="$PROJECT_DIR$/templates/mentee/search_root.html" />
         <option value="$PROJECT_DIR$/apps/user/views.py" />
@@ -195,6 +204,7 @@
         <option value="$PROJECT_DIR$/apps/mentor/views.py" />
         <option value="$PROJECT_DIR$/templates/mentor/base.html" />
         <option value="$PROJECT_DIR$/apps/sinch/views.py" />
+        <option value="$PROJECT_DIR$/templates/mentee/live.html" />
       </list>
     </option>
   </component>
@@ -1162,14 +1172,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/mentee/live.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="103" column="58" selection-start-line="103" selection-start-column="58" selection-end-line="103" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/user/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3325688">
@@ -1261,11 +1263,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/sinch/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57798165">
+        <state vertical-scroll-proportion="0.0">
           <caret line="50" column="35" selection-start-line="50" selection-start-column="35" selection-end-line="50" selection-end-column="35" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/mentee/live.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.64792174">
+          <caret line="149" column="13" selection-start-line="149" selection-start-column="13" selection-end-line="149" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
