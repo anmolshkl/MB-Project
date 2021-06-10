@@ -1,4 +1,4 @@
-Django==1.7
+Django==2.2.24
 diff-match-patch==20121119
 django-ajax-search==1.5.1
 django-crispy-forms==1.4.0
